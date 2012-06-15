@@ -171,13 +171,13 @@ sub days_between {
 
 
     # start and end should not be closed days
-    my $days = $start_dt->delta_days($end_dt)->delta_days;
-    for (my $dt = $start_dt->clone();
-        $dt <= $end_dt;
-        $dt->add(days => 1)
-    ) {
-        if ($self->is_holiday($dt)) {
-            $days--;
+    $datestart_temp->truncate( to => 'day' );
+    $dateend_temp->truncate( to => 'day' );
+    my $duration = $dateend_temp - $datestart_temp;
+    while ( DateTime->compare( $datestart_temp, $dateend_temp ) == -1 ) {
+        $datestart_temp->add( days => 1 );
+        if ( $self->is_holiday($datestart_temp) ) {
+            $duration->subtract( days => 1 );
         }
     }
     return DateTime::Duration->new( days => $days );
