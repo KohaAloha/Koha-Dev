@@ -8,10 +8,12 @@
 [% END %]
 
 <script language="javascript">
+//<![CDATA[
     function printThenClose() {
         window.print();
         window.close();
     }
+//]]>
 </script>
 </head>
 <body id="circ_printslip" class="circ" onload="printThenClose();">
