@@ -11,6 +11,7 @@
 <script type="text/javascript" src="[% themelang %]/lib/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.min.js"></script>
 <script type="text/javascript">//<![CDATA[
+function _(s) { return s; } // dummy function for gettext
 function sco_init() {
     setTimeout("location.href='/cgi-bin/koha/sco/sco-main.pl?op=logout';",[% SelfCheckTimeout %]);
 }
@@ -28,7 +29,7 @@ function checkout_confirm(patronid) {
     var   barcode = $("#barcode").val();
     // alert("checkout_confirm('" + patronid + "') called for barcode '" + barcode + "'");
     if (! barcode) { dofocus(); return false; }    // no barcode
-    if (barcode == "__KOHA_NEW_CIRC__") {   // magic barcode 
+    if (barcode == "__KOHA_NEW_CIRC__") {   // magic barcode
         window.location.href='/cgi-bin/koha/sco/sco-main.pl?op=logout';
         return false;
     }
@@ -90,7 +91,7 @@ $(document).ready(function() {
 //]]>
 $(document).ready(function(){
     $("#logout_form").submit(function(){
-        if(confirm("Would you like to print a receipt?")){
+        if(confirm(_("Would you like to print a receipt?"))){
             window.open("/cgi-bin/koha/sco/printslip.pl?borrowernumber=[% borrowernumber %]&amp;print=qslip");
         }
         return true;

@@ -4,7 +4,8 @@
 <head>
 <title> RECEIPT </title>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
+//<![CDATA[
 x = 0; 
 function callPrint()
 {
@@ -12,7 +13,7 @@ function callPrint()
       
      {
       self.print();
-      javascript:window.opener.location='/cgi-bin/koha/sco/sco-main.pl?logout.x=1';
+      window.opener.location='/cgi-bin/koha/sco/sco-main.pl?logout.x=1';
       x = 1; 
      }
 }
@@ -24,6 +25,7 @@ function closeNow()
     setTimeout('self.close()',1000);
   }    
 }
+//]]>
 </script> 
 
 [% IF ( SCOUserCSS ) %]<style type="text/css">[% SCOUserCSS %]</style>[% END %]
