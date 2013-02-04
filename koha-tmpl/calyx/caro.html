@@ -1,0 +1,182 @@
+<script type="text/JavaScript" src="/calyx/cloud-carousel.1.0.5.min.js"></script>
+<script type="text/JavaScript" src="/calyx/jquery.mousewheel.js"></script>
+<script type="text/JavaScript" src="/calyx/raphael.js"></script>
+
+
+<script>
+$(document).ready(function(){
+
+
+$('<div id="caro3"  style="width: 600px; height: 300px; background: none repeat scroll 0% 0% white; overflow: hidden; position: relative;"/>').prependTo("#cbox2");
+
+
+ $.ajaxSetup( { "async": false } );
+
+
+var raz = new Array();
+
+console.log('xxxxx');
+console.log(raz);
+
+//var url = 'http://api.flickr.com/services/feeds/groups_pool.gne?jsoncallback=?';
+
+//var url = 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
+//var url = 'http://www.flickr.com/services/api/flickr.groups.pools.getPhotos?jsoncallback=?';
+
+
+//var grp='2026410@N25';
+//var grp='90862251@N00';
+var grp='85108312@N02';
+
+
+var url = "http://api.flickr.com/services/feeds/photos_public.gne?id="+
+grp+"&tags=bookcover&format=json&jsoncallback=?";
+
+//var url = "http://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&id="+grp+"&format=json&jsoncallback=?";
+
+console.log( url );
+
+
+
+
+$.ajax({
+  url: url,
+  dataType: 'json',
+  //data: data,
+  async: false,
+  success: function(data) {
+
+var ss = data;
+
+
+    $.each(data.items, function(i,item){
+//      console.log('zzzzzz');
+      console.log (item) ;
+
+
+        if ( i == 8 ) return false;
+
+      var src = "cgi-bin/koha/opac-detail.pl?biblionumber="+item.title;
+
+      var a = $('<a />').attr({
+        href: src,
+        //title: item.title,
+        //moo: 'foo',
+      });
+
+      a.prependTo("#caro3");
+
+      $('<img class="cloudcarousel" />').attr(
+        {
+          src: item.media.m,
+          title: item.title,
+          //moo: 'foo',
+          alt: item.author,
+          bib: src,
+
+        }).appendTo( a );
+      });
+
+
+    $("#caro3").CloudCarousel({
+            xPos: 300,
+            yPos:  50,
+            buttonLeft: $("#left-but"),
+            buttonRight: $("#right-but"),
+
+
+    titleBox: $('#da-vinci-title'),
+    altBox: $('#da-vinci-alt'),
+
+
+            reflOpacity: 0.5,
+            reflHeight: 40,
+//            autoRotate: 'yes',
+            autoRotateDelay: 7000,
+            bringToFront: 'true',
+            reflGap: 2,
+            speed:0.15,
+            mouseWheel:true
+        });
+    }
+  });
+});
+
+</script>
+
+
+
+ <style type="text/css">
+#cbox1 {
+    margin:10px 0px; padding:0px;
+    text-align:center;
+    }
+
+#cbox2 {
+    width:610px;
+    //height:510px;
+    margin:0px auto;
+    //text-align:left;
+    padding:15px;
+    //border:1px dashed #333;
+    //background-color:#eee;
+    }
+
+
+
+#da-vinci-title {
+    color: #FF9900;
+    display: none;
+    font-family: Georgia,"Times New Roman",Times,serif;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 20px 20px 10px;
+    text-transform: uppercase;
+    width: 80%;
+}
+#da-vinci-alt {
+    color: RoyalBlue;
+    display: none;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0 20px 20px;
+}
+
+
+
+ </style>
+
+
+<div id = "cbox1">
+<div id = "cbox2">
+
+
+<div id="da-vinci-title"  ></div>
+<div id="da-vinci-alt" ></div>
+
+
+<div id="set-info" >
+<p> fetching images from flickr user
+<a href="http://www.flickr.com/photos/85108312@N02/">
+KohaAloha</a> matching tag <a href="http://www.flickr.com/photos/85108312@N02/tags/bookcover/">bookcover</a>
+
+
+
+</p>
+</div>
+
+
+        <!-- Define left and right buttons. -->
+<span>
+<svg id="right-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M24.316,5.318L6.684,15.5l17.632,10.182V5.318L24.316,5.318z"/>
+</svg>
+
+<svg id="left-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M6.684,25.682L24.316,15.5L6.684,5.318V25.682z"/></svg>
+
+</span>
+
+
+</div>
+</div>
+

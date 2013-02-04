@@ -1,0 +1,168 @@
+<div  style=" background-color:pink;">
+
+content goes here...
+
+<script type="text/JavaScript" src="/calyx/cloud-carousel.1.0.5.min.js"></script>
+<script type="text/JavaScript" src="/calyx/jquery.mousewheel.js"></script>
+<script type="text/JavaScript" src="/calyx/raphael.js"></script>
+
+
+<script>
+$(document).ready(function(){
+
+
+$('<div id="caro3"  style="width: 600px; height: 430px; background: none repeat scroll 0% 0% white; overflow: hidden; position: relative;"/>').prependTo("#cbox2");
+
+
+ $.ajaxSetup( { "async": false } );
+
+
+var raz = new Array();
+
+console.log('xxxxx');
+console.log(raz);
+
+//var url = 'http://api.flickr.com/services/feeds/groups_pool.gne?jsoncallback=?';
+
+//var url = 'http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?';
+//var url = 'http://www.flickr.com/services/api/flickr.groups.pools.getPhotos?jsoncallback=?';
+
+
+//var grp='2026410@N25';
+var grp='90862251@N00';
+
+
+var url = "http://api.flickr.com/services/feeds/groups_pool.gne?id="+grp+"&format=json&jsoncallback=?";
+
+
+
+$.ajax({
+  url: url,
+  dataType: 'json',
+  //data: data,
+
+
+
+
+
+    $.each(data.items, function(i,item){
+      console.log('zzzzzz');
+      console.log (item) ;
+
+      raz.push( item.media.m);
+        //console.log(item.media.m);
+        console.log(raz);
+        if ( i == 8 ) return false;
+      });
+
+
+      for (var i = 0;  i < raz.length  ; i++) {
+      console.log('z1111');
+      console.log (raz[i]) ;
+
+      var src = "cgi-bin/koha/opac-detail.pl?biblionumber="
+
+//      var a = $('<a />').attr("href", i );
+      var a = $('<a />');
+      a.prependTo("#caro3");
+
+      $('<img class="cloudcarousel" />').attr(
+        {
+          src: raz[i],
+          //desc: item.media.title,
+        }).appendTo( a );
+      };
+
+
+    $("#caro3").CloudCarousel(
+        {
+            xPos: 300,
+            yPos:  50,
+            buttonLeft: $("#left-but"),
+            buttonRight: $("#right-but"),
+            altBox: $("#alt-text"),
+            titleBox: $("#title-text"),
+            reflOpacity: 0.5,
+            reflHeight: 40,
+            autoRotate: 'yes',
+            autoRotateDelay: 7000,
+            bringToFront: 'true',
+            reflGap: 2,
+            speed:0.15,
+            mouseWheel:true
+        }
+    );
+
+
+
+
+
+
+  }
+
+  });
+
+
+
+
+
+});
+
+</script>
+
+
+
+ <style type="text/css">
+#cbox1 {
+    margin:10px 0px; padding:0px;
+    text-align:center;
+    }
+
+#cbox2 {
+    width:610px;
+    //height:510px;
+    margin:0px auto;
+    //text-align:left;
+    padding:15px;
+    //border:1px dashed #333;
+    //background-color:#eee;
+    }
+
+ </style>
+
+
+
+
+
+
+<div id = "cbox1">
+<div id = "cbox2">
+
+
+
+
+
+
+  <!-- Define elements to accept the alt and title text from the images. -->
+        <span id="title-text"></span>
+
+        <!-- Define left and right buttons. -->
+<span>
+<svg id="right-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M24.316,5.318L6.684,15.5l17.632,10.182V5.318L24.316,5.318z"/>
+</svg>
+
+<svg id="left-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M6.684,25.682L24.316,15.5L6.684,5.318V25.682z"/></svg>
+
+
+
+</span>
+
+
+</div>
+</div>
+
+
+content goes here...
+</div>
+
+
