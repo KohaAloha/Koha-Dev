@@ -22,7 +22,9 @@ $(document).ready(function(){
 //    alert( 'chang...........!!!!!!!!!!' );
 
 //    $('#headopacmainuserblock').load('http://' + site1+ '/calyx/ebchang/main.html');
-    $('head').load('http://' + site1+ '/calyx/ebchang/main.html');
+
+//    $('head').load('http://' + site1+ '/calyx/ebchang/js.js');
+    $('head').load('calyx/ebchang/js.js');
 
 
   }
