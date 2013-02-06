@@ -1,18 +1,12 @@
-xxxxxxxxxxxxxx
-zzzzzzzzzzzz
-
-<script type="text/javascript" language="javascript">
-
-
-$(document).ready(function(){
-
- $('#mainuserblock').load('http://ebchaeng.kohaaloha.com/calyx/caro1.html'); 
-
-});
-
-
+<!-- --------------------------------------------------- -->
+<script type="text/javascript" language="javascript" 
+    src="/calyx/ebc-init.js">
 
 </script>
+
+<!-- --------------------------------------------------- -->
+
+
 
 <div id="header-wrapper"><div id="members">
   [% IF ( opacuserlogin ) %]
