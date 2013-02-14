@@ -27,9 +27,8 @@ use warnings;
 use C4::Koha;
 use C4::Biblio;
 use C4::Dates qw/format_date/;
-use C4::External::Amazon;
 
-#use Smart::Comments '####';
+#use Smart::Comments '###';
 
 use vars qw($VERSION @ISA @EXPORT);
 
@@ -52,6 +51,8 @@ C4::Carousel
 
 =cut
 
+use LWP::Simple;
+
 sub GetNewBiblios {
 
     my $q = qq|
@@ -72,7 +73,7 @@ sub GetNewBiblios {
     my @results;
 
     #    while ( $i < 5 and $j < 10) {
-    while ( $i < 10 and $j < 5 ) {
+    while ( $i < 2 and $j < 5 ) {
         my $rand_bib = $rands[ int rand($#rands) ];
 
         my $row = GetBiblioData($rand_bib);
@@ -81,31 +82,24 @@ sub GetNewBiblios {
         #my  $aws  = [ 'Large', 'Similarities' ];
         my $aws = ['Large'];
 
-        my $amazon_details =
-          get_amazon_details( $row->{'isbn'}, $rec, 'MARC21', $aws );
+        next unless $row->{'isbn'};
 
-        my $img;
-        if ($amazon_details) {
+        # ---------------------------------
+        # build string
 
-            my $title = $row->{'title'};
-            eval {
-                $img =
-                  $amazon_details->{Items}->{Item}[0]->{'ImageSets'}
-                  ->{'ImageSet'}->{'MediumImage'}->{'URL'};
-            };
-            next if $@;
+        my $str =
+          "http://covers.openlibrary.org/b/isbn/" . $row->{'isbn'} . "-S.jpg";
 
-    #            $img =~ s/\.jpg/PC_PU3_\.jpg/;    # add rotate, and back-shadow
-            $img =~ s/\.jpg/PC_\.jpg/;    # add rotate, and back-shadow
-            #### $img
-        }
+        warn $str;
+        my ($URL_in) = $str;
+        my $content = head($URL_in);
+        next unless ( $content->content_type eq "image/jpeg" );
 
-        $j++ if !$amazon_details;
+        # ---------------------------------
 
-        #       $img = "/opac-tmpl/prog/images/no-cover.png" unless $img;
-        next unless $img;
+        $row->{img} = $str;
+### $row
 
-        $row->{img} = $img;
         push @results, $row;
 
         my $search_for = $rand_bib;
