@@ -1,20 +1,4 @@
 <!-- --------------------------------------------------- -->
-<script type="text/javascript" language="javascript">
-
-
- $(document).ready(function() {
-
-
-    $("<div></div>").attr('id','calyx-init').appendTo('body');
-
-    // put all your jQuery goodness in here.
-//    $('#calyx-init').load('calyx/ebc-init.js');
- //   $('#calyx-init').load('/calyx/ebc-init.js');
-});
-
-</script>
-<script type="text/javascript" language="javascript" src="/calyx/ebc-init.js
-"></script>
 <!-- --------------------------------------------------- -->
 
 
