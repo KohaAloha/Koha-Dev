@@ -114,14 +114,18 @@ $(document).ready(function(){
 
 <div id="caro3"  style="width: 600px; height: 270px; background: none repeat scroll 0% 0% white; overflow: hidden; position: relative;"/>
 
-<!-- TMPL_LOOP name="new_bibs_loop" -->
 
-<a  href="/cgi-bin/koha/opac-detail.pl?bib=<!-- TMPL_VAR NAME="biblionumber"-->"/>
-        <img class = "cloudcarousel" src="<!-- TMPL_VAR name="img" -->"
-             title="<!-- TMPL_VAR NAME="title" --><!-- TMPL_IF NAME="author" --> by <!-- TMPL_VAR NAME="author" --><!-- /TMPL_IF -->" />
+
+[% FOREACH new_bibs IN new_bibs_loop %]
+
+
+<a  href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]"/>
+        <img class = "cloudcarousel" src="[% new_bibs.img %]"
+             title="[% new_bibs.title %][% IF ( new_bibs.author  ) %] by [% new_bibs.author %][% END %]" />
 </a>
+[% END %]
 
-<!-- /TMPL_LOOP -->
+
 </div>
 
 

@@ -61,9 +61,17 @@ my $all_koha_news   = &GetNewsToDisplay($news_lang);
 my $koha_news_count = scalar @$all_koha_news;
 my $new_bibs_loop   = GetNewBiblios();
 
+
+use Data::Printer;
+
+p $new_bibs_loop;
+
+
+
 $template->param(
     koha_news       => $all_koha_news,
-    koha_news_count => $koha_news_count
+    koha_news_count => $koha_news_count,
+    new_bibs_loop => $new_bibs_loop
 );
 
 # If GoogleIndicTransliteration system preference is On Set paramter to load Google's javascript in OPAC search screens
