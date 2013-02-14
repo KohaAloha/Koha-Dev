@@ -26,6 +26,7 @@ use C4::Branch;          # GetBranches
 use C4::Members;         # GetMember
 use C4::NewsChannels;    # get_opac_news
 use C4::Acquisition;     # GetRecentAcqui
+use C4::Carousel;     # GetRecentAcqui
 use C4::Languages qw(getTranslatedLanguages accept_language);
 
 my $input = new CGI;
@@ -58,6 +59,7 @@ my ($theme, $news_lang) = C4::Templates::themelanguage(C4::Context->config('opac
 
 my $all_koha_news   = &GetNewsToDisplay($news_lang);
 my $koha_news_count = scalar @$all_koha_news;
+my $new_bibs_loop   = GetNewBiblios();
 
 $template->param(
     koha_news       => $all_koha_news,
