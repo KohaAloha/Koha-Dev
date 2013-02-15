@@ -1,8 +1,6 @@
-[% IF ( opaccredits ) %]
 	<div class="ft">
         [% opaccredits %]
     </div>
-[% END %]
 </div>
 
 [% IF ( opaclanguagesdisplay || OpacKohaUrl ) %]
