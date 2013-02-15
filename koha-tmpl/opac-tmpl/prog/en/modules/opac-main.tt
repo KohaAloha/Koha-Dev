@@ -42,7 +42,9 @@
 
     <link rel="stylesheet" title="Standard" href="styles.css" type="text/css" media="screen" />
 
-    <script language="JavaScript" type="text/javascript" src="/calyx/contentflow/contentflow.js"></script>
+
+<script language="JavaScript" type="text/javascript" src="[% themelang %]/lib/contentflow/contentflow.js"></script>
+
     <script tyle="text/javascript">
         var cf = new ContentFlow('contentFlow', {reflectionColor: "#000000"});
     </script>
