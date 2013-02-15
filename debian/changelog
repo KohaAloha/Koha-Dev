@@ -1,3 +1,9 @@
+koha (3.8.6~git+20130215162415.02fc512c) squeeze-dev; urgency=low
+
+  * Building git snapshot.
+
+ -- root <root@kohaaloha.com>  Fri, 15 Feb 2013 16:24:16 +1300
+
 koha (3.8.5-1) squeeze; urgency=low
 
   * New upstream release (3.08.05)
