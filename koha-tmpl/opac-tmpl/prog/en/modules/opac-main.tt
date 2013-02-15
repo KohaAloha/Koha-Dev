@@ -37,153 +37,50 @@
 
 <div id="opacmainuserblock" class="container">[% OpacMainUserBlock %]</div>
 
-
-
-
-
-
-
-
-
-
 <!-- --------------------------------- -->
 
+    <link rel="stylesheet" title="Standard" href="styles.css" type="text/css" media="screen" />
 
-<script type="text/JavaScript" src="/calyx/cloud-carousel.1.0.5.min.js"></script>
-<script type="text/JavaScript" src="/calyx/jquery.mousewheel.js"></script>
-<script type="text/JavaScript" src="/calyx/raphael.js"></script>
-
-
-
- <style type="text/css">
-#cbox1 {
-    margin:10px 0px; padding:0px;
-    text-align:center;
-    }
-
-#cbox2 {
-    width:610px;
-    //height:510px;
-    margin:0px auto;
-    //text-align:left;
-    //padding:15px;
-    //border:1px dashed #333;
-    //background-color:#eee;
-    }
-
- </style>
+    <script language="JavaScript" type="text/javascript" src="/calyx/contentflow/contentflow.js"></script>
+    <script tyle="text/javascript">
+        var cf = new ContentFlow('contentFlow', {reflectionColor: "#000000"});
+    </script>
 
 
-<script>
-$(document).ready(function(){
+    <!-- ===== FLOW ===== -->
+    <div id="contentFlow" class="ContentFlow">
+        <!-- should be place before flow so that contained images will be loaded first -->
+        <div class="loadIndicator"><div class="indicator"></div></div>
 
-    $("#caro3").CloudCarousel(
-        {
-            xPos: 300,
-            yPos:  20,
-            buttonLeft: $("#left-but"),
-            buttonRight: $("#right-but"),
-            altBox: $("#alt-text"),
-            titleBox: $("#title-text"),
-            reflOpacity: 0.7,
-            reflHeight: 20,
-            autoRotate: 'yes',
-            autoRotateDelay: 7000,
-            bringToFront: 'true',
-            reflGap: 0,
-            speed:0.15,
-            mouseWheel:true,
-            //minScale:.8
-        }
-    );
-
-});
-
-</script>
-
-
-<div align="center">
-
-<h4>Selections from our recently added titles:</h4>
-
-<!-- ---------------------------------- -->
-
-
-<div id = "cbox1">
-<div id = "cbox2">
-
-<div id="caro3"  style="width: 600px; height: 270px; background: none repeat scroll 0% 0% white; overflow: hidden; position: relative;"/>
+        <div class="flow">
 
 
 
 [% FOREACH new_bibs IN new_bibs_loop %]
 
+<div class="item">
+                <img class="content" src="[% new_bibs.img %]" />
+                <div class="caption">pic0: some stripes</div>
+            </div>
 
-<a  href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]"/>
-        <img class = "cloudcarousel" src="[% new_bibs.img %]"
-             title="[% new_bibs.title %][% IF ( new_bibs.author  ) %] by [% new_bibs.author %][% END %]" />
-</a>
+
 [% END %]
 
 
-</div>
 
+        </div>
+        <div class="globalCaption"></div>
+        <div class="scrollbar">
+            <div class="slider"><div class="position"></div></div>
+        </div>
 
-  <!-- Define elements to accept the alt and title text from the images. -->
-        <span id="title-text"></span>
-
-        <!-- Define left and right buttons. -->
-<span>
-<svg id="right-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M24.316,5.318L6.684,15.5l17.632,10.182V5.318L24.316,5.318z"/>
-</svg>
-
-<svg id="left-but" xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="32"><defs/><path fill="#333333" stroke="none" d="M6.684,25.682L24.316,15.5L6.684,5.318V25.682z"/></svg>
-
-
-
-</span>
+    </div>
+<!-- --------------------------------- -->
 
 
 </div>
-</div>
 
 
-
-
-Harvest owns a modern library with a comprehensive collection of over 55,000 volumes and 100 journals/magazines subscriptions, 3 online databases, audio and video library, multimedia computers with Internet access, printers, television/video, photocopying facilities and a comfortable study area
-
-
-
-
-</div>
-<!-- ---------------------------------- -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
 
 	[% IF ( opacuserlogin ) %]
     [% UNLESS ( loggedinusername ) %]
