@@ -88,7 +88,7 @@ sub GetNewBiblios {
         # build string
 
         my $str =
-          "http://covers.openlibrary.org/b/isbn/" . $row->{'isbn'} . "-S.jpg";
+          "http://covers.openlibrary.org/b/isbn/" . $row->{'isbn'} . "-M.jpg";
 
         warn $str;
         my ($URL_in) = $str;
