@@ -73,7 +73,7 @@ sub GetNewBiblios {
     my @results;
 
     #    while ( $i < 5 and $j < 10) {
-    while ( $i < 3 and $j < 5 ) {
+    while ( $i < 10 and $j < 5 ) {
         my $rand_bib = $rands[ int rand($#rands) ];
 
         my $row = GetBiblioData($rand_bib);

@@ -35,7 +35,8 @@
 </div>
 [% END %]
 
-<div id="opacmainuserblock" class="container">[% OpacMainUserBlock %]</div>
+
+<div id="opacmainuserblock" class="container" style= "background-color: black">
 
 <!-- --------------------------------- -->
 
@@ -58,9 +59,9 @@
 
 [% FOREACH new_bibs IN new_bibs_loop %]
 
-<div class="item">
+<div class="item" href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]" >
                 <img class="content" src="[% new_bibs.img %]" />
-                <div class="caption">pic0: some stripes</div>
+                <div class="caption">[% new_bibs.title %][% IF ( new_bibs.author  ) %] by [% new_bibs.author %][% END %]</div>
             </div>
 
 
@@ -70,16 +71,14 @@
 
         </div>
         <div class="globalCaption"></div>
-        <div class="scrollbar">
-            <div class="slider"><div class="position"></div></div>
-        </div>
+        <div class="scrollbar"><div class="slider"><div class="position"></div></div></div>
 
     </div>
 <!-- --------------------------------- -->
 
 
 </div>
-
+</div>
 
 
 	[% IF ( opacuserlogin ) %]
