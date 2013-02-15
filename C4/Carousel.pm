@@ -69,7 +69,6 @@ sub GetNewBiblios {
     }
 
     my ( $i, $j ) = 0;
-    my $i = 0;
     my @results;
 
     #    while ( $i < 5 and $j < 10) {

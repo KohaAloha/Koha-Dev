@@ -36,39 +36,30 @@
 [% END %]
 
 
-<div id="opacmainuserblock" class="container" style= "background-color: black">
 
 <!-- --------------------------------- -->
 
+	[% IF ( new_bibs_loop  ) %]
+
     <link rel="stylesheet" title="Standard" href="styles.css" type="text/css" media="screen" />
-
-
 <script language="JavaScript" type="text/javascript" src="[% themelang %]/lib/contentflow/contentflow.js"></script>
-
     <script tyle="text/javascript">
         var cf = new ContentFlow('contentFlow', {reflectionColor: "#000000"});
     </script>
 
-
+<div style= "background-color: black">
     <!-- ===== FLOW ===== -->
     <div id="contentFlow" class="ContentFlow">
         <!-- should be place before flow so that contained images will be loaded first -->
         <div class="loadIndicator"><div class="indicator"></div></div>
 
         <div class="flow">
-
-
-
 [% FOREACH new_bibs IN new_bibs_loop %]
-
-<div class="item" href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]" >
+            <div class="item" href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]" >
                 <img class="content" src="[% new_bibs.img %]" />
                 <div class="caption">[% new_bibs.title %][% IF ( new_bibs.author  ) %] by [% new_bibs.author %][% END %]</div>
             </div>
-
-
 [% END %]
-
 
 
         </div>
@@ -76,8 +67,13 @@
         <div class="scrollbar"><div class="slider"><div class="position"></div></div></div>
 
     </div>
+
+    </div>
+[% END %]
 <!-- --------------------------------- -->
 
+
+[% IF ( OpacMainUserBlock ) %]<div id="opacmainuserblock" class="container">[% OpacMainUserBlock %]</div>[% END %]
 
 </div>
 </div>
