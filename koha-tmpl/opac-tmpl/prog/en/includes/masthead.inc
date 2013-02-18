@@ -111,7 +111,11 @@
 <div id="moresearches">
 <a href="/cgi-bin/koha/opac-search.pl">Advanced search</a>
 [% IF ( OpacBrowser ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-browser.pl">Browse by hierarchy</a>[% END %]
+
+<!--
 [% IF ( OpacAuthorities ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-authorities-home.pl">Browse by author or subject</a>[% END %]
+-->
+
 [% IF ( opacuserlogin && reviewson && OpacShowRecentComments ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-showreviews.pl">Recent comments</a>[% END %]
 [% IF ( TagsEnabled ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-tags.pl">Tag cloud</a>[% END %]
 [% IF ( OpacCloud ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-tags_subject.pl">Subject cloud</a>[% END %]
@@ -120,6 +124,40 @@
   [% IF ( AnonSuggestions ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-suggestions.pl">Purchase suggestions</a>
   [% ELSIF ( OPACViewOthersSuggestions ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-suggestions.pl">Purchase suggestions</a>
   [% END %]
+
+
+|
+
+<a href="http://www.anztla.org/AriLogin.aspx">
+<img alt="ARI - (Australasian Religion Index (password required – see the Librarian)" src="http://www.calyx.net.au/media/ARI-logo.png">
+</a>
+|
+<a href="http://www.oxfordbiblicalstudies.com">
+<img alt="Oxford Biblical Studies Online" src="http://www.calyx.net.au/media/oxford.png">
+</a>
+|
+<a href="http://search.ebscohost.com/login.aspx?authtype=url">
+<img alt="" src="http://www.calyx.net.au/media/ebsco.png">
+</a>
+
+|
+<a href="http://search.proquest.com/refurl">
+<img   height="25px" alt="Proquest Religion ProQuest Religion" src="http://www.calyx.net.au/media/Proquest-logo.gif">
+</a>
+|
+
+<a href="http://www.anztla.org/AulotsSearch.aspx"">
+<img   height="25px" alt="Proquest Religion ProQuest Religion" src="http://www.calyx.net.au/media/aulots.png">
+</a>
+
+
+
+
+
+
+
+
+
 [% END %]
 </div>
  </div>
