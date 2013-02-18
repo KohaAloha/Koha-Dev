@@ -1,3 +1,38 @@
+<script type="text/javascript"  language="javascript">
+
+$(document).ready(function(){
+
+if ($("#logout").length) {
+
+$("#moresearches").append(" | <a href=\"http://www.anztla.org/AriLogin.aspx\"><img alt=\"ARI - (Australasian Religion Index (password required – see the Librarian)\" src=\"http://www.calyx.net.au/media/ARI-logo.png\"></a>");
+
+$("#moresearches").append(" | <a href=\"http://www.oxfordbiblicalstudies.com\"><img alt=\"Oxford Biblical Studies Online\" src=\"http://www.calyx.net.au/media/oxford.png\"></a>");
+
+$("#moresearches").append(" | <a href=\"http://search.ebscohost.com/login.aspx?authtype=url\"><img alt=\"\" src=\"http://www.calyx.net.au/media/ebsco.png\"></a>");
+
+$("#moresearches").append(" | <a href=\"http://search.proquest.com/refurl\"><img   height=\"25px\" alt=\"Proquest Religion ProQuest Religion\" src=\"http://www.calyx.net.au/media/Proquest-logo.gif\"></a>");
+
+$("#moresearches").append(" | <a href=\"http://www.anztla.org/AulotsSearch.aspx\"\"><img   height=\"25px\" alt=\"Proquest Religion ProQuest Religion\" src=\"http://www.calyx.net.au/media/aulots.png\"></a>");
+
+
+
+
+}});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="header-wrapper"><div id="members">
   [% IF ( opacuserlogin ) %]
 	<ul>
@@ -124,33 +159,6 @@
   [% IF ( AnonSuggestions ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-suggestions.pl">Purchase suggestions</a>
   [% ELSIF ( OPACViewOthersSuggestions ) %]<span class="pipe"> | </span><a href="/cgi-bin/koha/opac-suggestions.pl">Purchase suggestions</a>
   [% END %]
-
-
-|
-
-<a href="http://www.anztla.org/AriLogin.aspx">
-<img alt="ARI - (Australasian Religion Index (password required – see the Librarian)" src="http://www.calyx.net.au/media/ARI-logo.png">
-</a>
-|
-<a href="http://www.oxfordbiblicalstudies.com">
-<img alt="Oxford Biblical Studies Online" src="http://www.calyx.net.au/media/oxford.png">
-</a>
-|
-<a href="http://search.ebscohost.com/login.aspx?authtype=url">
-<img alt="" src="http://www.calyx.net.au/media/ebsco.png">
-</a>
-
-|
-<a href="http://search.proquest.com/refurl">
-<img   height="25px" alt="Proquest Religion ProQuest Religion" src="http://www.calyx.net.au/media/Proquest-logo.gif">
-</a>
-|
-
-<a href="http://www.anztla.org/AulotsSearch.aspx"">
-<img   height="25px" alt="Proquest Religion ProQuest Religion" src="http://www.calyx.net.au/media/aulots.png">
-</a>
-
-
 
 
 
