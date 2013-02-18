@@ -75,7 +75,7 @@
 
 [% IF ( OpacMainUserBlock ) %]<div id="opacmainuserblock" class="container">[% OpacMainUserBlock %]</div>[% END %]
 
-</div>
+
 </div>
 
 
