@@ -75,9 +75,9 @@
 //    border-bottom: 1px solid #EEEEEE;
     border-radius: 6px 6px 6px 6px;
 //    margin: 0.3em;
-    margin: 0px -10px 0px 0px;
+    margin: 3px -8px 3px 0px;
     opacity: 0.75;
-    padding: 3px;
+    padding: 5px;
 
  border: 2px solid #B9D8D9;
     border-radius: 6px 6px 6px 6px;
@@ -111,6 +111,12 @@ ul.biglinks-list li a.icon_general {
     width: 83%;
 }
 
+
+#moresearches a:link {
+    color: black !important;
+}
+
+
 </style>
 
 
@@ -119,63 +125,57 @@ ul.biglinks-list li a.icon_general {
 
 
 <div id="opacnav" class="container">
+<div id="news2" class="newsitem"><h4>Library Details</h4>
+
+<p><b>Dandenong Library</b>
+</br>
+307 Gladstone Road Dandenong North, VIC 3175
+</br>
+
+<b>Tel:</b> 03 8791 5200
+</br>
+
+<b>Librarian:</b> <a href="mailto:kstevens@harvest.edu.au">Kerrie Stevens</a>
 
 
-<div id="news2" class="newsitem"><h4>What's Next?</h4>
-                    <p>Now that you've installed Koha, what's next? Here are some suggestions:
-</p><ul>
-<li><a href="http://koha-community.org/documentation/">Read Koha Documentation</a></li>
-<li><a href="http://wiki.koha-community.org">Read/Write to the Koha Wiki</a></li>
-<li><a href="http://koha-community.org/support/">Read and Contribute to Discussions</a></li>
-<li><a href="http://bugs.koha-community.org">Report Koha Bugs</a></li>
-<li><a href="http://wiki.koha-community.org/wiki/Version_Control_Using_Git">Submit Patches to Koha using Git (Version Control System)</a></li>
-<li><a href="http://koha-community.org/support/">Chat with Koha users and developers</a></li>
+
+<br>
+<br>
+<b>Gold Coast Library</b>
+</br>
+
+2 Mieke Court Burleigh Heads,QLD 4220
+
+</br>
+<b>Tel:</b> 07 5522 4066
+</br>
+
+
+<b>Librarian:</b> <a href="mailto:info.qld@harvest.edu.au">Christine Paynter</a>     
+
+
+
+
+
+
+                </div>
+                </div>
+
+
+<div id="news2" class="newsitem"><h4>Library Tips</h4>
+<ul>
+
+<li><a href="http://www.calyx.net.au/media/HBC-Libraryinfo-2013.doc">Library info 2013</a></li>
+<li><a href="http://www.calyx.net.au/media/HBC-Listsand-Carts.docx">Lists and Carts</a></li>
+<li><a href="http://calyx.net.au/media/HBC-SearchingTips.docx">Searching Tips</a></li>
+<li><a href="http://ww.calyx.net.au/media/HBC-PlacingaHold.docx">Placing a Hold</a></li>
+<li><a href="http: www.calyx.net.au/changingyourpassword.docx">Changing Password</a></li>
+
+
+
 </ul>
 <p></p>
-                    <p class="newsfooter"> Posted on 29/10/2007
-                        
-                            <a href="/cgi-bin/koha/tools/koha-news.pl?op=add_form&amp;id=2">Edit</a>
-                             | <a href="/cgi-bin/koha/tools/koha-news.pl?op=del&amp;ids=2">Delete</a>
-                             | <a href="/cgi-bin/koha/tools/koha-news.pl?op=add_form">New</a>
-                        
-                    </p>
                 </div>
-
-
-
-<div id="opacnav" class="container">
-<div id="news2" class="newsitem"><h4>Library Details</h4>
-Dandenong Library
-<br>
-307 Gladstone Road Dandenong North, VIC 3175
-Tel: 03 8791 5200
-Librarian : Kerrie Stevens kstevens@harvest.edu.au
-<br>
-Gold Coast Library
-2 Mieke Court Burleigh Heads,QLD 4220
-Tel: 07 5522 4066
-Librarian: Christine Paynter info.qld@harvest.edu.au
-
-                </div>
-                </div>
-
-
-
-<div id="opacnav" class="container">
-<div id="news2" class="newsitem"><h4>Library Details</h4>
-<p><b>Dandenong Library</b></p>
-<p>307 Gladstone Road Dandenong North, VIC 3175</p>
-<p>Tel: 03 8791 5200</p>
-<p>Librarian : Kerrie Stevens kstevens@harvest.edu.au</p>
-<br>
-<p><b>Gold Coast Library</b></p>
-<p>2 Mieke Court Burleigh Heads,QLD 4220</p>
-<p>Tel: 07 5522 4066</p>
-<p>Librarian: Christine Paynter info.qld@harvest.edu.au</p>
-
-                </div>
-                </div>
-
 
 
 
