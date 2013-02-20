@@ -65,7 +65,121 @@
 </div>
 </div>
 [% IF ( OpacNav ) %]<div class="yui-b">
+
+
+<style>
+
+
+.newsitem {
+    background-color: #FFFFFF;
+//    border-bottom: 1px solid #EEEEEE;
+    border-radius: 6px 6px 6px 6px;
+//    margin: 0.3em;
+    margin: 0px -10px 0px 0px;
+    opacity: 0.75;
+    padding: 3px;
+
+ border: 2px solid #B9D8D9;
+    border-radius: 6px 6px 6px 6px;
+}
+
+#area-news {
+    border: 1px solid #EEEEEE;
+    border-radius: 6px 6px 6px 6px;
+    margin: 0.2em;
+}
+
+
+ul.biglinks-list li a.icon_general {
+    background-color: #F4F8F9;
+    background-position: 5px 3px;
+    background-repeat: no-repeat;
+    border: 2px solid #B9D8D9;
+    border-radius: 6px 6px 6px 6px;
+    color: #000000;
+    display: block;
+    float: left;
+    font-family: verdana,arial;
+    font-size: large;
+    font-weight: bold;
+    height: 46px;
+    margin: 0 1em 14px 0;
+    max-width: 320px;
+    padding-left: 57px;
+    padding-top: 5px;
+    text-decoration: none;
+    width: 83%;
+}
+
+</style>
+
+
+
+
+
+
 <div id="opacnav" class="container">
+
+
+<div id="news2" class="newsitem"><h4>What's Next?</h4>
+                    <p>Now that you've installed Koha, what's next? Here are some suggestions:
+</p><ul>
+<li><a href="http://koha-community.org/documentation/">Read Koha Documentation</a></li>
+<li><a href="http://wiki.koha-community.org">Read/Write to the Koha Wiki</a></li>
+<li><a href="http://koha-community.org/support/">Read and Contribute to Discussions</a></li>
+<li><a href="http://bugs.koha-community.org">Report Koha Bugs</a></li>
+<li><a href="http://wiki.koha-community.org/wiki/Version_Control_Using_Git">Submit Patches to Koha using Git (Version Control System)</a></li>
+<li><a href="http://koha-community.org/support/">Chat with Koha users and developers</a></li>
+</ul>
+<p></p>
+                    <p class="newsfooter"> Posted on 29/10/2007
+                        
+                            <a href="/cgi-bin/koha/tools/koha-news.pl?op=add_form&amp;id=2">Edit</a>
+                             | <a href="/cgi-bin/koha/tools/koha-news.pl?op=del&amp;ids=2">Delete</a>
+                             | <a href="/cgi-bin/koha/tools/koha-news.pl?op=add_form">New</a>
+                        
+                    </p>
+                </div>
+
+
+
+<div id="opacnav" class="container">
+<div id="news2" class="newsitem"><h4>Library Details</h4>
+Dandenong Library
+<br>
+307 Gladstone Road Dandenong North, VIC 3175
+Tel: 03 8791 5200
+Librarian : Kerrie Stevens kstevens@harvest.edu.au
+<br>
+Gold Coast Library
+2 Mieke Court Burleigh Heads,QLD 4220
+Tel: 07 5522 4066
+Librarian: Christine Paynter info.qld@harvest.edu.au
+
+                </div>
+                </div>
+
+
+
+<div id="opacnav" class="container">
+<div id="news2" class="newsitem"><h4>Library Details</h4>
+<p><b>Dandenong Library</b></p>
+<p>307 Gladstone Road Dandenong North, VIC 3175</p>
+<p>Tel: 03 8791 5200</p>
+<p>Librarian : Kerrie Stevens kstevens@harvest.edu.au</p>
+<br>
+<p><b>Gold Coast Library</b></p>
+<p>2 Mieke Court Burleigh Heads,QLD 4220</p>
+<p>Tel: 07 5522 4066</p>
+<p>Librarian: Christine Paynter info.qld@harvest.edu.au</p>
+
+                </div>
+                </div>
+
+
+
+
+
 [% INCLUDE 'navigation.inc' %]
 </div>
 </div>[% END %]
