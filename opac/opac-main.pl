@@ -52,17 +52,7 @@ my ($theme, $news_lang) = C4::Templates::themelanguage(C4::Context->config('opac
 my $all_koha_news   = &GetNewsToDisplay($news_lang);
 my $koha_news_count = scalar @$all_koha_news;
 
-
-use Data::Printer;
-
-
-
-warn C4::Context->preference('OpacCarousel') ;
-
-
 if (C4::Context->preference('OpacCarousel') ) {
-
-
     our $new_bibs_loop   = GetNewBiblios();
     $template->param(   new_bibs_loop => $new_bibs_loop ) 
 }
