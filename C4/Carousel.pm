@@ -28,7 +28,9 @@ use C4::Koha;
 use C4::Biblio;
 use C4::Dates qw/format_date/;
 
-#use Smart::Comments '###';
+use Data::Printer;
+
+use Smart::Comments '###';
 
 use vars qw($VERSION @ISA @EXPORT);
 
@@ -54,60 +56,106 @@ C4::Carousel
 use LWP::Simple;
 
 sub GetNewBiblios {
+    my $branch = shift();
 
     my $q = qq|
-       SELECT biblio.biblionumber FROM biblioitems
-        JOIN biblio ON (biblio.biblionumber = biblioitems.biblionumber )
-        WHERE isbn IS NOT NULL 
-        ORDER BY datecreated LIMIT 200 |;
+       SELECT biblioitems.isbn, items.biblionumber, items.dateaccessioned, items.homebranch  from items join biblioitems ON  (biblioitems.biblionumber = items.biblionumber ) where biblioitems.isbn is not null   |;
 
+        my @bind;
+         if ($branch ){
+            $q .= qq| and homebranch = ?| ;
+            push @bind, $branch ;
+        };
+
+        $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
+
+
+#   C4::Context->dbh->trace(3 );
     my @recents =
-      @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} } ) };
-    my @rands;
-    foreach my $recent (@recents) {
-        push @rands, $recent->{biblionumber};
-    }
+      @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} }, @bind ) };
 
-    my ( $i, $j ) = 0;
+   C4::Context->dbh->trace(0 );
+
+    my ( $i ) = 0;
+    my ( $bibs ) = 0;
+    my ( $ol_fetches ) = 0;
     my @results;
 
-    #    while ( $i < 5 and $j < 10) {
-    while ( $i < 10 and $j < 5 ) {
-        my $rand_bib = $rands[ int rand($#rands) ];
 
-        my $row = GetBiblioData($rand_bib);
-        my $rec = GetMarcBiblio($rand_bib);
+    while ( $bibs <= 10 )  {
+        $i++;
+        my $rand_recnum=  int rand( scalar @recents);
+        my $rec = $recents[ $rand_recnum ];
 
-        #my  $aws  = [ 'Large', 'Similarities' ];
-        my $aws = ['Large'];
 
-        next unless $row->{'isbn'};
+
+        last if scalar @recents == 0;
+
+#        warn   scalar @recents;
+
+        splice(@recents, $rand_recnum ,1);
+
+        next unless $rec->{'isbn'};
+
+
+        $rec->{'isbn'} =~ s/\|.*$//;
+        $rec->{'isbn'} =~ s/^[ \t]+|[ \t]+$//g;
+
+#        $rec->{'ii'} = $i;
+
+        next unless length ($rec->{'isbn'})  > 8;
+
+
 
         # ---------------------------------
         # build string
 
         my $str =
-          "http://covers.openlibrary.org/b/isbn/" . $row->{'isbn'} . "-M.jpg";
+          "http://covers.openlibrary.org/b/isbn/" . $rec->{'isbn'} . "-M.jpg";
 
-        warn $str;
+#        warn $str;
         my ($URL_in) = $str;
         my $content = head($URL_in);
+
+        $ol_fetches++;
+        warn $ol_fetches;
+
+
+
         next unless ( $content->content_type eq "image/jpeg" );
 
         # ---------------------------------
 
-        $row->{img} = $str;
-### $row
+        $rec->{img} = $str;
 
-        push @results, $row;
+warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
-        my $search_for = $rand_bib;
-        my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
-        splice( @rands, $index, 1 );
-        $i++;
+
+         my $hash_ref = grep {$_->{isbn}  ==  $rec->{'isbn'} } @results ;
+
+        if ($hash_ref ) {
+warn '----------------------------------------------------------';
+            ### $hash_ref
+            next ;
+        }
+
+
+        
+
+
+        push @results, $rec;
+
+p $rec;
+
+#        my $search_for = $rand_bib;
+#        my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
+#        splice( @rands, $index, 1 );
+        $bibs++;
 
         #        my $marc_authors = GetMarcAuthors( $rec, 'MARC21' );
     }
+p  @results;
+
 
     return \@results;
 }

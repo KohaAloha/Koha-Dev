@@ -26,6 +26,12 @@ use C4::Acquisition;     # GetRecentAcqui
 use C4::Carousel;     # GetRecentAcqui
 use C4::Languages qw(getTranslatedLanguages accept_language);
 
+#use Devel::NYTProf;
+use Time::HiRes  qw/gettimeofday tv_interval/;
+
+use Data::Printer;
+
+
 my $input = new CGI;
 my $dbh   = C4::Context->dbh;
 
@@ -38,6 +44,15 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         flagsrequired   => { borrow => 1 },
     }
 );
+
+my $user_branch  = C4::Context->userenv->{'branch'};
+
+
+#my $a = p $template->VARS ;
+#p $a;
+
+#my $vars =  $template->vars;
+#p $vars;
 
 my $casAuthentication = C4::Context->preference('casAuthentication');
 $template->param(
@@ -53,7 +68,18 @@ my $all_koha_news   = &GetNewsToDisplay($news_lang);
 my $koha_news_count = scalar @$all_koha_news;
 
 if (C4::Context->preference('OpacCarousel') ) {
-    our $new_bibs_loop   = GetNewBiblios();
+
+
+#DB::enable_profile();
+my $t0 = [gettimeofday];
+    our $new_bibs_loop   = GetNewBiblios($user_branch );
+#DB::finish_profile();
+my $t1 = [gettimeofday];
+
+my $elapsed = tv_interval ( $t0, $t1 );
+
+warn $elapsed;
+
     $template->param(   new_bibs_loop => $new_bibs_loop ) 
 }
 
