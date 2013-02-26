@@ -26,6 +26,12 @@ use C4::Acquisition;     # GetRecentAcqui
 use C4::Carousel;     # GetRecentAcqui
 use C4::Languages qw(getTranslatedLanguages accept_language);
 
+#use Devel::NYTProf;
+use Time::HiRes  qw/gettimeofday tv_interval/;
+
+
+
+
 my $input = new CGI;
 my $dbh   = C4::Context->dbh;
 
@@ -53,7 +59,18 @@ my $all_koha_news   = &GetNewsToDisplay($news_lang);
 my $koha_news_count = scalar @$all_koha_news;
 
 if (C4::Context->preference('OpacCarousel') ) {
+
+
+#DB::enable_profile();
+my $t0 = [gettimeofday];
     our $new_bibs_loop   = GetNewBiblios();
+#DB::finish_profile();
+my $t1 = [gettimeofday];
+
+my $elapsed = tv_interval ( $t0, $t1 );
+
+warn $elapsed;
+
     $template->param(   new_bibs_loop => $new_bibs_loop ) 
 }
 

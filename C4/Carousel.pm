@@ -61,6 +61,11 @@ sub GetNewBiblios {
         WHERE isbn IS NOT NULL 
         ORDER BY datecreated LIMIT 200 |;
 
+    my $q = qq|
+       SELECT biblioitems.isbn, items.biblionumber  from items join biblioitems ON  (biblioitems.biblionumber = items.biblionumber ) where biblioitems.isbn is not null  ORDER BY dateaccessioned  DESC LIMIT 100 |;
+
+
+#   C4::Context->dbh->trace(3 );
     my @recents =
       @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} } ) };
     my @rands;
@@ -68,18 +73,22 @@ sub GetNewBiblios {
         push @rands, $recent->{biblionumber};
     }
 
-    my ( $i, $j ) = 0;
+   C4::Context->dbh->trace(0 );
+
+    my ( $i ) = 0;
+    my ( $bibs ) = 0;
     my @results;
 
-    #    while ( $i < 5 and $j < 10) {
-    while ( $i < 10 and $j < 5 ) {
+    while ( $bibs < 10 and  $i < scalar @recents  ) {
+        $i++;
         my $rand_bib = $rands[ int rand($#rands) ];
 
         my $row = GetBiblioData($rand_bib);
-        my $rec = GetMarcBiblio($rand_bib);
+#        my $rec = GetMarcBiblio($rand_bib);
 
-        #my  $aws  = [ 'Large', 'Similarities' ];
-        my $aws = ['Large'];
+
+        warn  $row->{'isbn'};
+
 
         next unless $row->{'isbn'};
 
@@ -104,7 +113,7 @@ sub GetNewBiblios {
         my $search_for = $rand_bib;
         my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
         splice( @rands, $index, 1 );
-        $i++;
+        $bibs++;
 
         #        my $marc_authors = GetMarcAuthors( $rec, 'MARC21' );
     }
