@@ -30,7 +30,7 @@ use C4::Dates qw/format_date/;
 
 use Data::Printer;
 
-#use Smart::Comments '###';
+use Smart::Comments '###';
 
 use vars qw($VERSION @ISA @EXPORT);
 
@@ -59,7 +59,7 @@ sub GetNewBiblios {
     my $branch = shift();
 
     my $q = qq|
-       SELECT biblioitems.isbn, items.biblionumber  from items join biblioitems ON  (biblioitems.biblionumber = items.biblionumber ) where biblioitems.isbn is not null   |;
+       SELECT biblioitems.isbn, items.biblionumber, items.dateaccessioned, items.homebranch  from items join biblioitems ON  (biblioitems.biblionumber = items.biblionumber ) where biblioitems.isbn is not null   |;
 
         my @bind;
          if ($branch ){
@@ -67,7 +67,7 @@ sub GetNewBiblios {
             push @bind, $branch ;
         };
 
-        $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 100 |;
+        $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
 
 
 #   C4::Context->dbh->trace(3 );
@@ -78,29 +78,34 @@ sub GetNewBiblios {
 
     my ( $i ) = 0;
     my ( $bibs ) = 0;
+    my ( $ol_fetches ) = 0;
     my @results;
 
 
-    while ( 1 )  {
+    while ( $bibs <= 10 )  {
         $i++;
-        my $rec = $recents[ int rand( scalar @recents) ];
-p $rec;
+        my $rand_recnum=  int rand( scalar @recents);
+        my $rec = $recents[ $rand_recnum ];
 
 
 
-#exit;
-#p $recents[$rand_bib];
+        last if scalar @recents == 0;
 
+#        warn   scalar @recents;
 
-
-#        my $row = GetBiblioData($rand_bib);
-#        my $rec = GetMarcBiblio($rand_bib);
-
-
-#        warn  $row->{'isbn'};
-
+        splice(@recents, $rand_recnum ,1);
 
         next unless $rec->{'isbn'};
+
+
+        $rec->{'isbn'} =~ s/\|.*$//;
+        $rec->{'isbn'} =~ s/^[ \t]+|[ \t]+$//g;
+
+#        $rec->{'ii'} = $i;
+
+        next unless length ($rec->{'isbn'})  > 8;
+
+
 
         # ---------------------------------
         # build string
@@ -111,14 +116,36 @@ p $rec;
 #        warn $str;
         my ($URL_in) = $str;
         my $content = head($URL_in);
+
+        $ol_fetches++;
+        warn $ol_fetches;
+
+
+
         next unless ( $content->content_type eq "image/jpeg" );
 
         # ---------------------------------
 
         $rec->{img} = $str;
-### $row
+
+warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
+
+
+         my $hash_ref = grep {$_->{isbn}  ==  $rec->{'isbn'} } @results ;
+
+        if ($hash_ref ) {
+warn '----------------------------------------------------------';
+            ### $hash_ref
+            next ;
+        }
+
+
+        
+
 
         push @results, $rec;
+
+p $rec;
 
 #        my $search_for = $rand_bib;
 #        my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
@@ -127,6 +154,8 @@ p $rec;
 
         #        my $marc_authors = GetMarcAuthors( $rec, 'MARC21' );
     }
+p  @results;
+
 
     return \@results;
 }
