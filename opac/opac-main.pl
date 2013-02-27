@@ -29,7 +29,7 @@ use C4::Languages qw(getTranslatedLanguages accept_language);
 #use Devel::NYTProf;
 use Time::HiRes  qw/gettimeofday tv_interval/;
 
-
+use Data::Printer;
 
 
 my $input = new CGI;
@@ -44,6 +44,15 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         flagsrequired   => { borrow => 1 },
     }
 );
+
+my $user_branch  = C4::Context->userenv->{'branch'};
+
+
+#my $a = p $template->VARS ;
+#p $a;
+
+#my $vars =  $template->vars;
+#p $vars;
 
 my $casAuthentication = C4::Context->preference('casAuthentication');
 $template->param(
@@ -63,7 +72,7 @@ if (C4::Context->preference('OpacCarousel') ) {
 
 #DB::enable_profile();
 my $t0 = [gettimeofday];
-    our $new_bibs_loop   = GetNewBiblios();
+    our $new_bibs_loop   = GetNewBiblios($user_branch );
 #DB::finish_profile();
 my $t1 = [gettimeofday];
 
