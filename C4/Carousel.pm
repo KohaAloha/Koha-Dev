@@ -53,7 +53,7 @@ C4::Carousel
 
 =cut
 
-use LWP::Simple;
+use Time::HiRes qw/gettimeofday tv_interval/; 
 
 sub GetNewBiblios {
     my $branch = shift();
@@ -61,51 +61,52 @@ sub GetNewBiblios {
     my $q = qq|
        SELECT biblioitems.isbn, items.biblionumber, items.dateaccessioned, items.homebranch  from items join biblioitems ON  (biblioitems.biblionumber = items.biblionumber ) where biblioitems.isbn is not null   |;
 
-        my @bind;
-         if ($branch ){
-            $q .= qq| and homebranch = ?| ;
-            push @bind, $branch ;
-        };
+    my @bind;
+    if ($branch) {
+        $q .= qq| and homebranch = ?|;
+        push @bind, $branch;
+    }
 
-        $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
+    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
 
-
-#   C4::Context->dbh->trace(3 );
+    #   C4::Context->dbh->trace(3 );
     my @recents =
       @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} }, @bind ) };
 
-   C4::Context->dbh->trace(0 );
+    C4::Context->dbh->trace(0);
 
-    my ( $i ) = 0;
-    my ( $bibs ) = 0;
-    my ( $ol_fetches ) = 0;
+    my ($i)          = 0;
+    my ($bibs)       = 0;
+    my ($ol_fetches) = 0;
     my @results;
 
+    use LWP::Simple;
+    use LWP::UserAgent;
+    my $ua = LWP::UserAgent->new;
+    $ua->env_proxy;    # initialize from environment variables
+    $ua->proxy( http => 'http://miso:3128' );
 
-    while ( $bibs <= 10 )  {
+    while ( $bibs <= 10 ) {
         $i++;
-        my $rand_recnum=  int rand( scalar @recents);
-        my $rec = $recents[ $rand_recnum ];
-
-
+        my $rand_recnum = int rand( scalar @recents );
+        my $rec         = $recents[$rand_recnum];
 
         last if scalar @recents == 0;
 
-#        warn   scalar @recents;
+        #        last if $i > 10 ;
 
-        splice(@recents, $rand_recnum ,1);
+        #        warn   scalar @recents;
+
+        splice( @recents, $rand_recnum, 1 );
 
         next unless $rec->{'isbn'};
-
 
         $rec->{'isbn'} =~ s/\|.*$//;
         $rec->{'isbn'} =~ s/^[ \t]+|[ \t]+$//g;
 
-#        $rec->{'ii'} = $i;
+        #        $rec->{'ii'} = $i;
 
-        next unless length ($rec->{'isbn'})  > 8;
-
-
+        next unless length( $rec->{'isbn'} ) > 8;
 
         # ---------------------------------
         # build string
@@ -113,49 +114,59 @@ sub GetNewBiblios {
         my $str =
           "http://covers.openlibrary.org/b/isbn/" . $rec->{'isbn'} . "-M.jpg";
 
-#        warn $str;
-        my ($URL_in) = $str;
-        my $content = head($URL_in);
+  #        my $str = 'http://covers.openlibrary.org/b/isbn/9780687063161-M.jpg';
+
+        #        warn $str;
+
+        my $req = HTTP::Request->new( 'GET', $str );
+
+        #
+        my $res = $ua->request($req);
+
+        # ## $res
+
+        my $headers  = $res->headers;
+        next unless $headers->{'x-cache'} =~ /^HIT/;
+
+
+
+        my $content = $res->content;
+
 
         $ol_fetches++;
         warn $ol_fetches;
 
-
-
-        next unless ( $content->content_type eq "image/jpeg" );
+        next unless $content;
 
         # ---------------------------------
 
         $rec->{img} = $str;
 
-warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
+        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
+        my $hash_ref = grep { $_->{isbn} == $rec->{'isbn'} } @results;
 
-         my $hash_ref = grep {$_->{isbn}  ==  $rec->{'isbn'} } @results ;
-
-        if ($hash_ref ) {
-warn '----------------------------------------------------------';
+        if ($hash_ref) {
+            warn '----------------------------------------------------------';
             ### $hash_ref
-            next ;
+            next;
         }
-
-
-        
-
 
         push @results, $rec;
 
-p $rec;
+        #p $rec;
 
-#        my $search_for = $rand_bib;
-#        my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
-#        splice( @rands, $index, 1 );
+        #last;
+
+        #        my $search_for = $rand_bib;
+        #        my ($index) = grep { $rands[$_] eq $search_for } 0 .. $#rands;
+        #        splice( @rands, $index, 1 );
         $bibs++;
 
         #        my $marc_authors = GetMarcAuthors( $rec, 'MARC21' );
     }
-p  @results;
 
+    #p  @results;
 
     return \@results;
 }
