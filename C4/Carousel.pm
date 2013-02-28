@@ -89,9 +89,8 @@ sub GetNewBiblios {
     my $total = 0;  
 
         my $tt0 = [gettimeofday];
-    while ( $bibs <= 10 ) {
+    while ( $bibs < 10 ) {
         $i++;
-        warn "$i, $ol_fetches, $bibs";
 
 
 
@@ -101,7 +100,7 @@ sub GetNewBiblios {
 
         last if scalar @recents == 0;
 
-              last if $i > 50 ;
+              last if $i > 100 ; # just for safety
 
         #        warn   scalar @recents;
 
@@ -120,6 +119,7 @@ sub GetNewBiblios {
         # build string
 
 
+    #    warn "$i, $ol_fetches, $bibs";
         my $t0 = [gettimeofday];
 
         my $str =
@@ -132,18 +132,20 @@ sub GetNewBiblios {
 
 
 
+warn         $headers->{'x-cache'} ;
 
-        next unless $headers->{'x-cache'} =~ /^HIT/;
+        $ol_fetches++;
+
+        next unless  $headers->{'x-cache'} =~ /^HIT/ ;
 
         my $content = $res->content;
 
         my $t1 = [gettimeofday];
 
         my $elapsed = tv_interval( $t0, $t1 );
-        warn $elapsed;
+  #      warn $elapsed;
         $total += $elapsed;
 
-        $ol_fetches++;
 
       #  next unless $content;
 
@@ -167,7 +169,10 @@ sub GetNewBiblios {
     }
 
         my $tt1 = [gettimeofday];
-        warn  tv_interval( $tt0, $tt1 );
+#        warn  tv_interval( $tt0, $tt1 );
+
+#    p @results;
+
     return \@results;
 }
 

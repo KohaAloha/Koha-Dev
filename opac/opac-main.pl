@@ -45,8 +45,11 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     }
 );
 
-my $user_branch  = C4::Context->userenv->{'branch'};
 
+
+my $user_branch ;
+
+$user_branch  = C4::Context->userenv->{'branch'} if C4::Context->userenv->{'branch'};
 
 #my $a = p $template->VARS ;
 #p $a;
