@@ -30,7 +30,7 @@ use C4::Dates qw/format_date/;
 
 use Data::Printer;
 
-use Smart::Comments '###';
+#use Smart::Comments '###';
 
 use vars qw($VERSION @ISA @EXPORT);
 
@@ -67,7 +67,7 @@ sub GetNewBiblios {
         push @bind, $branch;
     }
 
-    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
+    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 200 |;
 
     #   C4::Context->dbh->trace(3 );
     my @recents =
@@ -101,7 +101,7 @@ sub GetNewBiblios {
 
         last if scalar @recents == 0;
 
-              last if $i > 100 ; # just for safety
+              last if $i > 200 ; # just for safety
 
         #        warn   scalar @recents;
 
@@ -150,8 +150,14 @@ warn         $headers->{'x-cache'} ;
       #  next unless $content;
 
         # ---------------------------------
+         my $row = GetBiblioData(  $rec->{biblionumber})  ;  
+
 
         $rec->{img} = $str;
+        $rec->{title} = $row->{title} ;
+        $rec->{author} = $row->{author} ;
+
+
 
 #        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
