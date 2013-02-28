@@ -92,6 +92,7 @@ sub GetNewBiblios {
     while ( $bibs < 10 ) {
         $i++;
 
+        warn "$i, $ol_fetches, $bibs";
 
 
 
@@ -119,7 +120,6 @@ sub GetNewBiblios {
         # build string
 
 
-    #    warn "$i, $ol_fetches, $bibs";
         my $t0 = [gettimeofday];
 
         my $str =
