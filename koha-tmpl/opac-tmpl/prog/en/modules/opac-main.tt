@@ -58,7 +58,7 @@
         <div class="flow">
 [% FOREACH new_bibs IN new_bibs_loop %]
             <div class="item" href="/cgi-bin/koha/opac-detail.pl?bib=[% new_bibs.biblionumber %]" >
-                <img class="content" src="[% new_bibs.img %]" />
+                <img class="content" src="[% new_bibs.image_url %]" />
                 <div class="caption">[% new_bibs.title %][% IF ( new_bibs.author  ) %] by [% new_bibs.author %][% END %]</div>
             </div>
 [% END %]

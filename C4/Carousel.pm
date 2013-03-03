@@ -82,14 +82,22 @@ sub GetNewBiblios {
 
     use LWP::Simple;
     use LWP::UserAgent;
+
+use Cache::Memcached;
+
+ my $cache = new Cache::Memcached {
+            'servers' => [ "127.0.0.1:11211" ]
+        };
+
+
     my $ua = LWP::UserAgent->new;
     $ua->env_proxy;    # initialize from environment variables
     $ua->proxy( http => 'http://miso:3128' );
 
     my $total = 0;  
 
-        my $tt0 = [gettimeofday];
-    while ( $bibs < 10 ) {
+    my $tt0 = [gettimeofday];
+    while ( $bibs < 5 ) {
         $i++;
 
         warn "$i, $ol_fetches, $bibs";
@@ -116,58 +124,67 @@ sub GetNewBiblios {
 
         next unless length( $rec->{'isbn'} ) > 8;
 
+
+# -------------
+
+# check store
+
+       
+        my $image_url  = $cache->get(  $rec->{'isbn'} );
+
+        my ($t0, $t1, $str, $req, $res, $elapsed, $headers);
+        unless ($image_url) {
+            $t0 = [gettimeofday];
+
+             $str =
+                "http://covers.openlibrary.org/b/isbn/"
+              . $rec->{'isbn'}
+              . "-M.jpg";
+
+             $req     = HTTP::Request->new( 'GET', $str );
+             $res     = $ua->request($req);
+             $headers = $res->headers;
+
+            warn $headers->{'x-cache'};
+
+            $ol_fetches++;
+
+            unless ($headers->{'x-cache'} =~ /^HIT/ ){
+
+                 $cache->set( $rec->{'isbn'} , 0);
+                    next ;
+            }
+
+#            my $content = $res->content;
+
+             $t1 = [gettimeofday];
+
+             $elapsed = tv_interval( $t0, $t1 );
+
+            #      warn $elapsed;
+            $total += $elapsed;
+
+            #  next unless $content;
+        }
         # ---------------------------------
-        # build string
-
-
-        my $t0 = [gettimeofday];
-
-        my $str =
-          "http://covers.openlibrary.org/b/isbn/" . $rec->{'isbn'} . "-M.jpg";
-
-        my $req     = HTTP::Request->new( 'GET', $str );
-        my $res     = $ua->request($req);
-        my $headers = $res->headers;
-
-
-
-
-warn         $headers->{'x-cache'} ;
-
-        $ol_fetches++;
-
-        next unless  $headers->{'x-cache'} =~ /^HIT/ ;
-
-        my $content = $res->content;
-
-        my $t1 = [gettimeofday];
-
-        my $elapsed = tv_interval( $t0, $t1 );
-  #      warn $elapsed;
-        $total += $elapsed;
-
-
-      #  next unless $content;
-
-        # ---------------------------------
-         my $row = GetBiblioData(  $rec->{biblionumber})  ;  
-
-
-        $rec->{img} = $str;
-        $rec->{title} = $row->{title} ;
-        $rec->{author} = $row->{author} ;
-
-
 
 #        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
         my $hash_ref = grep { $_->{isbn} eq  $rec->{'isbn'} } @results;
-
         if ($hash_ref) {
-            warn '----------------------------------------------------------';
-            ### $hash_ref
             next;
         }
+
+
+         my $row = GetBiblioData(  $rec->{biblionumber})  ;  
+
+
+        $rec->{image_url} =  $image_url ? $image_url : $str;
+        $rec->{title} = $row->{title} ;
+        $rec->{author} = $row->{author} ;
+
+
+                 $cache->set( $rec->{'isbn'} ,  $rec->{image_url} );
 
         push @results, $rec;
 
