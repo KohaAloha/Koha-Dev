@@ -29,6 +29,7 @@ use C4::Biblio;
 use C4::Dates qw/format_date/;
 
 use Data::Printer;
+use Data::Dumper;
 
 #use Smart::Comments '###';
 
@@ -67,10 +68,10 @@ sub GetNewBiblios {
         push @bind, $branch;
     }
 
-    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 200 |;
+    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
 
     #   C4::Context->dbh->trace(3 );
-    my @recents =
+    my @recents_tmp =
       @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} }, @bind ) };
 
     C4::Context->dbh->trace(0);
@@ -79,41 +80,27 @@ sub GetNewBiblios {
     my ($bibs)       = 0;
     my ($ol_fetches) = 0;
     my @results;
+    my @recents;
 
     use LWP::Simple;
     use LWP::UserAgent;
 
-use Cache::Memcached;
+    use Cache::Memcached;
 
- my $cache = new Cache::Memcached {
-            'servers' => [ "127.0.0.1:11211" ]
-        };
-
+    my $cache = new Cache::Memcached { 'servers' => ["127.0.0.1:11211"] };
 
     my $ua = LWP::UserAgent->new;
-    $ua->env_proxy;    # initialize from environment variables
-    $ua->proxy( http => 'http://miso:3128' );
 
-    my $total = 0;  
+    #    $ua->env_proxy;    # initialize from environment variables
+    #    $ua->proxy( http => 'http://miso:3128' );
+
+    my $total = 0;
 
     my $tt0 = [gettimeofday];
-    while ( $bibs < 5 ) {
-        $i++;
+    warn '-----------------------------------------------';
 
-        warn "$i, $ol_fetches, $bibs";
-
-
-
-        my $rand_recnum = int rand( scalar @recents );
-        my $rec         = $recents[$rand_recnum];
-
-        last if scalar @recents == 0;
-
-              last if $i > 200 ; # just for safety
-
-        #        warn   scalar @recents;
-
-        splice( @recents, $rand_recnum, 1 );
+    # a quick sort, to remove bad rows - and give us 30 good rows
+    foreach my $rec (@recents_tmp) {
 
         next unless $rec->{'isbn'};
 
@@ -124,78 +111,110 @@ use Cache::Memcached;
 
         next unless length( $rec->{'isbn'} ) > 8;
 
-
-# -------------
-
-# check store
-
-       
-        my $image_url  = $cache->get(  $rec->{'isbn'} );
-
-        my ($t0, $t1, $str, $req, $res, $elapsed, $headers);
-        unless ($image_url) {
-            $t0 = [gettimeofday];
-
-             $str =
-                "http://covers.openlibrary.org/b/isbn/"
-              . $rec->{'isbn'}
-              . "-M.jpg";
-
-             $req     = HTTP::Request->new( 'GET', $str );
-             $res     = $ua->request($req);
-             $headers = $res->headers;
-
-            warn $headers->{'x-cache'};
-
-            $ol_fetches++;
-
-            unless ($headers->{'x-cache'} =~ /^HIT/ ){
-
-                 $cache->set( $rec->{'isbn'} , 0);
-                    next ;
-            }
-
-#            my $content = $res->content;
-
-             $t1 = [gettimeofday];
-
-             $elapsed = tv_interval( $t0, $t1 );
-
-            #      warn $elapsed;
-            $total += $elapsed;
-
-            #  next unless $content;
-        }
-        # ---------------------------------
-
-#        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
-
-        my $hash_ref = grep { $_->{isbn} eq  $rec->{'isbn'} } @results;
+        my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @recents;
         if ($hash_ref) {
             next;
         }
 
+        push @recents, $rec;
 
-         my $row = GetBiblioData(  $rec->{biblionumber})  ;  
-
-
-        $rec->{image_url} =  $image_url ? $image_url : $str;
-        $rec->{title} = $row->{title} ;
-        $rec->{author} = $row->{author} ;
+        last if scalar @recents > 30;
+    }
 
 
-                 $cache->set( $rec->{'isbn'} ,  $rec->{image_url} );
+    while ( $bibs < 10 ) {
+        $i++;
+
+        warn "$i, $ol_fetches, $bibs";
+
+        my $rand_recnum = int rand( scalar @recents );
+        my $rec         = $recents[$rand_recnum];
+
+        last if scalar @recents == 0;
+        last if $i > 200;               # just for safety
+
+        splice( @recents, $rand_recnum, 1 );
+
+        # check store
+        my $image_url = $cache->get( $rec->{'isbn'} );
+=c
+        if ( $image_url eq 'xxx' ) {
+            warn 'MISS  from CACHE!!!!';
+            next;
+        }
+        else {
+            warn 'HIT from CACHE!!!!';
+        }
+=cut
+
+        next if  $image_url eq 'xxx' ;
+
+
+
+
+        my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
+
+        $t1 = [gettimeofday];
+        $elapsed = tv_interval( $t0, $t1 );
+
+        #      warn $elapsed;
+        $total += $elapsed;
+
+        unless ($image_url) {
+            $t0 = [gettimeofday];
+
+            $image_url =
+                "http://covers.openlibrary.org/b/isbn/"
+              . $rec->{'isbn'}
+              . "-M.jpg";
+
+            $req     = HTTP::Request->new( 'GET', $image_url );
+            $res     = $ua->request($req);
+            $headers = $res->headers;
+
+            #            warn $headers->{'x-cache'};
+            #            p $headers;
+
+            $ol_fetches++;
+
+            if (    $headers->{'content-type'}
+                and $headers->{'content-type'} =~ /jpeg/ )
+            {
+#                warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
+
+                $cache->set( $rec->{'isbn'}, $image_url );
+            }
+            else {
+
+#                warn "add miss to cache -  $rec->{'isbn'}";
+
+                $cache->set( $rec->{'isbn'}, 'xxx' );
+                next;
+
+            }
+
+        }
+
+        my $row = GetBiblioData( $rec->{biblionumber} );
+
+        $rec->{image_url} = $image_url ? $image_url : $str;
+        $rec->{title}     = $row->{title};
+        $rec->{author}    = $row->{author};
+
+        #        $cache->set( $rec->{'isbn'}, $rec->{image_url} );
 
         push @results, $rec;
 
         $bibs++;
     }
 
-        my $tt1 = [gettimeofday];
-#        warn  tv_interval( $tt0, $tt1 );
+    my $tt1 = [gettimeofday];
 
-#    p @results;
+    #        warn  tv_interval( $tt0, $tt1 );
 
+#        p @results;
+
+    #    $cache->set( 999 ,  'zzz' );
     return \@results;
 }
 

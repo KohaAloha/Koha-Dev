@@ -49,11 +49,10 @@
         var cf = new ContentFlow('contentFlow', {reflectionColor: "#000000"});
     </script>
 
-<div style= "background-color: black">
+<div style= "background-color: white">
     <!-- ===== FLOW ===== -->
     <div id="contentFlow" class="ContentFlow">
         <!-- should be place before flow so that contained images will be loaded first -->
-        <div class="loadIndicator"><div class="indicator"></div></div>
 
         <div class="flow">
 [% FOREACH new_bibs IN new_bibs_loop %]
