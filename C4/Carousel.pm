@@ -83,33 +83,28 @@ sub GetNewBiblios {
     use LWP::Simple;
     use LWP::UserAgent;
 
-use Cache::Memcached;
+    use Cache::Memcached;
 
- my $cache = new Cache::Memcached {
-            'servers' => [ "127.0.0.1:11211" ]
-        };
-
+    my $cache = new Cache::Memcached { 'servers' => ["127.0.0.1:11211"] };
 
     my $ua = LWP::UserAgent->new;
     $ua->env_proxy;    # initialize from environment variables
     $ua->proxy( http => 'http://miso:3128' );
 
-    my $total = 0;  
+    my $total = 0;
 
     my $tt0 = [gettimeofday];
-    while ( $bibs < 5 ) {
+    while ( $bibs < 3 ) {
         $i++;
 
         warn "$i, $ol_fetches, $bibs";
-
-
 
         my $rand_recnum = int rand( scalar @recents );
         my $rec         = $recents[$rand_recnum];
 
         last if scalar @recents == 0;
 
-              last if $i > 200 ; # just for safety
+        last if $i > 200;    # just for safety
 
         #        warn   scalar @recents;
 
@@ -125,77 +120,96 @@ use Cache::Memcached;
         next unless length( $rec->{'isbn'} ) > 8;
 
 
-# -------------
+    #    my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
+    #    if ($hash_ref) {
+    #        next;
+    #    }
 
-# check store
 
-       
-        my $image_url  = $cache->get(  $rec->{'isbn'} );
 
-        my ($t0, $t1, $str, $req, $res, $elapsed, $headers);
+
+        # -------------
+
+        # check store
+
+        my $image_url = $cache->get( $rec->{'isbn'} );
+
+        my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
+
+        #            my $content = $res->content;
+
+        $t1 = [gettimeofday];
+        $elapsed = tv_interval( $t0, $t1 );
+
+        #      warn $elapsed;
+        $total += $elapsed;
+
         unless ($image_url) {
             $t0 = [gettimeofday];
 
-             $str =
+            $image_url =
                 "http://covers.openlibrary.org/b/isbn/"
               . $rec->{'isbn'}
               . "-M.jpg";
 
-             $req     = HTTP::Request->new( 'GET', $str );
-             $res     = $ua->request($req);
-             $headers = $res->headers;
+            $req     = HTTP::Request->new( 'GET', $image_url );
+            $res     = $ua->request($req);
+            $headers = $res->headers;
 
             warn $headers->{'x-cache'};
 
             $ol_fetches++;
 
-            unless ($headers->{'x-cache'} =~ /^HIT/ ){
-
-                 $cache->set( $rec->{'isbn'} , 0);
-                    next ;
-            }
-
-#            my $content = $res->content;
-
-             $t1 = [gettimeofday];
-
-             $elapsed = tv_interval( $t0, $t1 );
-
-            #      warn $elapsed;
-            $total += $elapsed;
-
-            #  next unless $content;
         }
+
         # ---------------------------------
 
-#        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
+        #        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
-        my $hash_ref = grep { $_->{isbn} eq  $rec->{'isbn'} } @results;
-        if ($hash_ref) {
+
+        # ---------------------------------
+        unless ( $headers->{'x-cache'} =~ /^HIT/ ) {
+
+            warn "add miss to cache -  $rec->{'isbn'}";
+
+            $cache->set( $rec->{'isbn'}, 0 );
             next;
         }
+        else {
+
+            warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
+
+            $cache->set( $rec->{'isbn'}, $image_url  );
+
+        }
+
+        # ---------------------------------
 
 
-         my $row = GetBiblioData(  $rec->{biblionumber})  ;  
 
 
-        $rec->{image_url} =  $image_url ? $image_url : $str;
-        $rec->{title} = $row->{title} ;
-        $rec->{author} = $row->{author} ;
 
 
-                 $cache->set( $rec->{'isbn'} ,  $rec->{image_url} );
+        my $row = GetBiblioData( $rec->{biblionumber} );
+
+        $rec->{image_url} = $image_url ? $image_url : $str;
+        $rec->{title}     = $row->{title};
+        $rec->{author}    = $row->{author};
+
+#        $cache->set( $rec->{'isbn'}, $rec->{image_url} );
 
         push @results, $rec;
 
         $bibs++;
     }
 
-        my $tt1 = [gettimeofday];
-#        warn  tv_interval( $tt0, $tt1 );
+    my $tt1 = [gettimeofday];
 
-#    p @results;
+    #        warn  tv_interval( $tt0, $tt1 );
 
+    #    p @results;
+
+    #    $cache->set( 999 ,  'zzz' );
     return \@results;
 }
 
