@@ -104,13 +104,12 @@ sub GetNewBiblios {
         my $rand_recnum = int rand( scalar @recents );
         my $rec         = $recents[$rand_recnum];
 
-#        $rec->{'isbn'} = 9780830827718;
+        #        $rec->{'isbn'} = 9780830827718;
 
         #        $rec->{'isbn'} = 9780664252656;
         #        $rec->{'isbn'} =  9999999999996;
 
-
-#        $rec->{'isbn'} =  9780853644279;
+        #        $rec->{'isbn'} =  9780853644279;
 
         last if scalar @recents == 0;
 
@@ -129,10 +128,10 @@ sub GetNewBiblios {
 
         next unless length( $rec->{'isbn'} ) > 8;
 
-            my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
-            if ($hash_ref) {
-                next;
-            }
+        my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
+        if ($hash_ref) {
+            next;
+        }
 
         # -------------
 
@@ -140,18 +139,18 @@ sub GetNewBiblios {
 
         my $image_url = $cache->get( $rec->{'isbn'} );
 
- if ($image_url eq 'xxx' ) {
+        if ( $image_url eq 'xxx' ) {
 
-        warn 'MISS  from CACHE!!!!' ;
-        next;
-} else {
+            warn 'MISS  from CACHE!!!!';
+            next;
+        }
+        else {
 
-        warn 'HIT from CACHE!!!!';
-}
+            warn 'HIT from CACHE!!!!';
+        }
 
-
-#        warn $cache->get( $rec->{'isbn'} );
-#        warn $image_url;
+        #        warn $cache->get( $rec->{'isbn'} );
+        #        warn $image_url;
 
         my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
 
@@ -175,13 +174,14 @@ sub GetNewBiblios {
             $res     = $ua->request($req);
             $headers = $res->headers;
 
-#            warn $headers->{'x-cache'};
-#            p $headers;
+            #            warn $headers->{'x-cache'};
+            #            p $headers;
 
             $ol_fetches++;
 
-            if (  $headers->{'content-type'} and 
-                $headers->{'content-type'} =~ /jpeg/ ) {
+            if (    $headers->{'content-type'}
+                and $headers->{'content-type'} =~ /jpeg/ )
+            {
                 warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
 
                 $cache->set( $rec->{'isbn'}, $image_url );
