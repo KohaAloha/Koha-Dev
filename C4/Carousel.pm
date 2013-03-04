@@ -96,7 +96,7 @@ sub GetNewBiblios {
 
     my $tt0 = [gettimeofday];
     warn '-----------------------------------------------';
-    while ( $bibs < 10 ) {
+    while ( $bibs < 20 ) {
         $i++;
 
         warn "$i, $ol_fetches, $bibs";
@@ -104,13 +104,7 @@ sub GetNewBiblios {
         my $rand_recnum = int rand( scalar @recents );
         my $rec         = $recents[$rand_recnum];
 
-        #        $rec->{'isbn'} = 9780830827718;
-
-        #        $rec->{'isbn'} = 9780664252656;
-        #        $rec->{'isbn'} =  9999999999996;
-
-        #        $rec->{'isbn'} =  9780853644279;
-
+    
         last if scalar @recents == 0;
 
         last if $i > 200;    # just for safety
@@ -148,9 +142,6 @@ sub GetNewBiblios {
 
             warn 'HIT from CACHE!!!!';
         }
-
-        #        warn $cache->get( $rec->{'isbn'} );
-        #        warn $image_url;
 
         my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
 
