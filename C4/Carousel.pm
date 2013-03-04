@@ -67,7 +67,7 @@ sub GetNewBiblios {
         push @bind, $branch;
     }
 
-    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 200 |;
+    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 100 |;
 
     #   C4::Context->dbh->trace(3 );
     my @recents =
@@ -96,9 +96,6 @@ sub GetNewBiblios {
 
     my $tt0 = [gettimeofday];
     warn '-----------------------------------------------';
-    warn '-----------------------------------------------';
-    warn '-----------------------------------------------';
-    warn '-----------------------------------------------';
     while ( $bibs < 10 ) {
         $i++;
 
@@ -111,6 +108,9 @@ sub GetNewBiblios {
 
         #        $rec->{'isbn'} = 9780664252656;
         #        $rec->{'isbn'} =  9999999999996;
+
+
+#        $rec->{'isbn'} =  9780853644279;
 
         last if scalar @recents == 0;
 
@@ -129,10 +129,10 @@ sub GetNewBiblios {
 
         next unless length( $rec->{'isbn'} ) > 8;
 
-        #    my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
-        #    if ($hash_ref) {
-        #        next;
-        #    }
+            my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
+            if ($hash_ref) {
+                next;
+            }
 
         # -------------
 
@@ -140,11 +140,18 @@ sub GetNewBiblios {
 
         my $image_url = $cache->get( $rec->{'isbn'} );
 
-warn 'HIT from CACHE!!!!' if $image_url;
+ if ($image_url eq 'xxx' ) {
+
+        warn 'MISS  from CACHE!!!!' ;
+        next;
+} else {
+
+        warn 'HIT from CACHE!!!!';
+}
 
 
-        warn $cache->get( $rec->{'isbn'} );
-        warn $image_url;
+#        warn $cache->get( $rec->{'isbn'} );
+#        warn $image_url;
 
         my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
 
@@ -168,12 +175,13 @@ warn 'HIT from CACHE!!!!' if $image_url;
             $res     = $ua->request($req);
             $headers = $res->headers;
 
-            warn $headers->{'x-cache'};
+#            warn $headers->{'x-cache'};
 #            p $headers;
 
             $ol_fetches++;
 
-            if ( $headers->{'content-type'} =~ /jpeg/ ) {
+            if (  $headers->{'content-type'} and 
+                $headers->{'content-type'} =~ /jpeg/ ) {
                 warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
 
                 $cache->set( $rec->{'isbn'}, $image_url );
@@ -182,7 +190,7 @@ warn 'HIT from CACHE!!!!' if $image_url;
 
                 warn "add miss to cache -  $rec->{'isbn'}";
 
-                $cache->set( $rec->{'isbn'}, 0 );
+                $cache->set( $rec->{'isbn'}, 'xxx' );
                 next;
 
             }
