@@ -88,19 +88,29 @@ sub GetNewBiblios {
     my $cache = new Cache::Memcached { 'servers' => ["127.0.0.1:11211"] };
 
     my $ua = LWP::UserAgent->new;
-    $ua->env_proxy;    # initialize from environment variables
-    $ua->proxy( http => 'http://miso:3128' );
+
+    #    $ua->env_proxy;    # initialize from environment variables
+    #    $ua->proxy( http => 'http://miso:3128' );
 
     my $total = 0;
 
     my $tt0 = [gettimeofday];
-    while ( $bibs < 3 ) {
+    warn '-----------------------------------------------';
+    warn '-----------------------------------------------';
+    warn '-----------------------------------------------';
+    warn '-----------------------------------------------';
+    while ( $bibs < 10 ) {
         $i++;
 
         warn "$i, $ol_fetches, $bibs";
 
         my $rand_recnum = int rand( scalar @recents );
         my $rec         = $recents[$rand_recnum];
+
+#        $rec->{'isbn'} = 9780830827718;
+
+        #        $rec->{'isbn'} = 9780664252656;
+        #        $rec->{'isbn'} =  9999999999996;
 
         last if scalar @recents == 0;
 
@@ -119,20 +129,22 @@ sub GetNewBiblios {
 
         next unless length( $rec->{'isbn'} ) > 8;
 
-
-    #    my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
-    #    if ($hash_ref) {
-    #        next;
-    #    }
-
-
-
+        #    my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
+        #    if ($hash_ref) {
+        #        next;
+        #    }
 
         # -------------
 
         # check store
 
         my $image_url = $cache->get( $rec->{'isbn'} );
+
+warn 'HIT from CACHE!!!!' if $image_url;
+
+
+        warn $cache->get( $rec->{'isbn'} );
+        warn $image_url;
 
         my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
 
@@ -157,8 +169,23 @@ sub GetNewBiblios {
             $headers = $res->headers;
 
             warn $headers->{'x-cache'};
+#            p $headers;
 
             $ol_fetches++;
+
+            if ( $headers->{'content-type'} =~ /jpeg/ ) {
+                warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
+
+                $cache->set( $rec->{'isbn'}, $image_url );
+            }
+            else {
+
+                warn "add miss to cache -  $rec->{'isbn'}";
+
+                $cache->set( $rec->{'isbn'}, 0 );
+                next;
+
+            }
 
         }
 
@@ -166,29 +193,10 @@ sub GetNewBiblios {
 
         #        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
 
-
-        # ---------------------------------
-        unless ( $headers->{'x-cache'} =~ /^HIT/ ) {
-
-            warn "add miss to cache -  $rec->{'isbn'}";
-
-            $cache->set( $rec->{'isbn'}, 0 );
-            next;
-        }
-        else {
-
-            warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
-
-            $cache->set( $rec->{'isbn'}, $image_url  );
-
-        }
-
         # ---------------------------------
 
-
-
-
-
+        #exit ;
+        # ---------------------------------
 
         my $row = GetBiblioData( $rec->{biblionumber} );
 
@@ -196,7 +204,7 @@ sub GetNewBiblios {
         $rec->{title}     = $row->{title};
         $rec->{author}    = $row->{author};
 
-#        $cache->set( $rec->{'isbn'}, $rec->{image_url} );
+        #        $cache->set( $rec->{'isbn'}, $rec->{image_url} );
 
         push @results, $rec;
 
