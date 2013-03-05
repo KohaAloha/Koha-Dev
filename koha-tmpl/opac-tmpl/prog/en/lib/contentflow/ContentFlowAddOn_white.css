@@ -65,16 +65,4 @@
                 color: black;
             }
 
-    /* ----- load indicator ----- */
-    .ContentFlowAddOn_white .loadIndicator {
-        background: url(img/1x1_0.5_white.png);
-    }
-    * html .ContentFlowAddOn_white .loadIndicator {
-        background-image: none;
-        filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true, sizingMethod=scale, src='img/1x1_0.5_white.png');
-    }
-        .ContentFlowAddOn_white .loadIndicator .indicator {
-            background: url(img/loader_white.gif) center center no-repeat;
-        }
-
 /* ================================= */

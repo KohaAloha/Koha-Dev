@@ -119,23 +119,6 @@
                 text-decoration: underline;
             }
 
-    /* ----- load indicator ----- */
-    .ContentFlow .loadIndicator {
-        width: 100%;
-        height: 100%;
-        top: 0px;
-        left: 0px;
-        background: black;
-    }
-        .ContentFlow .loadIndicator .indicator {
-            background: url(img/loader.gif) center center no-repeat;
-            width: 100%;
-            height: 100%;
-        }
-        * html .ContentFlow .loadIndicator .indicator {
-            height: 100px;
-        }
-
 /* ================================= */
 
 
