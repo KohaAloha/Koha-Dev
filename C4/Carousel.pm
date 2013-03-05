@@ -67,10 +67,10 @@ sub GetNewBiblios {
         push @bind, $branch;
     }
 
-    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 100 |;
+    $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
 
     #   C4::Context->dbh->trace(3 );
-    my @recents =
+    my @recents_tmp  =
       @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} }, @bind ) };
 
     C4::Context->dbh->trace(0);
@@ -79,6 +79,7 @@ sub GetNewBiblios {
     my ($bibs)       = 0;
     my ($ol_fetches) = 0;
     my @results;
+    my @recents;
 
     use LWP::Simple;
     use LWP::UserAgent;
@@ -96,6 +97,30 @@ sub GetNewBiblios {
 
     my $tt0 = [gettimeofday];
     warn '-----------------------------------------------';
+    foreach my $rec  ( @recents_tmp  ) {
+
+        next unless $rec->{'isbn'};
+
+        $rec->{'isbn'} =~ s/\|.*$//;
+        $rec->{'isbn'} =~ s/^[ \t]+|[ \t]+$//g;
+
+        #        $rec->{'ii'} = $i;
+
+        next unless length( $rec->{'isbn'} ) > 8;
+
+            my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @recents;
+            if ($hash_ref) {
+                next;
+            }
+
+        push @recents , $rec;
+
+    last if scalar @recents > 30;
+    }
+
+    
+
+
     while ( $bibs < 10 ) {
         $i++;
 
@@ -119,20 +144,6 @@ sub GetNewBiblios {
         #        warn   scalar @recents;
 
         splice( @recents, $rand_recnum, 1 );
-
-        next unless $rec->{'isbn'};
-
-        $rec->{'isbn'} =~ s/\|.*$//;
-        $rec->{'isbn'} =~ s/^[ \t]+|[ \t]+$//g;
-
-        #        $rec->{'ii'} = $i;
-
-        next unless length( $rec->{'isbn'} ) > 8;
-
-            my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @results;
-            if ($hash_ref) {
-                next;
-            }
 
         # -------------
 
