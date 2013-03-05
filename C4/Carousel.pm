@@ -29,6 +29,7 @@ use C4::Biblio;
 use C4::Dates qw/format_date/;
 
 use Data::Printer;
+use Data::Dumper;
 
 #use Smart::Comments '###';
 
@@ -70,7 +71,7 @@ sub GetNewBiblios {
     $q .= qq|    ORDER BY dateaccessioned  DESC LIMIT 300 |;
 
     #   C4::Context->dbh->trace(3 );
-    my @recents_tmp  =
+    my @recents_tmp =
       @{ C4::Context->dbh->selectall_arrayref( $q, { Slice => {} }, @bind ) };
 
     C4::Context->dbh->trace(0);
@@ -97,7 +98,9 @@ sub GetNewBiblios {
 
     my $tt0 = [gettimeofday];
     warn '-----------------------------------------------';
-    foreach my $rec  ( @recents_tmp  ) {
+
+    # a quick sort, to remove bad rows - and give us 30 good rows
+    foreach my $rec (@recents_tmp) {
 
         next unless $rec->{'isbn'};
 
@@ -108,17 +111,15 @@ sub GetNewBiblios {
 
         next unless length( $rec->{'isbn'} ) > 8;
 
-            my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @recents;
-            if ($hash_ref) {
-                next;
-            }
+        my $hash_ref = grep { $_->{isbn} eq $rec->{'isbn'} } @recents;
+        if ($hash_ref) {
+            next;
+        }
 
-        push @recents , $rec;
+        push @recents, $rec;
 
-    last if scalar @recents > 30;
+        last if scalar @recents > 30;
     }
-
-    
 
 
     while ( $bibs < 10 ) {
@@ -129,44 +130,29 @@ sub GetNewBiblios {
         my $rand_recnum = int rand( scalar @recents );
         my $rec         = $recents[$rand_recnum];
 
-#        $rec->{'isbn'} = 9780830827718;
-
-        #        $rec->{'isbn'} = 9780664252656;
-        #        $rec->{'isbn'} =  9999999999996;
-
-
-#        $rec->{'isbn'} =  9780853644279;
-
         last if scalar @recents == 0;
-
-        last if $i > 200;    # just for safety
-
-        #        warn   scalar @recents;
+        last if $i > 200;               # just for safety
 
         splice( @recents, $rand_recnum, 1 );
 
-        # -------------
-
         # check store
-
         my $image_url = $cache->get( $rec->{'isbn'} );
+=c
+        if ( $image_url eq 'xxx' ) {
+            warn 'MISS  from CACHE!!!!';
+            next;
+        }
+        else {
+            warn 'HIT from CACHE!!!!';
+        }
+=cut
 
- if ($image_url eq 'xxx' ) {
-
-        warn 'MISS  from CACHE!!!!' ;
-        next;
-} else {
-
-        warn 'HIT from CACHE!!!!';
-}
+        next if  $image_url eq 'xxx' ;
 
 
-#        warn $cache->get( $rec->{'isbn'} );
-#        warn $image_url;
+
 
         my ( $t0, $t1, $str, $req, $res, $elapsed, $headers );
-
-        #            my $content = $res->content;
 
         $t1 = [gettimeofday];
         $elapsed = tv_interval( $t0, $t1 );
@@ -186,20 +172,21 @@ sub GetNewBiblios {
             $res     = $ua->request($req);
             $headers = $res->headers;
 
-#            warn $headers->{'x-cache'};
-#            p $headers;
+            #            warn $headers->{'x-cache'};
+            #            p $headers;
 
             $ol_fetches++;
 
-            if (  $headers->{'content-type'} and 
-                $headers->{'content-type'} =~ /jpeg/ ) {
-                warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
+            if (    $headers->{'content-type'}
+                and $headers->{'content-type'} =~ /jpeg/ )
+            {
+#                warn "add HIT to cache -  $rec->{'isbn'}  $image_url ";
 
                 $cache->set( $rec->{'isbn'}, $image_url );
             }
             else {
 
-                warn "add miss to cache -  $rec->{'isbn'}";
+#                warn "add miss to cache -  $rec->{'isbn'}";
 
                 $cache->set( $rec->{'isbn'}, 'xxx' );
                 next;
@@ -207,15 +194,6 @@ sub GetNewBiblios {
             }
 
         }
-
-        # ---------------------------------
-
-        #        warn "$bibs, $rec->{'dateaccessioned'}, $rec->{'homebranch'}";
-
-        # ---------------------------------
-
-        #exit ;
-        # ---------------------------------
 
         my $row = GetBiblioData( $rec->{biblionumber} );
 
@@ -234,7 +212,7 @@ sub GetNewBiblios {
 
     #        warn  tv_interval( $tt0, $tt1 );
 
-    #    p @results;
+#        p @results;
 
     #    $cache->set( 999 ,  'zzz' );
     return \@results;
