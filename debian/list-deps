@@ -38,23 +38,34 @@ my $deps = $C4::Installer::PerlDependencies::PERL_DEPS;
 
 my $prefix = "^/usr/((lib|share)/perl5|(lib|share)/perl/[0-9.]+)";
 
+
 foreach my $module ( keys %$deps ) {
     next if $ignore{$module};
+
+#next if $module !~  /sha/i;
+
     my $ver     = $deps->{$module}->{'min_ver'};
     my $subpath = $module;
     $subpath =~ s,::,/,g;
     my $output = qx(apt-file -l -x search "$prefix/$subpath.pm\$");
+
     my @temp   = split( /\n/, $output );
     my @lines  = ();
 
     # Remove packages that are required/essential and always installed on
     # a Debian system. Debian packages should not have unversioned
     # dependencies on such packages.
-    foreach my $line (@temp) {
-        if ( $line ne "perl-base" ) {
+    
+    #skip if module if its already satisfied by a base perl module
+    my @skip   = grep(   /^perl-base$|^perl-modules$|^perl$/, @temp);
+    next if scalar @skip > 0 ; 
+
+    # or else, add that module
+    my @temp2   = grep(   !/^perl-base$|^perl-modules$|^perl$/, @temp);
+    foreach my $line (@temp2) {
             @lines = ( @lines, $line );
-        }
     }
+
     if ( scalar(@lines) == 1 && $lines[0] ne "" ) {
         my $pkg = $lines[0];
         print "$pkg\n";
@@ -81,9 +92,9 @@ foreach my $module ( keys %$deps ) {
         # RM note: suspicious?  me?  always!
     }
     elsif ( exists $overrides{$module} ) {
-        print "$overrides{$module}\n";
+        warn "$overrides{$module}\n";
     }
     else {
-        print "EEEK: unknown package for $module\n";
+        warn  "EEEK: unknown package for $module\n";
     }
 }
