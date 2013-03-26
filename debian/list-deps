@@ -40,10 +40,12 @@ my $prefix = "^/usr/((lib|share)/perl5|(lib|share)/perl/[0-9.]+)";
 
 foreach my $module ( keys %$deps ) {
     next if $ignore{$module};
+
     my $ver     = $deps->{$module}->{'min_ver'};
     my $subpath = $module;
     $subpath =~ s,::,/,g;
     my $output = qx(apt-file -l -x search "$prefix/$subpath.pm\$");
+
     my @temp   = split( /\n/, $output );
     my @lines  = ();
 
@@ -51,10 +53,11 @@ foreach my $module ( keys %$deps ) {
     # a Debian system. Debian packages should not have unversioned
     # dependencies on such packages.
     foreach my $line (@temp) {
-        if ( $line ne "perl-base" ) {
+        if ( $line !~ /^perl-base$|^perl-modules$|^perl$/ ) {
             @lines = ( @lines, $line );
         }
     }
+
     if ( scalar(@lines) == 1 && $lines[0] ne "" ) {
         my $pkg = $lines[0];
         print "$pkg\n";
