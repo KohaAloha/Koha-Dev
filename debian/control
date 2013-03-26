@@ -3,9 +3,16 @@ Maintainer: Robin Sheat <robin@catalyst.net.nz>
 Section: web
 Priority: optional
 Standards-Version: 3.8.4
-# NOTA BENE: Build dependencies end up as runtime dependencies as well.
-# See debian/rules, the override_dh_gencontrol rules. 
-# There are some exceptions.
+XBC-Comment: WARNING: The "control" file is manually generated from the "control.in" file.
+ Do not manually edit "control" or your changes will be clobbered when you
+ run update-control
+ NOTA BENE: Build dependencies end up as runtime dependencies as well.
+ See debian/rules, the override_dh_gencontrol rules.
+ There are some exceptions.
+Build-Depends:__AUTODEPENDS__,
+ debhelper (>= 7.0.50), gettext, python, python-debian, xsltproc, docbook-xsl,
+ libxml2-utils
+
 Build-Depends: libalgorithm-checkdigits-perl,
  libanyevent-http-perl,
  libanyevent-perl,
@@ -111,7 +118,7 @@ Build-Depends: libalgorithm-checkdigits-perl,
  libyaml-perl,
  libyaml-syck-perl,
  perl,
- perl-modules, 
+ perl-modules,
  debhelper (>= 7.0.50), gettext, python, python-debian, xsltproc, docbook-xsl,
  libxml2-utils
 
@@ -130,7 +137,7 @@ Depends: ${misc:Depends}, ${koha:Depends},
  perl-doc,
  pwgen,
  sudo,
- tinymce2, 
+ tinymce2,
  unzip,
  xmlstarlet,
  yaz
