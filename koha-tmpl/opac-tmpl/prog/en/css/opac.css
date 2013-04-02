@@ -179,7 +179,7 @@ h1#library {
 
 
 h1#libraryname {
-	background:transparent url(../../images/koha-logo.gif) no-repeat scroll 0%;
+	background:transparent url(../../../images/koha-logo.gif) no-repeat scroll 0%;
 	border: 0;
 	float : left !important;
 	margin:0;

@@ -199,16 +199,16 @@ tr.even td, tr.even.highlight td {
 }
 
 .header {
-    background-image:url("../../images/ascdesc.gif");
+    background-image:url("../../../images/ascdesc.gif");
     background-position:right center;
     background-repeat:no-repeat;
     cursor:pointer;
 }
 .headerSortUp {
-    background-image:url("../../images/asc.gif");
+    background-image:url("../../../images/asc.gif");
 }
 .headerSortDown {
-    background-image:url("../../images/desc.gif");
+    background-image:url("../../../images/desc.gif");
 }
 
 p {
@@ -320,7 +320,7 @@ ul#i18nMenu li ul li {
 
 
 ul#i18nMenu li.more a {
-    background-image : url("../../images/sprite.png");
+    background-image : url("../../../images/sprite.png");
     background-position : 37px -940px;
     background-repeat:no-repeat;
     padding-right: 1.3em;
