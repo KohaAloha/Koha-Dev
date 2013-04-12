@@ -45,7 +45,7 @@ my $error = $input->param('error');
 # patrons still need to be able to print receipts
 my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     {
-        template_name   => "/sco/printslip.tmpl",
+        template_name   => "/sco/printslip.tt",
         query           => $input,
         type            => "opac",
     }
@@ -61,7 +61,7 @@ if (my $letter = IssueSlip ($session->param('branch') || $branch, $borrowernumbe
 
 $template->{VARS}->{slip} = $slip;
 $template->{VARS}->{plain} = !$is_html;
-$template->{VARS}->{title} = "Print Receipt for $borrowernumber";
+$template->{VARS}->{borrowernumber} = $borrowernumber;
 $template->{VARS}->{stylesheet} = C4::Context->preference("SlipCSS");
 $template->{VARS}->{error} = $error;
 
