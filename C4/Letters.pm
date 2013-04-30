@@ -617,7 +617,23 @@ sub _parseletter {
         $letter->{content} =~ s/<<today>>/$todaysdate/go;
     }
 
-    while ( my ($field, $val) = each %$values ) {
+    my @dates = qq|
+        issues.date_due issues.returndate issues.issuedate issues.lastreneweddate
+        old_issues.date_due old_issues.returndate old_issues.issuedate old_issues.lastreneweddate
+    |;
+
+    while ( my ( $field, $val ) = each %$values ) {
+
+        # Bug 9084 - Dates in notices should be formatted
+        # according to dateformat system preference
+        my $match = "$table.$field";
+        if ( grep /$match/, @dates ) {
+
+            # display syspref formatted date, and strip time
+            my $dateonly = 1;
+            $val = output_pref( dt_from_string($val), undef, undef, $dateonly );
+        }
+
         my $replacetablefield = "<<$table.$field>>";
         my $replacefield = "<<$field>>";
         $val =~ s/\p{P}$// if $val && $table=~/biblio/;
