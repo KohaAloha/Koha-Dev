@@ -23,7 +23,7 @@ use warnings;
 use strict;
 use Data::Dumper;
 use POSIX;
-use CGI qw/-utf8/;
+use CGI;
 use CGI::Cookie; # need to check cookies before having CGI parse the POST request
 
 use C4::Auth qw(:DEFAULT check_cookie_auth);
@@ -89,7 +89,12 @@ my ($template, $borrowernumber, $cookie) = get_template_and_user({
 });
 
 my ($op, @errors, @tags);
-$op   = lc($input->param('op')) || 'none';
+
+foreach (qw( approve reject test )) {
+    $op = $_ if ( $input->param("op-$_") );
+}
+$op ||= 'none';
+
 @tags = $input->param('tags');
 
 $borrowernumber == 0 and push @errors, {op_zero=>1};
