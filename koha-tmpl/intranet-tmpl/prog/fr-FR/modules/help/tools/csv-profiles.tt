@@ -1,0 +1,52 @@
+[% INCLUDE 'help-top.inc' %] <h1>Profils CSV</h1>
+
+<p>Les Profils CSV sont créés pour définir la façon dont vous souhaitez exporter un panier ou une liste.</p>
+
+<h3>Ajouter des profils CSV</h3>
+
+<p>Pour ajouter un profil CSV</p>
+
+<ul>
+ <li>Dans le menu Outils, cliquez sur Profils CSV.<ul>
+ <li>Le 'Nom du profil' sera visible sur le menu déroulant d'export lorsque vous choisirez 'Télécharger' à partir de votre panier ou d'une liste</li>
+ <li>The 'Profile description' is for your own benefit, but will also appear in the OPAC when patrons download content, so make sure it's clear to your patrons as well</li>
+ <li>Le Séparateur CSV est le caractère utilisé pour séparer les valeurs et les groupes de valeurs</li>
+ <li><strong>Tip:</strong> The most common option here is comma because most spreadsheet applications know how to open files split by commas.</li>
+ <li>Le Séparateur de champ est le caractère utilisé pour séparer les champs dupliqués.<ul>
+ <li>Example: You may have multiple 650 fields and this is the character that will appear in between each one in the column</li>
+</ul>
+</li>
+ <li>Le Séparateur de sous-champs est le caractères utilisé pour séparer les sous-champs dupliqués.<ul>
+ <li>Exemple : Vous pouvez avoir plusieurs sous-champs $a dans un champ.</li>
+</ul>
+</li>
+ <li>La rubrique Encodage vous permet de définir l'encodage des caractères utilisé dans le fichier.</li>
+ <li>Finally format your CSV file using the 'Profile MARC fields' fields
+<ul>
+ <li>Define which fields or subfields you want to export, separated by pipes. Example :200|210$a|301</li>
+ <li><strong>Tip:</strong> You can also use your own headers (instead of the ones from Koha) by prefixing the field number with an header, followed by the equal sign. Example : Personal name=100|title=245$a|300</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>When you have entered in all of the information for you profile, simply click 'Submit' and you will be presented with a confirmation that your profile has been saved.</p>
+
+<h3>Modifier les profils CSV</h3>
+
+<p>Une fois que vous avez créé au moins un Profil CSV, une option 'Modifier les profils CSV' s'affiche en-dessous du formulaire d'ajout </p>
+
+<ul>
+ <li>Sélectionnez le profil que vous souhaitez éditer et modifier les champs nécessaires.</li>
+ <li>After submitting your changes you will be presented with a confirmation message at the top of the screen</li>
+ <li>Pour supprimer un profil, cochez l'option 'Supprimer le profil sélectionné' avant de cliquer 'Valider'</li>
+</ul>
+
+<h3>Utiliser les Profils CSV</h3>
+
+<p>Your CSV Profiles will appear on the export list or cart menu under the 'Download' button in both the staff client and the OPAC</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/csvprofiles.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

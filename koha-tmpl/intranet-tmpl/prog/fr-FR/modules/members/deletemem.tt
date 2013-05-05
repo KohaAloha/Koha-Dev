@@ -1,0 +1,23 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Impossible de supprimer l'adhérent</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="pat_deletemem" class="pat">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a> &rsaquo; Impossible de supprimer l'adhérent</div>
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% INCLUDE 'members-toolbar.inc' %] <div class="dialog alert">
+ <h3>Impossible de supprimer cet adhérent</h3>
+ <ul>[% IF ( ItemsOnIssues ) %] <li>Cet adhérent a [% ItemsOnIssues %] document(s) en prêt.</li>
+ [% END %] [% IF ( charges ) %] <li>Cet adhérent a [% charges %] d'amendes.</li>
+ [% END %] [% IF ( guarantees ) %] <li>L'enregistrement de l'adhérent a des comptes-enfant rattachés.</li>
+ [% END %]</ul>
+ </div>
+</div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

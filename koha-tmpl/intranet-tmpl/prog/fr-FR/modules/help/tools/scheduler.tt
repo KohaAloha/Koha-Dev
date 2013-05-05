@@ -1,0 +1,26 @@
+[% INCLUDE 'help-top.inc' %] <h1>Planificateur de tâches</h1>
+
+<p>Le planificateur de tâche sert à programmer l'exécution d'un rapport.</p>
+
+<p>Pour programmer une tâche, aller dans Planificateur de tâches et remplissez le formulaire</p>
+
+<ul>
+ <li>L'heure courante du serveur vous montre l'heure de votre serveur. La planification de tous vos états est basée sur cette heure-là, pas sur votre heure locale.</li>
+ <li>L'heure doit être entrée sous la forme hh:mm</li>
+ <li>Date should be entered using the calendar pop up</li>
+ <li>Choisissez l'état que vous voulez programmer</li>
+ <li>Choisissez de recevoir le texte du résultat ou bien un lien vers le résultat</li>
+ <li>Saisissez dans Courriel l'adresse de la personne qui recevra l'état</li>
+</ul>
+
+<p>Le planificateur de tâche sert à programmer l'exécution d'un rapport.</p>
+
+<p>Vous pouvez également planifier les états directement depuis la liste des états enregistrés en cliquant sur le lien Planifier</p>
+
+<h2>Problème</h2>
+
+<p>Le Planificateur de tâches ne fonctionnera pas si l'user du serveur web n'a pas la permission de l'utiliser. Pour trouver si le bon user a les permissions nécessaires, vérifiez /etc/at.allow pour voir les utilisateurs. Si vous n'avez pas ce fichier, vérifiez /etc/at.deny. Si at.deny existe mais est vide, alors tous les users peuvent l'utiliser. Voyez avec votre administrateur système pour ajouter l'user au bon endroit afin que le planificateur de tâches fonctionne.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/taskscheduler.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

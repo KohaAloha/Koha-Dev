@@ -1,0 +1,74 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Ajouter à la liste</title>
+[% INCLUDE 'doc-head-close.inc' %] <style type="text/css">
+   #custom-doc { width:34.62em;*width:33.78em;min-width:450px; margin:auto; margin-top: .4em;text-align:left; }
+   </style>
+</head>
+<body id="lists_addbybiblionumber" class="lists">
+
+[% UNLESS (authorized) %] <p align="center">
+ [% IF (errcode==1) %]Impossible de créer une nouvelle liste. Contrôlez son nom.<br/>[% END %] [% IF (errcode==2) %]Désolé, vous n'avez pas le droit d'ajouter des documents à cette liste<br/>[% END %] <a href="javascript:self.close();">Fermer la fenêtre</a>
+ </p>
+[% ELSE %] <div id="custom-doc" class="yui-t7">
+ <div id="bd">
+ [% IF ( multiple ) %] <h1>Ajouter [% total %] exemplaires à [% IF ( singleshelf ) %]<em>[% shelfname %]</em>: [% ELSE %]une liste&nbsp;:[% END %]</h1>
+ [% ELSE %] <h1>Ajouter à [% IF ( singleshelf ) %]<em>[% shelfname %]</em>[% ELSE %]une liste:[% END %]</h1>
+ [% END %] <ul>
+ [% FOREACH biblio IN biblios %] <li> <span class="title">[% biblio.title |html %]</span>
+ [% IF ( biblio.author ) %]<span class="author"> [% biblio.author %] </span>[% END %] </li>
+ [% END %] </ul>
+
+ <form name="f1" action="/cgi-bin/koha/virtualshelves/addbybiblionumber.pl" method="post">
+ [% FOREACH biblio IN biblios %] <input type="hidden" name="biblionumber" value="[% biblio.biblionumber %]" />[% END %] <input type="hidden" name="confirmed" value="1" />
+ [% IF ( shelfnumber ) %]<input type="hidden" name="shelfnumber" value="[% shelfnumber %]" />[% END %] [% UNLESS ( shelfnumber ) %] [% UNLESS ( newshelf ) %] <fieldset class="rows">
+ <legend>Sélectionner une liste existante</legend>
+ <ol>
+ <li>
+ <label>Choisir la liste</label>
+ <select name="shelfnumber" id="shelfnumber">
+ [% IF ( privatevirtualshelves ) %] <optgroup label="Listes privées">
+ [% FOREACH privatevirtualshelve IN privatevirtualshelves %] <option value="[% privatevirtualshelve.shelfnumber %]">[% privatevirtualshelve.shelfname %]</option>
+ [% END %] </optgroup>
+ [% END %] [% IF ( publicvirtualshelves ) %] <optgroup label="Listes publiques">
+ [% FOREACH publicvirtualshelve IN publicvirtualshelves %] <option value="[% publicvirtualshelve.shelfnumber %]">[% publicvirtualshelve.shelfname %]</option>
+ [% END %] </optgroup>
+ [% END %] </select>
+ </li>
+ </ol>
+ [% FOREACH biblio IN biblios %]<input type="hidden" name="biblionumber" value="[% biblio.biblionumber %]" />[% END %] [% UNLESS ( biblionumbers ) %] <input type="hidden" name="biblionumber" value="[% biblionumber %]" />
+ [% ELSE %] <input type="hidden" name="biblionumbers" value="[% biblionumbers %]" />
+ [% END %] </fieldset>
+
+ <p>...ou...</p>
+[% END %] <fieldset class="rows"><legend>Ajouter à une nouvelle liste&nbsp;:</legend>
+ <ol><li>
+ <label for="newvirtualshelf">
+ List name:
+ </label>
+ [% FOREACH biblio IN biblios %]<input type="hidden" name="biblionumber" value="[% biblio.biblionumber %]" />[% END %] [% UNLESS ( biblionumbers ) %] <input type="hidden" name="biblionumber" id="biblionumber" value="[% biblionumber %]" />
+ [% ELSE %] <input type="hidden" name="biblionumbers" id="biblionumbers" value="[% biblionumbers %]" />
+ [% END %] <input type="text" name="newvirtualshelf" id="newvirtualshelf" size="40" />
+ <input type="hidden" name="confirmed" value="1" />
+ </li>
+ <li>
+ <label for="category">Catégorie&nbsp;: </label>
+ <select name="category" id="category">
+ <option value="1">Privé</option>
+ <option value="2">Publique</option>
+ </select>
+ </li></ol>
+ </fieldset>
+
+
+[% END %]
+
+
+<!-- SAVE -->
+ <fieldset class="action">
+ <input value="Enregistrer" type="submit" class="submit" /> <a class="close cancel" href="#">Annuler</a>
+ </fieldset>
+ </form>
+<!-- /SAVE -->
+
+</div>
+
+[% INCLUDE 'intranet-bottom.inc' %] [% END %] 

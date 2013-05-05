@@ -1,0 +1,64 @@
+[% INCLUDE 'doc-head-open.inc' %]<title>Koha &rsaquo; Etiquettes</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <style type="text/css">#custom-doc { width:47.23em;*width:46.04em;min-width:610px; margin:auto;margin-top: .4em; text-align:left; }</style>
+</head>
+<body id="labels_search" class="tools labels">
+
+<div id="custom-doc" class="yui-t7">
+ <div id="bd">
+
+<h1>Rechercher les exemplaires [% IF ( batch_id ) %] à ajouter au lot [% batch_id %] [% END %] </h1>
+
+<form name="f" method="post" action="/cgi-bin/koha/labels/label-item-search.pl">
+ <input type="hidden" name="op" value="do_search" />
+ <input type="hidden" name="batch_id" value="[% batch_id %]" />
+ <input type="hidden" name="type" value="[% type %]" />
+
+ <fieldset class="rows">
+<ol><li>
+<select name="idx" > <!-- FIXME: script does keyword search regardless -->
+
+[% IF ( selected ) %]<option value="kw" selected="selected">Tous les mots</option>
+[% ELSE %]<option value="kw">Tous les mots</option>[% END %] [% IF ( selected ) %]<option value="au" selected="selected">Auteur</option>
+[% ELSE %]<option value="au">Auteur</option>[% END %] [% IF ( selected ) %]<option value="yr" selected="selected">Date de publication</option>
+[% ELSE %]<option value="yr">Date de publication</option>[% END %] [% IF ( selected ) %]<option value="sn" selected="selected">Standard number</option>
+[% ELSE %]<option value="sn">Standard number</option>[% END %] [% IF ( selected ) %]<option value="nb" selected="selected">ISBN</option>
+[% ELSE %]<option value="nb">ISBN</option>[% END %] [% IF ( selected ) %]<option value="ns" selected="selected">ISSN</option>
+[% ELSE %]<option value="ns">ISSN</option>[% END %] [% IF ( selected ) %]<option value="lcn,phr" selected="selected">Cote</option>
+[% ELSE %]<option value="lcn,phr">Cote</option>[% END %] [% IF ( selected ) %]<option value="su" selected="selected">Sujet</option>
+[% ELSE %]<option value="su">Sujet</option>[% END %] [% IF ( selected ) %] <option value="ti" selected="selected">Titre</option>
+[% ELSE %] <option value="ti" selected="selected">Titre</option>[% END %] [% IF ( selected ) %]<option value="ti,phr" selected="selected">Expression titre</option>
+[% ELSE %]<option value="ti,phr">Expression titre</option>[% END %] [% IF ( selected ) %]<option value="se" selected="selected">Titre de collection</option>
+[% ELSE %]<option value="se">Titre de collection</option>[% END %] [% IF ( selected ) %]<option value="bc" selected="selected">Code à barres</option>
+[% ELSE %]<option value="bc">Code à barres</option>[% END %] [% IF ( selected ) %]<option value="acqdate" selected="selected">Date d'acquisition</option>
+[% ELSE %]<option value="acqdate">Date d'acquisition</option>[% END %] </select>
+
+ <input value="" name="ccl_textbox" type="text" id="ccl_textbox" class="focus" title="Entrer les termes de recherche" size="30" />
+
+</li>
+</ol>
+</fieldset>
+
+[% IF ( sort_by_loop ) %] <fieldset><legend>Sort by: </legend>
+ <p><select id="sort_by" name="sort_by">
+ <option value="">Classement par poids des champs et pertinence</option>
+ [% FOREACH sort_by_loo IN sort_by_loop %] [% IF ( sort_by_loo.selected ) %]<option value="[% sort_by_loo.value %]" selected="selected">[% sort_by_loo.label %]</option>[% ELSE %]<option value="[% sort_by_loo.value %]">[% sort_by_loo.label %]</option>[% END %] [% END %] </select>
+ </p>
+</fieldset>[% END %] <fieldset class="rows">
+<ol>
+ <li>
+ <label for="from">Added on or after date: </label>
+ <input type="text" size="10" id="from" name="datefrom" class="datepickerfrom" value="" />
+<div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+</li>
+<li>
+ <label for="to">Added on or before date: </label>
+ <input type="text" size="10" id="to" name="dateto" class="datepickerto" value="" />
+<div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+</li></ol>
+</fieldset>
+
+<fieldset class="action"><input value="Rechercher" type="submit" class="submit" /> <a class="cancel close" href="#">Annuler</a></fieldset>
+</form>
+</div>
+</div>
+[% INCLUDE 'popup-bottom.inc' %] 

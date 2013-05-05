@@ -1,0 +1,309 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Autorités &rsaquo; [% IF ( authid ) %]Modifier l'autorité n°[% authid %] ([% authtypetext %])[% ELSE %]Ajouter autorité ([% authtypetext %])[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.fixFloat.js"></script>
+<script type="text/javascript" src="[% themelang %]/js/cataloging.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+    $(window).load(function(){
+        $("#loading").hide();
+    });
+	 $(document).ready(function() {
+        $('#authoritytabs').tabs();
+        $('#toolbar').fixFloat();
+        $("#addauth").click(function(){
+            if(Check()){
+                $("#f").submit();
+            }
+		});
+	 });
+
+/**
+ * check if mandatory subfields are written
+ */
+function AreMandatoriesNotOk(){
+    var mandatories = new Array();
+    var mandatoriesfields = new Array();
+    var   tab = new Array();
+    var label = new Array();
+    [% FOREACH BIG_LOO IN BIG_LOOP %]
+    	[% FOREACH innerloo IN BIG_LOO.innerloop %]
+			[% IF ( innerloo.mandatory ) %]
+        		mandatoriesfields.push(new Array("[% innerloo.tag %]","[% innerloo.index %][% innerloo.random %]","[% innerloo.index %]"));
+            [% END %]
+    		[% FOREACH subfield_loo IN innerloo.subfield_loop %]
+    			[% IF ( subfield_loo.mandatory ) %]mandatories.push("[% subfield_loo.id %]");
+        		tab.push("[% subfield_loo.number %]");
+        		label.push("[% subfield_loo.marc_lib |replace("'", "\'") |replace('"', '\"') |replace('\n', '\\n') |replace('\r', '\\r') %]");
+    			[% END %]
+			[% END %]
+		[% END %]
+	[% END %]
+    var StrAlert = "";
+    for(var i=0,len=mandatories.length; i<len ; i++){
+        var id_string = mandatories[i];
+        // alert (id_string);
+        if( ! $("#" + id_string).val() ){
+            $("#" + id_string).attr('class','subfield_not_filled').focus();
+            StrAlert += "\t* "+label[i]+_(" dans l'onglet ")+tab[i]+"\n";
+        }
+    }
+    
+    /* Check for mandatories field(not subfields) */
+    for(var i=0,len=mandatoriesfields.length; i<len; i++){
+    	isempty  = true;
+    	arr      = mandatoriesfields[i];
+    	divid    = "tag_" + arr[0] + "_" + arr[1];
+    	varegexp = new RegExp("^tag_" + arr[0] + "_code_");
+
+		if(parseInt(arr[0]) >= 10){
+	    	elem = document.getElementById(divid);
+	    	eleminputs = elem.getElementsByTagName('input');
+	    	
+	    	for(var j=0,len2=eleminputs.length; j<len2; j++){
+	
+	    		if(eleminputs[j].name.match(varegexp) && eleminputs[j].value){
+					inputregexp = new RegExp("^tag_" + arr[0] + "_subfield_" + eleminputs[j].value + "_" + arr[2]);
+					
+					for( var k=0; k<len2; k++){
+						if(eleminputs[k].id.match(inputregexp) && eleminputs[k].value){
+							isempty = false
+						}
+					}
+	    		}
+	    	}
+    	}else{
+    		isempty = false;
+    	}
+    	
+    	if(isempty){
+    		flag = 1;
+			StrAlert += "\t* Field " + arr[0] + _(" est obligatoire, au moins un sous-champs doit être rempli") + "\n";
+    	}
+    	
+    }
+    
+    
+    if(StrAlert){
+        return _("Impossible d'enregistrer la notice, les champs suivants sont vides : \\n\\n") + "\n\n" + StrAlert;
+    }
+    return false;
+}
+
+function Check(){
+    var StrAlert = AreMandatoriesNotOk();
+    if( ! StrAlert ){
+        document.f.submit();
+        return true;
+    } else {
+        alert(StrAlert);
+        return false;
+    }
+}
+
+function AddField(field,cntrepeatfield) {
+    document.forms['f'].op.value = "addfield";
+    document.forms['f'].addfield_field.value=field;
+    document.forms['f'].repeat_field.value=cntrepeatfield;
+    document.f.submit();
+}
+
+function addauthority() {
+    X = document.forms[0].authtype.value;
+    window.location="/cgi-bin/koha/authorities/authorities.pl?authtypecode="+X;
+}
+function searchauthority() {
+    X = document.forms[0].authtype2.value;
+    Y = document.forms[0].value.value;
+    window.location="/cgi-bin/koha/authorities/authorities-home.pl?op=do_search&type=intranet&authtypecode="+X+"&value="+Y+"&marclist=&and_or=and&excluding=&operator=contains";
+}
+function confirmnotdup(redirect){
+    $("#confirm_not_duplicate").attr("value","1");
+    Check();
+}
+//]]>
+</script>
+<link type="text/css" rel="stylesheet" href="[% themelang %]/css/addbiblio.css" />
+[% IF ( bidi ) %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/right-to-left.css" />
+[% END %] </head>
+<body id="auth_authorities" class="auth">
+
+<div id="loading">
+ <div>Loading, please wait...</div>
+</div>
+
+[% INCLUDE 'header.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/authorities/authorities-home.pl">Autorités</a> &rsaquo; [% IF ( authid ) %]Modifier l'autorité #[% authid %] ([% authtypetext %])[% ELSE %]Ajout d'une autorité [% authtypetext %][% END %] </div>
+
+<div id="doc" class="yui-t7">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+
+[% IF ( authid ) %] <h1>Modifier autorité N°[% authid %] [% authtypetext %]</h1>
+[% ELSE %] <h1>Ajouter autorité [% authtypetext %]</h1>
+[% END %] [% IF ( duplicateauthid ) %] <div class="dialog alert">
+ <h4>Doublon possible de notice</h4>
+ <p>Est-ce un doublon de <a href="/cgi-bin/koha/authorities/detail.pl?authid=[% duplicateauthid %]" onclick="openWindow('/cgi-bin/koha/authorities/detail.pl?authid=[% duplicateauthid %]&amp;popup=1', 'Duplicate authority','800','600'); return false;" class="button">[% duplicateauthvalue %]</a>?</p>
+
+ <form action="authorities.pl" method="get">
+ <input type="hidden" name="authid" value="[% duplicateauthid %]" />
+ <input type="submit" class="edit" value="Yes: Edit exisiting authority" />
+ </form>
+ <form action="authorities.pl" method="get">
+ <input type="button" value="No: Save as new authority" class="save" accesskey="w" onclick="confirmnotdup('items'); return false;" />
+ </form>
+ </div>
+[% END %] <form method="post" name="f" action="/cgi-bin/koha/authorities/authorities.pl">
+ <input type="hidden" name="op" value="add" />
+ <input type="hidden" name="addfield_field" value="" />
+ <input type="hidden" name="repeat_field" value="" />
+ <input type="hidden" name="authtypecode" value="[% authtypecode %]" />
+ <input type="hidden" name="authid" value="[% authid %]" />
+ <input type="hidden" name="index" value="[% index %]" />
+ <input type="hidden" value="0" id="confirm_not_duplicate" name="confirm_not_duplicate" />
+
+ <div id="toolbar" class="btn-toolbar">
+ <div class="btn-group"><a href="#" id="addauth" class="btn btn-small" accesskey="w"><i class="icon-hdd"></i> Enregistrer</a></div>
+ </div>
+
+<div id="authoritytabs" class="toptabs numbered">
+ <ul>
+ [% FOREACH BIG_LOO IN BIG_LOOP %] <li><a href="#tab[% BIG_LOO.number %]XX">[% BIG_LOO.number %]</a></li>
+ [% END %] </ul>
+
+[% FOREACH BIG_LOO IN BIG_LOOP %] <div id="tab[% BIG_LOO.number %]XX">
+
+ [% FOREACH innerloo IN BIG_LOO.innerloop %] [% IF ( innerloo.tag ) %] <div class="tag clearfix" id="tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]">
+ <div class="tag_title" id="div_indicator_tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]">
+ [% UNLESS hide_marc %] [% IF advancedMARCEditor %] <a tabindex="1" href="#" class="tagnum" title="[% innerloo.tag_lib %] - Cliquer pour déplier ce champ" onclick="ExpandField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;">[% innerloo.tag %]</a>
+ [% ELSE %] <span title="[% innerloo.tag_lib %]">[% innerloo.tag %]</span>
+ [% END %] [% IF ( innerloo.fixedfield ) %] <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        style="display:none;"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        style="display:none;"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator2 %]" />
+ [% ELSE %] <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator2 %]" />
+ [% END %] - [% ELSE %] [% IF ( innerloo.fixedfield ) %] <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator2 %]" />
+ [% ELSE %] <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator2 %]" />
+ [% END %] [% END %] [% UNLESS advancedMARCEditor %] <a tabindex="1" href="#" class="expandfield" onclick="ExpandField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;" title="Cliquer pour déplier ce champ">[% innerloo.tag_lib %]</a>
+ [% END %] <span class="field_controls">
+ [% IF ( innerloo.repeatable ) %] <a tabindex="1" href="#" class="buttonPlus" onclick="CloneField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]','[% hide_marc %]','[% advancedMARCEditor %]'); return false;" title="Répéter ce tag">
+ <img alt="Répéter ce tag" src="/intranet-tmpl/prog/img/repeat-tag.png" />
+ </a>
+ [% END %] <a tabindex="1" href="#" class="buttonMinus" onclick="UnCloneField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;" title="Supprimer ce tag">
+ <img alt="Supprimer ce tag" src="/intranet-tmpl/prog/img/delete-tag.png" />
+ </a>
+ </span>
+
+ </div>
+
+ [% FOREACH subfield_loo IN innerloo.subfield_loop %]
+ <!-- One line on the marc editor -->
+ <div class="subfield_line" style="[% subfield_loo.visibility %]" id="subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]">
+
+ [% UNLESS advancedMARCEditor %] [% IF ( subfield_loo.fixedfield ) %]<label for="tag_[% subfield_loo.tag %]_subfield_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]" style="display:none;" class="labelsubfield">
+ [% ELSE %]<label for="tag_[% subfield_loo.tag %]_subfield_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]" class="labelsubfield">
+ [% END %] [% END %] [% UNLESS hide_marc %] <span class="subfieldcode">
+ [% IF ( subfield_loo.fixedfield ) %] <img class="buttonUp" style="display:none;" src="/intranet-tmpl/prog/img/up.png" onclick="upSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]')" alt="Move Up" title="Move Up" />
+ [% ELSE %] <img class="buttonUp" src="/intranet-tmpl/prog/img/up.png" onclick="upSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]')" alt="Move Up" title="Move Up" />
+ [% END %] <input type="text"
+                            title="[% subfield_loo.marc_lib_plain %]"
+                            style=" [% IF ( subfield_loo.fixedfield ) %]display:none; [% END %]border:0;"
+                            name="tag_[% subfield_loo.tag %]_code_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]"
+                            value="[% subfield_loo.subfield %]"
+                            size="1"
+                            maxlength="1"
+                            class="flat"
+                            tabindex="0" />
+ </span>
+ [% ELSE %] <input type="hidden"
+                        name="tag_[% subfield_loo.tag %]_code_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]"
+                        value="[% subfield_loo.subfield %]" />
+ [% END %] [% UNLESS advancedMARCEditor %] [% IF ( subfield_loo.mandatory ) %]<span class="subfield subfield_mandatory">[% ELSE %]<span class="subfield">[% END %] [% subfield_loo.marc_lib_plain %] [% IF ( subfield_loo.mandatory ) %]<span class="mandatory_marker" title="Ce champ est obligatoire">*</span>[% END %] </span>
+ </label>
+ [% END %] [% subfield_loo.marc_value %] <span class="subfield_controls">
+ [% IF ( subfield_loo.repeatable ) %] <a href="#" class="buttonPlus" tabindex="1" onclick="CloneSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]','[% advancedMARCEditor %]'); return false;">
+ <img alt="Cloner" src="/intranet-tmpl/prog/img/clone-subfield.png" title="Cloner ce sous-champ" />
+ </a>
+ <a href="#" class="buttonMinus" tabindex="1" onclick="UnCloneField('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]'); return false;">
+ <img alt="Supprimer" src="/intranet-tmpl/prog/img/delete-subfield.png" title="Supprimer ce sous-champ" />
+ </a>
+ [% END %] </span>
+ 
+ </div>
+ <!-- End of the line -->
+ [% END %]
+
+ </div>
+ [% END %]<!-- if innerloo.tag -->
+ [% END %]<!-- BIG_LOO.innerloop -->
+ </div>
+[% END %]<!-- BIG_LOOP -->
+
+</div><!-- tabs -->
+
+<div name="hidden" id="hidden" class="tab">
+[% FOREACH hidden_loo IN hidden_loop %] <input type="hidden" name="tag" value="[% hidden_loo.tag %]" />
+ <input type="hidden" name="subfield" value="[% hidden_loo.subfield %]" />
+ <input type="hidden" name="mandatory" value="[% hidden_loo.mandatory %]" />
+ <input type="hidden" name="kohafield" value="[% hidden_loo.kohafield %]" />
+ <input type="hidden" name="tag_mandatory" value="[% hidden_loo.tag_mandatory %]" />
+[% END %] </div>
+[% IF ( oldauthnumtagfield ) %] <input type="hidden" name="tag" value="[% oldauthnumtagfield %]" />
+ <input type="hidden" name="subfield" value="[% oldauthnumtagsubfield %]" />
+ <input type="hidden" name="field_value" value="[% authid %]" />
+ <input type="hidden" name="mandatory" value="0" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <input type="hidden" name="tag_mandatory" value="[% tag_mandatory %]" />
+ <input type="hidden" name="tag" value="[% oldauthtypetagfield %]" />
+ <input type="hidden" name="subfield" value="[% oldauthtypetagsubfield %]" />
+ <input type="hidden" name="field_value" value="[% authtypecode %]" />
+[% END %] <fieldset class="action">
+ <input accesskey="w" value="Enregistrer" type="button" id="addauth2" onclick="Check(this.form)" />
+</fieldset>
+
+</form>
+
+</div>
+</div>
+</div>
+
+[% INCLUDE 'intranet-bottom.inc' %] 

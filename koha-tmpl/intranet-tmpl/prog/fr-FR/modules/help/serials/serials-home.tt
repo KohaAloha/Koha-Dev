@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>Périodiques</h1>
+
+<p>Le module Périodiques vous aide à gérer vos abonnements à des publications à caractère périodiques, journaux, magazines, revues, etc.</p>
+
+<p>Vous retrouvez les abonnements existant dans Koha en utilisant la boîte de recherche en haut de la page. Vous pouvez chercher sur toute partie du titre du périodique ou de son ISSN.</p>
+
+<p><strong>Voir la documentation complète sur les Périodiques dans le <a href="http://manual.koha-community.org/3.12/en/serials.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,121 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Outils &rsaquo; Importation d'adhérenta [% IF ( uploadborrowers ) %]&rsaquo; Résultat[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <style type="text/css">
+    .yui-u fieldset.rows label.widelabel { width: 12em; }
+    .line_error { width: 100%; }
+    code { background-color: yellow; }
+</style>
+</head>
+<body id="tools_import_borrowers" class="tools">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/tools/tools-home.pl">Outils</a> &rsaquo; <a href="/cgi-bin/koha/tools/import_borrowers.pl">Import patrons</a>[% IF ( uploadborrowers ) %] &rsaquo; Résultats[% END %]</div>
+
+<div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ <div class="yui-g">
+ <div class="yui-u first">
+<h1>Import patrons</h1>
+[% IF ( uploadborrowers ) %] <h5>Import results :</h5>
+<ul>
+ <li>[% imported %] notice(s) importée(s) [% IF ( lastimported ) %](dernier était [% lastimported %])[% END %]</li>
+ <li>[% overwritten %] écrasés [% IF ( lastoverwritten ) %](dernier était [% lastoverwritten %])[% END %]</li>
+ <li>[% alreadyindb %] non importé(s), parce que déjà dans la table des adhérents et écrasement désactivé [% IF ( lastalreadyindb ) %](dernier était [% lastalreadyindb %])[% END %]</li>
+ <li>[% invalid %] non importé(s), parce qu'il(s) ne sont pas dans le format attendu ! [% IF ( lastinvalid ) %](dernier était [% lastinvalid %])[% END %]</li>
+ <li>[% total %] notices traitée(s)</li>
+ <li><a href="/cgi-bin/koha/tools/tools-home.pl">Retour au Outils</a></li>
+</ul>
+ [% IF ( FEEDBACK ) %] <br /><br />
+ <div>
+ <h5>Feedback:</h5>
+ <ul class="feedback">
+ [% FOREACH FEEDBAC IN FEEDBACK %] <li>
+ [% IF ( FEEDBAC.filename ) %]Traitement du fichier chargé <span class="filename">[% FEEDBAC.filename %]</span>
+ [% ELSIF ( FEEDBAC.backend ) %]Charger tratié avec [% FEEDBAC.backend %] [% ELSIF ( FEEDBAC.headerrow ) %]Champs trouvés: [% FEEDBAC.value %] [% ELSE %][% FEEDBAC.name %] : [% FEEDBAC.value %] [% END %] </li>
+ [% END %] </ul>
+ </div>
+ [% END %] [% IF ( ERRORS ) %] <br /><br />
+ <div>
+ <h5>Erreur&nbsp;:</h5>
+ <ul>
+ [% FOREACH ERROR IN ERRORS %] [% IF ( ERROR.badheader ) %]<li>La ligne d'en-tête n'a pu être traitée</li>[% END %] [% FOREACH missing_critical IN ERROR.missing_criticals %] <li class="line_error">
+ Line <span class="linenumber">[% missing_critical.line %]</span>
+ [% IF ( missing_critical.badparse ) %] ne peut pas être lu ! [% ELSIF ( missing_critical.bad_date ) %] a des apostrophes &quot;[% missing_critical.key %]&quot; dans un mauvais format: &quot;[% missing_critical.value %]&quot; [% ELSE %] Le champ critique &quot;[% missing_critical.key %]&quot; [% IF ( missing_critical.branch_map ) %]a une valeur non reconnue &quot;[% missing_critical.value %]&quot; [% ELSIF ( missing_critical.category_map ) %]a une valeur &quot;[% missing_critical.value %]&quot; [% ELSE %]manquante [% END %] (borrowernumber: [% missing_critical.borrowernumber %]; nom: [% missing_critical.surname %]). [% END %] <br /><code>[% missing_critical.lineraw %]</code>
+ </li>
+ [% END %] [% END %] </ul>
+ </div>
+ [% END %] [% ELSE %] <ul>
+ <li>Sélectionner un fichier à importer dans la table des adhérents</li>
+ <li>Si le numéro de carte existe déjà dans la table, vous pouvez choisir soit d'ignorer la nouvelle fiche, soit d'écraser l'ancienne.</li>
+</ul>
+<form method="post" action="[% SCRIPT_NAME %]" enctype="multipart/form-data">
+<fieldset class="rows">
+<legend>Import into the borrowers table</legend>
+<ol>
+ <li>
+ <label for="uploadborrowers">Fichier à importer&nbsp;: </label>
+ <input type="file" id="uploadborrowers" name="uploadborrowers" />
+ </li>
+</ol></fieldset>
+ <fieldset class="rows">
+ <legend>Champ à utiliser pour le test de concordance</legend>
+ <ol>
+ <li class="radio">
+ <select name="matchpoint" id="matchpoint">
+ <option value="cardnumber">Numéro de carte</option>
+ [% FOREACH matchpoint IN matchpoints %] <option value="[% matchpoint.code %]">[% matchpoint.description %]</option>
+ [% END %] </select>
+ </li>
+ </ol>
+ </fieldset>
+<fieldset class="rows">
+<legend>Default values</legend>
+<ol>
+ [% FOREACH columnkey IN columnkeys %] <li>
+ <label class="widelabel" for="[% columnkey.key %]">[% columnkey.key %]: </label>
+ <input id="[% columnkey.key %]" name="[% columnkey.key %]" />
+ </li>
+ [% END %] </ol></fieldset>
+ <fieldset class="rows">
+ <legend>Si une entrée concordante est déjà dans la table des adhérents&nbsp;:</legend>
+ <ol><li class="radio">
+ <input type="radio" id="overwrite_cardnumberno" name="overwrite_cardnumber" value="0" checked="checked" /><label for="overwrite_cardnumberno">Ignorer celui-ci, garder l'existant.</label>
+ </li>
+ <li class="radio">
+ <input type="radio" id="overwrite_cardnumberyes" name="overwrite_cardnumber" value="1" /><label for="overwrite_cardnumberyes">Écraser l'adhérent existant avec celle-ci</label>
+ </li>
+ </ol>
+ </fieldset>
+ [% IF ( ExtendedPatronAttributes ) %] <fieldset class="rows">
+ <legend>Attributs adhérent</legend>
+ <ol><li class="radio">
+ <input type="radio" id="ext_preserve_0" name="ext_preserve" value="0" checked="checked" /><label for="ext_preserve_0">Remplacer tous les Attributs Adhérent</label>
+ </li>
+ <li class="radio">
+ <input type="radio" id="ext_preserve_1" name="ext_preserve" value="1" /><label for="ext_preserve_1">Remplacer uniquement les Attributs Supplémentaires inclus</label>
+ </li>
+ </ol>
+ </fieldset>
+ [% END %] <fieldset class="action"><input type="submit" value="Import" /></fieldset>
+</form>
+[% END %] </div>
+<div class="yui-u">
+<h2>Notes&nbsp;: </h2>
+<ul>
+<li>The first line in the file must be a header row defining which columns you are supplying in the import file.</li>
+<li><b>Télécharger un fichier CSV modèle contenant toutes les colonnées <a href="?sample=1">ici</a>.</b> Les valeurs sont séparées par des virgules.</li>
+<li>OU choisissez dans la liste suivantes les champs que vous fournirez :<ul><li>
+ [% FOREACH columnkey IN columnkeys %]'[% columnkey.key %]', [% END %] </li></ul></li>
+[% IF ( ExtendedPatronAttributes ) %] <li>Si vous voulez charger des attributs d'adhérent, le champ 'patron_attributes' doit contenir une liste de types d'attrbut et de valeurs, séparés par des virgules. Le code de l'attribut suivi de deux points doit précéder chaque valeur. Par exemple : <b>INSTID:12345,LANG:fr</b> ou <b>STARTDATE:January 1 2010,TRACK:Day</b>. If un enregistrement a plus d'un attribut, les champs doivent être entrés en tant que chaîne sans guillemets (exemples précédents), ou bien les champs entourés de guillemets et délimités par des virgules: <b>&quot;STARTDATE:January 1, 2010&quot;,&quot;TRACK:Day&quot;</b>. La seconde syntaxe sera requise si les données peuvent contenir une virgule. </li>
+[% END %] <li>The fields 'branchcode' and 'categorycode' are <b>obligatoire</b> and <b>doivent correspondre à</b> des valeurs valides dans votre système.</li>
+<li>Les mots de passe doivent être stockés en clair et seront convertis en somme md5. Si vos mots de passe sont déjà encryptés, demandez à votre administrateur système quelles options s'offrent à vous).</li>
+<li>Les dates doivent être au format défini dans les préférences système et <b>doit</b> être complétées de zéros, par ex. '01/02/2011'. Ou bien vous pouvez fournir les dates au format ISO, par ex. '2010-02-01'? </li>
+</ul>
+
+ </div>
+ </div>
+ </div>
+ </div>
+ <div class="yui-b noprint">
+[% INCLUDE 'tools-menu.inc' %] </div>
+ </div>
+[% INCLUDE 'intranet-bottom.inc' %] 

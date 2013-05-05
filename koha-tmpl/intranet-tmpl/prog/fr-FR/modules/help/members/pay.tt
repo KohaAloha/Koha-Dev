@@ -1,0 +1,60 @@
+[% INCLUDE 'help-top.inc' %] <h1>Payer des amendes, les passer en pertes et profits</h1>
+
+<p>Each line item can be paid in full (or written off) using the 'Pay Fines' tab.</p>
+
+<ul>
+ <li>Chaque ligne de compte peut être payée en entier, partiellement, ou passée en pertes et profits.</li>
+ <li>Pay a fine in full
+<ul>
+ <li>Cliquez sur Payer à côté de l'amende que vous voulez payer entièrement.</li>
+ <li>The full amount of the fine will be populated for you in the "Collect From Patron" box</li>
+ <li>Cliquer Confirmer</li>
+ <li>The fine will be removed from outstanding fines, and displayed as fully paid.</li>
+</ul>
+</li>
+ <li>Pay a partial fine
+<ul>
+ <li>Cliquez sur Payer à côté de l'amende que vous voulez partiellement payer.</li>
+ <li>Entrez le montant que vous percevez de l'adhérent dans Percevoir de l'adhérent. </li>
+ <li>Cliquer Confirmer</li>
+ <li>The fine will be updated to show the original Amount, and the current Amount Outstanding</li>
+</ul>
+</li>
+ <li>Pay an amount towards all fines
+<ul>
+ <li>Cliquez sur le bouton Payer le montant.</li>
+ <li>Entrez le montant que vous percevez de l'adhérent dans Percevoir de l'adhérent. Le total de toutes les amendes est affiché dans Total des amendes non perçues.</li>
+ <li>Cliquer Confirmer</li>
+ <li>The fine totals will be updated with the payment applied to oldest fines first.</li>
+</ul>
+</li>
+ <li>Pay Selected fines
+<ul>
+ <li>Cochez les boîtes de sélection des amendes que vous voulez payer, puis cliquez sur Payer la sélection.</li>
+ <li>Entrez le montant payé en face des amendes.</li>
+ <li>Cliquer Confirmer</li>
+ <li>The fine totals will be updated with the payment applied to the oldest selected fines first.</li>
+</ul>
+</li>
+ <li>Writeoff a single fine
+<ul>
+ <li>Cliquez sur Pertes et profits à côté de l'amende que vous voulez passer en pertes et profits.</li>
+ <li>The fine will be removed from outstanding fines, and displayed as written off.</li>
+</ul>
+</li>
+ <li>Writeoff All fines
+<ul>
+ <li>Cliquez sur le bouton Tout en pertes et profits.</li>
+ <li>Toutes les amendes seront retirées des amendes à recouvrer et affichées en pertes et profits.</li>
+</ul>
+</li>
+ <li>If you accidentally mark and item as paid, you can reverse that line item by clicking 'Reverse' to the right of the line
+<ul>
+ <li>Once clicked a new line item will be added to the account, showing the payment as reversed</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur le Paiement des amendes dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#payfines">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

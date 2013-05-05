@@ -1,0 +1,76 @@
+[% INCLUDE 'help-top.inc' %] <h2>Ajouter un exemplaire</h2>
+
+<p>Après avoir enregistré une notice bibliographique, vous serez redirigé vers un exemplaire vierge que vous pourrez créer et rattacher à la notice bibliographique. Vous pouvez aussi cliquer sur 'Ajouter exemplaires' depuis le résultat d'une recherche depuis le module catalogage, ou vous pouvez ajouter un nouvel exemplaire directement en cliquant sur le bouton 'Ajouter' de la notice bibliographique, puis 'Ajouter exemplaire'</p>
+
+<p>The item edit form will appear:</p>
+
+<p>Au strict minimum, si vous prévoyer de faire des prêts, les champs suivants devraient être entrés pour les exemplaires&nbsp;:</p>
+
+<ul>
+ <li>2 - Source de classification</li>
+ <li>a - Localisation permanente</li>
+ <li>b - Shelving location</li>
+ <li>o - Cote complète</li>
+ <li>p - Code à barres</li>
+ <li>v - Cost, replacement price <ul>
+ <li>Cette valeur peut être facturer à un adhérent quand vous marquez comme Perdu un exemplaire qu'il a emprunté.</li>
+</ul>
+</li>
+ <li>y - Koha item type</li>
+</ul>
+
+<p>To make sure that these values are filled in you can mark them as mandatory in the framework you're using and then they will appear in red with a 'required' label. The item will not save until the required fields are filled in.</p>
+
+<p>Tip: To make item subfields required in a framework you'll want to edit the 952 field in the framework editor.</p>
+
+<p>Sous le formulaire d'ajout, il y a trois boutons pour ajouter l'exemplaire.</p>
+
+<ul>
+ <li>Ajouter exemplaire ajoutera un seul exemplaire</li>
+ <li>Ajouter &amp; dupliquer ajoutera l'exemplaire et pré-remplira le formulaire pour que vous puissiez ajouter un autre exemplaire</li>
+ <li>Ajouter copies multiples vous demandera combien d'exemplaires, qui seront tous ajoutés à l'identique, sauf le code-barres qui sera incrémenté de 1 pour chaque exemplaire.</li>
+</ul>
+
+<p>Les exemplaires ajoutés apparaitront au-dessus du formulaire d'ajout</p>
+
+<p>Vos exemplaires seront également affichés sous la notice bibliographique sur la page d'affichage détaillé.</p>
+
+<p>Si vous avez activé la préférence système SpineLabelShowPrintOnBibDetails, il y aura un lien à côté de chaque exemplaire pour imprimer une étiquette rapide.</p>
+
+<h2>Modifier des exemplaires</h2>
+
+<p>Les exemplaires peuvent être modifiés de plusieurs façons.</p>
+
+<ul>
+ <li>Clicking 'Edit' and 'Edit Items' from the bibliographic record
+<ul>
+ <li>Which will open up a list of items where you can click 'Edit' to the left of the specific item you would like to edit.</li>
+</ul>
+</li>
+ <li>Clicking 'Edit Items' beside the item on the 'Items' tab
+<ul>
+ <li>Which will open up a list of items where you can click 'Edit' to the left of the specific item you would like to edit.</li>
+</ul>
+</li>
+ <li>Clicking 'Edit' and then 'Edit items in batch'
+<ul>
+ <li>This will open up the batch item modification tool where you can edit all of the items on this record as a batch.</li>
+</ul>
+</li>
+</ul>
+
+<p>The edit menu is also where items can be deleted from</p>
+
+<h2>Supprimer les exemplaires</h2>
+
+<p>Il y a plusieurs façons de supprimer des exemplaires. Si vous avez besoin de supprimer un exemplaire, vous pouvez ouvrir la page de détail de sa notice bibliographique, puis cliquer sur le bouton Modifier. Là, vous choisissez l'option Modifier les exemplaires.</p>
+
+<p>Une liste des exemplaires est affichées. A côté de chaque exemplaire, un lien Supprimer permet de supprimer l'exemplaire s'il n'est pas en prêt.</p>
+
+<p>Si vous êtes sûr que tous les exemplaires attachés à votre notice ne sont pas actuellement en prêt, vous pouvez utiliser l'option Supprimer tous les exemplaires dans le menu Modifier.</p>
+
+<p>Vous pouvez utiliser l'outil de suppression par lot pour supprimer un lot d'exemplaires.</p>
+
+<p><strong>See the full documentation for Adding/Editing Items in the <a href="http://manual.koha-community.org/3.12/en/catitems.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

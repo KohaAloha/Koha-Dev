@@ -1,0 +1,45 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration système &rsaquo; Règles de prêt &rsaquo; Cloner les règles de prêt</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="admin_clone-rules" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; <a href="/cgi-bin/koha/admin/smart-rules.pl">Règles de prêt</a> &rsaquo; Cloner les règles de prêt</div>
+
+<div id="doc3" class="yui-t1">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ <h2>Cloner les règles de circulation [% IF ( frombranchname || tobranchname ) %] [% IF ( frombranchname ) %] de "[% frombranchname %]"[% END %] [% IF ( tobranchname ) %] à "[% tobranchname %]"[% END %] [% END %]</h2>
+
+ [% IF ( result ) %] [% IF ( error ) %] <div class="dialog alert">Echec de la copie des règles de prêt !</div>
+ [% ELSE %] <div class="dialog message"><p>Les règles ont été clonées.</p></div>
+ [% END %] <a href="/cgi-bin/koha/admin/smart-rules.pl">Retourner aux règles de prêt</a>
+ [% ELSE %] <p class="help">Attention! Si le site de destination a déjà des règles définies, elles seront écrasées!</p> 
+ <form action="/cgi-bin/koha/admin/clone-rules.pl" method="post">
+ [% UNLESS ( frombranch ) %] <fieldset>
+ <legend>Choisissez le site à partir duquel cloner les règles</legend> 
+ <label for="frombranch">Source library:</label>
+ <select name="frombranch" id="frombranch">
+ <option value="">Default</option>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <option value="[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>
+ [% ELSE %] <option value="[% branchloo.value %]">[% branchloo.branchname %]</option>
+ [% END %] [% END %] </select>
+ [% IF ( tobranch ) %]<input type="hidden" name="tobranch" value="[% tobranch %]" />[% END %] </fieldset>
+ [% END %] [% UNLESS ( tobranch ) %] <fieldset>
+ <legend>Sélectionner le site à partir duquel cloner les règles</legend> 
+ <label for="tobranch">Destination library:</label>
+ <select name="tobranch" id="tobranch">
+ <option value="">Default</option>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <option value="[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>
+ [% ELSE %] <option value="[% branchloo.value %]">[% branchloo.branchname %]</option>
+ [% END %] [% END %] </select>
+ [% IF ( frombranch ) %]<input type="hidden" name="frombranch" value="[% frombranch %]" />[% END %] </fieldset>
+ [% END %] <input value="Valider" type="submit" />
+ </form>
+
+ [% END %] </div>
+
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

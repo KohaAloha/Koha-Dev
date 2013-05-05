@@ -1,0 +1,426 @@
+[% INCLUDE 'help-top.inc' %] <h2>Patron permissions</h2>
+
+<p>Les permissions l'adhérent sont utilisées pour définir les droits des bibliothécaires quand il sont dans l'interface professionnelle.</p>
+
+<p style="color: #990000">Important: In order for a staff member to log into the staff interface they must have (at the very least) 'catalogue' permissions which allow them to view the staff interface.</p>
+
+<h3>Setting Patron Permissions</h3>
+
+<p>Pour fixer les permissions de l'adhérents, vous devez d'abord aller sur la fiche d'un adhérent appartenant au type Personnel.</p>
+
+<ul>
+ <li>Sur la fiche de l'adhérent, cliquez sur le bouton Plus et choisissez Définir les permissions pour modifiez l'adhérent.</li>
+ <li>Une liste des permissions est affichées. Certaines d'entre elles peuvent être étendues en cliquant sur le signe plus sur la gauche.</li>
+</ul>
+
+<h3>Les permissions de l'adhérent</h3>
+
+<ul>
+ <li>super-bibliothécaire <ul>
+ <li>Access to all librarian functions
+<ul>
+ <li style="background-color: #ffe599;">Tip: With this selected there is no need to choose any other permissions</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>Permission de faire circuler<ul>
+ <li>Check out and check in items</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>catalogue<ul>
+ <li><strong>Required for staff login.</strong> Staff access, allows viewing the catalogue in staff client
+<ul>
+ <li style="color: #990000">Important: Must be given to all staff members to allow them to login to the staff client</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>paramètres <ul>
+ <li>Manage Koha system settings (Administration panel)</li>
+ <li>This secton can be expanded</li>
+</ul>
+</li>
+ <li>Permission de gérer les adhérents<ul>
+ <li>Add or modify patrons</li>
+</ul>
+</li>
+ <li>permissions
+<ul>
+ <li>Set user permissions</li>
+</ul>
+</li>
+ <li>reserveforothers <ul>
+ <li>Place and modify holds for patrons</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>Permission de prêt (inutile)<ul>
+ <li>Borrow books</li>
+</ul>
+</li>
+ <li>editcatalogue
+<ul>
+ <li>Edit Catalog (Modify bibliographic/hodings data)</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>updatecharges <ul>
+ <li>Manage patrons fines and fees</li>
+</ul>
+</li>
+ <li>Permission d'acquisition<ul>
+ <li>Acquisition and/or suggestion management</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>management <ul>
+ <li>Set library management paraments (deprecated)
+<ul>
+ <li style="color: #990000">Important: This permission level no longer controls anything.</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>outils <ul>
+ <li>Use all tools</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>editauthorities
+<ul>
+ <li>Edit Authorities</li>
+</ul>
+</li>
+ <li>périodiques <ul>
+ <li>Manage serial subscriptions</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>rapports <ul>
+ <li>Allow access to the reports module</li>
+ <li>Les rapports qu'on trouve sur la page Circulation ne sont pas contrôlés par cette permission</li>
+ <li>Cette section peut être étendue.</li>
+</ul>
+</li>
+ <li>staffaccess <ul>
+ <li>Allow staff members to modify permissions for other staff members</li>
+ <li style="color: #990000">Important: Requires the borrowers permission above</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur la circulation</h4>
+
+<p>Si l'utilisateur a la permission Circulation, il aura le droit de réaliser toutes les opérations de circulation. Si vous souhaitez contrôler plus finement les permissions, utilisez les options ci-dessous : </p>
+
+<ul>
+ <li>Permission de définir les permissions<ul>
+ <li>Remaining circulation permissions</li>
+ <li>All circulation rights except the ability to override renewals</li>
+</ul>
+</li>
+ <li>overdues_report
+<ul>
+ <li>Execute overdue items report</li>
+ <li>The permission to run the overdues reports found under Circulation</li>
+</ul>
+</li>
+ <li>override_renewals <ul>
+ <li>Outrepasser le blocage de renouvellement</li>
+ <li>Requires that the staff member also has circulate_remaining_permissions</li>
+</ul>
+</li>
+</ul>
+
+<h4>Granular Parameters Permissions</h4>
+
+<p>If the staff member has 'parameters' permissions they have the ability to perform all of these actions. If you would like to control parameter permissions on a more granular level choose from these options:</p>
+
+<ul>
+ <li>manage_circ_rules
+<ul>
+ <li>Manage circulation rules</li>
+ <li>The ability to access the Circulation and fines rules in the administration area</li>
+</ul>
+</li>
+ <li>parameters_remaining_permissions
+<ul>
+ <li>Remaining system parameters permissions</li>
+ <li>The ability to access all areas in Administration (other than the Circulation and fine rules)</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur les réservations</h4>
+
+<p>Si l'utilisateur a la permission 'reserveforothers', il aura le droit de faire toute réservation. Pour un contrôle plus fin, utilisez les options ci-dessous :</p>
+
+<ul>
+ <li>modify_holds_priority <ul>
+ <li>Modify holds priority</li>
+ <li>Permission de modifier l'ordre des réservations (monter/descendre une réservation)</li>
+</ul>
+</li>
+ <li>place_holds
+<ul>
+ <li>Place holds for patrons</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur le catalogage</h4>
+
+<p>Si l'utilisateur a la permission 'editcatalogue', il aura le droit de faire toute opération de catalogage. Pour un contrôle plus fin de ces droits, utilisez les options ci-dessous :</p>
+
+<ul>
+ <li>edit_catalogue
+<ul>
+ <li>Edit catalog (Modify bibliographic/holdings data)</li>
+ <li>Donne l'accès à toutes les fonctions de catalogage à travers la page de catalogage</li>
+</ul>
+</li>
+ <li>edit_items
+<ul>
+ <li>Modifier les exemplaires</li>
+ <li>Ability to make edits to item/holdings records, but not bibliographic records</li>
+</ul>
+</li>
+ <li>fast_cataloging <ul>
+ <li>Catalogage rapide</li>
+ <li>La possibilité de cataloguer en utilisant la grille Catalogage rapide disponible sur la page de circulation</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur les acquisitions</h4>
+
+<p>Si l'utilisateur a la permission 'acquisition', il aura le doit d'effectuer toute opération d'acquisition. Pour un contrôle plus fin de ces droits, utilisez les options ci-dessous : </p>
+
+<ul>
+ <li>Permission d'ajouter et supprimer des budgets<ul>
+ <li>Add and delete budgets (but can't modify them)</li>
+</ul>
+</li>
+ <li>Permission de gérer les budgets<ul>
+ <li>Permission de gérer les budgets</li>
+</ul>
+</li>
+ <li>budget_manage_all
+<ul>
+ <li>Manage all budgets</li>
+</ul>
+</li>
+ <li>Permission de modifier les budgets<ul>
+ <li>Modify budget (can't create lines, but can modify existing ones)</li>
+</ul>
+</li>
+ <li>Permission de gérer les contrats<ul>
+ <li>Permission de gérer les contrats</li>
+</ul>
+</li>
+ <li>group_manage <ul>
+ <li>Gestion des commandes et des groupes de paniers</li>
+</ul>
+</li>
+ <li>order_manage <ul>
+ <li>Gestion des commandes et des paniers</li>
+</ul>
+</li>
+ <li>order_receive <ul>
+ <li>Gestion des commandes et des paniers</li>
+</ul>
+</li>
+ <li>period_manage
+<ul>
+ <li>Gestion des périodes</li>
+</ul>
+</li>
+ <li>planning_manage
+<ul>
+ <li>Permission de gérer les prévisions budgétaires</li>
+</ul>
+</li>
+ <li>vendors_manage <ul>
+ <li>Gestion des fournisseurs</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur les périodiques</h4>
+
+<p>Si l'utilisateur a la permission 'serials', il pourra effectuer toute opération de gestion des périodiques. Pour un contrôle plus fin des droit, utilisez les options ci-dessous :</p>
+
+<ul>
+ <li>Permission de vérifier les dates d'expiration<ul>
+ <li>Permission de vérifier les dates d'expiration des abonnements</li>
+</ul>
+</li>
+ <li>claim_serials <ul>
+ <li>Claim missing serials via the Claims section</li>
+</ul>
+</li>
+ <li>Permission de créer un abonnement<ul>
+ <li>Permission d'ajouter des abonnements</li>
+</ul>
+</li>
+ <li>Permission de supprimer un abonnement<ul>
+ <li>Supprimer une inscription</li>
+</ul>
+</li>
+ <li>edit_subscription
+<ul>
+ <li>Edit an existing subscription</li>
+ <li>This permission does not include the ability to delete or create a subscription</li>
+</ul>
+</li>
+ <li>receive_serials <ul>
+ <li>Serials receiving</li>
+ <li>Bulletiner les périodiques</li>
+</ul>
+</li>
+ <li>renew_subscription <ul>
+ <li>Renew a subscription</li>
+</ul>
+</li>
+ <li>routing <ul>
+ <li>Liste de Circulation</li>
+ <li>Gestion des liste de circulation</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines</h4>
+
+<p>Si l'utilisateur a la permission 'tools', il pourra accéder à toutes les fonctions du module Outils. Pour limiter l'accès à certains outils, utilisez les options ci-dessous :</p>
+
+<ul>
+ <li>Permission de télécharger des images adhérents <ul>
+ <li>Télécharger les photos des adhérents en lot ou une à une  </li>
+ <li>Access to the Image Upload Tool</li>
+</ul>
+</li>
+ <li>delete_anonymize_patrons <ul>
+ <li>Delete old borrowers and anonymize circulation/reading history (deletes borrower reading history)</li>
+ <li>Access to the Anonymize Patron Tool</li>
+</ul>
+</li>
+ <li>edit_calendar
+<ul>
+ <li>Define days when the library is closed</li>
+ <li>Access to the Calendar/Holidays Tool</li>
+</ul>
+</li>
+ <li>edit_news
+<ul>
+ <li>Rédiger des nouvelles  pour les interfaces OPAC et bibliothécaire</li>
+ <li>Access to the News Tool</li>
+</ul>
+</li>
+ <li>edit_notice_status_triggers
+<ul>
+ <li>Définir les règles de suspension et notifications sur retard</li>
+ <li>Access to the Overdue Notice Status/TriggersTool</li>
+</ul>
+</li>
+ <li>edit_notices
+<ul>
+ <li>Define notices</li>
+ <li>Access to the Notices Tool</li>
+</ul>
+</li>
+ <li>export_catalog <ul>
+ <li>Export bibliographic, authorities and holdings data</li>
+ <li>Access to the Export Data Tool</li>
+</ul>
+</li>
+ <li>import_patrons <ul>
+ <li>Import patron data</li>
+ <li>Access to the Import Patrons Tool</li>
+</ul>
+</li>
+ <li>inventaire/récolement <ul>
+ <li>Réaliser l'inventaire (récolement) de votre catalogue</li>
+ <li>Access to the Inventory Tool</li>
+</ul>
+</li>
+ <li>items_batchdel <ul>
+ <li>Perform batch deletion of items</li>
+ <li>Access to the Batch Item Deletion Tool</li>
+</ul>
+</li>
+ <li>items_batchmod <ul>
+ <li>Perform batch modification of items</li>
+ <li>Access to the Batch Item Modification Tool</li>
+</ul>
+</li>
+ <li>label_creator <ul>
+ <li>Create printable labels and barcodes from catalog and patron data</li>
+ <li>Access to the Label Creator and Quick Label Creator Tools</li>
+</ul>
+</li>
+ <li>manage_csv_profiles <ul>
+ <li>Gérer les profils d'export CSV</li>
+ <li>Access to the CSV Profiles Tool</li>
+</ul>
+</li>
+ <li>manage_staged_marc <ul>
+ <li>Gérer les notices MARC préparées, y compris compléter et reverser les imports.</li>
+ <li>Access to the Manage Staged MARC Records Tool</li>
+</ul>
+</li>
+ <li>moderate_comments <ul>
+ <li>Moderate patron comments</li>
+ <li>Access to the Comments Tool</li>
+</ul>
+</li>
+ <li>moderate_tags
+<ul>
+ <li>Modérer les tags des adhérents</li>
+ <li>Acces to the Tags Tool</li>
+</ul>
+</li>
+ <li>schedule_tasks <ul>
+ <li>Planifier les tâches à exécuter</li>
+ <li>Access to the Task Scheduler Tool</li>
+</ul>
+</li>
+ <li>Traiter pour import<ul>
+ <li>Stage MARC records into the reservoir</li>
+ <li>Access to the Stage MARC Records Tool</li>
+</ul>
+</li>
+ <li>upload_local_cover_images
+<ul>
+ <li>Upload local cover images</li>
+ <li>Access to the Upload Local Cover Image Tool</li>
+</ul>
+</li>
+ <li>view_system_logs <ul>
+ <li>Consulter les logs du système</li>
+ <li>Access to the Log Viewer Tool</li>
+</ul>
+</li>
+</ul>
+
+<h4>Permissions fines sur les rapports</h4>
+
+<p>Si l'utilisateur a la permission 'reports', il pourra utiliser toutes les fonctions liées aux rapports. Pour un contrôle plus fin des ces droits, utilisez les options ci-dessous :</p>
+
+<ul>
+ <li>Permission de créer un rapport<ul>
+ <li>Create SQL Reports</li>
+ <li>La possibilité de créer et modifier mais pas de lancer des rapports SQL</li>
+</ul>
+</li>
+ <li>execute_reports <ul>
+ <li>Execute SQL Reports</li>
+ <li>La possibilité de lancer mais pas de créer ou modifier des rapports SQL</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur les Permissions des adhérents dans le <a href="http://manual.koha-community.org/3.12/en/patronpermissions.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

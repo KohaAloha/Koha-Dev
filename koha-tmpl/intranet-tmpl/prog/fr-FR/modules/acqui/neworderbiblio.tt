@@ -1,0 +1,75 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Rechercher les notices existantes</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'greybox.inc' %] [% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+ $(document).ready(function() {
+    var resultst = $("#resultst").dataTable($.extend(true, {}, dataTablesDefaults, {
+        'sDom': 't',
+        'bPaginate': false,
+        'bFilter': false,
+        'bInfo': false,
+        'bSort': false,
+    } ) );
+ });
+ //]]>
+</script>
+</head>
+<body id="acq_neworderbiblio" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% name %]</a> &rsaquo; <a href="/cgi-bin/koha/acqui/basket.pl?=[% basketno %]">Panier [% basketno %]</a> &rsaquo; Rechercher des notices existantes</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ 
+<h1>Recherche des notices existantes</h1>
+
+
+[% IF ( total ) %] <b>[% total %] réponse(s) trouvée(s) </b> 
+<div class="pages">[% pagination_bar %]</div>
+[% ELSE %] <h3> Pas de réponse</h3>
+<p>
+ Pas de résultat correspondant à votre recherche pour<span style="font-weight: bold;">&ldquo;[% query %]&rdquo;</span> à [% LibraryName %] </p>
+[% END %] [% IF ( query_error ) %] <div class="dialog alert"><p><strong>Erreur&nbsp;: </strong> [% query_error %]</p></div>
+[% END %] [% IF ( total ) %] <div class="searchresults">
+ <table id="resultst">
+ <thead>
+ <tr>
+ <th>Résumé</th>
+ <th>Editeur</th>
+ <th>Copyright</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH biblio IN resultsloop %] <tr>
+ <td>
+ <p><span class="title">[% biblio.title |html %]</span>
+ [% IF ( biblio.author ) %] par <span class="author">[% biblio.author %]</span>, [% END %]</p>
+ <p>[% IF ( biblio.isbn ) %] [% biblio.isbn %][% END %] [% IF ( biblio.pages ) %] - [% biblio.pages %][% END %] [% IF ( biblio.notes ) %] : [% biblio.notes %][% END %] [% IF ( biblio.size ) %] ; [% biblio.size %][% END %] </p>
+ </td>
+ <td>
+ [% biblio.publishercode %] [% IF ( biblio.place ) %] ; [% biblio.place %][% END %] </td>
+ <td>
+ [% biblio.copyrightdate %] </td>
+ <td>
+ <a href="/cgi-bin/koha/catalogue/showmarc.pl?id=[% biblio.biblionumber %]" title="MARC" rel="gb_page_center[600,500]">Notice</a>
+ </td>
+ <td>
+ <a href="/cgi-bin/koha/acqui/neworderempty.pl?booksellerid=[% booksellerid %]&basketno=[% basketno %]&biblionumber=[% biblio.biblionumber %]" title="Commander celui-ci">
+ Commande</a>
+ </td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+</div>
+[% END %] [% INCLUDE 'acquisitions-add-to-basket.inc' %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

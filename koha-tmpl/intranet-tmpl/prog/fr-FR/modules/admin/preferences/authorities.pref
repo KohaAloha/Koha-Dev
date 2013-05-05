@@ -1,0 +1,100 @@
+--- 
+"Autorit\xC3\xA9s": 
+  "Cr\xC3\xA9ateur de Liens": 
+    - 
+      - Utiliser le module
+      - 
+        choices: 
+          Default: "D\xC3\xA9faults"
+          FirstMatch: "Premi\xC3\xA8re correspondance"
+          LastMatch: "Derni\xC3\xA8re correspondance"
+        default: Default
+        pref: LinkerModule
+      - "du cr\xC3\xA9ateur de liens pour faire les correspondances entre vedettes et notices autorit\xC3\xA9s"
+    - 
+      - "Param\xC3\xA9trer les options suivantes pour le cr\xC3\xA9ateur de liens autorit\xC3\xA9"
+      - 
+        class: multi
+        pref: LinkerOptions
+      - "(options s\xC3\xA9par\xC3\xA9es par |)"
+    - 
+      - 
+        choices: 
+          "": "Ne pas recr\xC3\xA9er"
+          1: "Recr\xC3\xA9er"
+        default: 1
+        pref: LinkerRelink
+      - "le lien pour les vedettes qui sont d\xC3\xA9j\xC3\xA0 li\xC3\xA9es \xC3\xA0 une notice autorit\xC3\xA9"
+    - 
+      - 
+        choices: 
+          "": Ne pas conserver
+          1: Conserver
+        default: ''
+        pref: LinkerKeepStale
+      - "les liens existants \xC3\xA0 une notice autorit\xC3\xA9 pour les vedettes pour lesquelles le cr\xC3\xA9ateur de liens ne trouve pas de correspondance "
+    - 
+      - 
+        choices: 
+          "": "Ne pas recr\xC3\xA9er"
+          1: "Recr\xC3\xA9er"
+        default: ''
+        pref: CatalogModuleRelink
+      - "automatiquement le lien des vedettes li\xC3\xA9es pr\xC3\xA9alablement \xC3\xA0 l'enregistrement des notices dans le module catalogage"
+  "G\xC3\xA9n\xC3\xA9ral": 
+    - 
+      - 
+        choices: 
+          "": Don't display
+          1: Display
+        default: ''
+        pref: AuthDisplayHierarchy
+      - broader term/narrower term hierarchies when viewing authorities.
+    - 
+      - Quand on saisit une notice bibliographique
+      - 
+        choices: 
+          "": "ne pas cr\xC3\xA9er"
+          1: "cr\xC3\xA9er"
+        default: ''
+        pref: BiblioAddsAuthorities
+      - "automatiquement les autorit\xC3\xA9s si n\xC3\xA9cessaire (plut\xC3\xB4t que d'avoir \xC3\xA0 faire r\xC3\xA9f\xC3\xA9rence \xC3\xA0 des autorit\xC3\xA9s existantes)"
+    - 
+      - "Lors de l'\xC3\xA9dition des notices"
+      - 
+        choices: 
+          "": "ne pas cr\xC3\xA9er"
+          1: "cr\xC3\xA9er"
+        default: 1
+        pref: AutoCreateAuthorities
+      - "les notices autorit\xC3\xA9s qui manquent (BiblioAddsAuthorities doit \xC3\xAAtre positionn\xC3\xA9 sur \"cr\xC3\xA9er\" pour que ce soit pris en compte"
+    - 
+      - 
+        choices: 
+          "": "Mettre \xC3\xA0 jour automatiquement"
+          1: "Ne pas mettre \xC3\xA0 jour automatiquement"
+        default: 1
+        pref: dontmerge
+      - "les notices biblio \xC3\xA0 la modification d'une notice autorit\xC3\xA9. Si vous souhaitez la mise \xC3\xA0 jour, demander \xC3\xA0 votre administrateur d'installer le script merge_authority.pl en cron"
+    - 
+      - Utiliser le texte suivant pour le contenu du champ MARC21 fixe 008 position 06-30. Ne pas inclure la date (position 00-05).
+      - 
+        class: code
+        default: "|| aca||aabn           | a|a     d"
+        pref: MARCAuthorityControlField008
+        type: textarea
+    - 
+      - 
+        choices: 
+          "": Ne pas utiliser
+          1: Utiliser
+        default: 1
+        pref: UseAuthoritiesForTracings
+      - "les num\xC3\xA9ros des autorit\xC3\xA9s \xC3\xA0 la place du texte pour le tra\xC3\xA7age des sujets."
+    - 
+      - Use the following text for the contents of UNIMARC authority field 100 position (fixed length data elements). Do NOT include the date (position 00-05).
+      - 
+        class: code
+        defautl: afrey50      ba0
+        pref: UNIMARCAuthorityField100
+        type: textarea

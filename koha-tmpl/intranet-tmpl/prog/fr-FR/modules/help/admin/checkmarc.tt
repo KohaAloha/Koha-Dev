@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>MARC Bibliographic Framework Test</h1>
+
+<p>Cet outil contrôle la strucutre MARC de vos grilles.</p>
+
+<p>If you change your MARC Bibliographic framework it's recommended that you run this tool to test for errors in your definition.</p>
+
+<p><strong>See the full documentation for the MARC Bibliographic Framework Test in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#marcbibframeworkstest">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

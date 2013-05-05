@@ -1,0 +1,63 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Catalogue &rsaquo; Historique des prêts pour [% title |html %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <link rel="stylesheet" href="[% themelang %]/css/datatables.css" />
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" id="js">
+$(document).ready(function() {
+    [% IF (dateformat == 'metric') %]
+        dt_add_type_uk_date();
+    [% END %]
+    $("#table_issues").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "aaSorting": [[ 4, "desc" ]]
+        })
+    );
+}); </script>
+
+</head>
+<body id="catalog_issuehistory" class="catalog">
+
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/catalogue/search.pl">Catalogue</a> &rsaquo; Historique de prêt de <i>[% title |html %]</i></div>
+
+<div id="doc3" class="yui-t2">
+
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h1>Historique de prêt pour [% title |html %]</h1>
+[% IF ( author ) %]<h3>par [% author %]</h3>[% END %] <div class="searchresults">
+ [% IF ( issues ) %] <h4>A été prêté [% total %] fois</h4>
+ <table id="table_issues">
+ <thead><tr>
+ <th>Adhérent</th>
+ <th>Code à barres</th>
+ <th>Emprunté à</th>
+ <th>Renouvelé</th>
+ <th>Emprunté le</th>
+ <th>Date de retour</th>
+ <th>Retour</th>
+ </tr></thead>
+ <tbody>
+ [% FOREACH issue IN issues %] [% UNLESS ( loop.odd ) %]<tr class="highlight">[% ELSE %]<tr>[% END %] <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% issue.borrowernumber %]">[% IF HidePatronName %][% issue.cardnumber %][% ELSE %][% issue.surname %][% IF ( issue.firstname ) %], [% issue.firstname %][% END %][% END %]</a></td>
+ <td>[% IF ( issue.barcode ) %] <a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber=[% issue.biblionumber %]&amp;itemnumber=[% issue.itemnumber %]">[% issue.barcode %]</a>
+ [% ELSE %] &nbsp; [% END %]</td>
+ <td>[% IF ( issue.branchcode ) %] [% issue.branchcode %] [% ELSE %] &nbsp; [% END %]</td>
+ <td>[% IF ( issue.renewals ) %] Oui[% IF ( issue.lastreneweddate ) %], <small>dernier prêt le&nbsp;: [% issue.lastreneweddate %]</small>
+ [% END %] [% ELSE %] Non [% END %]</td>
+ <td>[% IF ( issue.issuedate ) %] [% issue.issuedate %] [% ELSE %] &nbsp; [% END %]</td>
+ <td>[% IF ( issue.date_due ) %] [% issue.date_due %] [% ELSE %] &nbsp; [% END %]</td>
+ <td>[% IF ( issue.returndate ) %] [% issue.returndate %] [% ELSE %] &nbsp; [% END %]</td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ [% ELSE %] <div class="dialog message"><p>
+ <b>[% title |html %][% IF ( author ) %], par [% author %][% END %]</b> n'a jamais été emprunté.</p></div>
+
+ [% END %] </div>
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'biblio-view-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

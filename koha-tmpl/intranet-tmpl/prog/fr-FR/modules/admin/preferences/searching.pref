@@ -1,0 +1,216 @@
+--- 
+Recherche: 
+  "Affichage des r\xC3\xA9sultats": 
+    - 
+      - "Trier par d\xC3\xA9faut dans l'interface pro les r\xC3\xA9sultats de recherche sur le champ"
+      - 
+        choices: 
+          acqdate: date d'ajout
+          author: auteur
+          call_number: cote
+          popularity: "compteur de pr\xC3\xAAts"
+          pubdate: date de publication
+          relevance: par pertinence
+          title: titre
+        default: relevance
+        pref: defaultSortField
+      - ","
+      - 
+        choices: 
+          asc: par ordre croissant
+          az: "de A \xC3\xA0 Z"
+          dsc: "par ordre d\xC3\xA9croissant"
+          za: "de Z \xC3\xA0 A"
+        pref: defaultSortOrder
+    - 
+      - 
+        choices: 
+          "": Cacher
+          1: Montrer
+        default: ''
+        pref: displayFacetCount
+        type: boolean
+      - "le compteur des facettes. La pertinence de ce compteur d\xC3\xA9pend pour beaucoup de la valeur de la pr\xC3\xA9f\xC3\xA9rence maxRecordsForFacets. S'applique \xC3\xA0 l'OPAC et \xC3\xA0 l'interface pro."
+    - 
+      - Dans l'interface pro, afficher
+      - 
+        class: integer
+        pref: numSearchResults
+      - "notices bibliographiques par page de r\xC3\xA9sultat."
+    - 
+      - "A l'OPAC, par d\xC3\xA9faut, trier les r\xC3\xA9sultats sur le champ"
+      - 
+        choices: 
+          acqdate: date d'ajout
+          author: auteur
+          call_number: cote
+          popularity: "compteur de pr\xC3\xAAts"
+          pubdate: date de publication
+          relevance: par pertinence
+          title: titre
+        default: relevance
+        pref: OPACdefaultSortField
+      - ","
+      - 
+        choices: 
+          asc: "par ordre d\xC3\xA9croissant"
+          az: "de A \xC3\xA0 Z"
+          dsc: par ordre croissant
+          za: "de Z \xC3\xA0 A"
+        pref: OPACdefaultSortOrder
+      - ~
+    - 
+      - "Montrer jusqu'\xC3\xA0"
+      - 
+        class: integer
+        pref: maxItemsInSearchResults
+      - "exemplaires par notice bibliographique en r\xC3\xA9sultat de recherche"
+    - 
+      - Construire les facettes sur la base des
+      - 
+        class: integer
+        default: 20
+        pref: maxRecordsForFacets
+      - "premi\xC3\xA8res notices bibliographiques du r\xC3\xA9sultat d'une recherche."
+    - 
+      - A l'OPAC, afficher
+      - 
+        class: integer
+        pref: OPACnumSearchResults
+      - notices bibliographique par page.
+    - 
+      - 
+        choices: 
+          "": Cacher
+          1: Afficher
+        pref: OPACItemsResultsDisplay
+        type: boolean
+      - "le site de l'exemplaire, la localisation et la cote dans les r\xC3\xA9sultats de recherche \xC3\xA0 l'OPAC"
+    - 
+      - "Tronquer la longueur des facettes \xC3\xA0"
+      - 
+        class: integer
+        pref: FacetLabelTruncationLength
+      - "caract\xC3\xA8res \xC3\xA0 l'OPAC et dans l'interface pro."
+    - 
+      - Use the following text as separator for UNIMARC authors facets
+      - 
+        class: short
+        pref: UNIMARCAuthorsFacetsSeparator
+  "Fonctionnalit\xC3\xA9s": 
+    - 
+      - "Ex\xC3\xA9cuter les recherches avec troncature \xC3\xA0 droite"
+      - 
+        choices: 
+          "": "avec * \xC3\xA0 la fin"
+          1: automatiquement
+        pref: QueryAutoTruncate
+        type: boolean
+      - "<br />(The * character would be used like so: <cite>Har*</cite> or <cite>*logging</cite>.)"
+    - 
+      - 
+        choices: 
+          "": Activer
+          1: "D\xC3\xA9sactiver"
+        pref: QueryFuzzy
+        type: boolean
+      - "la recherche floue. Les mots ayant une orthographe voisine de celle des mots de la requ\xC3\xAAte seront pris en compte."
+    - 
+      - 
+        choices: 
+          "": Ne pas lemmatiser
+          1: Lemmatiser
+        pref: QueryStemming
+        type: boolean
+      - "les mots de recherches. Par exemple, ethnologie retrouvera \xC3\xA9galement ethnographie."
+    - 
+      - 
+        choices: 
+          "": "D\xC3\xA9sactiver"
+          1: Activer
+        pref: QueryWeightFields
+        type: boolean
+      - "le classement des r\xC3\xA9sultats par ordre de pertinence."
+    - 
+      - 
+        choices: 
+          "": Ne pas utiliser
+          1: Utiliser
+        default: '0'
+        pref: OpacGroupResults
+      - "PazPar2 pour regrouper \xC3\xA0 l'OPAC les r\xC3\xA9sultats semblables. Il faut que PazPar2 soit conifigur\xC3\xA9 et op\xC3\xA9rationnel."
+    - 
+      - 
+        choices: 
+          "": Ne pas forcer
+          1: Forcer
+        default: '0'
+        pref: TraceCompleteSubfields
+      - "le tra\xC3\xA7age des sujets \xC3\xA0 faire une recherche sur tous les sous-champs."
+    - 
+      - 
+        choices: 
+          "": Ne pas inclure
+          1: Inclure
+        default: '0'
+        pref: TraceSubjectSubdivisions
+      - "les subdivisions dans les recherches g\xC3\xA9n\xC3\xA9r\xC3\xA9es par un click sur le tra\xC3\xA7age des sujets."
+    - 
+      - 
+        choices: 
+          "": N'utilise pas
+          1: Utilise
+        default: '0'
+        pref: UseICU
+      - "l'indexation Zebra ICU. Noter : ce param\xC3\xA9trage n'affecte pas l'indexation Zebra, ce doit seulement \xC3\xAAtre utilis\xC3\xA9 pour dire \xC3\xA0 Koha que vous avez activ\xC3\xA9 l'indexation ICU si vous l'avez vraiment fait, parce que Koha ne peut pas le savoir autrement"
+    - 
+      - 
+        choices: 
+          "": Do not try
+          1: Try
+        default: 1
+        pref: UseQueryParser
+      - "to use the QueryParser module for parsing queries. Please note: enabling this will have no impact if you do not have QueryParser installed, and everything will continue to work as usual."
+    - 
+      - 
+        choices: 
+          "": Don't include
+          1: Include
+        default: '0'
+        pref: IncludeSeeFromInSearches
+      - "<i>see from</i> (non-preferred form) headings in bibliographic searches. Please note: you will need to reindex your bibliographic database when changing this preference."
+  Formulaire de recherche: 
+    - 
+      - "Afficher des onglets \xC3\xA0 l'OPAC et c\xC3\xB4t\xC3\xA9 professionnel en recherche avanc\xC3\xA9e pour limiter la recherche sur les champs"
+      - 
+        class: long
+        pref: AdvancedSearchTypes
+      - "(valeurs s\xC3\xA9par\xC3\xA9es par |). Les onglets apparaissent dans l'ordre list\xC3\xA9.<br/>"
+      - "<em>Valeurs accept\xC3\xA9es</em>: Types de document (<strong>itemtypes</strong>), Codes de collection (<strong>ccode</strong>) et Localisation (<strong>loc</strong>)."
+    - 
+      - "Par d\xC3\xA9faut,"
+      - 
+        choices: 
+          "": ne pas afficher
+          1: afficher
+        pref: expandedSearchOption
+        type: boolean
+      - "\"More options\" on the OPAC and staff advanced search pages."
+    - 
+      - By default,
+      - 
+        choices: 
+          "": don't use
+          1: use
+        pref: OPACNumbersPreferPhrase
+        type: boolean
+      - the operator "phr" in the callnumber and standard number OPAC searches
+    - 
+      - By default,
+      - 
+        choices: 
+          "": don't use
+          1: use
+        pref: IntranetNumbersPreferPhrase
+        type: boolean
+      - the operator "phr" in the callnumber and standard number staff client searches

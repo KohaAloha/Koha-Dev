@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Dictionnaire des rapports</h1>
+
+<p>Le dictionnaire des rapports permet de définir des filtres prédéfinis que vous voulez appliquer à vos rapports. C'est une bonne façon d'ajouter des filtres que l'assistant de rapport ne connaît pas au départ. Pour ajouter une nouvelle définition, ou un filtre, cliquez sur Nouvelle définition dans la page Dictionnaire de rapports, puis suivez le processus en quatre étapes.</p>
+
+<p>Etape 1 : Nommez la définition et fournissez une description si nécessaire</p>
+
+<p>Etape 2 : Choisissez le module qui sera interrogé.</p>
+
+<p>Etape 3 : Choisissez les colonnes à interroger dans les tables présentées.</p>
+
+<p>Etape 4 : Choisissez la/les valeurs dans les champs. Ceci est automatiquement renseigné avec les options disponibles dans votre base de données.</p>
+
+<p>Confirmer votre sélection pour enregistrer la définition.</p>
+
+<p>Vos définitions seront affichées dans la page Dictionnaire des rapports.</p>
+
+<p>Désormais, quand vous générez un rapport sur le module pour lequel vous avez créé ce filtre, une option apparaît qui permet de limiter le résultat en utilisant votre définition.</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/reportdic.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

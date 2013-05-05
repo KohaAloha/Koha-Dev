@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %] <h1>Upload offline circulation file (*.koc)</h1>
+
+<p>The Offline Circulation Utility can be downloaded at: <a href="http://kylehall.info/index.php/projects/koha/koha-offline-circulation/" target="_top">http://kylehall.info/index.php/projects/koha/koha-offline-circulation/</a></p>
+
+<p>The offline circulation tool for Windows will generate a KOC file that you can upload into Koha once your system comes back up.</p>
+
+<p>On the Circulation menu click 'Upload offline circulation file (.koc)'</p>
+
+<p>Parcourir votre ordinateur pour retrouver le fichier .koc</p>
+
+<p>Une fois le fichier chargé sur le serveur, cliquez sur Poursuivre.</p>
+
+<p>When this is complete you'll be able to upload another file or tend to pending offline circulation actions.</p>
+
+<p>You can also tend to pending circulation actions by going to Circulation > Pending offline circulation actions.</p>
+
+<p><strong>See the full documentation for Uploading the Offline Circulation File in the <a http://manual.koha-community.org/3.12/en/offlinecirc.html#uploadofflinecirc">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

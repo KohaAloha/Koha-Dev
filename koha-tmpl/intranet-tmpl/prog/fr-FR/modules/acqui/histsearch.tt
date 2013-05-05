@@ -1,0 +1,99 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; [% IF ( suggestions_loop ) %]Recherche de commande &rsaquo; Résultats de la recherche[% ELSE %]Recherche de commande[% END %]</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+[% IF (dateformat == 'metric') %]
+    dt_add_type_uk_date();
+[% END %]
+ $(document).ready(function() {
+    var histsearcht = $("#histsearcht").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sPaginationType": "four_button"
+    } ) );
+ });
+ //]]>
+</script>
+</head>
+<body id="acq_histsearch" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; [% IF ( suggestions_loop ) %]<a href="/cgi-bin/koha/acqui/histsearch.pl">Recherche commandes</a> &rsaquo; Résultats de la recherche[% ELSE %]Rechercher une commande[% END %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ 
+ [% UNLESS ( suggestions_loop ) %]<form action="/cgi-bin/koha/acqui/histsearch.pl" method="post">
+<fieldset class="rows">
+ <legend>Recherche commandes</legend>
+ <ol>
+ <li><label for="title">Titre&nbsp;: </label> <input type="text" name="title" id="title" value="[% title %]" /></li>
+ <li><label for="author">Auteur&nbsp;: </label> <input type="text" name="author" id="author" value="[% author %]" /></li>
+ <li><label for="isbn">ISBN&nbsp;: </label> <input type="text" name="isbn" id="isbn" value="[% isbn %]" /></li>
+ [% IF (UNIMARC) %] <li><label for="ean">EAN: </label> <input type="text" name="ean" id="ean" value="[% ean %]" /></li>
+ [% END %] <li><label for="name">Fournisseur&nbsp;:</label> <input type="text" name="name" id="name" value="[% name %]" /></li>
+ <li><label for="basket">Panier :</label> <input type="text" name="basket" id="basket" value="[% basket %]" /></li>
+ <li><label for="booksellerinvoicenumber ">Facture n° : </label> <input type="text" name="booksellerinvoicenumber" id="booksellerinvoicenumber" value="[% booksellerinvoicenumber %]" /></li>
+ <li>
+ <label for="basketgroupname">Bordereau :</label>
+ <input type="text" name="basketgroupname" id="basketgroupname" value="[% basketgroupname %]" />
+ </li>
+ <li><label for="from">Du&nbsp;: </label> 
+ <input type="text" size="10" id="from" name="from" value="[% from_placed_on %]" class="datepickerfrom" />
+ <div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+ </li>
+ <li><label for="to">et le&nbsp;:</label> 
+ <input type="text" size="10" id="to" name="to" value="[% to_placed_on %]" class="datepickerto" />
+ <div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+ </li>
+ </ol>
+ </fieldset>
+ <input type="hidden" name="do_search" value="1" />
+ <fieldset class="action"><input value="Rechercher" type="submit" /></fieldset>
+ </form>[% END %] [% IF ( suggestions_loop ) %]<h1>Résultats de la recherche</h1>
+ <div id="acqui_histsearch">
+ <table id="histsearcht">
+ <thead>
+ <tr>
+ <th>Panier</th>
+ <th>Bordereau</th>
+ <th>Récérence fournisseur</th>
+ <th>Order number</th>
+ <th>Résumé</th>
+ <th>Fournisseur</th>
+ <th>Commandé le</th>
+ <th>Reçu le</th>
+ <th>Quantité commandée</th>
+ <th>Coût unitaire</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH suggestions_loo IN suggestions_loop %] <tr>
+ <td>[% suggestions_loo.basketname %] (<a href="basket.pl?basketno=[% suggestions_loo.basketno %]">[% suggestions_loo.basketno %]</a>)</td>
+ <td>
+ [% IF ( suggestions_loo.basketgroupid ) %] [% suggestions_loo.groupname %] (<a href="basketgroup.pl?booksellerid=[% suggestions_loo.id %]">[% suggestions_loo.basketgroupid %]</a>)
+ [% ELSE %]
+ &nbsp;
+ [% END %]
+ </td>
+ <td>[% IF ( suggestions_loo.invoicenumber ) %] <a href="/cgi-bin/koha/acqui/parcel.pl?invoiceid=[% suggestions_loo.invoicenumber %]">[% suggestions_loo.invoicenumber %]</a>
+ [% ELSE %] &nbsp; [% END %] </td>
+ <td>[% suggestions_loo.ordernumber %]</td>
+ <td><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% suggestions_loo.biblionumber %]">[% suggestions_loo.title |html %]</a>
+ <br />[% suggestions_loo.author %] <br /> [% suggestions_loo.isbn %]</td>
+ <td><a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% suggestions_loo.id %]">[% suggestions_loo.name %]</a></td>
+ <td>[% suggestions_loo.creationdate | $KohaDates %]</td>
+ <td>
+ [% IF suggestions_loo.datereceived %] [% suggestions_loo.datereceived | $KohaDates %] [% END %] </td>
+ <td>[% suggestions_loo.quantity %]</td>
+ <td>[% suggestions_loo.ecost %]</td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </div>[% ELSE %][% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

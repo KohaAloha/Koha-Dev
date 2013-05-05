@@ -1,0 +1,323 @@
+[% USE KohaDates %] [% USE KohaBranchName %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Circulation &rsaquo; retour pour [% title |html %] </title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+function Dopop(link) {
+    var newin = window.open(link, 'popup', 'width=600,height=400,resizable=1,toolbar=0,scrollbars=1,top');
+    $("#barcode").focus();
+}
+$(document).ready(function () {
+    $("#exemptcheck").change(function () {
+        if (this.checked == true) {
+            $("#barcode").addClass("alert");
+            $("#exemptfines").show();
+        } else {
+            $("#barcode").removeClass("alert");
+            $("#exemptfines").hide();
+        }
+        $("#barcode").focus();
+    });
+    $("#dropboxcheck").change(function () {
+        if (this.checked == true) {
+            $("#barcode").addClass("alert");
+            $("#dropboxmode").show();
+        } else {
+            $("#barcode").removeClass("alert");
+            $("#dropboxmode").hide();
+        }
+        $("#barcode").focus();
+    });
+    [% IF(overduecharges) %] $("#barcode").focus(function () {
+        if (($("#exemptcheck").attr("checked") == true) || ($("#dropboxcheck").attr("checked") == true)) {
+            $("#barcode").addClass("alert");
+        } else {
+            $("#barcode").removeClass("alert");
+        }
+    });
+    $("#barcode").blur(function () {
+        $("#barcode").removeClass("alert");
+    });
+    [% END %]
+});
+//]]>
+</script>
+</head>
+<body id="circ_returns" class="circ">
+
+[% INCLUDE 'header.inc' %] [% INCLUDE 'checkin-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; Retour</div>
+
+<div id="doc" class="yui-t7">
+
+ <div id="bd">
+ <div id="yui-main">
+
+<div class="yui-g">
+
+[% IF additional_materials %] <div class="dialog message" id="materials">Note sur le matériel d'accompagnement :<br />
+ [% additional_materials %] </div>
+[% END %] [% IF ( collectionItemNeedsTransferred ) %] <div id="rotating-collection" class="dialog message">Cet exemplaire appartient à une collection tournante et a besoin d'être transféré au site [% collectionBranch %]</div>
+[% END %]
+
+<!-- Patron has fines -->
+[% IF ( fines ) %]
+ <div class="dialog alert">
+ <h3>L'adhérent a des amendes ([% fines %]€)</h3>
+ <p><a href="/cgi-bin/koha/members/pay.pl?borrowernumber=[% fineborrowernumber %]">Encaisser</a>.</p>
+ </div>
+[% END %]
+
+<!-- Patron has waiting holds -->
+[% IF ( waiting_holds ) %]
+ <div id="awaiting-pickup" class="dialog message">
+ <h3>[% holdsfirstname %] [% holdssurname %] a [% waiting_holds %] réservations en attente de retrait.</h3>
+ <p><a href="/cgi-bin/koha/circ/circulation.pl?borrowernumber=[% holdsborrowernumber %]">Prété à cet adhérent</a>.</p>
+ </div>
+[% END %] [% IF ( wrongbranch ) %] <div class="dialog alert"><h3>Cannot check in</h3><p>Le document doit être retourné à son site de rattachement.<strong>NOT CHECKED IN</strong></p>
+</div>
+[% END %]
+<!-- case of a mistake in transfer loop -->
+[% IF ( WrongTransfer ) %]<div id="return2" class="dialog message"><!-- WrongTransfer --><h3>Merci de renvoyer<a href="/cgi-bin/koha/catalogue/detail.pl?type=intra&amp;biblionumber=[% itembiblionumber %]">[% title |html %]</a> vers [% TransferWaitingAt | $KohaBranchName %]</h3><h3><a href="#" onclick="Dopop('transfer-slip.pl?transferitem=[% itemnumber %]&amp;&amp;branchcode=[% homebranch %]&amp;op=slip'); return true;">Imprimer ticket</a> ou <a href="/cgi-bin/koha/circ/returns.pl?itemnumber=[% itemnumber %]&amp;canceltransfer=1">Annuler transfert</a></h3>
+[% IF ( wborcnum ) %]<h5>Réservation pour&nbsp;:</h5>
+ <ul><li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]">
+ [% borsurname %], [% borfirstname %]</a> ([% borcnum %])</li>
+ <li>[% wboraddress %][% IF ( wboraddress2 ) %]<br />
+ [% wboraddress2 %]<br />[% END %] [% wborcity %] [% wborzip %]</li>
+ [% IF ( wborphone ) %]<li>[% wborphone %]</li>[% END %] [% IF ( wboremail ) %]<li><a id="boremail" href="mailto:[% wboremail %]">[% wboremail %]</a></li>[% END %] </ul>
+
+ <form method="post" action="returns.pl" class="confirm">
+ <input type="hidden" name="WT-itemNumber" value="[% WrongTransferItem %]" />
+ <input type="hidden" name="WT-waitingAt" value="[% TransferWaitingAt %]" />
+ <input type="hidden" name="WT-From" value="[% wtransfertFrom %]" />
+ <input value="Confirmer" type="submit" class="approve" />
+ <input value="Imprimer ticket & Confirmer" type="submit" class="print" onclick="Dopop('hold-transfer-slip.pl?transfer=1&borrowernumber=[% borrowernumber %]&biblionumber=[% itembiblionumber %]&op=slip'); this.form.submit();" />
+ </form>
+ [% END %]</div>
+[% END %]
+
+[% IF ( found ) %]
+<!-- found -->
+<!-- case of a reservation found, and display info -->
+ [% IF ( waiting ) %]
+ <!-- waiting -->
+
+[% IF ( soundon ) %]
+<audio src="/intranet-tmpl/prog/sound/ending.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+[% END %] <div id="hold-found1" class="dialog message">
+ <h3>Réservation trouvée (document déjà mis à disposition)&nbsp;: <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% itembiblionumber %]">[% title |html %]</a></h3>
+ [% IF ( reservenotes ) %]<h4>Notes&nbsp;: [% reservenotes %]</h4>[% END %] <h4>Réservation pour&nbsp;:</h4>
+ <ul>
+ <li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]">[% borsurname %], [% borfirstname %]</a> ([% borcnum %])</li>
+ <li>[% boraddress %]<br />
+ [% IF ( boraddress2 ) %][% boraddress2 %]<br />[% END %] [% borcity %] [% borzip %]</li>
+ [% IF ( borphone ) %]<li> [% borphone %]</li>[% END %] [% IF ( boremail ) %]<li><a id="boremail" href="mailto:[% boremail %]">[% boremail %]</a></li>[% END %] [% IF ( debarred ) %]<li class="error">Adhérent bloqué</li>[% END %] [% IF ( gonenoaddress ) %]<li class="error">L'adresse de l'adhérent semble erronée</li>[% END %]</ul>
+ [% IF ( transfertodo ) %] <h4><strong>Transférer à&nbsp;: </strong> [% destbranchname %]</h4>
+ [% ELSE %] <h4><strong>Réservation à</strong> [% destbranchname %]</h4>
+ [% END %] <form method="post" action="returns.pl" class="confirm">
+ <input value="Confirmer" type="submit" class="approve" />
+
+ <input value="Imprimer et confirmer" type="submit" class="print" onclick="Dopop('hold-transfer-slip.pl?borrowernumber=[% borrowernumber %]&biblionumber=[% itembiblionumber %]&op=slip'); this.form.submit();" />
+ [% FOREACH inputloo IN inputloop %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />
+ [% END %] <input type="hidden" name="itemnumber" value="[% itemnumber %]" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input type="hidden" name="resbarcode" value="[% barcode %]" />
+ <input type="hidden" name="diffBranch" value="[% destbranch %]" />
+ <input type="hidden" name="exemptfine" value="[% exemptfine %]" />
+ <input type="hidden" name="dropboxmode" value="[% dropboxmode %]" />
+ </form>
+ </div>
+ [% END %]
+
+ [% IF ( diffbranch ) %]
+ <!-- diffbranch -->
+ [% IF ( soundon ) %]
+ <audio src="/intranet-tmpl/prog/sound/opening.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+ [% END %] <div id="transfer-needed" class="dialog message">
+ <h3>Réservation nécessitant un transfert trouvée&nbsp;: <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% itembiblionumber %]">[% title |html %]</a></h3>
+ <h4>Réservation pour&nbsp;: </h4>
+ <ul>
+ <li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]">[% borsurname %], [% borfirstname %]</a> ([% borcnum %])</li>
+ <li>[% boraddress %]<br />
+ [% IF ( boraddress2 ) %][% boraddress2 %]<br />[% END %] [% borcity %] [% borzip %]</li>
+ [% IF ( borphone ) %]<li>[% borphone %]</li>[% END %] [% IF ( boremail ) %]<li>[% IF ( transfertodo ) %][% boremail %][% ELSE %]<a id="boremail" href="mailto:[% boremail %]">[% boremail %]</a>[% END %]</li>[% END %] [% IF ( debarred ) %]<li class="error">Adhérent bloqué</li>[% END %] [% IF ( gonenoaddress ) %]<li class="error">L'adresse de l'adhérent semble erronée</li>[% END %] </ul>
+ [% IF ( transfertodo ) %] <h4><strong>Transférer à&nbsp;: </strong> [% destbranchname %]</h4>
+ [% ELSE %] <h4><strong>Réservation à</strong> [% destbranchname %]</h4>
+ [% END %] <form method="post" action="returns.pl" class="confirm">
+ <input value="Confirmer" type="submit" class="approve" />
+ <input value="Imprimer ticket & Confirmer" type="submit" class="print" onclick="Dopop('hold-transfer-slip.pl?transfer=1&borrowernumber=[% borrowernumber %]&biblionumber=[% itembiblionumber %]&op=slip'); this.form.submit();" />
+ [% FOREACH inputloo IN inputloop %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />
+ [% END %] <input type="hidden" name="diffBranch" value="[% destbranch %]" />
+ <input type="hidden" name="exemptfine" value="[% exemptfine %]" />
+ <input type="hidden" name="dropboxmode" value="[% dropboxmode %]" />
+ <input type="hidden" name="barcode" value="0" />
+ </form>
+ </div>
+ [% END %]
+
+ [% IF ( transfer ) %]
+ <!-- transfer: item with no reservation, must be returned to its home library -->
+ <div id="return1" class="dialog message">
+ <h3>Merci de renvoyer<a href="/cgi-bin/koha/catalogue/detail.pl?type=intra&amp;biblionumber=[% itembiblionumber %]">[% title or "item" |html %]</a> vers [% homebranchname %]<br/>( <a href="#" onclick="Dopop('transfer-slip.pl?transferitem=[% itemnumber %]&amp;branchcode=[% homebranch %]&amp;op=slip'); return true;">Imprimer ticket</a> )</h3>
+ </div>
+ [% IF ( soundon ) %] <audio src="/intranet-tmpl/prog/sound/opening.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+ [% END %]
+ [% END %]
+
+ [% IF ( needstransfer ) %]
+ <!-- needstransfer -->
+ [% IF ( soundon ) %]
+ <audio src="/intranet-tmpl/prog/sound/opening.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+ [% END %] <div id="item-transfer" class="dialog message"><h3> Ce document doit être transféré à [% homebranchname %]</h3>
+ Transférer maintenant ?<br />
+ <form method="post" action="returns.pl" name="mainform" id="mainform">
+ [% IF itemnumber %] <input value="Oui, imprimer le bordereau" name="dotransfer" type="submit" class="print" onclick="Dopop('transfer-slip.pl?transferitem=[% itemnumber %]&&branchcode=[% homebranch %]&op=slip'); return true;" />
+ [% END %] <input value="Oui" name="dotransfer" type="submit" class="submit" />
+ <input value="Non" name="notransfer" type="submit" class="submit" />
+ <input type="hidden" name="tobranch" value="[% homebranch %]" />
+ <input type="hidden" name="transferitem" value="[% itemnumber %]" />
+ <input type="hidden" name="exemptfine" value="[% exemptfine %]" />
+ <input type="hidden" name="dropboxmode" value="[% dropboxmode %]" />
+ [% FOREACH inputloo IN inputloop %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />
+ [% END %] <input type="hidden" name="barcode" value="0" />
+ </form> </div>
+ [% END %]
+
+ [% IF ( diffbranch ) %]
+ <!-- diffbranch -->
+ [% IF ( soundon ) %]
+ <audio src="/intranet-tmpl/prog/sound/opening.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+ [% END %] <h3>Exemplaire retenu&nbsp;: </h3>
+ <table>
+ <caption><a href="/cgi-bin/koha/catalogue/detail.pl?type=intra&amp;biblionumber=[% itembiblionumber %]">[% title |html %]</a></caption>
+ <tr>
+ <th>Réservation pour&nbsp;:</th>
+ <td>[% name %]</td>
+ </tr>
+ </table>
+ <form method="post" action="returns.pl"><input type="submit" value="OK" />
+ [% FOREACH inputloo IN inputloop %] [% UNLESS ( inputloo.first ) %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />
+ [% END %] [% END %] <input type="hidden" name="barcode" value="0" />
+ </form>
+ [% END %]
+
+
+ <!-- case of simple return no issue or transfer but with a reservation -->
+ [% IF ( reserved ) %]
+ <!-- reserved -->
+
+ [% IF ( soundon ) %]
+ <audio src="/intranet-tmpl/prog/sound/opening.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+ [% END %] <div id="hold-found2" class="dialog message">
+ <h3>Réservation trouvée&nbsp;: <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% itembiblionumber %]">[% title |html %]</a></h3>
+ [% IF ( reservenotes ) %]<h4>Notes&nbsp;: [% reservenotes %]</h4>[% END %] <h5>Réservation pour&nbsp;:</h5>
+ <ul>
+ <li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]">
+ [% borsurname %], [% borfirstname %] </a> ([% borcnum %])</li>
+ <li>[% boraddress %]<br />
+ [% IF ( boraddress2 ) %][% boraddress2 %]<br />[% END %] [% borcity %] [% borzip %]</li>
+ [% IF ( borphone ) %]<li>[% borphone %]</li>[% END %] [% IF ( boremail ) %]<li>[% IF ( transfertodo ) %][% boremail %][% ELSE %]<a id="boremail" href="mailto:[% boremail %]">[% boremail %]</a>[% END %]</li>[% END %] [% IF ( debarred ) %]<li class="error">Adhérent bloqué</li>[% END %] [% IF ( gonenoaddress ) %]<li class="error">L'adresse de l'adhérent semble erronée</li>[% END %] </ul>
+ [% IF ( transfertodo ) %] <h4><strong>Transférer à&nbsp;: </strong> [% destbranchname %]</h4>
+ [% ELSE %] <h4><strong>Réservation à</strong> [% destbranchname %]</h4>
+ [% END %] <form method="post" action="returns.pl" class="confirm">
+ [% IF ( transfertodo ) %] <input value="Confirmer la réservation et transférer" type="submit" class="approve" />
+ <input value="Imprimer, transférer et confirmer" type="submit" class="print" onclick="Dopop('hold-transfer-slip.pl?transfer=1&borrowernumber=[% borrowernumber %]&biblionumber=[% itembiblionumber %]&op=slip'); this.form.submit();" />
+ [% ELSE %] <input value="Confirmer la réservation" type="submit" class="approve" />
+ <input value="Imprimer ticket & Confirmer" type="submit" class="print" onclick="Dopop('hold-transfer-slip.pl?borrowernumber=[% borrowernumber %]&biblionumber=[% itembiblionumber %]&op=slip'); this.form.submit();" />
+ [% END %] <input value="Ignorer" type="submit" class="deny" onclick="$('.dialog:visible').hide('slow'); $('#barcode').focus(); return false;" />
+ [% FOREACH inputloo IN inputloop %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />[% END %] <input type="hidden" name="itemnumber" value="[% itemnumber %]" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input type="hidden" name="resbarcode" value="[% barcode %]" />
+ <input type="hidden" name="diffBranch" value="[% destbranch %]" />
+ <input type="hidden" name="exemptfine" value="[% exemptfine %]" />
+ <input type="hidden" name="dropboxmode" value="[% dropboxmode %]" />
+ </form>
+ </div>
+ [% END %] [% ELSE %] [% IF ( errmsgloop ) %] <div class="dialog alert">
+ <h3>Check in message</h3>
+ [% FOREACH errmsgloo IN errmsgloop %] [% IF ( errmsgloo.badbarcode ) %] <p class="problem">Pas d'exemplaire avec code-barres&nbsp;: [% errmsgloo.msg %]</p>
+ [% END %] [% IF ( errmsgloo.ispermanent ) %] <p class="problem">Merci de renvoyer à [% errmsgloo.msg %]</p>
+ [% END %] [% IF ( errmsgloo.notissued ) %] <p class="problem">Pas en Prêt.</p>
+ [% END %] [% IF ( errmsgloo.localuse) %] <p class="problem">Local use recorded</p>
+ [% END %] [% IF ( errmsgloo.waslost ) %] <p class="problem">L'exemplaire était perdu : retrouvé, statut modifié.</p>
+ [% IF ( LostItemFeeRefunded ) %] <p class="problem">A refund has been applied to the borrowing patron's account.</p>
+ [% ELSE %] <p class="problem">Any lost item fees for this item will remain on the patron's account</p>
+ [% END %] [% END %] [% IF ( errmsgloo.withdrawn ) %] [% IF BlockReturnOfWithdrawnItems %] <h5>Cannot check in</h5>
+ <p class="problem">Item is withdrawn. <strong>NOT CHECKED IN</strong></p>
+ [% ELSE %] <p class="problem">Exemplaire pilonné.</p>
+ [% END %] [% END %] [% IF ( errmsgloo.debarred ) %] <p class="problem"><a href="/cgi-bin/koha/circ/circulation.pl?borrowernumber=[% errmsgloo.debarborrowernumber %]">[% errmsgloo.debarname %] ([% errmsgloo.debarcardnumber %])</a> est maintenant exclu jusqu'au [% errmsgloo.debarred | $KohaDates %]</p>
+ [% END %] [% END %] [% IF ( soundon ) %] <audio src="/intranet-tmpl/prog/sound/critical.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+[% END %] [% ELSE %] [% IF ( soundon ) %] <audio src="/intranet-tmpl/prog/sound/beep.ogg" autoplay="autoplay" autobuffer="autobuffer"></audio>
+[% END %] [% END %] </div>
+[% END %] <div id="exemptfines" class="dialog message" style="display:none;">
+ <p>Les amendes pour les documents retournés sont annulées.</p>
+ </div>
+ <div id="dropboxmode" class="dialog message" style="display:none;">
+ <p>Mode "boite de retour" (la date de retour est positionnée à [% dropboxdate %])</p>
+ </div>
+</div>
+ <div class="yui-g">
+ <form method="post" action="/cgi-bin/koha/circ/returns.pl" autocomplete="off" >
+ <div class="yui-u first">
+ <fieldset>
+ <legend>Retour</legend>
+ <label for="barcode">Entrez le Code à barres de l'exemplaire : </label>
+ [% IF ( exemptfine ) %] <input name="barcode" id="barcode" size="14" class="focus alert"/>
+ [% ELSIF ( dropboxmode ) %] <input name="barcode" id="barcode" size="14" class="focus alert"/>
+ [% ELSE %] <input name="barcode" id="barcode" size="14" class="focus"/>
+ [% END %] <input value="Valider" type="submit" class="submit" />
+ [% FOREACH inputloo IN inputloop %] <input type="hidden" name="ri-[% inputloo.counter %]" value="[% inputloo.barcode %]" />
+ <input type="hidden" name="dd-[% inputloo.counter %]" value="[% inputloo.duedate %]" />
+ <input type="hidden" name="bn-[% inputloo.counter %]" value="[% inputloo.borrowernumber %]" />
+ [% END %] </fieldset>
+ </div>
+ <div class="yui-u">
+ <fieldset id="checkin_options">
+ <legend>Options</legend>
+ [% IF ( overduecharges ) %] <p>
+ [% IF ( exemptfine ) %] <input type="checkbox" id="exemptcheck" name="exemptfine" value="exemptfine" checked="checked" />
+ [% ELSE %] <input type="checkbox" id="exemptcheck" name="exemptfine" value="exemptfine" />
+ [% END %] <label for="exemptcheck">Effacer les amendes</label>
+ </p>
+ [% END %] <!-- overduecharges -->
+ <p>
+ [% IF ( dropboxmode ) %] <input type="checkbox" id="dropboxcheck" name="dropboxmode" value="dropboxmode" checked="checked" />
+ [% ELSE %] <input type="checkbox" id="dropboxcheck" name="dropboxmode" value="dropboxmode" />
+ [% END %] <label for="dropboxcheck">Mode "boite de retour"</label>
+ </p>
+ </fieldset>
+ </div>
+ </form>
+</div>
+
+[% IF ( riloop ) %] <h2>Documents retournés</h2>
+ <table>
+ <tr><th>Date de retour</th><th>Titre</th> <th>Auteur</th> <th>Code à barres</th><th>Site propriétaire</th><th>Site dépositaire</th><th>Etagère</th><th>Cote</th><th>Type</th> <th>Adhérent</th><th>Note</th></tr>
+
+ [% FOREACH riloo IN riloop %] <tr>
+ <td>[% IF ( riloo.duedate ) %] [% IF ( riloo.return_overdue ) %] <span class="overdue">[% riloo.duedate %] (retards)</span>
+ [% ELSE %][% riloo.duedate %] [% END %] [% ELSE %]Pas prêté [% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% riloo.itembiblionumber %]">
+ [% riloo.itemtitle |html %]</a></td>
+ <td>[% riloo.itemauthor %]</td>
+ <td><a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber=[% riloo.itembiblionumber %]&amp;itemnumber=[% riloo.itemnumber %]#item[% riloo.itemnumber %]">[% riloo.barcode %]</a></td>
+ <td>[% riloo.homebranch %]</td>
+ <td>[% riloo.holdingbranch %]</td>
+ <td>[% riloo.location %]</td>
+ <td>[% riloo.itemcallnumber %]</td>
+ <td>[% riloo.itemtype %] [% riloo.ccode %]</td>
+ <td>[% IF ( riloo.duedate ) %] <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% riloo.borrowernumber %]">
+ [% riloo.borsurname %], [% riloo.borfirstname %] ([% riloo.borcategorycode %]) </a>
+ [% ELSE %]Pas en Prêt[% END %]</td>
+ <td>[% IF ( riloo.bornote ) %]<span class="circ-hlt">[% riloo.bornote %]<br /></span>[% END %] [% IF ( riloo.itemnote ) %]<span class="circ-hlt">[% riloo.itemnote %]</span>[% END %] </td>
+ </tr>
+ [% END %] </table></div>
+[% END %] </div>
+[% INCLUDE 'intranet-bottom.inc' %] 

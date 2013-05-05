@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Transferts à recevoir</h1>
+
+<p>Ce rapport liste tous les exemplaires qui sont en transit vers votre bibliothèque.</p>
+
+<p>Si vous transferts ont du retard, vous verrez un message indiquant le nombre de jours de retard.</p>
+
+<p style="color: #990000">Important: An item is considered late based on the number of days you have entered in the TransfersMaxDaysWarning system preference.</p>
+
+<p><strong>See the full documentation for Transfers to Receive in the <a href="http://manual.koha-community.org/3.12/en/circreports.html#transferstoreceive">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

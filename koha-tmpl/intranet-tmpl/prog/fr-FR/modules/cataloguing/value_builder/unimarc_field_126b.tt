@@ -1,0 +1,101 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 126b</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_126b" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 126b</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">Type de disque ou cylindre&nbsp;:</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+
+ [% IF ( f1a ) %] <option value="a" selected="selected">gravure directe (unique, gravé directement)</option>
+ [% ELSE %] <option value="a">gravure directe (unique, gravé directement)</option>
+ [% END %] [% IF ( f1b ) %] <option value="b" selected="selected">production de masse</option>
+ [% ELSE %] <option value="b">production de masse</option>
+ [% END %] [% IF ( f1c ) %] <option value="c" selected="selected">bande maîtresse</option>
+ [% ELSE %] <option value="c">bande maîtresse</option>
+ [% END %] [% IF ( f1d ) %] <option value="d" selected="selected">bande reproduite à partir du "master"</option>
+ [% ELSE %] <option value="d">bande reproduite à partir du "master"</option>
+ [% END %] [% IF ( f1e ) %] <option value="e" selected="selected">disc master (negative)</option>
+ [% ELSE %] <option value="e">disc master (negative)</option>
+ [% END %] [% IF ( f1f ) %] <option value="f" selected="selected">mère (positif)</option>
+ [% ELSE %] <option value="f">mère (positif)</option>
+ [% END %] [% IF ( f1g ) %] <option value="g" selected="selected">matrice (négatif)</option>
+ [% ELSE %] <option value="g">matrice (négatif)</option>
+ [% END %] [% IF ( f1h ) %] <option value="h" selected="selected">pressage de test</option>
+ [% ELSE %] <option value="h">pressage de test</option>
+ [% END %] [% IF ( f1u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f1z ) %] <option value="z" selected="selected">autre</option>
+ [% ELSE %] <option value="z">autre</option>
+ [% END %] </select>
+ </td></tr>
+ <tr>
+ <td><label for="f2">Type de matériel</label></td>
+ <td>
+ <select name="f2" id="f2" size="1">
+
+ [% IF ( f2u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f2x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f2z ) %] <option value="z" selected="selected">autre</option>
+ [% ELSE %] <option value="z">autre</option>
+ [% END %] [% IF ( f2g ) %] <option value="g" selected="selected">cire (instantanée)</option>
+ [% ELSE %] <option value="g">cire (instantanée)</option>
+ [% END %] [% IF ( f2h ) %] <option value="h" selected="selected">plastic (mass produced)</option>
+ [% ELSE %] <option value="h">plastic (mass produced)</option>
+ [% END %] [% IF ( f2a ) %] <option value="a" selected="selected">lacqué (par ex. acétate)</option>
+ [% ELSE %] <option value="a">lacqué (par ex. acétate)</option>
+ [% END %] [% IF ( f2b ) %] <option value="b" selected="selected">métal (par ex. aluminium)</option>
+ [% ELSE %] <option value="b">métal (par ex. aluminium)</option>
+ [% END %] [% IF ( f2c ) %] <option value="c" selected="selected">pressage laque</option>
+ [% ELSE %] <option value="c">pressage laque</option>
+ [% END %] [% IF ( f2d ) %] <option value="d" selected="selected">plastic pressing</option>
+ [% ELSE %] <option value="d">plastic pressing</option>
+ [% END %] [% IF ( f2e ) %] <option value="e" selected="selected">métal et plastique (compact disques)</option>
+ [% ELSE %] <option value="e">métal et plastique (compact disques)</option>
+ [% END %] [% IF ( f2i ) %] <option value="i" selected="selected">édition de poche</option>
+ [% ELSE %] <option value="i">édition de poche</option>
+ [% END %] [% IF ( f2j ) %] <option value="j" selected="selected">acétate</option>
+ [% ELSE %] <option value="j">acétate</option>
+ [% END %] [% IF ( f2k ) %] <option value="k" selected="selected">P.V.C.</option>
+ [% ELSE %] <option value="k">P.V.C.</option>
+ [% END %] [% IF ( f2l ) %] <option value="l" selected="selected">polyester</option>
+ [% ELSE %] <option value="l">polyester</option>
+ [% END %] </select>
+ </td></tr>
+ <tr>
+ <td><label for="f3">Type de gravure&nbsp;: </label></td>
+ <td>
+ <select name="f3" id="f3" size="1">
+ [% IF ( f3a ) %] <option value="a" selected="selected">gravure combinée ou latérale</option>
+ [% ELSE %] <option value="a">gravure combinée ou latérale</option>
+ [% END %] [% IF ( f3b ) %] <option value="b" selected="selected">gravure vertical (bosses et creux)</option>
+ [% ELSE %] <option value="b">gravure vertical (bosses et creux)</option>
+ [% END %] [% IF ( f3u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f3x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+	function report() {
+
+
+		var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+        
+            field.value =  document.f_pop.f1.value+document.f_pop.f2.value+document.f_pop.f3.value ;
+		self.close();
+		return false;
+	}
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

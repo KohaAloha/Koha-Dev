@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>Réservations à traiter</h1>
+
+<p>This report will show you all of the items that have holds on them that are available at the library for pulling. If the items are available at multiple libraries then all libraries with that item available will see the hold to pull until one library triggers the hold.</p>
+
+<p>You can limit the results you see by using the Refine box on the left side of the page</p>
+
+<p><strong>See the full documentation for Holds to Pull in the <a href="http://manual.koha-community.org/3.12/en/circreports.html#holdspull">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,69 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron Attribute Types</h1>
+
+<p>Les attributs d'adhérents permettent d'associer aux adhérents des champs personnalisés. L'utilisation de cette fonctionnalité doit être activée au moyen de la préférence système ExtendedPatronAttributes.</p>
+
+<ul>
+ <li><em>Aller à&nbsp;:</em> More &gt; Administration &gt; Patrons &amp; Circulation &gt; Patron attribute types</li>
+</ul>
+
+<p>Une utilisation courante de ce champ serait un numéro d'identifiant pour un étudiant ou un numéro de permis de conduire.</p>
+
+<h3>Adding Patron Attributes</h3>
+
+<p>To add a new Patron Attribute Type, click the 'New Patron Attribute Type' button at the top of the page</p>
+
+<ul>
+ <li>Dans le Code d'attribut adhérent, entrez un code court qui servira à identifier ce champ.<ul>
+ <li style="color: #990000;">Important: This field is limited to 10 characters (numbers and letters only)</li>
+ <li style="color: #990000;">Important: This setting cannot be changed after an attribute is defined</li>
+</ul>
+</li>
+ <li>Dans le champ Description, entrez une description plus longue et plus complète de ce que ce champ contiendra.</li>
+ <li>Chochez la case Répétable afin de permettre à l'adhérent de saisir plusieurs valeurs pour cet attribut.<ul>
+ <li style="color: #990000;">Important: This setting cannot be changed after an attribute is defined</li>
+</ul>
+</li>
+ <li>Si Identifiant unique est coché, l'attribut sera un identifiant unique &mdash; si une valeur est donnée pour un adhérent, elle ne pourra pas être donnée pour un autre adhérent.<ul>
+ <li style="color: #990000;">Important: This setting cannot be changed after an attribute is defined</li>
+</ul>
+</li>
+ <li>Cochez Mot de passe autorisé pour associer un mot de passe à cet attribut.</li>
+ <li>Cocher 'Afficher à l'OPAC' pour afficher cet attribut dans la page de détail de l'OPAC.</li>
+ <li>Cocher pour rendre cet attribut interrogeable dans l'interface professionnelle, recherche d'adhérent.</li>
+ <li>Activez 'Affichage en prêt' pour rendre cet attribut visible à l'affichage court de l'adhérent sur la page des prêts et sur les autres pages des adhérents</li>
+ <li>Catégorie de valeurs autorisées&nbsp;: si une catégorie est sélectionnée, la création d'un adhérent permettra la sélection d'une valeur à partir de la liste de valeurs autorisées sélectionnée.<ul>
+ <li>You will first need to add an authorized value list for it to appear in this menu
+<ul>
+ <li><em>Get there: </em>More &gt; Administration &gt; Basic Parameters &gt; Authorized Values</li>
+</ul>
+</li>
+ <li style="color: #990000;">Important: an authorized value list is not enforced during batch patron import.</li>
+</ul>
+</li>
+ <li>If you would like this attribute to only be used by specific branches you can choose those branches from the 'Branches limitation' list. Choose 'All branches' to show it for all libraries.</li>
+ <li>If you'd like to only show this attribute on patrons of one type choose that patron type from the 'Category' pull down</li>
+ <li>If you have a lot of attributes it might be handy to group them so that you can easily find them for editing. If you create an Authorized Value for PA_CLASS it will show in the 'Class' pull down and you can then change your attributes page to have sections of attributes</li>
+ <li>Cliquez sur Enregistrer pour sauvegarder votre nouvel attribut.</li>
+</ul>
+
+<p>Une qu'il a été créé, votre attribut apparaît dans la liste des attributs ainsi que dans la grille de saisie des adhérents.</o>
+
+<p>If you have set up classes for organizing attributes they will appear that way on the add/edit patron form</p>
+
+<h3>Editing/Deleting Patron Attributes</h3>
+
+<p>Dans la liste des attributs, il y a à côté de chaque attribut des liens modifier et supprimer.</p>
+
+<p>Some fields in the attribute will not be editable once created:</p>
+
+<ul>
+ <li>Code d'attribut adhérent</li>
+ <li>Répétable</li>
+ <li>Identifiant unique&nbsp;:</li>
+</ul>
+
+<p>Vous ne pourrez pas supprimer un attribut s'il est utilisé dans une fichier adhérent.</p>
+
+<p><strong>See the full documentation for Patron Attribute Types in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#patronattributetypes">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

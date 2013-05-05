@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %] <h1>Budget Planning</h1>
+
+<p>Sur la liste des périodes budgétaires, cliquez sur le bouton Planification et choisissez comment vous prévoyez de dépenser votre budget.</p>
+
+<p>Si vous choisissez Planifier par mois, vous verrez le montant du budget découpé par mois</p>
+
+<p>To hide some of the columns you can click the 'hide' link to the right the dates. To add more columns you can click the 'Show a column' link found below the 'Fund Remaining' heading.</p>
+
+<p>Vous pouvez ici planifier les dépenses de votre budget en entrant manuellement des valeurs ou en cliquant sur le bouton Remplir auto col. Si vous choisissez de remplir automatiquement le formulaire, le système essaiera de découper le montant en conséquence. Il se peut que vous ayez à faire des ajustements.</p>
+
+<p>Quand vous avez fini vos modifications, cliquez sur le bouton Enregistrer. Si vous voulez exporter vos données dans un fichier CSV, entrez un nom de fichier dans la zone Export dans un fichier nommé et cliquez sur le bouton Exporter.</p>
+
+<p><strong>See the full documentation for Budget Planning in the <a href="http://manual.koha-community.org/3.12/en/acqadmin.html#fundsplanning">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

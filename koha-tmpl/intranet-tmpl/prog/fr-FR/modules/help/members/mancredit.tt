@@ -1,0 +1,14 @@
+[% INCLUDE 'help-top.inc' %] <h1>Créer crédit manuel</h1>
+
+<p>Les crédits manuels peuvent être utilisés pour payer partiellement des amendes ou pour annuler toute une amende.</p>
+
+<ul>
+ <li>Commencez par choisir le type de crédit que vous voudriez appliquer</li>
+ <li>Si le crédit est associé à un exemplaire, entrez son code à barres afin que la ligne de compte montre un lien vers cet exemplaire.</li>
+ <li>The description field is where you will enter the description of the credit</li>
+ <li>Ne saisissez pas de symbole monétaire dans la rubrique Montant. Entrez juste des chiffres et le séparateur décimal.</li>
+</ul>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#manualcredit">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

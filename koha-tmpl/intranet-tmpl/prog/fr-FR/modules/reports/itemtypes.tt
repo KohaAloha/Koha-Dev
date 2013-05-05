@@ -1,0 +1,71 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Bilans et statistiques &rsaquo; Catalogue par type de document</title>
+[% INCLUDE 'doc-head-close.inc' %] [% IF ( do_it ) %] <link rel="stylesheet" type="text/css" href="/intranet-tmpl/prog/en/css/datatables.css" />
+<script type="text/javascript" src="/intranet-tmpl/prog/en/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="/intranet-tmpl/prog/en/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
+    $("#itemtypest").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sDom": 't',
+        "bPaginate": false
+    }));
+});
+//]]>
+</script>
+[% END %] </head>
+<body id="rep_itemtypes" class="rep">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/reports/reports-home.pl">Bilans et statistiques</a>[% IF ( do_it ) %] &rsaquo; <a href="/cgi-bin/koha/reports/manager.pl?report_name=itemtypes">Catalogue par type de document</a> &rsaquo; Résultat[% ELSE %] &rsaquo; Catalogue par type de document[% END %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( do_it ) %] [% FOREACH mainloo IN mainloop %] <h1>Statistique sur les types de documents [% IF ( mainloo.branchname ) %] détenus à [% mainloo.branchname %][% END %]</h1>
+ <table id="itemtypest">
+ <thead>
+ <tr>
+ <th>Type de document</th>
+ <th>Décompte</th>
+ </tr>
+ </thead>
+ <tfoot>
+ <tr>
+ <th>TOTAL</th>
+ <th>[% mainloo.total %]</th>
+ </tr>
+ </tfoot>
+ <tbody>
+ [% FOREACH loopitemtyp IN mainloo.loopitemtype %] <tr>
+ <td>[% loopitemtyp.itemtype %]</td>
+ <td>[% loopitemtyp.count %]</td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+[% END %] [% ELSE %] <h3>Voir le compte des exemplaires détenir par votre site regroupés par type d'exemplaire</h3>
+ <form method="post" action="/cgi-bin/koha/reports/manager.pl?report_name=itemtypes">
+ <fieldset class="rows">
+ <ol>
+ <li>
+ <label for="value">Sélectionnez un site</label>
+ <select name="value" size="1" id="value">
+ <option value=""></option>
+ [%- FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) -%] <option value="[% branchloo.branchcode %]" selected="selected">[% branchloo.branchname %]</option>
+ [%- ELSE -%] <option value="[% branchloo.branchcode %]">[% branchloo.branchname %]</option>
+ [%- END -%] [%- END %] </select>
+ <span class="tip">Choisissez aucun pour voir tous les sites</span>
+ </li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input value="Valider" type="submit" />
+ <input type="hidden" name="report_name" value="[% report_name %]" />
+ <input type="hidden" name="do_it" value="1" />
+ </fieldset>
+ </form>
+[% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'reports-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

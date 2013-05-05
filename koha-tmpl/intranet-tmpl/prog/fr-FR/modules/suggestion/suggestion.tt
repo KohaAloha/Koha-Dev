@@ -1,0 +1,433 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; [% IF ( op_save ) %] [% IF ( suggestionid) %] [% IF ( op == 'show' ) %] Afficher suggestion d'achat #[% suggestionid %] [% ELSE %] Modifier  suggestion d'achat #[% suggestionid %] [% END %] [% ELSE %] Saisir une nouvelle suggestion d'achat [% END %] [% ELSE %] Gestion des suggestions [% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] [% IF ( op_else ) %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+/**
+*  displayOther.
+*  This function display the select or an textaera to write a reason.
+*/
+function displayOther(id,show,hide){
+	$("#"+hide+id).hide();
+	$("#"+show+id).show();
+}
+$(document).ready(function() {
+    $('#suggestiontabs').tabs({
+        // Correct table sizing for tables hidden in tabs
+        // http://www.datatables.net/examples/api/tabs_and_scrolling.html
+        "show": function(event, ui) {
+            var oTable = $('div.dataTables_wrapper>table', ui.panel).dataTable();
+            if ( oTable.length > 0 ) {
+                oTable.fnAdjustColumnSizing();
+            }
+        }
+    });
+    $(".sorted").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "aoColumnDefs": [
+            { "aTargets": [ 0, -1, -2 ], "bSortable": false, "bSearchable": false },
+        ],
+        "aLengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+        "iDisplayLength": 20,
+        "sPaginationType": "four_button"
+    }));
+[% FOREACH suggestion IN suggestions %]
+// functions for [% suggestion.suggestiontype %] interactions
+    $("#CheckAll[% suggestion.suggestiontype %]").click(function(e){
+		$("#[% suggestion.suggestiontype %]t").checkCheckboxes();
+        e.preventDefault();
+    });
+    $("#UncheckAll[% suggestion.suggestiontype %]").click(function(e){
+		$("#[% suggestion.suggestiontype %]t").unCheckCheckboxes();
+        e.preventDefault();
+	});
+	$("#other_reason[% suggestion.suggestiontype %]").hide();
+    $("input[name*=other_reason[% suggestion.suggestiontype %]]").focus(function(){ $(this).val(""); });
+    $("#reason[% suggestion.suggestiontype %]").change(function(){
+	    if($(this).val() == "other"){
+			$(this).hide();
+			$("#other_reason[% suggestion.suggestiontype %]").show();
+    }
+    });
+	$("#[% suggestion.suggestiontype %]delete").change(function(){
+		if(this.checked){
+			$("form[name='f[% suggestion.suggestiontype %]'] input[name=op]").attr("value","delete");
+		} else {
+			$("form[name='f[% suggestion.suggestiontype %]'] input[name=op]").attr("value","change");
+		}
+	});
+
+[% END %]
+    $("a[href*=back]").click(function(){
+    var sid = $(this).attr("href").replace(/#back/,"");
+	    $("#reason"+sid).show().find("option[value='']").attr("selected","selected");
+		$("#other_reason"+sid).hide();
+    });
+    $("h4.local_collapse a").click(function(){
+        $(this).parent().parent().find("ol").toggle();
+        return false;
+    });
+    // http://jqueryui.com/demos/datepicker/#date-range
+    var dates = $( "#suggesteddate_from, #suggesteddate_to" ).datepicker({
+        changeMonth: true,
+        numberOfMonths: 1,
+        onSelect: function( selectedDate ) {
+            var option = this.id == "suggesteddate_from" ? "minDate" : "maxDate",
+                instance = $( this ).data( "datepicker" );
+                date = $.datepicker.parseDate(
+                    instance.settings.dateFormat ||
+                    $.datepicker._defaults.dateFormat,
+                    selectedDate, instance.settings );
+            dates.not( this ).datepicker( "option", option, date );
+        }
+    });
+    var datesMD = $( "#manageddate_from, #manageddate_to" ).datepicker({
+        changeMonth: true,
+        numberOfMonths: 1,
+        onSelect: function( selectedDate ) {
+            var option = this.id == "manageddate_from" ? "minDate" : "maxDate",
+                instance = $( this ).data( "datepicker" );
+                date = $.datepicker.parseDate(
+                    instance.settings.dateFormat ||
+                    $.datepicker._defaults.dateFormat,
+                    selectedDate, instance.settings );
+            datesMD.not( this ).datepicker( "option", option, date );
+        }
+    });
+    var datesAD = $( "#accepteddate_from, #accepteddate_to" ).datepicker({
+        changeMonth: true,
+        numberOfMonths: 1,
+        onSelect: function( selectedDate ) {
+            var option = this.id == "accepteddate_from" ? "minDate" : "maxDate",
+                instance = $( this ).data( "datepicker" );
+                date = $.datepicker.parseDate(
+                    instance.settings.dateFormat ||
+                    $.datepicker._defaults.dateFormat,
+                    selectedDate, instance.settings );
+            datesAD.not( this ).datepicker( "option", option, date );
+        }
+    });
+});
+// ]]>
+</script>
+<style type="text/css">
+h4.local_collapse a { font-size : 80%; text-decoration: none; } fieldset.brief ol { display : none; }
+.overlay { top: 180px; left: 50%; position: absolute; margin-left: -100px; width: 200px; text-align: center; display: none; margin-top: -10px; background: #eeffd4; padding: .5em; color: #000; } .note { -moz-border-radius: 3px; border-radius:3px; background: transparent url("/intranet-tmpl/prog/img/famfamfam/silk/comment.png") top left no-repeat; padding : 1px 3px 1px 18px; font-size : 90%; }
+</style>[% ELSE %] <script type="text/javascript">
+// <![CDATA[
+$(document).ready(function() { calcNewsuggTotal(); });
+// ]]>
+</script>
+[% END %] <script type="text/javascript" src="[% themelang %]/js/acq.js"></script>
+</head>
+<body id="acq_suggestion" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; [% IF ( op_save ) %] <a href="/cgi-bin/koha/suggestion/suggestion.pl">Suggestions</a> &rsaquo; [% IF ( op == 'show' ) %] Afficher la suggestion #[% suggestionid %] [% ELSE %] Modifier la suggestion #[% suggestionid %] [% END %] [% ELSE %] Gestion des suggestions [% END %] </div>
+
+[% IF ( op == 'show' ) %] <div id="doc" class="yui-t7"> <!-- <div id="doc3" class="yui-t2"> -->
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+ <fieldset class="rows">
+ <legend>Informations bibliographiques</legend>
+ <ol>
+ <li><span class="label">Titre&nbsp;:</span>[% title |html %]</li>
+ <li><span class="label">Auteur&nbsp;:</span>[% author %]</li>
+ <li><span class="label">Date de publication&nbsp;:</span>[% copyrightdate %]</li>
+ <li><span class="label">ISBN, ISSN ou autre numéro :</span>[% isbn %]</li>
+ <li><span class="label">Editeur&nbsp;:</span>[% publishercode %]</li>
+ <li><span class="label">Lieu de publication :</span>[% place %]</li>
+ <li><span class="label">Titre de série :</span>[% collectiontitle %]</li>
+ <li><span class="label">Type de document&nbsp;:</span>
+ [% FOREACH itemtypeloo IN itemtypeloop %] [% IF ( itemtypeloo.selected ) %][% itemtypeloo.description %][% END %] [% END %] </li>
+ [% IF ( patron_reason_loop ) %] <li><span class="label">Raisons pour la suggestion&nbsp;:</span>
+ [% FOREACH patron_reason_loo IN patron_reason_loop %] [% IF ( patron_reason_loo.selected ) %][% patron_reason_loo.lib %][% END %] [% END %] </li>
+ [% END %] <li><span class="label">Notes&nbsp;: </span>[% note %]</li>
+ </ol>
+ </fieldset>
+ <fieldset class="rows"> <legend>Gestion suggestion</legend>
+ <ol>
+ <li>
+ <span class="label">Statut:</span>
+ [% IF ( STATUS == 'ASKED' ) %]En attente [% ELSIF ( STATUS == 'ACCEPTED' ) %]Accepté [% ELSIF ( STATUS == 'CHECKED' ) %]Contrôlé [% ELSIF ( STATUS == 'REJECTED' ) %]Rejeté [% ELSE %]Sans statut [% END %]</li>
+ <li>
+ <table>
+ <thead><tr><th>&nbsp;</th><th>Date</th><th>Par&nbsp;:</th></tr></thead>
+ <tbody>
+ <tr>
+ <th><span class="label">Créée le</span> </th>
+ <td>[% suggesteddate %]</td>
+ <td>[% IF ( suggestedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestedby_borrowernumber %]">[% suggestedby_surname %], [% suggestedby_firstname %]</a> [% suggestedby_branchcode %] ([% suggestedby_description %])[% END %] </td>
+ </tr>
+ <tr>
+ <th><span class="label">Gestion suggestion</span> </th>
+ <td>[% manageddate %]</td>
+ <td>[% IF ( managedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% managedby_borrowernumber %]">[% managedby_surname %], [% managedby_firstname %]</a> [% managedby_branchcode %] ([% managedby_description %]) [% END %]</td>
+ </tr>
+ <tr>
+ <th><span class="label">Suggestion acceptée</span> </th>
+ <td>[% accepteddate %]</td>
+ <td>[% IF ( acceptedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% acceptedby_borrowernumber %]">[% acceptedby_surname %], [% acceptedby_firstname %]</a> [% acceptedby_branchcode %] ([% acceptedby_description %]) [% END %]</td>
+ </tr>
+ </tbody>
+ </table></li></ol>
+ </fieldset>
+ <fieldset class="rows"> <legend>Informations d'acquisition</legend>
+ <ol>
+ <li>
+ <span class="label">Library:</span> [% branchname %] </li>
+ <li>
+ <span class="label">Fund:</span> [% budgetname %] </li>
+ <li>
+ <span class="label">Copies&nbsp;:</span>[% quantity %] </li>
+ <li>
+ <span class="label">Devise&nbsp;:</span>[% currency %] </li>
+ <li>
+ <span class="label">Prix&nbsp;: </span>[% price %] </li>
+ <li>
+ <span class="label">Total</span>[% total %] </li>
+ </ol>
+ </fieldset>
+
+ <a class="cancel" href="suggestion.pl">&lt;&lt;Retourner à la liste</a>
+
+ </div>
+ </div>
+</div>
+[% ELSE %] [% IF ( op_save ) %]<div id="doc" class="yui-t7">[% ELSE %]<div id="doc3" class="yui-t2">[% END %] <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% IF ( op_save ) %] <form id="add_edit" action="suggestion.pl" method="post">
+ [% IF ( suggestionid ) %] <h1>Modifier la suggestion d'achat #[% suggestionid %]</h1>
+ <input type="hidden" name="suggestionid" value="[% suggestionid %]"/>
+ [% ELSE %] <h1>Saisissez une nouvelle suggestion d'achat</h1>
+ [% END %] <fieldset class="rows"> <legend>Informations bibliographiques</legend><ol>
+ <li><label for="title">Titre&nbsp;:</label><input type="text" id="title" name="title" size="80" maxlength="255" value="[% title |html %]"/></li>
+ <li><label for="author">Auteur&nbsp;:</label><input type="text" id="author" name="author" size="50" maxlength="80" value="[% author %]"/></li>
+ <li><label for="copyrightdate">Date de publication&nbsp;:</label><input type="text" id="copyrightdate" name="copyrightdate" size="4" maxlength="4" value="[% copyrightdate %]" /></li>
+ <li><label for="isbn">ISBN, ISSN ou autre numéro :</label><input type="text" id="isbn" name="isbn" size="50" maxlength="80" value="[% isbn %]"/></li>
+ <li><label for="publishercode">Editeur&nbsp;:</label><input type="text" id="publishercode" name="publishercode" size="50" maxlength="80" value="[% publishercode %]"/></li>
+ <li><label for="place">Lieu de publication :</label><input type="text" id="place" name="place" size="50" maxlength="80" value="[% place %]"/></li>
+ <li><label for="collectiontitle">Titre de série :</label><input type="text" id="collectiontitle" name="collectiontitle" size="50" maxlength="80" value="[% collectiontitle %]"/></li>
+ <li><label for="itemtype">Type de document&nbsp;:</label>
+ <select id="itemtype" name="itemtype" >
+ [% FOREACH itemtypeloo IN itemtypeloop %] [% IF ( itemtypeloo.selected ) %]<option selected="selected" value="[% itemtypeloo.itemtype %]">[% ELSE %]<option value="[% itemtypeloo.itemtype %]">[% END %] [% itemtypeloo.description %]</option>
+ [% END %] </select>
+ </li>
+ [% IF ( patron_reason_loop ) %]<li><label for="patronreason">Raisons pour la suggestion&nbsp;:</label><select name="patronreason" id="patronreason"><option value=""> -- Choose -- </option>[% FOREACH patron_reason_loo IN patron_reason_loop %] [% IF ( patron_reason_loo.selected ) %]<option value="[% patron_reason_loo.authorised_value %]" selected="selected">[% patron_reason_loo.lib %]</option>[% ELSE %]<option value="[% patron_reason_loo.authorised_value %]">[% patron_reason_loo.lib %]</option>[% END %] [% END %]</select></li>[% END %] <li><label for="note">Notes&nbsp;: </label><textarea name="note" id="note" rows="5" cols="40">[% note %]</textarea></li>
+ </ol>
+ </fieldset>
+ <fieldset class="rows"> <legend>Gestion suggestion</legend>
+ <ol>
+ [% IF ( suggestionid ) %]<li><label for="status">Statut:</label><select id="STATUS" name="STATUS"><option value="">Pas de statut</option>
+ [% IF (statusselected_ASKED ) %]<option value="ASKED" selected="selected">En suspens</option> 
+ [% ELSE %]<option value="ASKED">En suspens</option>[% END %] [% IF (statusselected_ACCEPTED ) %]<option value="ACCEPTED" selected="selected">Accepté</option>
+ [% ELSE %]<option value="ACCEPTED">Accepté</option>[% END %] [% IF (statusselected_CHECKED ) %]<option value="CHECKED" selected="selected">Vérifié</option>
+ [% ELSE %]<option value="CHECKED">Vérifié</option>[% END %] [% IF ( statusselected_REJECTED ) %]<option value="REJECTED" selected="selected">Rejetée</option>
+ [% ELSE %]<option value="REJECTED">Rejetée</option>[% END %] </select></li>[% END %] <li><table>
+ <thead><tr><th>&nbsp;</th><th>Date</th><th>Par&nbsp;:</th></tr></thead>
+ <tbody>
+ <tr>
+ <th><label for="suggesteddate">Créée le</label> </th>
+ <td><input type="text" id="suggesteddate" name="suggesteddate" size="10" maxlength="10" value="[% suggesteddate %]"/></td>
+ <td><input type="hidden" id="suggestedby" name="suggestedby" value="[% suggestedby %]"/>[% IF ( suggestedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestedby_borrowernumber %]">[% suggestedby_surname %], [% suggestedby_firstname %]</a> [% suggestedby_branchcode %] ([% suggestedby_description %])[% END %] </td>
+ </tr>
+ <tr>
+ <th><label for="managedon">Gestion suggestion</label> </th>
+ <td><input type="text" id="managedon" name="manageddate" size="10" maxlength="10" value="[% manageddate %]" /></td>
+ <td><input type="hidden" id="managedby" name="managedby" value="[% managedby %]"/>[% IF ( managedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% managedby_borrowernumber %]">[% managedby_surname %], [% managedby_firstname %]</a> [% managedby_branchcode %] ([% managedby_description %]) [% END %]</td>
+ </tr>
+ <tr>
+ <th><label for="accepteddate">Suggestion acceptée</label> </th>
+ <td><input type="text" id="accepteddate" name="accepteddate" size="10" maxlength="10" value="[% accepteddate %]" /></td>
+ <td><input type="hidden" id="acceptedby" name="acceptedby" value="[% acceptedby %]"/>[% IF ( acceptedby_borrowernumber ) %]<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% acceptedby_borrowernumber %]">[% acceptedby_surname %], [% acceptedby_firstname %]</a> [% acceptedby_branchcode %] ([% acceptedby_description %]) [% END %]</td>
+ </tr>
+ </tbody>
+ </table></li></ol>
+ </fieldset>
+ <fieldset class="rows"> <legend>Informations d'acquisition</legend><ol>
+ <li><label for="branchcode">Library:</label>
+ <select name="branchcode" id="branchcode">
+ <option value="__ANY__">Tous</option>[% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %]<option value="[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>[% ELSE %]<option value="[% branchloo.value %]">[% branchloo.branchname %]</option>[% END %][% END %] </select>
+ </li>
+ <li><label for="budgetid">Fund:</label>
+ <select name="budgetid" id="budgetid">
+ <option value="">Tous</option>[% FOREACH budgetsloo IN budgetsloop %] [% IF ( budgetsloo.selected ) %]<option value="[% budgetsloo.budget_id %]" selected="selected">[% budgetsloo.budget_name %]</option>[% ELSE %]<option value="[% budgetsloo.budget_id %]">[% budgetsloo.budget_name %]</option>[% END %][% END %] </select>
+ </li><li><label for="quantity">Copies&nbsp;:</label>
+ <input type="text" size="10" id="quantity" name="quantity" value="[% quantity %]" onchange="calcNewsuggTotal();" />
+ </li><li><label for="currency">Devise&nbsp;:</label>
+ [% FOREACH loop_currenc IN loop_currency %] <input type="hidden" id="[% loop_currenc.currcode %]" name="[% loop_currenc.currcode %]" value="[% loop_currenc.rate %]" />
+ [% END %] <select name="currency" id="currency" onchange="calcNewsuggTotal();">
+ [% FOREACH loop_currenc IN loop_currency %] [% IF ( loop_currenc.selected ) %]<option value="[% loop_currenc.currcode %]" selected="selected">[% loop_currenc.currcode %]</option>[% ELSE %]<option value="[% loop_currenc.currcode %]">[% loop_currenc.currcode %]</option>[% END %][% END %] </select>
+ </li><li><label for="price">Prix&nbsp;: </label>
+ <input type="text" size="20" name="price" id="price" value="[% price %]" onchange="calcNewsuggTotal();" />
+ </li><li><label for="total">Total&nbsp;:</label>
+ <input type="text" readonly="readonly" id="total" name="total" size="10" value="[% total %]"/>
+ </li></ol>
+ </fieldset><input type="hidden" id="returnsuggested" name="returnsuggested" value="[% IF ( returnsuggestedby ) %][% returnsuggestedby %][% ELSE %]noone[% END %]"/>
+ <fieldset class="action"><input type="hidden" name="op" value="[% op %]" />[% IF ( suggestionid ) %]<input value="Enregistrer" type="submit" /> <a class="cancel" href="[% IF ( returnsuggestedby ) %]/cgi-bin/koha/members/moremember.pl?borrowernumber=[% returnsuggestedby %]#suggestions[% ELSE %]suggestion.pl[% END %]">Annuler</a>[% ELSE %]<input value="Soumettre votre suggestion" type="submit" /> <a class="cancel" href="suggestion.pl">Annuler</a>[% END %] </fieldset>
+ </form>
+[% END %] [% IF ( op_else ) %] <div id="toolbar" class="btn-toolbar">
+ <a class="btn btn-small" id="newsuggestion" href="suggestion.pl?op=add"><i class="icon-plus"></i> Nouvelle suggestion d'achat</a>
+</div>
+
+<h1>Gestion  des suggestion</h1>
+
+[% UNLESS ( notabs ) %] <div id="suggestiontabs" class="toptabs">
+<ul class="ui-tabs-nav">
+[% FOREACH suggestion IN suggestions %] [% IF ( suggestion.first ) %]<li class="ui-tabs-selected">[% ELSE %]<li>[% END %]<a href="#[% suggestion.suggestiontype %]">[% IF ( suggestion.suggestiontypelabel ) %] [% IF (suggestion.suggestiontypelabel == "Pending") %]En attente [% ELSIF (suggestion.suggestiontypelabel == "Accepted") %]Acceptée [% ELSIF (suggestion.suggestiontypelabel == "Checked") %]Vérifiée [% ELSIF (suggestion.suggestiontypelabel == "Rejected") %]Rejetée [% ELSIF (suggestion.suggestiontypelabel == "Available") %]Disponible [% ELSIF (suggestion.suggestiontypelabel == "Ordered") %]Commandée[% ELSE %] [% suggestion.suggestiontypelabel %][% END %] [% ELSE %]Pas de nom[% END %] ([% suggestion.suggestionscount %])</a></li>
+[% END %] </ul>
+[% END %] [% FOREACH suggestion IN suggestions %] <div id="[% suggestion.suggestiontype %]">
+<form name="f[% suggestion.suggestiontype %]" method="post" action="/cgi-bin/koha/suggestion/suggestion.pl#[% suggestion.suggestiontype %]">
+
+[% IF ( suggestion.suggestions_loop ) %] <p><a id="CheckAll[% suggestion.suggestiontype %]" href="#">Tout sélectionner</a> | <a id="UncheckAll[% suggestion.suggestiontype %]" href="#">Désélectionner tout</a></p>
+ <table id="[% suggestion.suggestiontype %]t" class="sorted">
+ <thead>
+ <tr><th>&nbsp;</th>
+ <th>Suggestion</th>
+ <th>Suggested by - on</th>
+ <th>Managed by - on</th>
+ <th>Library</th>
+ <th>Poste budgétaire</th>
+ <th>Statut</th></tr>
+ </thead>
+ <tbody>
+ [% FOREACH suggestions_loo IN suggestion.suggestions_loop %] [% IF ( suggestions_loo.even ) %]<tr class="highlight">[% ELSE %]<tr>[% END %] <td>
+ <input type="checkbox" name="edit_field" value="[% suggestions_loo.suggestionid %]" />
+ </td>
+ <td>
+ <a href="suggestion.pl?suggestionid=[% suggestions_loo.suggestionid %]&op=show" title="Suggestion">
+ [% suggestions_loo.title |html %][% IF ( suggestions_loo.author ) %], par [% suggestions_loo.author %][% END %]</a>
+ [<a href="suggestion.pl?suggestionid=[% suggestions_loo.suggestionid %]&op=edit" title="Suggestion">edit</a>] <br />
+ [% IF ( suggestions_loo.copyrightdate ) %]&copie; [% suggestions_loo.copyrightdate %] [% END %] [% IF ( suggestions_loo.volumedesc ) %]; Volume :<i>[% suggestions_loo.volumedesc %]</i> [% END %] [% IF ( suggestions_loo.isbn ) %]; ISBN:<i>[% suggestions_loo.isbn %]</i> [% END %][% IF ( suggestions_loo.publishercode ) %] ; Edité par [% suggestions_loo.publishercode %] [% END %][% IF ( suggestions_loo.publicationyear ) %] dans <i>[% suggestions_loo.publicationyear %]</i> [% END %][% IF ( suggestions_loo.place ) %] dans <i>[% suggestions_loo.place %]</i> [% END %][% IF ( suggestions_loo.collectiontitle ) %]; [% suggestions_loo.collectiontitle %] [% END %][% IF ( suggestions_loo.itemtype ) %]; [% suggestions_loo.itemtype %] [% END %]<br />[% IF ( suggestions_loo.note ) %]<span class="note">[% suggestions_loo.note %]</span>[% END %] </td>
+ <td>
+ [% IF ( suggestions_loo.emailsuggestedby ) %]<a href="mailto:[% suggestions_loo.emailsuggestedby %]">[% END %][% suggestions_loo.surnamesuggestedby %][% IF ( suggestions_loo.firstnamesuggestedby ) %], [% suggestions_loo.firstnamesuggestedby %][% END %] [% IF ( suggestions_loo.emailsuggestedby ) %]</a>[% END %]
+ [% IF ( suggestions_loo.suggesteddate ) %] - [% suggestions_loo.suggesteddate %][% END %]
+ </td>
+ <td>
+ [% IF ( suggestions_loo.emailmanagedby ) %]<a href="mailto:[% suggestions_loo.emailmanagedby %]">[% END %][% suggestions_loo.surnamemanagedby %][% IF ( suggestions_loo.firstnamemanagedby ) %], [% suggestions_loo.firstnamemanagedby %][% END %] [% IF ( suggestions_loo.emailmanagedby ) %]</a>[% END %]
+ [% IF ( suggestions_loo.manageddate ) %] - [% suggestions_loo.manageddate %][% END %]
+ </td>
+ <td>
+ [% suggestions_loo.branchcode %] </td>
+ <td>
+ [% suggestions_loo.budget_name %] </td>
+ <td>
+ [% IF ( suggestions_loo.ASKED ) %]Demandé[% END %] [% IF ( suggestions_loo.ACCEPTED ) %]Accepté[% END %] [% IF ( suggestions_loo.ORDERED ) %]Commandé[% END %] [% IF ( suggestions_loo.REJECTED ) %]Rejeté[% END %] [% IF ( suggestions_loo.CHECKED ) %]Contrôlé[% END %] [% IF ( suggestions_loo.reason ) %]<br />([% suggestions_loo.reason %])[% END %] </td>
+ </tr>
+ [% END %]</tbody>
+ </table> <fieldset>
+ <div id="select-reason[% suggestion.suggestiontype %]">
+ <div id="status[% suggestion.suggestiontype %]">
+ <label for="STATUS[% suggestion.suggestiontype %]">Marquer les éléments sélectionnés comme: </label><select name="STATUS" id="STATUS[% suggestion.suggestiontype %]">
+ <option value=""> -- Choose a status --</option>
+ [% IF (statusselected_ASKED ) %]<option value="ASKED" selected="selected">En suspens</option> 
+ [% ELSE %]<option value="ASKED">En suspens</option>[% END %] [% IF (statusselected_ACCEPTED ) %]<option value="ACCEPTED" selected="selected">Accepté</option>
+ [% ELSE %]<option value="ACCEPTED">Accepté</option>[% END %] [% IF (statusselected_CHECKED ) %]<option value="CHECKED" selected="selected">Vérifié</option>
+ [% ELSE %]<option value="CHECKED">Vérifié</option>[% END %] [% IF ( statusselected_REJECTED ) %]<option value="REJECTED" selected="selected">Rejetée</option>
+ [% ELSE %]<option value="REJECTED">Rejetée</option>[% END %] </select>
+ <label for="reason[% suggestion.suggestiontype %]">avec cette raison:</label> <select id="reason[% suggestion.suggestiontype %]" name="reason[% suggestion.suggestiontype %]">
+ <option value=""> -- Choose a reason -- </option>
+ [% FOREACH reasonsloo IN suggestion.reasonsloop %] <option value="[% reasonsloo.lib %]">[% reasonsloo.lib %]</option>
+ [% END %] <option value="other">Autres...</option>
+ </select> <span id="other_reason[% suggestion.suggestiontype %]">
+ <input type="text" size="31" id="select-other_reason[% suggestion.suggestiontype %]" name="other_reason[% suggestion.suggestiontype %]" value="please note your reason here..." /> <a href="#back[% suggestion.suggestiontype %]">Annuler</a>
+ </span> <strong style="padding: 0 1em;">OU:</strong> <label for="[% suggestion.suggestiontype %]delete">Supprimer la sélection</label> <input type="checkbox" name="op" id="[% suggestion.suggestiontype %]delete" />
+ </div>
+ </div>
+
+
+ <input type="hidden" name="tabcode" value="[% suggestion.suggestiontype %]" />
+ <input type="hidden" name="op" value="change" />
+</fieldset>
+ <fieldset class="action">
+ <input value="Valider" type="submit" /></fieldset>
+</form>
+[% ELSE %] <b>Pas de résultat.</b>
+[% END %] </div>
+[% END %] </div>
+[% END %] </div>
+</div>
+
+ [% UNLESS ( op_save ) %] [% UNLESS ( op == 'show' ) %]<div class="yui-b">
+<form name="suggestionfilter" action="suggestion.pl" method="get">
+<fieldset class="brief"><ol style="display:block;"><li><label for="displayby">Trié par : </label>
+ <select name="displayby" id="displayby" style="width:auto;">
+ <option value="STATUS">Statut</option>
+ <option value="branchcode">Library</option>
+ <option value="itemtype">Type de document</option>
+ <option value="managedby">Géré par&nbsp;: </option>
+ <option value="acceptedby">Accepté par</option>
+ </select> <input value="Valider" type="submit" /></li></ol></fieldset>
+<h4>Filtrer sur&nbsp;: <a style="font-size:80%;font-weight:normal;" href="/cgi-bin/koha/suggestion/suggestion.pl">[effacer]</a></h4>
+ <div style="display:block;" id="limits">
+
+ <fieldset class="brief"><h4 class="local_collapse"><a href="#">Informations bibliographiques</a></h4>
+ <ol> <li><label for="title"> Titre&nbsp;:</label><input type="text" id="title" name="title" value="[% title |html %]" /></li>
+ <li><label for="author"> Auteur&nbsp;:</label><input type="text" id="author" name="author" value="[% author %]" /></li>
+ <li><label for="isbn"> ISBN&nbsp;: </label><input type="text" id="isbn"  name="isbn" value="[% isbn %]" /></li>
+ <li><label for="publishercode"> Editeur&nbsp;:</label><input type="text" id="publishercode" name="publishercode" value="[% publishercode %]" /></li>
+ <li><label for="copyrightdate_filter"> Date de publication&nbsp;:</label><input type="text" id="copyrightdate_filter" name="copyrightdate" value="[% copyrightdate %]" /></li>
+ <li><label for="collectiontitle"> Titre de série :</label><input type="text" id="collectiontitle" name="collectiontitle" value="[% collectiontitle %]" /></li><li><input value="Valider" type="submit" /></li></ol>
+ </fieldset>
+ <fieldset class="brief"><h4 class="local_collapse"><a href="#">Informations sur la suggestion</a></h4>
+ <ol>
+ <li><label for="STATUS"> Statut:</label><select name="STATUS" id="STATUS"><option value="">Tous</option>
+ [% IF (statusselected_ASKED ) %]<option value="ASKED" selected="selected">En suspens</option> 
+ [% ELSE %]<option value="ASKED">En suspens</option>[% END %] [% IF (statusselected_ACCEPTED ) %]<option value="ACCEPTED" selected="selected">Accepté</option>
+ [% ELSE %]<option value="ACCEPTED">Accepté</option>[% END %] [% IF (statusselected_CHECKED ) %]<option value="CHECKED" selected="selected">Vérifié</option>
+ [% ELSE %]<option value="CHECKED">Vérifié</option>[% END %] [% IF ( statusselected_REJECTED ) %]<option value="REJECTED" selected="selected">Rejetée</option>
+ [% ELSE %]<option value="REJECTED">Rejetée</option>[% END %] </select></li>
+ <li><label for="suggestedby"> Suggéré par :</label><select id="suggestedby" name="suggestedby"><option value="">Tous</option>
+[% FOREACH suggestedby_loo IN suggestedby_loop %][% IF ( suggestedby_loo.selected ) %]<option value="[% suggestedby_loo.code %]" selected="selected">[% suggestedby_loo.desc %]</option>[% ELSE %]<option value="[% suggestedby_loo.code %]">[% suggestedby_loo.desc %]</option>[% END %][% END %] </select></li>
+ <li><label for="suggesteddate_from"> Suggéré le:</label>
+ <table class="invis">
+ <tr>
+ <td><label for="suggesteddate_from">from:</label></td><td><input type="text" id="suggesteddate_from" name="suggesteddate_from" value="[% suggesteddate_from %]" style="width:76px;" /></td>
+ </tr>
+ <tr>
+ <td><label for="suggesteddate_to">to:</label></td><td><input type="text" id="suggesteddate_to" name="suggesteddate_to" value="[% suggesteddate_to %]" style="width:76px;" /></td>
+ </tr>
+ </table>
+ </li>
+ <li><label for="managedby"> Géré par&nbsp; :</label><select id="managedby" name="managedby"><option value="">Tous</option>
+[% FOREACH managedby_loo IN managedby_loop %][% IF ( managedby_loo.selected ) %]<option value="[% managedby_loo.code %]" selected="selected">[% managedby_loo.desc %]</option>[% ELSE %]<option value="[% managedby_loo.code %]">[% managedby_loo.desc %]</option>[% END %][% END %] </select></li>
+ <li><label for="manageddate_from"> Date du traitement :</label>
+ <table class="invis">
+ <tr>
+ <td><label for="manageddate_from">from:</label></td><td><input type="text" id="manageddate_from" name="manageddate_from" value="[% manageddate_from %]" style="width:76px;" /></td>
+ </tr>
+ <tr>
+ <td><label for="manageddate_to">to:</label></td><td><input type="text" id="manageddate_to" name="manageddate_to" value="[% manageddate_to %]" style="width:76px;" /></td>
+ </tr>
+ </table>
+ </li>
+ <li><label for="acceptedby"> Accepté par :</label><select id="acceptedby" name="acceptedby"><option value="">Tous</option>
+[% FOREACH acceptedby_loo IN acceptedby_loop %][% IF ( acceptedby_loo.selected ) %] <option value="[% acceptedby_loo.code %]" selected="selected">[% acceptedby_loo.desc %]</option>[% ELSE %]<option value="[% acceptedby_loo.code %]">[% acceptedby_loo.desc %]</option>[% END %][% END %] </select></li>
+ <li><label for="accepteddate_from"> Accepté le :</label>
+ <table class="invis">
+ <tr>
+ <td><label for="accepteddate_from">from:</label></td><td><input type="text" id="accepteddate_from" name="accepteddate_from" value="[% accepteddate_from %]" style="width:76px;" /></td>
+ </tr>
+ <tr>
+ <td><label for="accepteddate_to">to:</label></td><td><input type="text" id="accepteddate_to" name="accepteddate_to" value="[% accepteddate_to %]" style="width:76px;" /></td>
+ </tr>
+ </table>
+ </li>
+ <li><input value="Valider" type="submit" /></li></ol>
+ </fieldset>
+
+ <fieldset class="brief"><h4 class="local_collapse"><a href="#">Informations d'acquisition</a></h4>
+ <ol><li><label for="budgetid"> Poste budgétaire&nbsp;:</label>
+ <select name="budgetid" id="budgetid"><option value="">Tous</option>[% FOREACH budgetid_loo IN budgetid_loop %] [% IF ( budgetid_loo.selected ) %] <option value="[% budgetid_loo.code %]" selected="selected">[% budgetid_loo.desc %]</option>[% ELSE %]<option value="[% budgetid_loo.code %]">[% budgetid_loo.desc %]</option>[% END %] [% END %] </select></li>
+ <li><label for="branchcode"> Pour:</label>
+ <select name="branchcode" id="branchcode">
+ <option value="__ANY__">Tous</option>[% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <option value="[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>[% ELSE %] <option value="[% branchloo.value %]">[% branchloo.branchname %]</option>[% END %] [% END %] </select></li><li><input value="Valider" type="submit" /></li></ol>
+ </fieldset>
+ </div>
+ </form>
+ </div>
+ [% END %] [% END %] </div>
+[% END %] [% INCLUDE 'intranet-bottom.inc' %] 

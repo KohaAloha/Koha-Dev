@@ -1,0 +1,25 @@
+[% INCLUDE 'help-top.inc' %] <h1>Lots</h1>
+
+<p>Les lots sont composés des codes à barres que vous voulez imprimer. Dans cet écran, recherchez les exemplaires pour lesquels vous voulez imprimer une étiquette.</p>
+
+<h2>Ajouter un lot</h2>
+
+<p>Batches can be created in one of two ways. The first is to click the 'Create Label Batch' link on the 'Staged MARC Management' page</p>
+
+<p>L'autre est de créer un nouveau lot dans l'outil Créateur d'étiquettes.</p>
+
+<p>Vous êtes amené à un lot vide. Il y a en bas de page un bouton Ajouter des exemplaires. Utilisez-le. Une fenêtre de recherche vous permet de trouver les exemplaires que vous voulez ajouter à votre lot.</p>
+
+<p>Dans le résultat de la recherche, cliquez sur les coches des exemplaires que vous voulez ajouter au lot, puis cliquez sur le bouton Ajout sélection. Vous pouvez également ajouter les exemplaires un-à-un en cliquant sur le lien Ajouter qui se trouve sur la gauche de chaque exemplaire.</p>
+
+<p>Une fois que vous avez ajouté les exemplaires, cliquez sur le bouton Fait. La page de résultat liste les exemplaires que vous avez sélectionnés.</p>
+
+<p>To print your labels, click the 'Export Batch' button. To print only some of the labels, click the 'Export Item(s)' button. Either way you will be presented with a confirmation screen where you can choose your template and layout.</p>
+
+<p>Trois options de téléchargement vous seront alors proposées : PDF, Excel ou CSV.</p>
+
+<p>Après avoir enregistré votre fichier, il vous reste juste à l'imprimer sur des étiquettes vierges</p>
+
+<p><strong>See the full documentation for Label Batches in the <a href="http://manual.koha-community.org/3.12/en/labelcreator.html#labelbatches">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,100 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Circulation &rsaquo; File des réservations</title>
+[% INCLUDE 'doc-head-close.inc' %] <style type="text/css"> p { margin-top: 0; }</style>
+</head>
+<body id="circ_view_holdsqueue" class="circ">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <link rel="stylesheet" type="text/css" href="/intranet-tmpl/prog/en/css/datatables.css" />
+<script type="text/javascript" src="/intranet-tmpl/prog/en/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="/intranet-tmpl/prog/en/js/datatables.js"></script>
+<script type="text/javascript">//<![CDATA[
+$(document).ready(function() {
+    $("#holdst").dataTable({
+        "aaSorting": [[ 2, "asc" ]],
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": true,
+        "bInfo": false,
+        "bAutoWidth": false
+    });
+});
+//]]>
+</script>
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a>
+&rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a>
+&rsaquo; <a href="/cgi-bin/koha/circ/view_holdsqueue.pl">File de réservation</a>
+[% IF ( run_report ) %] &rsaquo; Résultats[% END %] </div>
+
+<div id="doc" class="yui-t7">
+
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+
+<h1>File des réservations</h1>
+
+[% IF ( run_report ) %] [% IF ( total ) %] <div class="results">[% total %] documents pour [% IF ( branchlimit ) %][% branchlimit %][% ELSE %]Tous les sites[% END %] </div>
+ [% ELSE %] <div class="dialog message">Pas d'exemplaire(s) trouvé(s).</div>
+ [% END %] [% IF ( itemsloop ) %] <table id="holdst">
+ <thead>
+ <tr>
+ <th class="hq-title">Titre</th>
+ <th class="hq-collection">Collection</th>
+ <th class="hq-callnumber">Cote</th>
+ <th class="hq-copynumber">Numéro de copie</th>
+ <th class="hq-enumchron">Enumération</th>
+ <th class="hq-barcode">Code à barres</th>
+ <th class="hq-patron">Adhérent</th>
+ <th class="hq-sendto">Envoyer à</th>
+ <th class="hq-date">Date</th>
+ <th class="hq-notes">Notes</th>
+ </tr>
+ </thead>
+ <tbody>[% FOREACH itemsloo IN itemsloop %] <tr>
+ <td class="hq-title"><p><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% itemsloo.biblionumber %]"><strong>[% itemsloo.title |html %]</strong> [% IF ( itemsloo.subtitle ) %][% itemsloo.subtitle %][% END %]</a></p>
+ <p><strong>[% itemsloo.author %]</strong>
+ <div class="hq-pubdata"> [% IF ( itemsloo.publishercode ) %][% itemsloo.publishercode %][% END %] [% IF ( itemsloo.publicationyear ) %], [% itemsloo.publicationyear %] [% ELSIF ( itemsloo.copyrightdate ) %], [% itemsloo.copyrightdate %][% END %] [% IF ( itemsloo.pages ) %]: [% itemsloo.pages %] [% END %] [% IF ( itemsloo.size ) %][% itemsloo.size %][% END %] [% IF ( itemsloo.isbn ) %]ISBN: [% itemsloo.isbn %][% END %]</p>
+ </div>
+ </td>
+ <td class="hq-collection">[% itemsloo.ccode %]</td>
+ <td class="hq-callnumber">[% itemsloo.location %] [% itemsloo.itemcallnumber %]</td>
+ <td class="hq-copynumber">[% itemsloo.copynumber %]</td>
+ <td class="hq-enumchron">[% itemsloo.enumchron %]</td>
+ <td class="hq-barcode">
+ [% IF ( itemsloo.item_level_request ) %] <em>Exemplaires seult&nbsp;:</em> <strong>[% itemsloo.barcode %]</strong>
+ [% ELSE %] <strong>[% itemsloo.barcode %]</strong> <em>ou n'importe lequel disponible</em>
+ [% END %] </td>
+ <td class="hq-patron"><p><a href="/cgi-bin/koha/circ/circulation.pl?findborrower=[% itemsloo.cardnumber %]#reserves">[% itemsloo.surname %], [% itemsloo.firstname %] ([% itemsloo.cardnumber %])</a></p> <p>[% itemsloo.phone %]</p></td>
+ <td class="hq-sendto">[% itemsloo.pickbranch %]</td>
+ <td class="hq-date">[% itemsloo.reservedate %]</td>
+ <td class="hq-notes">[% itemsloo.notes %]</td>
+ </tr>
+ [% END %]</tbody>
+ </table>
+ [% END %] [% END %] [% UNLESS ( total ) %] <form name="f" action="/cgi-bin/koha/circ/view_holdsqueue.pl" method="post">
+ <fieldset class="rows">
+ <ol>
+ <li><label for="branchlimit">Library: </label><select name="branchlimit" id="branchlimit">
+ <option value="">Tous</option>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %]<option value="[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>
+ [% ELSE %] <option value="[% branchloo.value %]">[% branchloo.branchname %]</option>
+ [% END %] [% END %] </select></li>
+ <!-- FIXME Not working yet
+ <li><label for="itemtypeslimit">Item Type: </label><select name="itemtypeslimit" id="itemtypeslimit">
+ <option value="">All</option>
+ [% FOREACH itemtypeloo IN itemtypeloop %]
+ [% IF ( itemtypeloo.selected ) %]<option value="[% itemtypeloo.value %]" selected="selected">[% itemtypeloo.description %]</option>
+ [% ELSE %]
+ <option value="[% itemtypeloo.value %]">[% itemtypeloo.description %]</option>
+ [% END %]
+ [% END %]
+ </select></li>
+ -->
+ </ol></fieldset>
+ <fieldset class="action"> <input value="Valider" type="submit" />
+ <input type="hidden" name="run_report" value="1" /></fieldset>
+</form>
+[% END %] </div>
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

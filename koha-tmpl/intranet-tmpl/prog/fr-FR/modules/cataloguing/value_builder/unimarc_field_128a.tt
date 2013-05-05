@@ -1,0 +1,168 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 128a</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_128a" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 128a</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">Nature de l'oeuvre musicale:</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+ [% IF ( f1ai ) %] <option value="ai#" selected="selected">air</option>
+ [% ELSE %] <option value="ai#">air</option>
+ [% END %] [% IF ( f1an ) %] <option value="an#" selected="selected">anthem </option>
+ [% ELSE %] <option value="an#">anthem </option>
+ [% END %] [% IF ( f1ar ) %] <option value="ar#" selected="selected">aria</option>
+ [% ELSE %] <option value="ar#">aria</option>
+ [% END %] [% IF ( f1bt ) %] <option value="bt#" selected="selected">ballet</option>
+ [% ELSE %] <option value="bt#">ballet</option>
+ [% END %] [% IF ( f1bd ) %] <option value="bd#" selected="selected">ballade</option>
+ [% ELSE %] <option value="bd#">ballade</option>
+ [% END %] [% IF ( f1bg ) %] <option value="bg#" selected="selected">bluegrass</option>
+ [% ELSE %] <option value="bg#">bluegrass</option>
+ [% END %] [% IF ( f1bl ) %] <option value="bl#" selected="selected">blues</option>
+ [% ELSE %] <option value="bl#">blues</option>
+ [% END %] [% IF ( f1cb ) %] <option value="cb#" selected="selected">chant, non chrétien</option>
+ [% ELSE %] <option value="cb#">chant, non chrétien</option>
+ [% END %] [% IF ( f1cc ) %] <option value="cc#" selected="selected">chant, chrétien</option>
+ [% ELSE %] <option value="cc#">chant, chrétien</option>
+ [% END %] [% IF ( f1cl ) %] <option value="cl#" selected="selected">choral-prélude</option>
+ [% ELSE %] <option value="cl#">choral-prélude</option>
+ [% END %] [% IF ( f1cg ) %] <option value="cg#" selected="selected">concerto grosso</option>
+ [% ELSE %] <option value="cg#">concerto grosso</option>
+ [% END %] [% IF ( f1ch ) %] <option value="ch#" selected="selected">choral</option>
+ [% ELSE %] <option value="ch#">choral</option>
+ [% END %] [% IF ( f1cn ) %] <option value="cn#" selected="selected">canon</option>
+ [% ELSE %] <option value="cn#">canon</option>
+ [% END %] [% IF ( f1co ) %] <option value="co#" selected="selected">concerto</option>
+ [% ELSE %] <option value="co#">concerto</option>
+ [% END %] [% IF ( f1cp ) %] <option value="cp#" selected="selected">chanson, polyphonique</option>
+ [% ELSE %] <option value="cp#">chanson, polyphonique</option>
+ [% END %] [% IF ( f1cr ) %] <option value="cr#" selected="selected">carol</option>
+ [% ELSE %] <option value="cr#">carol</option>
+ [% END %] [% IF ( f1cs ) %] <option value="cs#" selected="selected">chanson / musique aléatoire</option>
+ [% ELSE %] <option value="cs#">chanson / musique aléatoire</option>
+ [% END %] [% IF ( f1ct ) %] <option value="ct#" selected="selected">cantate</option>
+ [% ELSE %] <option value="ct#">cantate</option>
+ [% END %] [% IF ( f1cy ) %] <option value="cy#" selected="selected">musique country</option>
+ [% ELSE %] <option value="cy#">musique country</option>
+ [% END %] [% IF ( f1cz ) %] <option value="cz#" selected="selected">chanson</option>
+ [% ELSE %] <option value="cz#">chanson</option>
+ [% END %] [% IF ( f1df ) %] <option value="df#" selected="selected">danse</option>
+ [% ELSE %] <option value="df#">danse</option>
+ [% END %] [% IF ( f1dv ) %] <option value="dv#" selected="selected">divertimento</option>
+ [% ELSE %] <option value="dv#">divertimento</option>
+ [% END %] [% IF ( f1fg ) %] <option value="fg#" selected="selected">fugue</option>
+ [% ELSE %] <option value="fg#">fugue</option>
+ [% END %] [% IF ( f1fm ) %] <option value="fm#" selected="selected">musique folk</option>
+ [% ELSE %] <option value="fm#">musique folk</option>
+ [% END %] [% IF ( f1ft ) %] <option value="ft#" selected="selected">fantasia</option>
+ [% ELSE %] <option value="ft#">fantasia</option>
+ [% END %] [% IF ( f1gm ) %] <option value="gm#" selected="selected">musique gospel</option>
+ [% ELSE %] <option value="gm#">musique gospel</option>
+ [% END %] [% IF ( f1hy ) %] <option value="hy#" selected="selected">hymne</option>
+ [% ELSE %] <option value="hy#">hymne</option>
+ [% END %] [% IF ( f1in ) %] <option value="in#" selected="selected">intermezzo</option>
+ [% ELSE %] <option value="in#">intermezzo</option>
+ [% END %] [% IF ( f1jz ) %] <option value="jz#" selected="selected">jazz</option>
+ [% ELSE %] <option value="jz#">jazz</option>
+ [% END %] [% IF ( f1li ) %] <option value="li#" selected="selected">lied</option>
+ [% ELSE %] <option value="li#">lied</option>
+ [% END %] [% IF ( f1mc ) %] <option value="mc#" selected="selected">revue musicale et comédie</option>
+ [% ELSE %] <option value="mc#">revue musicale et comédie</option>
+ [% END %] [% IF ( f1md ) %] <option value="md#" selected="selected">madrigal</option>
+ [% ELSE %] <option value="md#">madrigal</option>
+ [% END %] [% IF ( f1mi ) %] <option value="mi#" selected="selected">menuet</option>
+ [% ELSE %] <option value="mi#">menuet</option>
+ [% END %] [% IF ( f1mr ) %] <option value="mr#" selected="selected">marche</option>
+ [% ELSE %] <option value="mr#">marche</option>
+ [% END %] [% IF ( f1ms ) %] <option value="ms#" selected="selected">masse</option>
+ [% ELSE %] <option value="ms#">masse</option>
+ [% END %] [% IF ( f1mo ) %] <option value="mo#" selected="selected">motet</option>
+ [% ELSE %] <option value="mo#">motet</option>
+ [% END %] [% IF ( f1mp ) %] <option value="mp#" selected="selected">image animée musicale</option>
+ [% ELSE %] <option value="mp#">image animée musicale</option>
+ [% END %] [% IF ( f1mu ) %] <option value="mu#" selected="selected">formats multiples</option>
+ [% ELSE %] <option value="mu#">formats multiples</option>
+ [% END %] [% IF ( f1mz ) %] <option value="mz#" selected="selected">mazurka</option>
+ [% ELSE %] <option value="mz#">mazurka</option>
+ [% END %] [% IF ( f1nc ) %] <option value="nc#" selected="selected">nocturne</option>
+ [% ELSE %] <option value="nc#">nocturne</option>
+ [% END %] [% IF ( f1op ) %] <option value="op#" selected="selected">opéra</option>
+ [% ELSE %] <option value="op#">opéra</option>
+ [% END %] [% IF ( f1or ) %] <option value="or#" selected="selected">oratorio</option>
+ [% ELSE %] <option value="or#">oratorio</option>
+ [% END %] [% IF ( f1ov ) %] <option value="ov#" selected="selected">Ouverture</option>
+ [% ELSE %] <option value="ov#">Ouverture</option>
+ [% END %] [% IF ( f1pf ) %] <option value="pf#" selected="selected">prelude and fugue</option>
+ [% ELSE %] <option value="pf#">prelude and fugue</option>
+ [% END %] [% IF ( f1pg ) %] <option value="pg#" selected="selected">programme music</option>
+ [% ELSE %] <option value="pg#">programme music</option>
+ [% END %] [% IF ( f1pm ) %] <option value="pm#" selected="selected">passion music</option>
+ [% ELSE %] <option value="pm#">passion music</option>
+ [% END %] [% IF ( f1po ) %] <option value="po#" selected="selected">polonaise</option>
+ [% ELSE %] <option value="po#">polonaise</option>
+ [% END %] [% IF ( f1pp ) %] <option value="pp#" selected="selected">popular music</option>
+ [% ELSE %] <option value="pp#">popular music</option>
+ [% END %] [% IF ( f1ps ) %] <option value="ps#" selected="selected">passacaglia</option>
+ [% ELSE %] <option value="ps#">passacaglia</option>
+ [% END %] [% IF ( f1pt ) %] <option value="p#" selected="selected">partsong</option>
+ [% ELSE %] <option value="pt#">partsong</option>
+ [% END %] [% IF ( f1pv ) %] <option value="pv#" selected="selected">pavan</option>
+ [% ELSE %] <option value="pv#">pavan</option>
+ [% END %] [% IF ( f1rc ) %] <option value="rc#" selected="selected">Musique rock</option>
+ [% ELSE %] <option value="rc#">Musique rock</option>
+ [% END %] [% IF ( f1rd ) %] <option value="rd#" selected="selected">rondo</option>
+ [% ELSE %] <option value="rd#">rondo</option>
+ [% END %] [% IF ( f1rg ) %] <option value="rg#" selected="selected">ragtime</option>
+ [% ELSE %] <option value="rg#">ragtime</option>
+ [% END %] [% IF ( f1ri ) %] <option value="ri#" selected="selected">papier de riz</option>
+ [% ELSE %] <option value="ri#">papier de riz</option>
+ [% END %] [% IF ( f1rp ) %] <option value="rp#" selected="selected">rhapsodie</option>
+ [% ELSE %] <option value="rp#">rhapsodie</option>
+ [% END %] [% IF ( f1rq ) %] <option value="rq#" selected="selected">Réquiem</option>
+ [% ELSE %] <option value="rq#">Réquiem</option>
+ [% END %] [% IF ( f1sg ) %] <option value="sg#" selected="selected">chanson</option>
+ [% ELSE %] <option value="sg#">chanson</option>
+ [% END %] [% IF ( f1si ) %] <option value="si#" selected="selected">symphonie</option>
+ [% ELSE %] <option value="si#">symphonie</option>
+ [% END %] [% IF ( f1sn ) %] <option value="sn#" selected="selected">sonate</option>
+ [% ELSE %] <option value="sn#">sonate</option>
+ [% END %] [% IF ( f1sp ) %] <option value="sp#" selected="selected">Poème symphonique</option>
+ [% ELSE %] <option value="sp#">Poème symphonique</option>
+ [% END %] [% IF ( f1sq ) %] <option value="sq#" selected="selected">danse carré</option>
+ [% ELSE %] <option value="sq#">danse carré</option>
+ [% END %] [% IF ( f1st ) %] <option value="st#" selected="selected">exercice, étude</option>
+ [% ELSE %] <option value="st#">exercice, étude</option>
+ [% END %] [% IF ( f1su ) %] <option value="su#" selected="selected">suite</option>
+ [% ELSE %] <option value="su#">suite</option>
+ [% END %] [% IF ( f1sy ) %] <option value="sy#" selected="selected">Symphonie</option>
+ [% ELSE %] <option value="sy#">Symphonie</option>
+ [% END %] [% IF ( f1tc ) %] <option value="tc#" selected="selected">toccata</option>
+ [% ELSE %] <option value="tc#">toccata</option>
+ [% END %] [% IF ( f1ts ) %] <option value="ts#" selected="selected">sonate en trio</option>
+ [% ELSE %] <option value="ts#">sonate en trio</option>
+ [% END %] [% IF ( f1vr ) %] <option value="vr#" selected="selected">variation</option>
+ [% ELSE %] <option value="vr#">variation</option>
+ [% END %] [% IF ( f1wz ) %] <option value="wz#" selected="selected">valse</option>
+ [% ELSE %] <option value="wz#">valse</option>
+ [% END %] [% IF ( f1zz ) %] <option value="zz#" selected="selected">Autre forme</option>
+ [% ELSE %] <option value="zz#">Autre forme</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    function report() {
+        var doc   = opener.document; 
+        var field = doc.getElementById("[% index %]");
+        field.value =  document.f_pop.f1.value;
+        window.close();
+        return false;
+    }
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

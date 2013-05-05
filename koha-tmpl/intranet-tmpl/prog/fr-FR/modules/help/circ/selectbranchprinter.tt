@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Choisir un site</h1>
+
+<p>Quand vous connectez à l'interface professionnelle, vous êtes placée par défaut dans bibliothèque définie dans votre fichie d'adhérent. Vous la voyez en haut à gauche de toutes les pages de l'interface pro.</p>
+
+<p>C'est le site où seront opérées toutes les transactions de circulation. Si vous vous trouvez sur un autre site, ou sur un site mobile, vous devez définir le site avant de commencer à faire circuler des exemplaires. Cliquez sur Définir en haut à droite de la page de Circulation.</p>
+
+<p>Quand vous avez enregistré vos changements, votre nouveau site apparaît en haut à droite.</p>
+
+<p><strong>See the full documentation for Setting your Library in the <a href="http://manual.koha-community.org/3.12/en/setlibrary.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

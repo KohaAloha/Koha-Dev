@@ -1,0 +1,49 @@
+--- 
+Acquisitions: 
+  Impression: 
+    - 
+      - Utiliser
+      - 
+        pref: OrderPdfFormat
+      - pour l'impression des groupes de panier
+  Politique: 
+    - 
+      - "Cr\xC3\xA9er un exemplaire au moment de"
+      - 
+        choices: 
+          cataloguing: cataloguer la notice
+          ordering: placer une commande
+          receiving: recevoir une commande
+        pref: AcqCreateItem
+    - 
+      - 
+        pref: UniqueItemFields
+      - "(liste de champs uniques pour les exemplaires, s\xC3\xA9par\xC3\xA9s par des espaces ; doivent \xC3\xAAtre des champs valides de la table SQL items"
+    - 
+      - "Au moment de la fermeture ou de la r\xC3\xA9ouverture d'un panier"
+      - 
+        choices: 
+          1: toujours demander confirmation
+          2: ne pas demander confirmation
+        default: 1
+        pref: BasketConfirmations
+    - 
+      - Afficher les paniers
+      - 
+        choices: 
+          all: "du syst\xC3\xA8me, peu importe le propri\xC3\xA9taire"
+          branch: "de la biblioth\xC3\xA8que"
+          user: "cr\xC3\xA9\xC3\xA9s par le biblioth\xC3\xA9caire"
+        pref: AcqViewBaskets
+    - 
+      - Affiche les monnaies dans le format suivant
+      - 
+        choices: 
+          FR: 360 000,00 (FR)
+          US: 360,000.00 (US)
+        pref: CurrencyFormat
+    - 
+      - Default tax rates are
+      - 
+        pref: gist
+      - (enter in numeric form, 0.12 for 12%. First is the default. If you want more than 1 value, please separate with |)

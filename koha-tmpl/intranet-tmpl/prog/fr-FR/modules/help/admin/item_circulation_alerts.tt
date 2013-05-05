@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Item Circulation Alerts</h1>
+
+<p>Libraries can decide if they want to have patrons automatically notified of circulation events (check ins and check outs).</p>
+
+<p>Ces préférences sont définies sur la base des types d'adhérent et des types d'exemplaire.</p>
+
+<p style="color: #990000;">Important : Cette préférence peut être remplacée par une préférence spécifique définie dans les préférences des adhérents.</p>
+
+<p>Pour définir les alertes de circulation&nbsp;:</p>
+
+<ul>
+ <li>Sélectionnez votre site dans la liste en haut de l'écran <ul>
+ <li>Pour configurer les préférences pour tous les sites, laissez le menu à Défaut.</li>
+</ul>
+</li>
+ <li>Par défaut tous les types d'exemplaire et tous les adhérents sont notifiés des prêts et retours. Pour changer cela, cliquez dans la liste exemplaire/adhérent et choisir la combinaison pour laquelle vous voulez arrêter les notifications.</li>
+</ul>
+
+<p><strong>See the full documentation for Item Circulation Alerts in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#itemcircalerts">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

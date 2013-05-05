@@ -1,0 +1,54 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron import</h1>
+
+<p>L'outil d'importation d'adhérents est utilisé pour importer des adhérents en masse. Il est généralement utilisé par les établissements d'enseignement au moment de la rentrée d'un nouveau groupe d'étudiants.</p>
+
+<h2>Créer le fichier des adhérents</h2>
+
+<p>Votre installation de Koha dispose d'un fichier CSV vide que vous pouvez utiliser comme modèle. Si vous voulez créer vous-même ce fichier, assuerez-vous que les champs suivants sont bien présents et dans l'ordre suivant :</p>
+
+<blockquote>borrowernumber, cardnumber, surname, firstname, title, othernames, initials, streetnumber, streettype, address, address2, city, zipcode, country, email, phone, mobile, fax, emailpro, phonepro, B_streetnumber, B_streettype, B_address, B_address2, B_city, B_zipcode, B_country, B_email, B_phone, dateofbirth, branchcode, categorycode, dateenrolled, dateexpiry, gonenoaddress, lost, debarred, contactname, contactfirstname, contacttitle, guarantorid, borrowernotes, relationship, ethnicity, ethnotes, sex, password, flags, userid, opacnote, contactnote, sort1, sort2, altcontactfirstname, altcontactsurname, altcontactaddress1, altcontactaddress2, altcontactaddress3, altcontactzipcode, altcontactcountry, altcontactphone, smsalertnumber, patron_attributes</blockquote>
+
+<p style="color: #990000;">Important: The 'password' value should be stored in plain text, and will be converted to a md5 hash (which is an encrypted version of the password).</p>
+
+<ul>
+ <li>Si vos mots de passe sont déjà cryptés, voyez votre administrateur système pour envisager des solutions.</li>
+</ul>
+
+<p style="color: #990000;">Important: Date formats should match your system preference, and must be zero-padded, e.g. '01/02/2008'.</p>
+
+<p style="color: #990000;">Important: The fields 'branchcode' and 'categorycode' are required and must match valid entries in your database.</p>
+
+<p style="background-color: #ffe599">A savoir : Si vous voulez charger des attributs d'adhérent, le champ 'patron_attributes' doit contenir une liste de types d'attribut et de valeurs, séparés par des virgules.</p>
+
+<ul>
+ <li>Le code de type d'attribut et le deux points doivent précéder chaque valeur.<ul>
+ <li>Par exemple : INSTID:12345,LANG:fr ou STARTDATE:January 1 2010,TRACK:Day</li>
+ <li>Si un enregistrement a plus d'un attribut, les champs doivent être entrés en tant que chaîne sans guillemets (exemples précédents), ou bien les champs entourés de guillemets et délimités par des virgules: <ul>
+ <li>"STARTDATE:January 1 2010","TRACK:Day"</li>
+ <li>Cette syntaxe sera requise si les données peuvent contenir une virgule. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<h2>Importer des adhérents</h2>
+
+<p>Une fois le fichier créé, vous pouvez utiliser l'outil d'importation des adhérents pour charger les données dans Koha.</p>
+
+<ul>
+ <li>Choisissez votre fichier CSV et choisissez de mettre en concordance les adhérents sur leur Numéro de carte afin d'éviter d'ajouter des doublons au système.</li>
+ <li>Vous pouvez choisir des valeurs par défaut à ajouter à tous les adhérents importés.<ul>
+ <li>Par exemple, si vous importez des adhérents pour un site donné, vous pouvez utiliser le champ branchcode.</li>
+</ul>
+</li>
+ <li>Enfin, vous décidez de ce qu'il faut faire des adhérents en doublon.<ul>
+ <li>Un doublon est trouvé en utilisant le champ que vous avez choisi en tant que critère de conconrdance.</li>
+ <li>Si vous avez placé dans votre fichier des attributs, vous décidez si vous les ajoutez aux attributs existants ou si vous les remplacez.</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur l'Importation d'adhérents dans le <a href="http://manual.koha-community.org/3.12/en/patronimport.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

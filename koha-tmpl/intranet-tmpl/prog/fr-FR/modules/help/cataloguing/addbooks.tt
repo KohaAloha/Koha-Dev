@@ -1,0 +1,33 @@
+[% INCLUDE 'help-top.inc' %] <h1>Catalogage</h1>
+
+<p>Before you start cataloging in Koha you're going to want to do some basic setup. Refer to the Implementation Checklist for a full list of these things. Most importantly you're going to want to make sure that your Frameworks are all defined the way you want. Once in the cataloging module you will not be able to add or remove fields and subfields so your frameworks must be ready before you start cataloging.</p>
+
+<p>From here you can add new bibliographic records to Koha.</p>
+
+<p>Les notices sont ajoutées à Koha par saisie entière ou par copie. Si vous souhaitez cataloguer entièrement une notice</p>
+
+<ul>
+ <li>Click 'New Record'</li>
+ <li>Choisissez la grille sur laquelle vous voulez baser votre notice</li>
+</ul>
+
+<p>Si vous voulez cataloguer une nouvelle notice en la dérivant d'une notice existante dans une autre bibliothèque</p>
+
+<ul>
+ <li>Click 'z39.50 Search'</li>
+ <li>Search for the item you would like to catalog</li>
+ <li>A savoir : Si aucun résultat n'est trouvé, essayez de chercher sur moins de champs. Tous les serveurs Z39.50 ne permettent pas de chercher sur les champs proposés.</li>
+ <li>Search targets can be altered by using the Z39.50 Admin area.</li>
+ <li>From the results you can view the MARC or Card view for the records or choose to Import them into Koha
+<ul>
+ <li>In addition to the Import link to the right of each title, you can click on the title you're interested in and a menu will pop up with links to preview the record and import it</li>
+</ul>
+</li>
+ <li>If you don't find the title you need in your Z39.50 search results you can click the 'Try Another Search' button at the bottom left of your results</li>
+</ul>
+
+<p>Quand vous ouvrez une grille vide ou que vous importez une notice via Z39.50, un formulaire s'affiche dans lequel vous pouvez poursuivre le catalogage.</p>
+
+<p><strong>See the full documentation for Cataloging in the <a href="http://manual.koha-community.org/3.12/en/cataloging.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

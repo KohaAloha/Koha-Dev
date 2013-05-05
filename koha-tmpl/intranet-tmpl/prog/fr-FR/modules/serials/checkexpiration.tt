@@ -1,0 +1,93 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Périodiques &rsaquo; Vérifier expiration</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <script type="text/javascript" language="JavaScript">
+// <![CDATA[
+    /**
+     *  Function CheckForm
+     *  This function checks the form before submit
+     */
+     function CheckForm(form){
+        if(form.date.value){
+            return true;
+        }
+        else {
+            alert(_("Vous devez entrer une date !"));
+            document.f.date.focus();
+            return false;
+        }
+     }
+
+	function popup(subscriptionid) {
+	   newin=window.open("subscription-renew.pl?mode=popup&subscriptionid="+subscriptionid,'popup','width=590,height=440,toolbar=false,scrollbars=yes,resize=yes');
+	}
+
+     // ]]>
+</script>
+<!-- End of additions -->
+</head>
+<body id="ser_checkexpiration" class="ser">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'serials-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/serials/serials-home.pl">Périodiques</a> &rsaquo; Vérifier les dates d'expiration</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h1>Vérification des dates d'expiration</h1>
+
+ <form name="f" action="/cgi-bin/koha/serials/checkexpiration.pl" method="post" onsubmit="return CheckForm(this);">
+<fieldset class="rows">
+ <legend>Critères de recherche&nbsp;:</legend>
+ 
+ <ol>
+ <li><label for="title">Titre&nbsp;:</label>
+ <input id="title" type="text" name="title" size="15" value="[% title %]" /></li>
+
+ <li><label for="issn">ISSN&nbsp;: </label>
+ <input id="issn" type="text" name="issn" size="15" value="[% issn %]" /></li>
+
+ <li><label for="date" class="required" title="Champ obligatoire">Expire avant&nbsp;:</label>
+ <input id="date" type="text" name="date" size="10" value="[% date %]" class="focus datepicker" />
+ <span class="required">Obligatoire</span>
+ <div class="hint">[% INCLUDE 'date-format.inc' %]</div></li>
+ </ol>
+ 
+</fieldset>
+<fieldset class="action"><input value="Rechercher" type="submit" /></fieldset>
+</form>
+
+[% IF ( subscriptions_loop ) %] <p>
+ <b>[% numsubscription %]</b> abonnement(s) [% IF ( title ) %] avec titre correspondant <span class="title">[% title %]</class>
+ [% IF ( issn ) %]et [% END %] [% END %] [% IF ( issn ) %] avec ISSN correspondant <b>[% issn %]</b>
+ [% END %] vont expirer avant <b>[% date %]</b>
+</p>
+<table>
+ <tr>
+ <th>ISSN</th>
+ <th>Titre</th>
+ <th>Note</th>
+ <th>Date d'expiration</th>
+ <th colspan="2">&nbsp;</th>
+ </tr>
+ [% FOREACH subscriptions_loo IN subscriptions_loop %] [% IF ( subscriptions_loo.toogle ) %] <tr class="highlight">
+ [% ELSE %] <tr>
+ [% END %] <td>
+ [% subscriptions_loo.issn %] </td>
+ <td><a href="/cgi-bin/koha/serials/subscription-detail.pl?subscriptionid=[% subscriptions_loo.subscriptionid |url %]">[% IF ( subscriptions_loo.title ) %] [% subscriptions_loo.title |html %] [% ELSE %] | [% END %] </a>
+ </td>
+ <td>
+ [% subscriptions_loo.notes %] </td>
+ <td>
+ [% subscriptions_loo.expirationdate %] </td>
+ <td><a href="/cgi-bin/koha/serials/subscription-add.pl?op=mod&amp;subscriptionid=[% subscriptions_loo.subscriptionid %]">Modifier</a></td>
+ <td><a href="/cgi-bin/koha/serials/subscription-renew.pl?subscriptionid=[% subscriptions_loo.subscriptionid %]" onclick="popup([% subscriptions_loo.subscriptionid %]); return false;">Renouveler</a></td>
+ </tr>
+ [% END %] </table>
+[% ELSE %] <p>Pas de réponse à votre demande</p>
+[% END %] </div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'serials-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

@@ -1,0 +1,49 @@
+[% INCLUDE 'help-top.inc' %] <h1>Libraries &amp; Groups</h1>
+
+<p>Quand vous initialisez votre système Koha, vous voudrez ajouter des informations sur chaque bibliothèque ou site qui partagera le système. Ces informations sont ensuite utilisées partout dans le système.</p>
+
+<p>Quand vous visitez cette page, une liste vous présente les sites et les groupes qui ont déjà été créés dans le système.</p>
+
+<h2>Adding a Library</h2>
+
+<p>Pour ajouter un nouveau site :</p>
+
+<ul>
+ <li>Click 'New Library'</li>
+ <li>Remplissez le formulaire qui suit <ul>
+ <li>Parmi les champs listés, seuls Code de bibliothèque et Nom sont obligatoires.</li>
+ <li>Prenez garde à bien saisir une adresse pour la bibliothèque, afin que les notifications soient envoyées depuis et vers cette adresse</li>
+ <li>Une adresse IP est nécessaire si vous activez la préférence système "AutoLocation"</li>
+</ul>
+</li>
+</ul>
+
+<h2>Editing/Deleting a Library</h2>
+
+<p>Vous ne pourrez pas supprimer un site qui a des adhérents ou des exemplaires qui lui sont rattachés.</p>
+
+<p>Chaque site est suivi d'un lien Modifier. Cliquez sur ce lien pour modifier un site.</p>
+
+<p>Il vous sera impossible de modifier le Code de site.</p>
+
+<h2>Ajout d'un groupe</h2>
+
+<p>To add a Search Domain or Library Property Group click the 'New Group' button at the top of the screen.</p>
+
+<p>Parmi les champs du formulaire, seuls Code de catégorie et Nom sont obligatoires.</p>
+
+<h2>Search Domain Groups</h2>
+
+<p>Search Domain Groups allow you to search a group of libraries at the same time instead of searching just one library or all libraries.</p>
+
+<p>To see Search Domain Groups in action visit the staff client advanced search page in your Koha system</p>
+
+<h2>Library Property Groups</h2>
+
+<p>Vous pouvez regrouper certaines de vos sites en les ajoutant à des groupes.</p>
+
+<p>Les propriétés sont alors appliquées aux bibliothèques via le formulaire de saisie d'une bibliothèque.</p>
+
+<p><strong>See the full documentation for Libraries &amp; Groups in the <a href="http://manual.koha-community.org/3.12/en/basicparams.html#libsgroups">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

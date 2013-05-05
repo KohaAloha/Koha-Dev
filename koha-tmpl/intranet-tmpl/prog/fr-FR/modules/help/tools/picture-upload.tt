@@ -1,0 +1,22 @@
+[% INCLUDE 'help-top.inc' %] <h1>Chargement photos d'adhérents</h1>
+
+<p>Les images des adhérents peuvent être chargées de façon groupée. Ces images sont utilisable en création de cartes de bibliothèque.</p>
+
+<ul>
+ <li>Créez un fichier texte et nommmez-le "DATALINK.TXT" ou "IDLINK.TXT"</li>
+ <li>Sur chaque ligne du fichier texte, entrez le numéro de la carte de l'adhérent suivi d'une virgule (ou d'une tabulation), puis du nom du fichier image.<ul>
+ <li>Veillez à ce que votre fichier soit bien en plein texte (txt) et pas en rtf.</li>
+</ul>
+</li>
+ <li>Compressez au format ZIP votre fichier texte et vos fichiers image.</li>
+ <li>Aller à l'outil de chargement des images des adhérents</li>
+ <li>Pour une seule image, vous avez simplement à pointer le fichier image et à entrer le numéro de carte de l'adhérent.</li>
+ <li>Pour plusieurs images, vous chargez un fichier compressé ZIP.</li>
+ <li>Après envoi en serveur, un écran de confirmation s'affiche.</li>
+</ul>
+
+<p style="color:#990000;">Important : La photo chargée est limitée à 520K et la taille recommandée est de 200x300 pixels, mais une image plus petite fonctionnera également.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/uploadpatronimages.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

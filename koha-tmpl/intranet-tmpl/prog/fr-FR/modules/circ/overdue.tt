@@ -1,0 +1,200 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Circulation &rsaquo; Documents en retard au [% todaysdate %]</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <script type="text/javascript">
+ //<![CDATA[
+     function clone_parent(node) {
+        var parent = node.parentNode;
+        var clone = parent.cloneNode(true);
+        parent.parentNode.insertBefore(clone, parent.nextSibling);
+        $("a", clone).attr("style", "visibility: visible");
+        $("input", clone).attr("value", "");
+
+
+        var theid = $("span", clone).attr("id") || "";
+        var theid = $("span", clone).attr("id") || "";
+        var parts = theid.match(/^pattrodue-getready-(.*)$/);
+        if (parts && parts.length > 1)
+        {
+            var appendid = "-" + Math.floor(Math.random()*1000+1);
+            $("span", clone).attr("id",theid+appendid);
+
+            theid = $("input", clone).attr("id");
+            $("input", clone).attr("id",theid+appendid);
+
+            theid = $("div[id]", clone).attr("id");
+            $("div[id]", clone).attr("id",theid+appendid);
+
+            var attrcode = $("script", clone).attr("x-code");
+            var newsuffix = parts[1] + appendid;
+            create_auto_completion_responder(newsuffix,attrcode);
+        }
+
+    }
+
+
+    function delete_parent(node) {
+        var parent = node.parentNode;
+        parent.parentNode.removeChild(parent);
+    }
+
+    function create_auto_completion_responder(uniqueid,attrcode) {
+       $("#pattrodue-getready-" + uniqueid).ready(function(){
+            $( "#pattrodue-input-" + uniqueid ).autocomplete({
+                source: "/cgi-bin/koha/circ/ypattrodue-attr-search-authvalue.pl/"+attrcode,
+                select: function( event, ui ) {
+                    $( "#pattrodue-input-"+uniqueid ).val( ui.item.description );
+                    return false;
+                }
+            })
+            .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.description + " (" + item.authorised_value + ")</a>" )
+                .appendTo( ul )
+                .css("font-size","90%").css("width","13em");
+            };
+        });
+    }
+//]]>
+</script>
+<style type="text/css">
+    .sql {display:none;}
+</style>
+</head>
+<body id="circ_overdue" class="circ">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'circ-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; En retard au [% todaysdate %]</div>
+
+<div id="doc3" class="yui-t2">
+
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( noreport ) %] <h2>Rapports de retards</h2>
+
+<p>Sélectionnez un ou plusieurs filtres.</p>
+
+[% ELSE %] <h2>[% nnoverdue %] [% IF ( noverdue_is_plural ) %]Items[% ELSE %]Item[% END %]
+overdue as of [% todaysdate %][% IF ( isfiltered ) %] <span style="font-size:70%;">(Filtered. <a href="/cgi-bin/koha/circ/overdue.pl">Reset filter</a>)</span>[% END %]</h2>
+
+<p>
+ [% IF ( isfiltered ) %] <a href="overdue.pl?op=csv&amp;[% csv_param_string |html %]">Télécharger les retards affichés</a>
+ [% ELSE %] <a href="overdue.pl?op=csv">Télécharger le fichier des retards</a>
+ [% END %] </p>
+<div class="sql"><pre>[% sql |html %]</pre></div>
+<div class="searchresults">
+<table id="overduest">
+<thead><tr>
+ <th>Date de retour</th>
+ <th>Adhérent</th>
+ <th>Library</th>
+ <th>Titre</th>
+ <th>Code à barres</th>
+ <th>Cote</th>
+</tr></thead>
+
+<tbody>[% FOREACH overdueloo IN overdueloop %] <tr>
+ <td>[% overdueloo.duedate %]</td>
+ <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% overdueloo.borrowernumber %]">[% overdueloo.surname %] [% overdueloo.firstname %]</a>
+ [% IF ( overdueloo.email ) %][<a href="mailto:[% overdueloo.email %]?subject=Overdue: [% overdueloo.title |html %]">email</a>][% END %] [% IF ( overdueloo.phone ) %]([% overdueloo.phone %])[% ELSIF ( overdueloo.mobile ) %]([% overdueloo.mobile %])[% ELSIF ( overdueloo.phonepro ) %]([% overdueloo.phonepro %])[% END %]</td>
+ <td>[% overdueloo.branchcode %]</td>
+ <td>[% INCLUDE 'biblio-default-view.inc' biblionumber = overdueloo.biblionumber %][% overdueloo.title |html %] [% overdueloo.subtitle %]</a> [% IF ( overdueloo.author ) %], par [% overdueloo.author %][% END %] [% IF ( overdueloo.enumchron ) %]- [% overdueloo.enumchron %][% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber=[% overdueloo.biblionumber %]&amp;itemnumber=[% overdueloo.itemnum %]#item[% overdueloo.itemnum %]">[% overdueloo.barcode %]</a></td>
+ <td>[% overdueloo.itemcallnumber %]</td>
+ </tr>
+[% END %]</tbody>
+</table>
+
+</div>
+[% END %] <!-- noreport -->
+
+</div>
+</div>
+<div class="yui-b">
+<form method="post" action="/cgi-bin/koha/circ/overdue.pl">
+ <fieldset class="brief">
+<h4>Filtre sur&nbsp;:</h4>
+ <fieldset><legend>Retour pour le&nbsp;</legend>
+ <ol>
+ <li><label for="from">Du&nbsp;:</label>
+ <input type="text" id="from" name="dateduefrom" size="10" value="[% dateduefrom %]" class="datepickerfrom" />
+ </li>
+ <li>
+ <label for="to">et le&nbsp;:</label>
+ <input type="text" id="to" name="datedueto" size="10" value="[% datedueto %]" class="datepickerto" />
+ </li>
+ </ol></fieldset>
+ <ol>
+ <li><label>Name or cardnumber:</label><input type="text" name="borname" value="[% borname |html %]" /></li>
+ <li><label>Catégorie adhérent&nbsp;:</label><select name="borcat" id="borcat"><option value="">Tous</option>
+ [% FOREACH borcatloo IN borcatloop %] [% IF ( borcatloo.selected ) %]<option value="[% borcatloo.value |html %]" selected="selected">[% borcatloo.catname %]</option>[% ELSE %]<option value="[% borcatloo.value |html %]">[% borcatloo.catname %]</option>[% END %] [% END %] </select>
+ </li>
+ <li><label>Pièges adhérent&nbsp;:</label>
+ <select name="borflag" size="1" id="borflag">
+ <option value="">Aucun</option>
+ [% IF ( borflag_gonenoaddress ) %]<option value="gonenoaddress" selected="selected">Parti sans laisser d'adresse</option>
+ [% ELSE %]<option value="gonenoaddress">Parti sans laisser d'adresse</option>[% END %] [% IF ( borflag_debarred ) %]<option value="debarred" selected="selected">Suspendu</option>
+ [% ELSE %]<option value="debarred">Suspendu</option>[% END %] [% IF ( borflag_lost ) %]<option value="lost" selected="selected">Carte perdue</option>
+ [% ELSE %]<option value="lost">Carte perdue</option>[% END %] </select>
+ </li>
+ [% FOREACH patron_attr_filter_loo IN patron_attr_filter_loop %]
+ <!-- domid cgivalue ismany isclone ordinal code description repeatable authorised_value_category -->
+ <li>
+ <label>[% patron_attr_filter_loo.description %]&nbsp;: </label>
+ [% IF ( patron_attr_filter_loo.authorised_value_category ) %] <script type="text/javascript" x-code="[% patron_attr_filter_loo.code |html %]">create_auto_completion_responder([% patron_attr_filter_loo.domid %],"[% patron_attr_filter_loo.code |html %]");</script>
+ <span id="pattrodue-getready-[% patron_attr_filter_loo.domid %]">
+ <div class="pattrodue-autocomplete">
+ <input autocomplete="off" id="pattrodue-input-[% patron_attr_filter_loo.domid %]" name="patron_attr_filter_[% patron_attr_filter_loo.code |html %]" value="[% patron_attr_filter_loo.cgivalue |html %]"  class="pattrodue-input" type="text" />
+ </div>
+ </span>
+ [% ELSE %] <input type="text" name="patron_attr_filter_[% patron_attr_filter_loo.code |html %]" value="[% patron_attr_filter_loo.cgivalue |html %]"/>
+ [% END %] [% IF ( patron_attr_filter_loo.repeatable ) %] <a href="#" onclick="clone_parent(this); return false;">Ajouter</a>
+ [% IF ( patron_attr_filter_loo.isclone ) %] <a href="#" onclick="delete_parent(this); return false;" style="visibility: visible">Supprimer</a>
+ [% ELSIF ( patron_attr_filter_loo.ismany ) %] <a href="#" onclick="delete_parent(this); return false;" style="visibility: visible">Supprimer</a>
+ [% ELSE %] <a href="#" onclick="delete_parent(this); return false;" style="visibility: hidden">Supprimer</a>
+ [% END %] [% END %] </li>
+ [% END %] <li><label>Type d'exemplaire :</label><select name="itemtype" id="itemtype"><option value="">Tous</option>
+ [% FOREACH itemtypeloo IN itemtypeloop %][% IF ( itemtypeloo.selected ) %] <option value="[% itemtypeloo.value |html %]" selected="selected">[% itemtypeloo.itemtypename %]</option>[% ELSE %] <option value="[% itemtypeloo.value |html %]">[% itemtypeloo.itemtypename %]</option>[% END %] [% END %] </select>
+ </li>
+
+ <li>
+ <label>Item home library:</label>
+ <select name="homebranch" id="homebranch">
+ <option value="">Tous</option>
+ [% FOREACH homebranchloo IN homebranchloop %][% IF ( homebranchloo.selected ) %] <option value="[% homebranchloo.value |html %]" selected="selected">[% homebranchloo.branchname %]</option>[% ELSE %] <option value="[% homebranchloo.value |html %]">[% homebranchloo.branchname %]</option>[% END %] [% END %] </select>
+ </li>
+
+ <li>
+ <label>Item holding library:</label>
+ <select name="holdingbranch" id="holdingbranch">
+ <option value="">Tous</option>
+ [% FOREACH holdingbranchloo IN holdingbranchloop %][% IF ( holdingbranchloo.selected ) %] <option value="[% holdingbranchloo.value |html %]" selected="selected">[% holdingbranchloo.branchname %]</option>[% ELSE %] <option value="[% holdingbranchloo.value |html %]">[% holdingbranchloo.branchname %]</option>[% END %] [% END %] </select>
+ </li>
+
+ <li>
+ <label>Library of the patron:</label><select name="branch" id="branch">
+ <option value="">Tous</option>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <option value="[% branchloo.value |html %]" selected="selected">[% branchloo.branchname %]</option>[% ELSE %] <option value="[% branchloo.value |html %]">[% branchloo.branchname %]</option>[% END %] [% END %] </select>
+ </li>
+
+ <li><label for="order">Sort by:</label> <select name="order" id="order">
+[% FOREACH ORDER_LOO IN ORDER_LOOP %] [% IF ( ORDER_LOO.selected ) %] <option value="[% ORDER_LOO.ordervalue %]" selected="selected">
+ [% ELSE %] <option value="[% ORDER_LOO.ordervalue %]">
+ [% END %] [% IF ( ORDER_LOO.order_date_due ) %]Attendu le [% ELSIF ( ORDER_LOO.order_borrower ) %]Adhérent [% ELSIF ( ORDER_LOO.order_barcode ) %]Code à barres [% ELSIF ( ORDER_LOO.order_title ) %]Titre [% ELSIF ( ORDER_LOO.order_date_due_desc ) %]Attendu le desc [% ELSIF ( ORDER_LOO.order_borrower_desc ) %]Adhérent desc [% ELSIF ( ORDER_LOO.order_barcode_desc ) %]Code à barres desc [% ELSIF ( ORDER_LOO.order_title_desc ) %]Titre desc [% ELSE %][% ORDER_LOO.label %] [% IF ( ORDER_LOO.desc ) %]desc[% END %] [% END %] </option>
+[% END %] [% FOREACH patron_attr_order_loo IN patron_attr_order_loop %] [% IF ( patron_attr_order_loo.selected ) %]<option value="[% patron_attr_order_loo.value |html %]" selected="selected">[% patron_attr_order_loo.label %]</option>
+ [% ELSE %]<option value="[% patron_attr_order_loo.value |html %]">[% patron_attr_order_loo.label %]</option>[% END %] [% END %] </select></li>
+
+<li class="radio"><label for="showall">Show any items currently checked out:</label>
+ [% IF ( showall ) %] <input type="checkbox" id="showall" name="showall" value="show" checked="checked" />
+ [% ELSE %] <input type="checkbox" id="showall" name="showall" value="show" />
+ [% END %] </li>
+</ol>
+ <fieldset class="action">
+ <input value="Filtrer" type="submit" class="submit" />
+ <input type="hidden" name="op" value="apply filter" />
+ </fieldset>
+ </fieldset>
+ </form>
+</div>
+</div>
+
+[% INCLUDE 'intranet-bottom.inc' %] 

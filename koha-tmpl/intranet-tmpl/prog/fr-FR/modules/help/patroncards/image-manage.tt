@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %] <h1>Gérer les images</h1>
+
+<p>Images uploaded using this tool will appear on the menu when creating patron card layouts. You are limited in how many images you can upload (not counting patron images) by the ImageLimit system preference.</p>
+
+<p>Images must be under 500k in size.</p>
+
+<p>Les images chargées avec cet outil doivent avoir une résolution minimale de 300 ppi, ce qui est un minimum pour imprimer une image.</p>
+
+<p>Au centre de l'écran se trouve un formulaire de chargement. Parcourez votre ordinateur pour trouvez le fichier idoine et donnez-lui un nom.</p>
+
+<p>Une fois le fichier chargé sur le serveur, un message de confirmation est affiché.</p>
+
+<p>L'image sera affichée avec le reste sur la droite de la page.</p>
+
+<p>Pour supprimer une ou plusieurs de ces images, cliquez la coche à droite de chaque image que vous voulez supprimer puis cliquez sur le bouton Supprimer.</p>
+
+<p><strong>Voir la documentation complète sur la Gestion des images dans le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html#managecardimages">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

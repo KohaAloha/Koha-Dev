@@ -1,0 +1,32 @@
+[% INCLUDE 'help-top.inc' %] <h1>OAI-PMH Sets Configuration</h1>
+
+<p>Sur cette pages, vous créez, modifiez et supprimez des Sets OAI-PMH<p>
+
+<h2>Ajouter un SET</h2>
+
+<ol>
+ <li>Cliquez sur le lien Ajouter un Set</li>
+ <li>Remplissez les champs obligatoire 'setSpec' et 'setName'</li>
+ <li>Then you can add descriptions for this set. To do this click on 'Add description' and fill the newly created text box. You can add as many descriptions as you want.</li>
+ <li>Cliquez sur 'Sauvegarder'</li>
+</ol>
+
+<h2>Modifier un Set</h2>
+
+<p>To modify a set, just click on the link 'Modify' on the same line of the set you want to modify. A form similar to set creation form will appear and allow you to modify the setSpec, setName and descriptions.</p>
+
+<h2>Supprimer un set</h2>
+
+<p>To delete a set, just click on the link 'Delete' on the same line of the set you want to delete.</p>
+
+<h2>Define mappings</h2>
+
+<p>The 'Define mappings' link allow you to tell how the set will be build (what records will belong to this set)</p>
+
+<h2>Construire des sets</h2>
+
+<p>Once you have configured all your sets, you have to build the sets. This is done by calling the script misc/migration_tools/build_oai_sets.pl.</p>
+
+<p><strong>See the full documentation for OAI Sets in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#oaisetsconfig">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

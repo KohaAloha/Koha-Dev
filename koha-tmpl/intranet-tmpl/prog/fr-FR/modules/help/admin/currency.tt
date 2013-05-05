@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Currencies and Exchange Rates</h1>
+
+<p>Si vous effectuez des commandes dans plusieurs devises, il est souhaitable d'entrer les taux de change de façon à permettre au module Acquisitins de faire des totaux corrects.</p>
+
+<p style="background-color: #ffe599">A savoir : Ces informations ne sont pas automatiquement mises à jour. Faites-le manuellement afin d'avoir des comptes justes.</p>
+
+<p>La devise active est la devise principale que vous utisez dans votre établissement. La devise active est marquée d'une coche dans la colonne Active. Si vous n'avez pas de devise active, un message d'erreur vous le signale.</p>
+
+<p><strong>See the full documentation for Currencies and Exchange Rates in the <a href="http://manual.koha-community.org/3.12/en/acqadmin.html#currexchangeadmin">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,81 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 125a</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_125a" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 125a</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">Type de partition :</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+ [% IF ( f1a ) %] <option value="a" selected="selected">partition</option>
+ [% ELSE %] <option value="a">partition</option>
+ [% END %] [% IF ( f1b ) %] <option value="b" selected="selected">partition de travail</option>
+ [% ELSE %] <option value="b">partition de travail</option>
+ [% END %] [% IF ( f1c ) %] <option value="c" selected="selected">partition vocale, accompagnement réduit</option>
+ [% ELSE %] <option value="c">partition vocale, accompagnement réduit</option>
+ [% END %] [% IF ( f1d ) %] <option value="d" selected="selected">partition des choeurs, partition des voix, sans accompagnement</option>
+ [% ELSE %] <option value="d">partition des choeurs, partition des voix, sans accompagnement</option>
+ [% END %] [% IF ( f1e ) %] <option value="e" selected="selected">partition réduite, piano conducteur</option>
+ [% ELSE %] <option value="e">partition réduite, piano conducteur</option>
+ [% END %] [% IF ( f1f ) %] <option value="f" selected="selected">partition</option>
+ [% ELSE %] <option value="f">partition</option>
+ [% END %] [% IF ( f1g ) %] <option value="g" selected="selected">partition réduite</option>
+ [% ELSE %] <option value="g">partition réduite</option>
+ [% END %] [% IF ( f1h ) %] <option value="h" selected="selected">tablature</option>
+ [% ELSE %] <option value="h">tablature</option>
+ [% END %] [% IF ( f1i ) %] <option value="i" selected="selected">livre de choeur</option>
+ [% ELSE %] <option value="i">livre de choeur</option>
+ [% END %] [% IF ( f1j ) %] <option value="j" selected="selected">partition réduite</option>
+ [% ELSE %] <option value="j">partition réduite</option>
+ [% END %] [% IF ( f1k ) %] <option value="k" selected="selected">pseudo-score</option>
+ [% ELSE %] <option value="k">pseudo-score</option>
+ [% END %] [% IF ( f1l ) %] <option value="l" selected="selected">partie solo</option>
+ [% ELSE %] <option value="l">partie solo</option>
+ [% END %] [% IF ( f1m ) %] <option value="m" selected="selected">formats multiples</option>
+ [% ELSE %] <option value="m">formats multiples</option>
+ [% END %] [% IF ( f1u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f1x ) %] <option value="x" selected="selected">non applicable, pas une partition</option>
+ [% ELSE %] <option value="x">non applicable, pas une partition</option>
+ [% END %] [% IF ( f1z ) %] <option value="z" selected="selected">autre</option>
+ [% ELSE %] <option value="z">autre</option>
+ [% END %] </select>
+ </td></tr>
+ <tr>
+ <td><label for="f2">Indicateur de parties :</label></td>
+ <td>
+ <select name="f2" id="f2" size="1">
+
+ [% IF ( f2a ) %] <option value="a" selected="selected">parties présentes (instrumentales et vocales)</option>
+ [% ELSE %] <option value="a">parties présentes (instrumentales et vocales)</option>
+ [% END %] [% IF ( f2b ) %] <option value="b" selected="selected">parties instrumentales</option>
+ [% ELSE %] <option value="b">parties instrumentales</option>
+ [% END %] [% IF ( f2c ) %] <option value="c" selected="selected">parties vocales</option>
+ [% ELSE %] <option value="c">parties vocales</option>
+ [% END %] [% IF ( f2u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f2x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f2y ) %] <option value="y" selected="selected">parties absentes</option>
+ [% ELSE %] <option value="y">parties absentes</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+	function report() {
+            var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+            field.value =  document.f_pop.f1.value+document.f_pop.f2.value;
+	    window.close();
+	    return false;
+	}
+//]]>
+</script>
+
+
+[% INCLUDE 'popup-bottom.inc' %] 

@@ -1,0 +1,326 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo;[% IF ( add_form ) %][% IF ( use_heading_flags_p ) %][% IF ( heading_edit_subfields_p ) %] Structure des sous-champs MARC biblio&rsaquo; Modifier les contraintes des sous-champs[% END %][% ELSE %] Structure des sous-champs MARC biblio &rsaquo; [% action %][% END %][% END %] [% IF ( delete_confirm ) %] Structure des sous champs-MARC biblio &rsaquo; Confirmer la suppression des sous-champs[% tagsubfield %][% END %][% IF ( delete_confirmed ) %] Structure des sous-champs MARC biblio &rsaquo; Sous-champ supprimé [% END %][% IF ( else ) %]structure des sous-champs MARC biblio[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+
+$(document).ready(function() {
+    $('#subfieldtabs').tabs();
+        $("a.displaymore").click(function(){
+        var link = $(this);
+        var constraints = $("#"+$(this).attr("href").replace("#",""));
+        constraints.toggle();
+            if($(constraints).is(':visible')){
+                link.html(_("Cacher les contraintes"));
+            } else {
+                link.html(_("Display more constraints"));
+            }
+    });
+    $("input[id^='hidden_']").click(setHiddenValue);
+    $("input[id^='hidden-']").each(function() {
+            populateHiddenCheckboxes($(this).attr('id').split('-')[1]);
+    });
+
+});
+
+/*function displayMoreConstraint(numlayer){
+    var thisdiv = document.getElementById(numlayer);
+    if(thisdiv.getAttribute("class") == "content_hidden"){
+        thisdiv.removeAttribute('class');
+        thisdiv.setAttribute("class","content_visible");
+    } else {
+        thisdiv.removeAttribute('class');
+        thisdiv.setAttribute("class","content_hidden");
+    }
+}*/
+
+/* Function to enable/disable hidden values checkboxes when Flag is (de)selected */
+function enable_cb(tab) {
+    if ($("#hidden_flagged_" + tab).is(':checked')) {
+        $('.inclusive_' + tab).attr('disabled',true).removeAttr('checked');
+    }
+    else {
+        $('.inclusive_' + tab).removeAttr('disabled');
+    }
+}
+
+/* Function to serialize and set the 'hidden' field */
+function setHiddenValue() {
+
+    var tab = $(this).attr('id').split('_')[2];
+    var flagged_checked = $("#hidden_flagged_" + tab).is(':checked');
+    var opac_checked = $("#hidden_opac_" + tab).is(':checked');
+    var intranet_checked = $("#hidden_intranet_" + tab).is(':checked');
+    var editor_checked = $("#hidden_editor_" + tab).is(':checked');
+    var collapsed_checked = $("#hidden_collapsed_" + tab).is(':checked');
+    var hidden_value = "";
+
+    if ( flagged_checked ) {
+        hidden_value='-8';
+    } else if ( opac_checked && ! intranet_checked && ! editor_checked && collapsed_checked ) {
+        hidden_value='-7';
+    } else if ( opac_checked && intranet_checked && ! editor_checked && ! collapsed_checked) {
+        hidden_value='-6';
+    } else if ( opac_checked && intranet_checked && ! editor_checked && collapsed_checked) {
+        hidden_value='-5';
+    } else if ( opac_checked && ! intranet_checked && ! editor_checked && ! collapsed_checked) {
+        hidden_value='-4';
+    } else if ( opac_checked && ! intranet_checked && editor_checked && collapsed_checked) {
+        hidden_value='-3';
+    } else if ( opac_checked && ! intranet_checked && editor_checked && ! collapsed_checked) {
+        hidden_value='-2';
+    } else if ( opac_checked && intranet_checked && editor_checked && collapsed_checked) {
+        hidden_value='-1';
+    } else if ( opac_checked && intranet_checked && editor_checked && ! collapsed_checked) {
+        hidden_value='0';
+    } else if ( ! opac_checked && intranet_checked && editor_checked && collapsed_checked) {
+        hidden_value='1';
+    } else if ( ! opac_checked && ! intranet_checked && editor_checked && ! collapsed_checked) {
+        hidden_value='2';
+    } else if ( ! opac_checked && ! intranet_checked && editor_checked && collapsed_checked) {
+        hidden_value='3';
+    } else if ( ! opac_checked && intranet_checked && editor_checked && ! collapsed_checked) {
+        hidden_value='4';
+    } else if ( ! opac_checked && ! intranet_checked && ! editor_checked && collapsed_checked) {
+        hidden_value='5';
+    } else if ( ! opac_checked && intranet_checked && ! editor_checked && ! collapsed_checked) {
+        hidden_value='6';
+    } else if ( ! opac_checked && intranet_checked && ! editor_checked && collapsed_checked) {
+        hidden_value='7';
+    } else if ( ! opac_checked && ! intranet_checked && ! editor_checked && ! collapsed_checked) {
+        hidden_value='8';
+    }
+
+    enable_cb(tab);
+
+    $('#hidden-' + tab).val(hidden_value);
+
+}
+
+function populateHiddenCheckboxes(tab) {
+    // read the serialized value
+    var hidden_value = $('#hidden-' + tab).val();
+    // deafult to false
+    var opac_checked = false;
+    var intranet_checked = false;
+    var editor_checked = false;
+    var collapsed_checked = false;
+    var flagged_checked = false;
+
+    if ( hidden_value == '-8' ) {
+        flagged_checked = true;
+    } else if ( hidden_value == '-7') {
+        opac_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '-6' ) {
+        opac_checked = true;
+        intranet_checked = true;
+    } else if ( hidden_value == '-5') {
+        opac_checked = true;
+        intranet_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '-4' ) {
+        opac_checked = true;
+    } else if ( hidden_value == '-3') {
+        opac_checked = true;
+        editor_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '-2' ) {
+        opac_checked = true;
+        editor_checked = true;
+    } else if ( hidden_value == '-1' ) {
+        opac_checked = true;
+        intranet_checked = true;
+        editor_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '0' ) {
+        opac_checked = true;
+        intranet_checked = true;
+        editor_checked = true;
+    } else if ( hidden_value == '1' ) {
+        intranet_checked = true;
+        editor_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '2' ) {
+        editor_checked = true;
+    } else if ( hidden_value == '3' ) {
+        editor_checked = true;
+        collapsed_checked = true;
+    } else if ( hidden_value == '4' ) {
+        intranet_checked = true;
+        editor_checked = true;
+    } else if ( hidden_value == '5' ) {
+        collapsed_checked = true;
+    } else if ( hidden_value == '6' ) {
+        intranet_checked = true;
+    } else if ( hidden_value == '7' ) {
+        intranet_checked = true;
+        collapsed_checked = true;
+    } // else if ( hidden_value == '8') { skip }
+
+    $("#hidden_opac_" + tab).attr('checked',opac_checked);
+    $("#hidden_intranet_" + tab).attr('checked',intranet_checked);
+    $("#hidden_editor_" + tab).attr('checked',editor_checked);
+    $("#hidden_collapsed_" + tab).attr('checked',collapsed_checked);
+    $("#hidden_flagged_" + tab).attr('checked',flagged_checked);
+
+    enable_cb(tab);
+
+}
+
+//]]>
+</script>
+</head>
+<body id="admin_marc_subfields_structure" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; <a href="/cgi-bin/koha/admin/biblio_framework.pl">Grilles de catalogage MARC</a> &rsaquo; <a href="/cgi-bin/koha/admin/marctagstructure.pl?frameworkcode=[% frameworkcode %]&amp;searchfield=[% tagfield %]">[% frameworkcode or "Default" %] grille de catalogage</a> &rsaquo; [% IF ( add_form ) %] [% IF ( use_heading_flags_p ) %] [% IF ( heading_edit_subfields_p ) %] <a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?tagfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]">Champ [% tagfield %], Structure des sous-champs</a> &rsaquo; Modifier les restrictions des sous-champs MARC [% END %] [% ELSE %] <a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?tagfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]">Champ [% tagfield %], Structure des sous-champs</a> &rsaquo; [% action %] [% END %] [% END %] [% IF ( delete_confirm ) %] <a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?tagfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]">Champ [% tagfield %], Structure des sous-champs</a> &rsaquo; Confirmer suppression du sous-champ [% tagsubfield %] [% END %] [% IF ( delete_confirmed ) %] <a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?tagfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]">Champ [% tagfield %], Structure des sous-champs</a> &rsaquo; Sous-champ supprimé [% END %] [% IF ( else ) %]Champ [% tagfield %] Structure du sous-champ[% END %] </div>
+
+<div id="doc" class="yui-t7">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+
+[% IF ( add_form ) %] <h1>
+ [% IF ( use_heading_flags_p ) %] [% IF ( heading_edit_subfields_p ) %]Champ [% tagfield %] Contraintes du sous-champ[% END %] [% ELSE %] [% action %] [% END %] </h1>
+ <form action="[% script_name %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+
+ <div id="subfieldtabs" class="toptabs numbered">
+ <ul>
+ [% FOREACH loo IN loop %] [% IF ( loo.new_subfield ) %] <li><a href="#sub[% loo.urisubfieldcode %]field" title="[% loo.liblibrarian %]">Ajouter</a></li>
+ [% ELSE %] <li><a href="#sub[% loo.urisubfieldcode %]field" title="[% loo.liblibrarian %]">
+ [% loo.subfieldcode %] </a></li>
+ [% END %] [% END %] </ul>
+ 
+ [% FOREACH loo IN loop %] <div id="sub[% loo.urisubfieldcode %]field">
+ 
+ <fieldset class="rows" style="float:none;"><legend>[% IF ( loo.new_subfield ) %]Ajout d'unsous-champ[% ELSE %]Contraintes de base[% END %]</legend>
+ <ol>
+ [% IF ( subfieldcode == 0 || subfieldcode ) %] <li><span class="label">Sous-champ&nbsp;:</span> [% loo.subfieldcode %] <input type="hidden" name="tagsubfield" value="[% loo.subfieldcode %]" /></li>
+ [% ELSE %] <li><label for="tagsubfield[% loo.row %]">Sous-champ&nbsp;:</label> <input type="text" id="tagsubfield[% loo.row %]" name="tagsubfield" value="[% loo.subfieldcode %]" /></li>
+ [% END %] <li><label for="liblibrarian[% loo.row %]">Texte pour bibliothécaire&nbsp;: </label><input id="liblibrarian[% loo.row %]" type="text" name="liblibrarian" value="[% loo.liblibrarian %]" size="40" maxlength="80" /></li>
+ <li><label for="libopac[% loo.row %]">Texte à l'OPAC&nbsp;: </label><input type="text" id="libopac[% loo.row %]" name="libopac" value="[% loo.libopac %]" size="40" maxlength="80" /></li>
+ <li><label for="repeatable[% loo.row %]">Répétable&nbsp;: </label>[% loo.repeatable %]</li>
+ <li><label for="mandatory[% loo.row %]">Obligatoire&nbsp;: </label>[% loo.mandatory %]</li>
+ <li><label for="tab[% loo.row %]">Géré dans l'onglet&nbsp;: </label>[% loo.tab %] (ignore signifie que le sous-champ n'est PAS géré par Koha)</li>
+ </ol>
+ </fieldset>
+ 
+ <a class="displaymore" href="#more[% loo.urisubfieldcode %]">Display more constraints</a>
+ <div id="more[% loo.urisubfieldcode %]" style="display:none; clear: both">
+ <fieldset class="rows" style="float:none;">
+ <legend>Contraintes avancées&nbsp;:</legend>
+ <ol><li><label for="defaultvalue[% loo.row %]">Default value:</label>
+ <input type="text" name="defaultvalue" id="defaultvalue[% loo.row %]" value="[% loo.defaultvalue %]" /></li>
+ <li><label for="maxlength[% loo.row %]">Longueur max :</label><input type="text" id="maxlength[% loo.row %]" name="maxlength" value="[% loo.maxlength %]" size="4" /> (voir l'aide en ligne)</li>
+ <li><input type="hidden" id="hidden-[% loo.row %]" name="hidden" value="[% loo.hidden %]" />
+ <label for="hidden[% loo.row %]" style="float: none;">Visibility: </label>
+ <input type="checkbox" id="hidden_opac_[% loo.row %]" class="inclusive_[% loo.row %]" name="hidden_opac_[% loo.row %]"/>
+ <label for="hidden_opac_[% loo.row %]" style="float: none;">OPAC</label>
+ <input type="checkbox" id="hidden_intranet_[% loo.row %]" class="inclusive_[% loo.row %]" name="hidden_intranet_[% loo.row %]"/>
+ <label for="hidden_intranet_[% loo.row %]" style="float: none;">Intranet</label>
+ <input type="checkbox" id="hidden_editor_[% loo.row %]" class="inclusive_[% loo.row %]" name="hidden_editor_[% loo.row %]"/>
+ <label for="hidden_editor_[% loo.row %]" style="float: none;">Editor</label>
+ <input type="checkbox" id="hidden_collapsed_[% loo.row %]" class="inclusive_[% loo.row %]" name="hidden_collapsed_[% loo.row %]"/>
+ <label for="hidden_collapsed_[% loo.row %]" style="float: none;">Collapsed</label>
+ <input type="checkbox" id="hidden_flagged_[% loo.row %]" name="flagged_[% loo.row %]"/>
+ <label for="hidden_flagged_[% loo.row %]" style="float: none;">Flagged</label>
+ </li>
+ <li><label for="isurl[% loo.row %]">Est une URL&nbsp;:</label>[% loo.isurl %] (coché, indique que le sous-champ est une URL valide et peut être cliqué)</li>
+ <li><label for="link[% loo.row %]">Link:</label><input type="text" id="link[% loo.row %]" name="link" value="[% loo.link %]" size="10" maxlength="80" /> (e.g., Title or Local-Number) <span class="error"><em>NOTE: If you change this value you must ask your administrator to run misc/batchRebuildBiblioTables.pl.</em></span></li>
+ <li><label for="kohafield[% loo.row %]">Lien Koha&nbsp;:</label>[% loo.kohafield %]</li>
+ </ol>
+ </fieldset>
+ <fieldset class="rows" style="float:none;">
+ <legend>Autres options&nbsp;: </legend>
+ <ol>
+ <li><label for="authorised_value[% loo.row %]">Valeur autorisée&nbsp;:</label>[% loo.authorised_value %]</li>
+ <li><label for="authtypecode[% loo.row %]">Thésaurus&nbsp;:</label>[% loo.authtypes %]</li>
+ <li><label for="value_builder[% loo.row %]">Plugin&nbsp;: </label>[% loo.value_builder %]</li>
+ </ol>
+ </fieldset>
+ </div><br class="clear" /><!-- /more -->
+ </div><!-- /content_sub -->
+ [% END %]
+ </div><!-- /content -->
+ <fieldset class="action">
+ <input value="Enregistrer les modifications" type="submit" /> <a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?tagfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]" class="cancel">Annuler</a>
+ </fieldset>
+ </form>
+[% END %] [% IF ( delete_confirm ) %] <h3>Confirmer la suppression du sous-champ [% tagsubfield %] ?</h3>
+ <p>Sous-champ&nbsp;: [% tagsubfield %]</p>
+ <p>Description: [% liblibrarian %]</p>
+
+ <form action="[% delete_link %]" method="post"><input type="hidden" name="op" value="delete_confirmed" />
+ <input type="hidden" name="searchfield" value="[% searchfield %]" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="tagsubfield" value="[% tagsubfield %]" />
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+ <input value="Oui, supprimer ce sous-champ" type="submit" />
+ </form>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="searchfield" value="[% searchfield %]" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="tagsubfield" value="[% tagsubfield %]" />
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+ <input value="Non, ne pas supprimer" type="submit" />
+ </form>
+[% END %] [% IF ( delete_confirmed ) %] <h3>Donnée supprimée</h3>
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="submit" value="OK" />
+ </form>
+[% END %] [% IF ( else ) %] <h1>Gestion de la structure des sous-champs de [% tagfield %] [% IF ( frameworkcode ) %] (grille [% frameworkcode %])[% ELSE %](grille par défaut)[% END %]</h1>
+<p>Cette page montre les sous-champs associés au champ sélectionné. Vous pouvez modifier les sous-champs ou en ajouter de nouveaux en cliquant sur Modifier.</p>
+<p>La colonne <b>Champ Koha</b> montre que le sous-champ est lié à un champ Koha. Koha peut présenter une interface MARC ou une interface Koha. Ce lien assure la synchronisation des deux modes (dans la base de données), de cette façon vous pouvez passer du mode MARC au mode non-MARC facilement.</p>
+
+<table>
+<tr>
+ <th>Sous-champ</th>
+ <th>Texte</th>
+ <th>Contraintes</th>
+ <th>Modifier</th>
+ <th>Supprimer</th>
+</tr>
+[% FOREACH loo IN loop %] [% UNLESS ( loop.odd ) %] <tr class="highlight">
+[% ELSE %] <tr>
+[% END %] <td><a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?op=add_form&amp;tagfield=[% loo.tagfield %]&amp;frameworkcode=[% frameworkcode %]#sub[% loo.tagsubfield %]field">[% loo.tagsubfield %]</a></td>
+ <td>
+ [% IF ( loo.subfield_ignored ) %] <i>[% loo.liblibrarian %]</i>
+ [% ELSE %] [% loo.liblibrarian %] [% END %] </td>
+ <td>
+ [% IF ( loo.subfield_ignored ) %] <i>sous-champ ignoré</i>
+ [% ELSE %]
+ Tab:[% loo.tab %],
+ [% IF ( loo.kohafield ) %] | Koha field: [% loo.kohafield %], [% END %]
+ [% IF ( loo.repeatable ) %]Repeatable, [% ELSE %]Not repeatable,[% END %]
+ [% IF ( loo.mandatory ) %]Mandatory, [% ELSE %]Not mandatory,[% END %]
+ [% IF ( loo.seealso ) %] | See Also: [% loo.seealso %],[% END %]
+ [% IF ( loo.hidden ) %]hidden,[% END %]
+ [% IF ( loo.isurl ) %]is a URL,[% END %]
+ [% IF ( loo.authorised_value ) %] | Auth value:[% loo.authorised_value %],[% END %]
+ [% IF ( loo.authtypecode ) %] | Authority:[% loo.authtypecode %],[% END %]
+ [% IF ( loo.value_builder ) %] | Plugin:[% loo.value_builder %],[% END %]
+ [% IF ( loo.link ) %] | Link:[% loo.link %],[% END %]
+ [% END %]
+ </td>
+ <td><a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?op=add_form&amp;tagfield=[% loo.tagfield %]&amp;frameworkcode=[% frameworkcode %]#sub[% loo.tagsubfield %]field">Modifier</a></td>
+ <td><a href="/cgi-bin/koha/admin/marc_subfields_structure.pl?op=delete_confirm&amp;tagfield=[% loo.tagfield %]&amp;tagsubfield=[% loo.tagsubfield %]&amp;frameworkcode=[% frameworkcode %]">Supprimer</a></td>
+</tr>
+[% END %] </table>
+
+<form action="[% script_name %]" method="get">
+ <fieldset class="action"><input type="hidden" name="op" value="add_form" />
+ <input type="hidden" name="tagfield" value="[% edit_tagfield %]" />
+ <input type="hidden" name="frameworkcode" value="[% edit_frameworkcode %]" />
+ <input value="Modifier les sous-champs" type="submit" />
+ <a class="cancel" href="marctagstructure.pl?searchfield=[% tagfield %]&amp;frameworkcode=[% frameworkcode %]">Annuler</a>
+ </fieldset>
+</form>
+
+[% END %] </div>
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

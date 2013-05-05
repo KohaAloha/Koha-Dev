@@ -1,0 +1,24 @@
+[% INCLUDE 'help-top.inc' %] <h1>Nouvelles</h1>
+
+<p>Le module des nouvelles de Koha permet aux bibliothécaires de poster des informations qui apparaîtront dans l'interface publique (OPAC) ou professionnelle.</p>
+
+<p>Pour ajouter des nouvelles à l'OPAC, à l'interface pro ou sur un reçu de circulation :</p>
+
+<ul>
+ <li>Cliquez sur Ajouter une nouvelle <ul>
+ <li>Dans Affichée sur, choisissez si vous voulez placer l'annonce sur l'OPAC ou sur l'interface pro.</li>
+ <li>Donnez un titre à votre nouvelle</li>
+ <li>Utilisez les champs dates de publication et d'expiration afin de contrôler quand et combien de temps votre annonce apparaîtra.</li>
+ <li>'S'affiche en position' vous permet de décider dans quelle ordre vos nouvelles apparaissent</li>
+ <li>La boîte Nouvelle permet de saisir de l'HTML pour formater le texte</li>
+</ul>
+</li>
+ <li>Après avoir rempli tous les champs, cliquer 'Valider'</li>
+ <li>Les nouvelles OPAC apparaîtront avec le OpacMainUserBlock</li>
+ <li>Les nouvelles à l'interface pro apparaîtront dans la partie gauche de la page de démarrage</li>
+ <li>S'il y a des notes dans la fiche adhérent elles s'affichent sur la droite de la zone de prêt</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur les Nouvelles dans le <a href="http://manual.koha-community.org/3.12/en/tools.html#newstool">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

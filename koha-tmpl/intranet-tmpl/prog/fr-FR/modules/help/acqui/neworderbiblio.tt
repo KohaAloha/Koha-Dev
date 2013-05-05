@@ -1,0 +1,12 @@
+[% INCLUDE 'help-top.inc' %] <h1>Order from an Existing Record</h1>
+
+<p>If you are ordering another copy of an existing item, you can simply search for the record in your system.</p>
+
+<ul>
+ <li>From the results, simply click 'Order' to be brought to the order form.</li>
+ <li>Tous les détails associés à l'exemplaires sont listés sur le 'Détail'</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur les Commandes dans le <a href="http://manual.koha-community.org/3.12/en/placingacqorder.html#createacqbasket">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,35 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 123a</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_123a" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 123a</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">Type d'échelle&nbsp;:</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+ [% IF ( f1a ) %] <option value="a" selected="selected">échelle linéaire</option>
+ [% ELSE %] <option value="a">échelle linéaire</option>
+ [% END %] [% IF ( f1b ) %] <option value="b" selected="selected">angular scale</option>
+ [% ELSE %] <option value="b">angular scale</option>
+ [% END %] [% IF ( f1z ) %] <option value="z" selected="selected">autre type d'échelle (par ex. échelle de temps, échelle statistique quantitative)</option>
+ [% ELSE %] <option value="z">autre type d'échelle (par ex. échelle de temps, échelle statistique quantitative)</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+function report() {
+	    var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+            field.value =  document.f_pop.f1.value;
+	    self.close();
+	    return false;
+	}
+//]]>
+</script>
+
+
+[% INCLUDE 'popup-bottom.inc' %] 

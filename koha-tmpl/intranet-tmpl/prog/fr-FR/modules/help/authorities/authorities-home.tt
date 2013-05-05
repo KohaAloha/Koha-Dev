@@ -1,0 +1,18 @@
+[% INCLUDE 'help-top.inc' %] <h1>Autorités</h1>
+
+<p>Les notices d'autorité sont un moyen de contrôler les champs dans vos notices bibliographiques. Cela vous permet de contrôler les sujets, les noms propres par exemple.</p>
+
+<h2>Searching Authorities</h2>
+
+<p>Dans la page des autorités, vous pouvez rechercher les termes existants et les notices bibliographiques qui y sont rattachées.</p>
+
+<p>Dans la page de résultat, vous voyez les autorités, le compteur de notices bibliographiques reliées et un lien Supprimer (s'il n'y a pas de notice rattachée).</p>
+
+<p>En cliquant sur le détail de l'autorités, une fenêtre s'ouvre qui montre l'autorité complète et l'option de modification.</p>
+
+<p>If the authority has See Alsos in it you will see those broken out on the search results, clicking the linked headings will run a search for that heading instead.</p>
+
+<p><strong>See the full documentation for Authorities in the <a href="http://manual.koha-community.org/3.12/en/catauthorities.html">manuel</a> (en-ligne)</strong></p>
+
+
+[% INCLUDE 'help-bottom.inc' %] 

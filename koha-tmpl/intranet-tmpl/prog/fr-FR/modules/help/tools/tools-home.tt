@@ -1,0 +1,7 @@
+[% INCLUDE 'help-top.inc' %] <h1>Outils</h1>
+
+<p>Les outils de Koha permettent de réaliser toutes sortes d'opérations. </p>
+
+<p><strong>Voir la documentation complète sur les Outils dans le <a href="http://manual.koha-community.org/3.12/en/tools.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

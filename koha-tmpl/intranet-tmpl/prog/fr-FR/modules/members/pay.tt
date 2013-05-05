@@ -1,0 +1,111 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo;  Adhérents &rsaquo; Encaisser les paiements de [% borrower.firstname %], [% borrower.surname %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+<script type= "text/javascript">
+//<![CDATA[
+    $(document).ready(function(){
+ $('#pay-fines-form').preventDoubleFormSubmit();
+        $("#woall").click(function(event){
+            var answer = confirm(_("Are you sure you want to write off [% total | format('%.2f') %] in outstanding fines? This cannot be undone!"));
+                if (!answer){
+                    event.preventDefault();
+                }
+        });
+        $('#CheckAll').click(function(){ $("#finest").checkCheckboxes(); return false;});
+        $('#CheckNone').click(function(){ $("#finest").unCheckCheckboxes(); return false;});
+    });
+//]]>
+</script>
+</head>
+<body id="pat_pay" class="pat">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a> &rsaquo; Encaisser les paiements de [% borrower.firstname %] [% borrower.surname %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% INCLUDE 'members-toolbar.inc' borrowernumber=borrower.borrowernumber %]
+
+<!-- The manual invoice and credit buttons -->
+<div class="statictabs">
+<ul>
+ <li><a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrower.borrowernumber %]">Compte</a></li>
+ <li class="active"><a href="/cgi-bin/koha/members/pay.pl?borrowernumber=[% borrower.borrowernumber %]" >Payer amendes</a></li>
+ <li><a href="/cgi-bin/koha/members/maninvoice.pl?borrowernumber=[% borrower.borrowernumber %]" >Créer facture manuelle</a></li>
+ <li><a href="/cgi-bin/koha/members/mancredit.pl?borrowernumber=[% borrower.borrowernumber %]" >Créer crédit manuel</a></li>
+</ul>
+<div class="tabs-container">
+
+[% IF ( accounts ) %] <form action="/cgi-bin/koha/members/pay.pl" method="post" id="pay-fines-form">
+ <input type="hidden" name="borrowernumber" id="borrowernumber" value="[% borrower.borrowernumber %]" />
+<p><span class="checkall"><a id="CheckAll" href="#">Tout sélectionner</a></span> | <span class="clearall"><a id="CheckNone" href="#">Tout effacer</a></span></p>
+<table id="finest">
+<thead>
+<tr>
+ <th>&nbsp;</th>
+ <th>Amendes & Frais</th>
+ <th>Description</th>
+ <th>Type de compte</th>
+ <th>Identifiant notificateur</th>
+ <th>Level</th>
+ <th>Montant</th>
+ <th>Montant à recouvrer</th>
+</tr>
+</thead>
+<tfoot>
+<tr>
+ <td class="total" colspan="7">Total dû :</td>
+ <td>[% total | format('%.2f') %]</td>
+</tr>
+</tfoot>
+<tbody>
+[% FOREACH account_grp IN accounts %] [% FOREACH line IN account_grp.accountlines %] <tr>
+ <td>
+ [% IF ( line.amountoutstanding > 0 ) %] <input type="checkbox" checked="checked" name="incl_par_[% line.accountno %]" />
+ [% END %] </td>
+ <td>
+ [% IF ( line.amountoutstanding > 0 ) %] <input value="Payer" name="pay_indiv_[% line.accountno %]" type="submit" />
+ <input value="Pertes et profits" name="wo_indiv_[% line.accountno %]" type="submit" />
+ [% END %] <input type="hidden" name="itemnumber[% line.accountno %]" value="[% line.itemnumber %]" />
+ <input type="hidden" name="description[% line.accountno %]" value="[% line.description %]" />
+ <input type="hidden" name="accounttype[% line.accountno %]" value="[% line.accounttype %]" />
+ <input type="hidden" name="amount[% line.accountno %]" value="[% line.amount %]" />
+ <input type="hidden" name="accountlines_id[% line.accountno %]" value="[% line.accountlines_id %]" />
+ <input type="hidden" name="amountoutstanding[% line.accountno %]" value="[% line.amountoutstanding %]" />
+ <input type="hidden" name="borrowernumber[% line.accountno %]" value="[% line.borrowernumber %]" />
+ <input type="hidden" name="accountno[% line.accountno %]" value="[% line.accountno %]" />
+ <input type="hidden" name="notify_id[% line.accountno %]" value="[% line.notify_id %]" />
+ <input type="hidden" name="notify_level[% line.accountno %]" value="[% line.notify_level %]" />
+ <input type="hidden" name="totals[% line.accountno %]" value="[% line.totals %]" />
+ </td>
+ <td>[% line.description %] ([% line.title |html_entity %])</td>
+ <td>[% line.accounttype %]</td>
+ <td>[% line.notify_id %]</td>
+ <td>[% line.notify_level %]</td>
+ <td class="debit">[% line.amount | format('%.2f') %]</td>
+ <td class="debit">[% line.amountoutstanding | format('%.2f') %]</td>
+</tr>
+[% END %] [% IF ( account_grp.total ) %] <tr>
+
+ <td class="total" colspan="7">Sous-total :</td>
+ <td>[% account_grp.total | format('%.2f') %]</td>
+</tr>
+[% END %] [% END %] </tbody>
+</table>
+<fieldset class="action">
+<input value="Payer le montant" name="paycollect" type="submit" class="submit" />
+<input value="Tout en pertes et profits" name="woall" type="submit" id="woall" class="submit" />
+<input value="Payer la sélection" name="payselected" type="submit" class="submit" />
+<a class="cancel" href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrower.borrowernumber %]">Annuler</a>
+</fieldset>
+</form>
+[% ELSE %] <p>[% borrower.firstname %] [% borrower.surname %] n'a pas de charges à recouvrer</p>
+[% END %] </div></div>
+
+</div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'circ-menu.tt' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

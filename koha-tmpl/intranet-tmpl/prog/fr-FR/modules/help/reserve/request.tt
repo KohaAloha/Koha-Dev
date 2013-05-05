@@ -1,0 +1,61 @@
+[% INCLUDE 'help-top.inc' %] <h1>Réservations</h1>
+
+<h2>Placing Holds in Staff Client</h2>
+
+<p>There are several ways to place holds from the staff client. The most obvious is using the 'Place Hold' button at the top of any bibliographic record.</p>
+
+<p>You can also click the smaller 'Place Hold' link found at the top of your catalog search results, or the 'Holds' link found below each result.</p>
+
+<p>Vous recherchez d'abord un adhérent sur son code à barres ou sur tout ou partie de son nom.</p>
+
+<p>If you'd like to search for the patron first and then the bib record for the hold, you can open the patron record and click on the 'Search to Hold' button at the top of the patron record.</p>
+
+<p>After clicking the button you will be brought to the catalog search page where you can find the book(s) you want to place a hold on. Under each title on the results you'll see an option to 'Hold for Patron Name.'</p>
+
+<p>If you want to place a hold on multiple items, simply check the boxes to the left of them and click the arrow to the right of the 'Place Hold' button.</p>
+
+<p>Depending on how many items you choose to place a hold on at once you will see a different place hold form. If you are placing a hold on one bibliographic record you will see a list of all of the items you can place a hold on.</p>
+
+<ul>
+ <li>Entrez une note, si nécessaire, s'appliquant à cette réservation.</li>
+ <li>Choisissez la bibliothèque où l'adhérent viendra prendre l'exemplaire</li>
+ <li>Si l'adhérent veut que sa réservation démarre à une autre date qu'aujourd'hui, entrez cette date dans le champ Début de réservation.<ul>
+ <li>Cette option s'affiche uniquement si vous avez paramétré la préférence système AllowHoldDateInFuture.</li>
+</ul>
+</li>
+ <li>Si l'adhérent a précisé qu'il ne souhaité l'exemplaire passée une certaine date, ou si vous avez des limites de durée de réservation, vous pouvez entrer une date d'expiration de la réservation.<ul>
+ <li>Si vous voulez que les réservations expirées soient automatiquement annulées, il faudra que vous programmiez la tâche planifiée qui convient.</li>
+</ul>
+</li>
+ <li>Enfin, placez la réservation soit sur le prochain exemplaire disponible soit sur un exemplaire spécifique en cochant le bouton de sélection se trouvant à côté de celui-ci.</li>
+</ul>
+
+<p>Si vous réservez plusieurs exemplaires à la fois, l'option de réservation de réservation s'appliquant à tous les titres vous est proposée. Si aucun exemplaire ne peut être réserver, une alerte s'affiche.</p>
+
+<p>Once your hold is placed, if you'd like to have Koha forget that you used the 'Search to Hold' function, you can choose to have Koha 'forget' the patron's name by clicking the arrow to the right of the 'Place Hold' button on the search results and choosing the 'Forget' option.</p>
+
+<h2>Managing Holds</h2>
+
+<p>Les réservations peuvent être modifiées et annulées en utilisant l'onglet Réservations qui se trouve sur la gauche de la notice.</p>
+
+<p>Dans la liste des réservations, vous pouvez modifier l'ordre des réservations, l'emplacement de retrait, ou bien annuler des réservations.</p>
+
+<p><strong>Note</strong> If you have your AutoResumeSuspendedHolds preference set to "Don't allow" then you will not have the option to put an end date on the hold suspension</p>
+
+<p><strong>Note</strong> Depending on how you have your HidePatronName system preference set the list may show card numbers instead of names in the Patron column like in the image above.</p>
+
+<p>Pour réordonner les réservations, ou en supprimer, utilisez le menu Priorité ou bien les flèches disposées à côté de chaque réservation.</p>
+
+<p>Pour supprimer ou annuler une réservation, choisissez l'option Suppr dans le menu ou cliquez sur la croix rouge à droite de la réservation.</p>
+
+<p>If you use the priority pull down to rearrange or delete holds you will need to click the 'Update hold(s)' button to save your changes.</p>
+
+<p>En cliquant sur la flèche bas, à droite d'une réservation, vous déplacez la réservation vers le bas.</p>
+
+<p>Par exemple, votre bibliothèque a des adhérents de l'établissement qui sont autorisés à emprunter pour plusieurs mois. Il ne serait pas juste pour les autres adhérents que les premiers soient autorisés à emprunter des nouveautés et à les gardent pour des mois. Il faudra donc veiller à ce que les demandes de réservations des premiers restent en bas de la liste tant que les seconds n'auront pas eu accès aux nouveautés.</p>
+
+<p>If a patron asks to have their hold suspended you can do so by clicking the Suspend button to far right. If the patron gives you a date for the items to become unsuspended you can enter that in the date box and click the 'Update hold(s)' button to save your changes.</p>
+
+<p><strong>See the full documentation for Holds in the <a href="http://manual.koha-community.org/3.12/en/holds.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

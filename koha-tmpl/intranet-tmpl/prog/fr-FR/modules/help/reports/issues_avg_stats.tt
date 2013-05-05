@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Durée moyenne du prêt</h1>
+
+<p>Ce rapport liste la durée moyenne des prêts sur la base des critères que vous saisissez.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p><strong>Voir la documentation complète sur le rapport sur la Durée moyenne de pre dans le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#avloantime">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,83 @@
+[% INCLUDE 'help-top.inc' %] <h1>Add patrons</h1>
+
+<p>Les catégories d'adhérent appartiennent à six grandes catégories fixes :</p>
+
+<ul>
+ <li>Staff = A user that can be configured to perform functions in the staff client</li>
+ <li>Adulte = un adhérent standard (on peut lui associer des adhérents Enfant).</li>
+ <li>Enfant = un adhérent qui peut appartenir à un adhérent Adulte.</li>
+ <li>Etablissement = un établissement auquel sont rattachés des adhérents professionnels.</li>
+ <li>Professionnel = un adhérent qui appartient à un établissement.</li>
+ <li>Statistique = un adhérent utilisé uniquement pour suivre le prêt interne <ul>
+ <li><span style="background-color: #ffe599;">ASTUCE&nbsp;: Peut être utilisé pour enregistrer des statistiques pour les exemplaires utilisés, mais non prêtés, comme les ouvrages de référence, les magazines, etc. Vous pouvez alors faire tourner un rapport qui exploite ces statistiques</span></li>
+</ul>
+</li>
+</ul>
+
+<h2>Ajouter un adhérent</h2>
+
+<p>Patrons are added by going to the 'Patrons' module.</p>
+
+<ul>
+ <li>Cliquez sur Ajouter</li>
+ <li>First enter the identifying information regarding your patron
+<ul>
+ <li>Les champs obligratoires sont définis dans la préférence système BorrowerMandatoryField.</li>
+ <li>Salutation est rempli par la préférence système BorrowersTitles</li>
+</ul>
+</li>
+ <li>Next enter the contact information
+<ul>
+ <li>For contact information, note that the primary phone and email addresses are the ones that appear on notices and slips printed during circulation (receipts, transfer slips and hold slips). The primary email is also the one that overdue notices and other messages go to.</li>
+</ul>
+</li>
+ <li>Si l'adhérent est un enfant, on vous demandera de le rattacher à un adhérent adulte. <ul>
+ <li>Cliquez sur Adhérent dans la section Garrant afin de rechercher un adhérent existant</li>
+ <li>Si le garant n'est pas dans le système, vous pouvez entrer son nom et son prénom dans les champs prévus à cet effet.</li>
+ <li>La relation est définie en utilisant la préférence système borrowerRelationship.</li>
+</ul>
+</li>
+ <li>Si l'adhérent est un professionnel, on vous demandera de le rattacher à un adhérent établissement. <ul>
+ <li>Cliquez sur Adhérent dans la section Garrant afin de rechercher un adhérent existant</li>
+</ul>
+</li>
+ <li>On peut définir une autre adresse pour chaque adhérent. <ul>
+ <li>Un autre contact peut être un parent ou un garant. Pour une bibliothèque académique, l'autre contact peut contenir l'adresse du domicile.</li>
+</ul>
+</li>
+ <li>The library management section includes values that are used within the library
+<ul>
+ <li>La Numéro de carte est calculé automatiquement si vous avez activé la préférence système autoMemberNum.</li>
+ <li><strong>Note:</strong> For a newly installed system this preference will start at 1 and increment by 1 each time after. To have it start with the starting number of your barcodes, enter the first barcode by hand in the patron record and save the patron. After that the field will increment that number by 1.</li>
+ <li>Si vous avez choisi accidentellement la mauvaise catégorie d'adhérent au moment de sa création, vous pouvez la changer ici.</li>
+ <li>Sort 1 and 2 are used for statistical purposes within your library</li>
+</ul>
+</li>
+ <li>La section Choix site contient d'autres paramètres propre à la bibliothèque :<ul>
+ <li>La date d'inscription est automatiquement renseignée à la date du jour.</li>
+ <li>Si la carte de bibliothèque de l'adhérent est valable pour une durée limitée, le champ Date d'expiration est calculé automatiquement.</li>
+ <li>Utilisez Note OPAC pour toute information que vous voulez montrer au public à l'OPAC.</li>
+ <li>La Note de circulation est affichée uniquement au personnel de la bibliothèque dans le module de Circulation.</li>
+ <li>The Staff/OPAC asks for the username and password to be used by the patron (and/or staff member) to log into their account in the OPAC and for staff to log in to the staff client.</li>
+</ul>
+</li>
+ <li>So vous avez défini des attributs d'adhérent, ils apparaissent après.</li>
+ <li>Enfin, si vous avez activé la préférence système EnhancedMessagingPreferences, vous pouvez choisir les préférences d'acheminement des notifications.<ul>
+ <li style="color: #990000">Important: These preferences will override any you set via the patron categories</li>
+ <li style="color: #990000">Important: These preference can be altered by the patron via the OPAC</li>
+</ul>
+</li>
+ <li>Quand vous avez fini, cliquez sur Enregistrer.</li>
+</ul>
+
+<p>If the system suspects this patron is a duplicate of another it will warn you.</p>
+
+<h2>Ajout d'un adhérent Bibliothécaire</h2>
+
+<p>Le personnel de la bibliothèque doit être entré dans Koha en tant qu'adhérent de type Bibliothécaire. Suivez les instructions de la section Ajouter un adhérent. Vous leur donnez ensuite accès au logiciel en cliquant sur le bouton Plus > Permissions. </p>
+
+<p style="color: #990000">Pensez bien à donner aux professionnels un identifiant et un mot de passe sûrs. </p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/patrons.html#addnewpatron">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

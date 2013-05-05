@@ -1,0 +1,40 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Circulation &rsaquo; Statistiques</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="circ_stats" class="circ">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'circ-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; Statistiques</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+ [% IF ( notime ) %] <h1>Display statistics for:</h1>
+ <ul>
+ <li><a href="/cgi-bin/koha/circ/stats.pl?time=yesterday">yesterday</a></li>
+ <li><a href="/cgi-bin/koha/circ/stats.pl?time=today">aujourd'hui</a></li>
+ [% ELSE %] [% IF ( loop1 ) %] <table>
+ <caption>Statistiques</caption>
+ <tr>
+ <th>Name</th>
+ <th>Type</th>
+ <th>Date/time</th>
+ <th>Montant</th>
+ <th>Library</th>
+ <tr>
+ [% FOREACH loop IN loop1 %] <tr>
+ <td>[% loop.name %]</td>
+ <td>[% loop.type %]</td>
+ <td>[% loop.time %]</td>
+ <td>[% loop.amount %]</td>
+ <td>[% loop.branch %]</td>
+ </tr>
+ [% END %] </table>
+ <p>Total payé&nbsp;: [% total %]<br />Total des pertes et profits&nbsp;: [% totalw %]</p>
+ [% ELSE %] <h3>Pas de statistiques à présenter</h3>
+ [% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

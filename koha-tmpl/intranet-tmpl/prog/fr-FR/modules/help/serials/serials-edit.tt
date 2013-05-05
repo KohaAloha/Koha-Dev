@@ -1,0 +1,27 @@
+[% INCLUDE 'help-top.inc' %] <h1>Réceptionner des bulletins</h1>
+
+<p>Les fascicules peuvent être bulletinés depuis plusieurs endroits. Pour retrouver un abonnement, utiliser la boîte de recherche en haut de la page.</p>
+
+<p>Dans la page de résultat, vous pouvez cliquer sur Bulletiner ou bien sur le titre du périodique puis sur le bouton Bulletiner dans la page suivante.</p>
+
+<p>The final way to receive serials is from the 'Serial Collection' page. To the left of the Subscription summary page there is a menu with a link to 'Serial Collection'</p>
+
+<p>Dans la page qui s'ouvre vous pouvez cliquer sur Modifier périodique avec le fascicule que vous voulez bulletiner.</p>
+
+<p>Ces trois possibilités vont ouvrir le formulaire de réception d'un fascicule :</p>
+
+<ul>
+ <li>Choisissez 'Arrivé' dans le liste Statut pour marque le fascicule comme reçu</li>
+ <li>Si vous demandez à créer un exemplaire pour chaque fascicule, un formulaire de saisie spécifique apparaîtra en bulletinage</li>
+ <li>Si votre fascicule a un supplément, remplissez la zone Fascicule supplémentaire.</li>
+ <li>Si vous demandez à créer un exemplaire pour chaque fascicule, un formulaire spécifique de saisie apparaîtra en bulletinage pour le supplément et pour le fascicule lui-même</li>
+ <li>Quand vous avez saisi les données utiles, cliquez 'Sauvegarder'</li>
+</ul>
+
+<p>Si vous bulletinez plusieurs fascicules à la fois ou si le dernier fascicule attendu a du retard, vous pouvez cliquer sur Générer le suivant afin de créer le fasicule suivante.</p>
+
+<p>En cliquant sur ce bouton, vous générez le prochain fascicule et vous marquez comme En retard le fascicule précédent. Vous pouvez cocher les boîtes dans la colonne Modifier afin d'appliquer un changement de statut à plusieurs fascicules à la fois.</p>
+
+<p><strong>Voir la documentation complète sur le Bulletinage dans le <a href="http://manual.koha-community.org/3.12/en/receiveissues.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

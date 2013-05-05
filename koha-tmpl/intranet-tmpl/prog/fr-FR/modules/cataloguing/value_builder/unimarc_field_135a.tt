@@ -1,0 +1,46 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 135a</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_135a" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 135a</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">Type de ressource électronique&nbsp;:</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+ 
+ [% IF ( f1space ) %] <option value=" " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value=" ">valeur non obligatoire</option>
+ [% END %] [% IF ( f1a ) %] <option value="a" selected="selected">numerique</option>
+ [% ELSE %] <option value="a">numerique</option>
+ [% END %] [% IF ( f1b ) %] <option value="b" selected="selected">programmes informatiques</option>
+ [% ELSE %] <option value="b">programmes informatiques</option>
+ [% END %] [% IF ( f1c ) %] <option value="c" selected="selected">représentationnel</option>
+ [% ELSE %] <option value="c">représentationnel</option>
+ [% END %] [% IF ( f1d ) %] <option value="d" selected="selected">texte</option>
+ [% ELSE %] <option value="d">texte</option>
+ [% END %] [% IF ( f1u ) %] <option value="u" selected="selected">inconnu</option>
+ [% ELSE %] <option value="u">inconnu</option>
+ [% END %] [% IF ( f1v ) %] <option value="v" selected="selected">combinaison de données</option>
+ [% ELSE %] <option value="v">combinaison de données</option>
+ [% END %] [% IF ( f1z ) %] <option value="z" selected="selected">autre</option>
+ [% ELSE %] <option value="z">autre</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<p><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></p>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+	function report() {
+            var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+            
+            field.value =  document.f_pop.f1.value;
+            window.close();
+            return false;
+	}
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

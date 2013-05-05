@@ -1,0 +1,304 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; [% IF ( date ) %] Contenu du colis [% name %] [% IF ( invoice ) %]facture [% invoice %][% END %] du [% formatteddatereceived %][% ELSE %]Recevoir colis de [% name %][% END %]</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+[% INCLUDE 'greybox.inc' %] <script type="text/javascript" src="[% yuipath %]/json/json-min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+    dt_overwrite_html_sorting_localeCompare();
+
+    $(document).ready(function(){
+        var pendingt = $("#pendingt").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "bStateSave": true,
+            "iCookieDuration": 60*60*24*1000, // 1000 days
+            "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            "aoColumnDefs": [
+                { "aTargets": [ 3, 8, 9 ], "bSortable": false, "bSearchable": false },
+            ],
+            "aoColumns": [
+                { "sType": "num-html" },
+                { "sType": "num-html" },
+                { "sType": "html" },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            ],
+            "sPaginationType": "four_button"
+        } ) );
+        var receivedt = $("#receivedt").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "bStateSave": true,
+            "iCookieDuration": 60*60*24*1000, // 1000 days
+            "aLengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            "aoColumnDefs": [
+                { "aTargets": [ 3, -1 ], "bSortable": false, "bSearchable": false },
+            ],
+            "aoColumns": [
+                { "sType": "num-html" },
+                { "sType": "num-html" },
+                { "sType": "html" },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            ],
+            "sPaginationType": "four_button"
+        } ) );
+/*
+    $("#pendingt").tablesorter({
+		headers: { 2: { sorter: 'articles' },3: { sorter: false },8:{sorter:false}}
+    });
+*/
+
+    });
+
+     // Case-insensitive version of jquery's contains function
+     jQuery.extend(jQuery.expr[':'], {
+	    icontains : "jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase())>=0"
+     });
+
+     // Contains exactly function
+     jQuery.extend(jQuery.expr[':'], {
+          containsExactly: "$(a).text() == m[3]"
+     });
+
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+            function confirm_delete_item(ordernumber, basketno, biblionumber) {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir supprimer cette ligne de commande ?"));
+                if (is_confirmed) {
+                    window.location = "addorder.pl?ordernumber="+ordernumber+"&basketno="+basketno+"&quantity=0&biblionumber="+biblionumber+"&invoiceid=[% invoiceid %]";
+                }
+            }
+            
+            function confirm_delete_biblio(ordernumber, basketno, biblionumber) {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir supprimer cette notice et cette commande ?"));
+                if (is_confirmed) {
+                    window.location = "addorder.pl?ordernumber="+ordernumber+"&basketno="+basketno+"&quantity=0&biblionumber="+biblionumber+"&delbiblio=1&invoiceid=[% invoiceid %]";
+                    }
+            }
+//]]>
+</script>
+</head>
+<body id="acq_parcel" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; [% IF ( datereceived ) %] Réception de colis N° <i>[% name %]</i>
+ [% IF ( invoice ) %] <i>[[% invoice %] ]</i>
+ [% END %] le <i>[% formatteddatereceived %]</i>
+ [% ELSE %] Récapitulatif de réception pour [% name %] [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% IF ( receive_error ) %] <div class="dialog alert">
+ <h3>Erreur lors de l'enregistrement de l'exemplaire&nbsp;:</h3>
+ <ul>
+ [% FOREACH error_loo IN error_loop %] <li>[% error_loo.error_param %][% IF ( error_loo.error_duplicate_barcode ) %]Duplicate Barcode[% END %] <!-- todo: other error conditions come here. --></li>
+ [% END %] </ul>
+ </div>
+ [% END %] <h1>
+ [% IF ( datereceived ) %] Réception de colis N° <i>[% name %]</i> [% IF ( invoice ) %] <i> [ [% invoice %] ] </i>[% END %] le <i>[% formatteddatereceived %]</i>
+ [% ELSE %] Récapitulatif de réception pour [% name %] [% END %] </h1>
+
+ [% IF ( success_delorder ) %] <div class="dialog message">The order has been successfully canceled.</div>
+ [% ELSE %] [% IF ( error_delitem ) %] <div class="dialog alert">The order has been canceled, although one or more items could not have been deleted.</div>
+ [% END %] [% IF ( error_delbiblio ) %] <div class="dialog alert">The order has been canceled, although the record has not been deleted.</div>
+ [% END %] [% END %] [% IF (error_cancelling_receipt) %] <div class="error">
+ Cannot cancel receipt. Possible reasons :
+ <ul>
+ <li>
+ The order line you trying to cancel was created from a partial receipt
+ of another order line which is already received. Try to cancel this
+ one first and retry.
+ </li>
+ <li>
+ The order line you trying to cancel was created from a partial receipt
+ of another order line which has been deleted. Cancellation is not
+ possible.
+ </li>
+ </ul>
+ </div>
+ [% END %] <div id="acqui_receive_summary">
+<p><strong>Référence fournisseur</strong> [% invoice %] <strong>Réceptionné par&nbsp;:</strong> [% loggedinusername %] <strong>Le&nbsp;:</strong> [% formatteddatereceived %]</p>
+</div>
+[% UNLESS (invoiceclosedate) %] <div id="acqui_receive_search">
+ <h3>Commandes à réceptionner</h3>
+
+ [% IF ( loop_orders ) %]<table id="pendingt">
+ <thead>
+ <tr>
+ <th>Panier</th>
+ <th>Ligne de commande</th>
+ <th>Résumé</th>
+ <th>Voir notice</th>
+ <th>Quantité</th>
+ <th>Coût unitaire</th>
+ <th>Coût cmd</th>
+ <th>Poste budgétaire</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </tr>
+ </thead>
+ <tbody class="filterclass">
+ [% FOREACH loop_order IN loop_orders %] <tr>
+ <td class="basketfilterclass"><a href="/cgi-bin/koha/acqui/basket.pl?basketno=[% loop_order.basketno %]">[% loop_order.basketno %]</a></td>
+ <td class="orderfilterclass"><a href="neworderempty.pl?ordernumber=[% loop_order.ordernumber %]&amp;booksellerid=[% loop_order.booksellerid %]">[% loop_order.ordernumber %]</a></td>
+ <td class="summaryfilterclass">
+ <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% loop_order.biblionumber %]">[% loop_order.title |html %]</a>
+ [% IF ( loop_order.author ) %] par [% loop_order.author %][% END %] [% IF ( loop_order.isbn ) %] &ndash; [% loop_order.isbn %][% END %] [% IF ( loop_order.publishercode ) %]<br />Editeur&nbsp;:&nbsp;[% loop_order.publishercode %][% END %] [% IF ( loop_order.suggestionid ) %] <br/>
+ Suggéré par : [% loop_order.surnamesuggestedby %][% IF ( loop_order.firstnamesuggestedby ) %], [% loop_order.firstnamesuggestedby %] [% END %] (<a href="/cgi-bin/koha/suggestion/suggestion.pl?suggestionid=[% loop_order.suggestionid %]&amp;op=show">suggestion #[% loop_order.suggestionid %]</a>) [% END %] <br />
+ [% IF ( loop_order.notes ) %] <p class="ordernote"><strong>Note&nbsp;:</strong>[% loop_order.notes|html %] [<a href="/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Fbooksellerid=[% loop_order.booksellerid %]&amp;datereceived=[% loop_order.invoicedatereceived %]&amp;invoice=[% loop_order.invoice %]">Modifier la note</a>]</p>
+ [% ELSE %] [<a href="/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Fbooksellerid=[% loop_order.booksellerid %]&amp;datereceived=[% loop_order.invoicedatereceived %]&amp;invoice=[% loop_order.invoice %]">Ajouter une note</a>] [% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/showmarc.pl?id=[% loop_order.biblionumber %]" title="MARC" rel="gb_page_center[600,500]">MARC</a> | <a href="/cgi-bin/koha/catalogue/showmarc.pl?viewas=card&amp;id=[% loop_order.biblionumber %]" title="MARC" rel="gb_page_center[600,500]">Carte</a></td>
+ <td>[% loop_order.quantity %]</td>
+ <td>[% loop_order.ecost %]</td>
+ <td>[% loop_order.ordertotal %]</td>
+ <td>[% loop_order.budget_name %]</td>
+ <td>
+ <a href="orderreceive.pl?ordernumber=[% loop_order.ordernumber %]&amp;invoiceid=[% invoiceid %]">Réceptionner</a>
+ </td>
+ <td>
+ [% IF ( loop_order.left_holds_on_order ) %] <span class="button" title="Impossible de supprimer la commande, ([% loop_order.holds_on_order %]) commandes lui sont liées. Supprimez-les d'abord">Impossible de supprimer la commande</span><br>
+ [% ELSE %] <a href="javascript:confirm_delete_item([% loop_order.ordernumber %], [% loop_order.basketno %], [% loop_order.biblionumber %])" class="button">Supprimer la commande</a><br>
+ [% END %] [% IF ( loop_order.can_del_bib ) %] <a href="javascript:confirm_delete_biblio([% loop_order.ordernumber %], [% loop_order.basketno %], [% loop_order.biblionumber %])" class="button">Supprimer la commande et la notice</a><br>
+ [% ELSE %] <span class="button" title="Impossible de supprimer la notice du catalogue. Voir ci-dessous pourquoi">Impossible de supprimer la commande et la notice</span><br>
+ [% END %] [% IF ( loop_order.left_item ) %] <b title="Impossible de supprimer la notice du catalogue parce qu'il y a [% loop_order.items %] exemplaires existants">[% loop_order.items %] exemplaire(s) restant(s)</b><br>
+ [% END %] [% IF ( loop_order.left_biblio ) %] <b title="Impossible de supprimer la notice du catalogue. Supprimez d'abord les autres commandes qui y sont liées">[% loop_order.biblios %] commandes restantes</b><br>
+ [% END %] [% IF ( loop_order.left_subscription ) %] <b title="Impossible de supprimer la notice du catalogue. Supprimez d'abord les abonnements">[% loop_order.subscriptions %] abonnements restants</b><br>
+ [% END %] [% IF ( loop_order.left_holds ) %] <b title="Impossible de supprimer la notice du catalogue ou la commande. Annuler d'abord les réservations.">[% loop_order.holds %] Réservation(s) en trop</b>
+ [% END %] </td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ [% ELSE %]Il n'y a pas de commande en attente.[% END %] </div>
+[% ELSE %] <p>
+ Invoice is closed, so you can't receive orders anymore.
+ <a href="/cgi-bin/koha/acqui/invoice.pl?op=reopen&invoiceid=[% invoiceid %]&referer=/cgi-bin/koha/acqui/parcel.pl%3Finvoiceid=[% invoiceid %]">Reopen it</a>. </p>
+[% END %] <div id="acqui_receive_receivelist">
+ <h3>Déjà réceptionné</h3>
+
+
+ [% IF ( loop_received ) %] <form action="/cgi-bin/koha/acqui/parcel.pl" method="get" name="orderform">
+ <table id="receivedt">
+ <thead>
+ <tr>
+ <th>Panier</th>
+ <th>Ligne de commande</th>
+ <th>Résumé</th>
+ <th>Voir notice</th>
+ <th>Quantité</th> 
+ <th>Coût estimé</th>
+ <th>Coût réel</th>
+ <th>TOTAL</th>
+ <th></th>
+ </tr>
+ </thead>
+ <tfoot>
+ <tr>
+ <th colspan="7" class="total">Total HT.</th>
+ <th>[% total_gste %]</th>
+ <th></th>
+ </tr>
+ [% FOREACH book_foot IN book_foot_loop %] <tr>
+ <th colspan="7">Total (GST [% book_foot.gstrate * 100 | format ("%.1f") %]%)</th>
+ <th>[% book_foot.value %]</th>
+ <th></th>
+ </tr>
+ [% END %] <tr>
+ <th colspan="7" class="total">Total tax inc.</th>
+ <th>[% total_gsti %]</th>
+ <th></th>
+ </tr>
+ </tfoot>
+ <tbody class="filterclass">
+ [% FOREACH loop_receive IN loop_received %] <tr>
+ <td><a href="/cgi-bin/koha/acqui/basket.pl?basketno=[% loop_receive.basketno %]">[% loop_receive.basketno %]</a></td>
+ <td><a href="neworderempty.pl?ordernumber=[% loop_receive.ordernumber %]&amp;booksellerid=[% booksellerid %]">[% loop_receive.ordernumber %]</a></td>
+ <td><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% loop_receive.biblionumber %]">[% loop_receive.title |html %]</a>
+ [% IF ( loop_receive.author ) %] / [% loop_receive.author %][% END %] [% IF ( loop_receive.isbn ) %] - [% loop_receive.isbn %][% END %] [% IF ( loop_receive.publishercode ) %]<br />Editeur&nbsp;:&nbsp;[% loop_receive.publishercode %][% END %] [% IF ( loop_receive.suggestionid ) %] <br/>
+ Suggéré par : [% loop_receive.surnamesuggestedby %][% IF ( loop_receive.firstnamesuggestedby ) %], [% loop_receive.firstnamesuggestedby %] [% END %] (<a href="/cgi-bin/koha/suggestion/suggestion.pl?suggestionid=[% loop_receive.suggestionid %]&amp;op=show">suggestion #[% loop_receive.suggestionid %]</a>) [% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/showmarc.pl?id=[% loop_receive.biblionumber %]" title="MARC" rel="gb_page_center[600,500]">MARC</a> | <a href="/cgi-bin/koha/catalogue/showmarc.pl?viewas=card&amp;id=[% loop_receive.biblionumber %]" title="MARC" rel="gb_page_center[600,500]">Carte</a></td>
+ <td>[% loop_receive.quantityreceived %]</td>
+ <td>[% loop_receive.ecost %]</td>
+ <td>[% loop_receive.unitprice %]</td>
+ <td>[% loop_receive.total %]</td>
+ <td>
+ [% IF (loop_receive.cannot_cancel) %]
+ [% span_title = BLOCK %]
+ Cannot cancel receipt of this order line because it
+ was created from a partial receipt of order line no.
+ [% loop_receive.parent_ordernumber %], which is
+ already received. Try cancelling this one first and
+ retry.
+ [% END %]
+ <span title="[% span_title | collapse %]">
+ Can't cancel receipt
+ </span>
+ [% ELSE %] <a href="/cgi-bin/koha/acqui/parcel.pl?invoiceid=[% invoiceid %]&op=cancelreceipt&ordernumber=[% loop_receive.ordernumber %]">Cancel receipt</a>
+ [% END %] </td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </form>
+ [% ELSE %]Il n'y a pas de ligne de commande réceptionnée.[% END %]</div>
+
+<!--<form action="/cgi-bin/koha/acqui/parcels.pl?booksellerid=[% booksellerid %]" method="post">-->
+[% IF (invoiceclosedate) %]
+ <a href="/cgi-bin/koha/acqui/invoice.pl?invoiceid=[% invoiceid %]">View invoice</a>
+[% ELSE %] <form action="/cgi-bin/koha/acqui/invoice.pl" method="get">
+ <input type="hidden" name="invoiceid" value="[% invoiceid %]" />
+ <fieldset class="action">
+ <input value="Finir la réception" type="submit" />
+ </fieldset>
+ </form>
+[% END %] </div>
+</div>
+<div class="yui-b">
+<form action="/cgi-bin/koha/acqui/parcel.pl" id="filterform" method="post">
+ <fieldset class="brief">
+
+ <h4>Filtrer</h4>
+
+ <ol>
+
+ <li>
+ <label for="summaryfilter">ISBN, auteur ou titre :</label>
+ <input type="text" name="summaryfilter" id="summaryfilter" value="[% summaryfilter %]"/>
+ </li>
+
+ <li>
+ <label for="basketfilter">Panier :</label>
+ <input type="text" name="basketfilter" id="basketfilter" value="[% basketfilter %]"/>
+ </li>
+
+ <li>
+ <label for="orderfilter">Ligne de commande :</label>
+ <input type="text" name="orderfilter" id="orderfilter" value="[% orderfilter %]"/>
+ </li>
+ [% IF (UNIMARC) %] <li>
+ <label for="eanfilter">EAN :</label>
+ <input type="text" name="eanfilter" id="eanfilter" value="[% eanfilter %]"/>
+ </li>
+ [% END %] </ol>
+ <fieldset class="action">
+ <input type="hidden" value="search" name="op" />
+ <input type="hidden" value="[% invoiceid %]" name="invoiceid" />
+ <input value="Filtrer" type="submit" />
+ <a href="/cgi-bin/koha/acqui/parcel.pl?invoiceid=[% invoiceid %]">Effacer</a>
+ </fieldset>
+
+
+ </fieldset>
+ </form>
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

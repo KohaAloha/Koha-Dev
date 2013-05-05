@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Lots</h1>
+
+<p>Un lot est un ensemble d'adhérents pour lesquels vous souhaitez générer les cartes</p>
+
+<h2>Ajouter un lot</h2>
+
+<p>Pour ajouter un nouveau lot, cliquez sur le bouton Lots en haut de la page et choisissez Nouveau lot</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html#patroncardbatches">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

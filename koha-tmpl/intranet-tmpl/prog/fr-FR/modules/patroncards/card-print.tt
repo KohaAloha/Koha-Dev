@@ -1,0 +1,137 @@
+ [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Outils &rsaquo; Créateur de cartes adhérent &rsaquo Impression/Export de cartes</title>
+ [% INCLUDE 'doc-head-close.inc' %] <script type="text/JavaScript" language="JavaScript">
+        //<![CDATA[
+            function Done() {
+                window.location = "[% referer %]";
+            };
+        //]]>
+    </script>
+ <style type="text/css">#custom-doc {width:47.23em; *width:46.04em; min-width:610px; margin:auto; margin-top:0.4em;}</style>
+ <style type="text/css">table {border-collapse: separate; border-spacing: 0; border: hidden none;} .header {cursor: auto; background-position: center center; background-repeat: repeat;}</style>
+</head>
+<body id="pcard_card-print" class="tools pcard">
+ <div id="custom-doc" class="yui-t2">
+ <div id="bd">
+ [% IF ( batches ) %] <form>
+ <div align="center">
+ <div class="message">
+ <b>Cliquez sur le(s) lien(s) suivant(s) pour télécharger le(s) lot(s) exporté(s).</b>
+ </div>
+ </div>
+ <fieldset class="rows">
+ <table class="borderless">
+ [% FOREACH batche IN batches %] <tr>
+ [% IF ( batche.label_ids ) %] <td class="borderless">
+ [% batche.label_count %] cartes uniques </td>
+ <td class="borderless">
+ <h1 id="pdf">
+ <a href="/cgi-bin/koha/labels/[% batche.create_script %]?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %]&amp;start_label=[% batche.start_label %][% batche.label_ids %]">etiquette_unique_[% batche.label_count %].pdf</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="csv">
+ <a href="/cgi-bin/koha/labels/label-create-csv.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %][% batche.label_ids %]">etiquette_unique_[% batche.label_count %].csv</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="xml">
+ <a href="/cgi-bin/koha/labels/label-create-xml.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %][% batche.label_ids %]">etiquette_unique_[% batche.label_count %].xml</a>
+ </h1>
+ </td>
+ [% ELSIF ( batche.item_numbers ) %] <td class="borderless">
+ [% batche.label_count %] cartes uniques </td>
+ <td class="borderless">
+ <h1 id="pdf">
+ <a href="/cgi-bin/koha/labels/[% batche.create_script %]?template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %]&amp;start_label=[% batche.start_label %][% batche.item_numbers %]">etiquette_unique_[% batche.label_count %].pdf</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="csv">
+ <a href="/cgi-bin/koha/labels/label-create-csv.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %][% batche.item_numbers %]">etiquette_unique_[% batche.label_count %].csv</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="xml">
+ <a href="/cgi-bin/koha/labels/label-create-xml.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %][% batche.item_numbers %]">etiquette_unique_[% batche.label_count %].xml</a>
+ </h1>
+ </td>
+ [% ELSE %] <td class="borderless">
+ Lot de cartes numéro [% batche.batch_id %]</td>
+ <td class="borderless">
+ <h1 id="pdf">
+ <a href="/cgi-bin/koha/labels/label-create-pdf.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %]&amp;start_label=[% batche.start_label %]">lot_etiquettes_[% batche.batch_id %].pdf</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="csv">
+ <a href="/cgi-bin/koha/labels/label-create-csv.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %]">lot_etiquettes_[% batche.batch_id %].csv</a>
+ </h1>
+ </td>
+ <td class="borderless">
+ <h1 id="xml">
+ <a href="/cgi-bin/koha/labels/label-create-xml.pl?batch_id=[% batche.batch_id %]&amp;template_id=[% batche.template_id %]&amp;layout_id=[% batche.layout_id %]">lot_etiquettes_[% batche.batch_id %].xml</a>
+ </h1>
+ </td>
+ [% END %] </tr>
+ [% END %] </table>
+ </fieldset>
+ <fieldset class="action">
+ <div style="margin: 10px 10px 10px 0px;">
+ <span class="yui-button yui-link-button"><span class="first-child"><input value="Fait" type="button" id="done" onclick="parent.parent.GB_hide();"></span></span>
+ </div>
+ </fieldset>
+ </form>
+ [% ELSE %] <div align="center">
+ <div class="message">
+ [% IF ( label_ids ) %] <b>Export de [% label_count %] cards(s).</b>
+ [% ELSIF ( item_numbers ) %] <b>Export de [% item_count %] cards(s).</b>
+ [% ELSE %] <b>[% multi_batch_count %] lot(s) à exporter.</b>
+ [% END %] </div>
+ </div>
+ <form name="exporting" method="post" action="/cgi-bin/koha/labels/label-print.pl">
+ <input type="hidden" name="op" value="export" />
+ <input type="hidden" name="referer" value="[% referer %]" />
+ [% FOREACH batch_id IN batch_ids %] <input type="hidden" name="batch_id" value="[% batch_id.batch_id %]" />
+ [% END %] [% FOREACH label_id IN label_ids %] <input type="hidden" name="label_id" value="[% label_id.label_id %]" />
+ [% END %] [% FOREACH item_number IN item_numbers %] <input type="hidden" name="item_number" value="[% item_number.item_number %]" />
+ [% END %] <fieldset class="rows">
+ <table class="borderless">
+ <tr>
+ <td class="borderless">
+ <label for="template">Sélectionnez un modèle à appliquer&nbsp;: </label>
+ </td>
+ <td class="borderless">
+ <select name="template_id">
+ [% FOREACH template IN templates %] <option value="[% template.template_id %]">[% template.template_code %]</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ <tr>
+ <td class="borderless">
+ <label for="layout">Sélectionnez un format à appliquer&nbsp;: </label>
+ </td>
+ <td class="borderless">
+ <select name="layout_id">
+ [% FOREACH layout IN layouts %] <option value="[% layout.layout_id %]">[% layout.layout_name %]</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ <tr>
+ <td class="borderless">
+ <label for="start_label">Entrer le numéro de carte de départ&nbsp;:</label>
+ </td>
+ <td class="borderless">
+ <input value="1" name="start_label" type="text" id="start_label" class="focus" title="Commencer l'impression à la carte numéro&nbsp;: " size="5" />
+ </td>
+ </tr>
+ </table>
+ </fieldset>
+ <fieldset class="action">
+ <div style="margin: 10px 10px 10px 0px;">
+ <span class="yui-button yui-link-button"><span class="first-child"><input value="Exportation" type="submit" /></span></span>
+ <span class="yui-button yui-link-button"><span class="first-child"><input value="Annuler" type="button" id="done" onclick="parent.parent.GB_hide();"></span></span>
+ </div>
+ </fieldset>
+ </form>
+ [% END %] </div>
+ [% INCLUDE 'intranet-bottom.inc' %] 

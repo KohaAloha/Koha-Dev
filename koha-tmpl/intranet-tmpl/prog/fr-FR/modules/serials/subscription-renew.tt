@@ -1,0 +1,31 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Renouveler l'abonnement #[% subscriptionid %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <style type="text/css">
+   #custom-doc { width:39.85em;*width:38.86em;min-width:531px; margin:auto; text-align:left; }
+   </style>
+</head>
+<body id="ser_subscription-renew" class="ser">
+
+<div id="custom-doc" class="yui-t7">
+[% IF ( renew ) %] Abonnement renouvelé. <script type="text/javascript">
+//<![CDATA[
+  opener.document.location.reload();
+  self.close();
+  //]]>
+</script>
+[% ELSE %] <div id="bd">
+<form name="f" action="/cgi-bin/koha/serials/subscription-renew.pl" method="post">
+ <input type="hidden" name="op" value="renew" />
+ <input type="hidden" name="subscriptionid" value="[% subscriptionid %]" />
+ <fieldset class="rows"><legend>Renouvellement d'abonnement pour [% bibliotitle %]</legend>
+ <ol><li><label for="startdate">Date de début&nbsp;: </label><input type="text" id="startdate" name="startdate" value="[% startdate %]" /></li>
+ <li><fieldset>
+ <legend>Durée d'abonnement&nbsp;:</legend>
+ <ol><li><label for="numberlength">Nombre de n°&nbsp;:</label><input type="text" id="numberlength" name="numberlength" value="[% numberlength %]" /></li>
+ <li><label for="weeklength">Nombre de semaines&nbsp;: </label><input type="text" id="weeklength" name="weeklength" value="[% weeklength %]" /></li>
+ <li><label for="monthlength">Nombre de mois&nbsp;: </label><input type="text" id="monthlength" name="monthlength" value="[% monthlength %]" /></li></ol></fieldset></li>
+ <li><label for="note">Note pour le bibliothécaire qui va gérer votre demande de renouvellement&nbsp;:</label>
+ <textarea name="note" id="note" rows="5" cols="50"></textarea></li></ol></fieldset>
+ <fieldset class="action"><input value="Valider" type="submit" class="button" /></fieldset>
+</form>
+</div>
+[% END %] [% INCLUDE 'intranet-bottom.inc' %] 

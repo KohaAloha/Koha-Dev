@@ -1,0 +1,38 @@
+[% INCLUDE 'doc-head-open.inc' %]<title>Koha &rsaquo; Installateur Web &rsaquo;  Etape 2</title>
+[% INCLUDE 'installer-doc-head-close.inc' %] <div>
+<h1 id="logo"><img alt="Koha" src="/intranet-tmpl/prog/img/koha.org-logo.gif" /> Installateur Web &rsaquo;  Etape 2</h1>
+<h2 align="center">Réglages de la base de données&nbsp;: </h2>
+<ul>
+<li><em>type de base de données : </em>[% dbms %]</li>
+<li><em>nom de base de données : </em>[% dbname %]</li>
+<li><em>hôte de la base de données : </em>[% hostname %]</li>
+<li><em>port de la base de données : </em>[% port %] (probablement valable, si vide)</li>
+<li><em>utilisateur de la base de données : </em>[% user %]</li>
+</ul>
+<div>
+[% IF ( dbconnection ) %] <form name="checkdbparameters" type="post" action="install.pl">
+ [% IF ( checkdatabaseaccess ) %] <p>Connexion établie.</p>
+ [% IF ( checkdatabasecreated ) %] <p>Base de données<code>[% dbname %]</code> existe.</p>
+ [% IF ( checkgrantaccess ) %] <p>Identifiant utilisateur<code>[% user %]</code> a toutes les autorisations nécessaires sur la base<code>[% dbname %]</code>.</p>
+ [% ELSE %] <p class="error">utilisateur <code>[% user %]</code> doesn't have enough privilege on database <code>[% dbname %]</code> </p>
+ <p class="tip"> Demandez ou faites les changements dans les permissions de l'utilisateur. Besoin d'aide ? Voir [% IF ( mysql ) %]<a href=http://dev.mysql.com/doc/refman/4.1/en/grant.html>[% ELSE %]http://www.postgresql.org/docs/8.2/interactive/sql-createrole.html[% END %]cette page</a>. Utilisateur <code>[% user %]</code> doit avoir les droits USAGE, INSERT, UPDATE, DELETE, DROP et CREATE sur <code>[% dbname %]</code></p>
+ [% END %] [% ELSE %] <p class="error">Pas de nom de base de données <code>[% dbname %]</code> repéré.</p>
+ <p class="tip">Merci de créer la base de données avant de continuer.</p>
+ [% END %] [% ELSE %] <div class="error">[% error %]&nbsp;: [% message %] </div>
+ <div class="tip">
+ <ul>
+ <li>Vérifiez que votre base de données fonctionne.</li>
+ <li>Vérifiez les réglages de votre base de donnéesi dans <code>koha-conf.xml</code>. </li>
+ <li>Vérifiez le nom de l'hôte dans <code>koha-conf.xml</code>. Il y a des serveurs de bases de données qui demandent <code>127.0.0.1</code> plutôt que <code>hôte local</code>.</li>
+ </div>
+ <p>Merci de corriger ces erreurs et <a href="/cgi-bin/koha/installer/install.pl">démarrer l'installateur</a> encore. [% END %] [% IF ( error ) %][% ELSE %] <input type="hidden" name="step" value="3" />
+<p> Cliquez sur suivant pour continuer<input value="Suivant >>" type="submit" /></p>
+[% END %] </form>
+[% ELSE %] <form name="checkinformation" type="post" action="install.pl">
+<input type="hidden" name="step" value="2" />
+<input type="hidden" name="checkdb" value="1" />
+<p> SVP, cliquez sur Suivant pour continuer si les informations sont valides<input value="Suivant >>" type="submit" /></p>
+</form>
+[% END %] </div>
+</body>
+</html>

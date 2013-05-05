@@ -1,0 +1,71 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Choisir catégorie d'Adulte</title>
+[% INCLUDE 'doc-head-close.inc' %] <link rel="stylesheet" type="text/css" href="/intranet-tmpl/prog/en/css/datatables.css" />
+<script type="text/javascript" src="/intranet-tmpl/prog/en/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="/intranet-tmpl/prog/en/js/datatables.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+        $("#catst").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "sDom": 't',
+            "aaSorting": [[ 2, "asc" ]],
+            "aoColumnDefs": [
+                { "aTargets": [ 0 ], "bSortable": false, "bSearchable": false }
+            ],
+            "bPaginate": false
+        }));
+	});
+</script>
+<style type="text/css"> 
+	   #custom-doc { width:29em;*width:28.3em;min-width:377px; margin:auto; text-align:left; } 
+</style> 
+</head>
+<body id="pat_update-child" class="pat">
+
+<div id="custom-doc" class="yui-t7">
+<div id="bd">
+
+[% IF ( CONFIRM ) %] <script type="text/javascript">
+function confirm_updatechild() {
+    var is_confirmed = window.confirm('Are you sure you want to update this child to an Adult category?  This cannot be undone.');
+   
+    if (is_confirmed) {
+            window.location='/cgi-bin/koha/members/update-child.pl?op=update&borrowernumber=[% borrowernumber %]&catcode=[% catcode %]&catcode_multi=[% CATCODE_MULTI %]';
+    }
+}
+
+confirm_updatechild([% borrowernumber %]);
+</script>
+[% END %] [% IF ( SUCCESS ) %] <script type="text/javascript">
+self.opener.location.href='/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]';
+window.close();
+</script>
+[% END %] [% IF ( MULTI ) %] <h3> Choisir une catégorie d'adulte </h3>
+
+[% IF ( CAT_LOOP ) %] <form method="post" action="update-child.pl">
+<fieldset>
+<table id="catst">
+<thead>
+<tr>
+<th>&nbsp;</th>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+[% FOREACH CAT_LOO IN CAT_LOOP %] <tr>
+<td>
+<input type="radio" id="catcode[% CAT_LOO.catcode %]" name="catcode" value="[% CAT_LOO.catcode %]" /></td>
+<td>[% CAT_LOO.catcode %]</td>
+<td><label for="catcode[% CAT_LOO.catcode %]"><strong>[% CAT_LOO.catdesc %]</strong></label></td> 
+</tr>
+[% END %] </tbody>
+</table>
+<input type="hidden" name="op" value="update" />
+<input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+<input type="hidden" name="catcode" value="[% catcode %]" />
+<input type="hidden" name="cattype" value="[% cattype %]" />
+<input type="hidden" name="catcode_multi" value="[% CATCODE_MULTI %]" />
+<fieldset class="action"><input value="Valider" class="submit" type="submit" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+[% END %] </fieldset>
+</form>
+[% END %] </div>
+[% INCLUDE 'popup-bottom.inc' %] 

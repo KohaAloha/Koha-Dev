@@ -1,0 +1,36 @@
+[% INCLUDE 'help-top.inc' %] <h1>Préférences système</h1>
+
+<p>Les préférénces système globales contrôlent le fonctionnement général de votre système Koha. Configurez ces préférences avant de commencer à travailler avec Koha.</p>
+
+<p>Vous pouvez faire des recherches dans vos préférences système, aussi bien sur leurs noms que sur leurs description, en utilisant la boîte de recherche qui se trouve dans la page Administration ou bien celle qui se trouve en haut de la page de gestion des préférences système.</p>
+
+<p>Quand vous modifiez des préférences, le texte 'modifiée' s'affiche en italique à côté du nom des préférences modifiées. Il faut cliquer sur le bouton Sauvegarder toutes les préférences pour que le système les enregistre effectivement.</p>
+
+<p>Après enregistrement, une confirmation s'affiche qui rappelle les noms des préférences qui ont été modifiées.</p>
+
+<p>Chaque section de préférences peut être triée en cliquant sur la petite flèche qui se trouve sur la droite du mot Préférence de l'en-tête de colonne.</p>
+
+<p>Chaque onglet sur la guauche rassemble plusieurs préférences:</p>
+
+<ul>
+ <li><strong>Acquisitions&nbsp;:</strong> les préférences relatives aux acquisitions, tels que les suggestions d'achat est les taux de TVA</li>
+ <li><strong>Administration:</strong> contient les préférences administratives telles que adresse email, sessions et timeout.</li>
+ <li><strong>Autorités&nbsp;:</strong> contient les préférences liées à la gestion des notices d'autorité.</li>
+ <li><strong>Catalogage&nbsp;:</strong> contient les préférences qui contrôlent les fonctions de catalogage. C'est ici que vous choisissez votre version de MARC, que vous paramétrez Z39.50 et les code-barres</li>
+ <li><strong>Circulation&nbsp;:</strong> contient les préférences qui contrôlent les fonctions de circulation telles que les réservations et les amendes.</li>
+ <li><strong>Créateurs:</strong> Cet onglet contient des préférences en relation avec les modules qui crééent des objets.</li>
+ <li><strong>Enhanced Content:</strong> contient les préférences qui permettent d'enrichir votre catalogue. C'est ici que vous activez les vignettes, FRBR et les mots-clés usagers.</li>
+ <li><strong>I18N/L10N:</strong> contient les préférences liées à l'internationalisation et la localisation, telles que les formats de date ou les langues.</li>
+ <li><strong>Local Use:</strong> cet onglet est en général vide, à moins que la bibliothèque ait mis une préférence juste pour votre site.</li>
+ <li><strong>Journeaux:</strong> active ou désactive le suivi des actions pour votre système.</li>
+ <li><strong>OPAC&nbsp;:</strong> personnaliser l'OPAC et ses fonctionnalités (en plus des préférences 'Contenus enrichis').</li>
+ <li><strong>Adhérent&nbsp;: </strong> contient les préférences qui contrôlent la façon dont le système gère les fonctionnalités adhérent. Par exemple la taille minimum du mot de passe.</li>
+ <li><strong>Recherche:</strong> contient les préférences liées aux fonctions de recherche avancées telles que les mots vides ou le "stemming".</li>
+ <li><strong>Périodiques</strong> contient les préférences liées aux périodiques.</li>
+ <li><strong>Staff Client:</strong> personnaliser l'interface en modifiant la feuille de style et le menu de navigation.</li>
+ <li><strong>Web Services:</strong> les préférences relative aux services tel que OAI-PMH</li>
+</ul>
+ 
+<p><strong>See the full documentation for System Preferences in the <a href="http://manual.koha-community.org/3.12/en/administration.html#globalsysprefs">manuel</a> (en-ligne)</strong></p>
+ 
+[% INCLUDE 'help-bottom.inc' %]

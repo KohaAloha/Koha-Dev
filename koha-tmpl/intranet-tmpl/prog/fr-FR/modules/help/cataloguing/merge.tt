@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Fusion des exemplaires</h1>
+
+<p>The easiest way to merge together duplicate bibliographic records is to add them to a list and use the Merge Tool from there.</p>
+
+<p>Cochez dans la liste les deux notices bibliographiques que vous voulez fusionner. Si vous sélectionnez une seule notice ou plus de deux, vous obtiendrez un message d'erreur.</p>
+
+<p>Une fois que vous avez sélectionné les notices que vous voulez fusionner, cliquez sur Fusionner. Vous devrez choisir laquelle des deux notices vous voudrez garder en tant que notice primaire at laquelle sera supprimée après la fusion.</p>
+
+<p>On vous présentera les deux notices dans des onglets distincts étiquetés avec le numéro de la notice. Par défaut, tous les champs de la première notice sont sélectionnés. Désélectionnez les champs que vous ne voulez pas conserver. Allez ensuite dans le second onglet et choisissez les champs que vous voulez y prendre.</p>
+
+<p>Si vous essayez d'ajouter deux fois un champs qui n'est pas répétable (comme le champ 200 à la fois de la notice 1 et de la 2), vous obtiendrez un message d'erreur</p>
+
+<p>Most importantly you want to make sure that all of the items from the two records are attached to the new record. To do this you want to make sure that all 952 files are selected before completing the merge.</p>
+
+<p>Une fois achevée votre sélection, cliquez sur le bouton Fusionner. La notice principale montrera maintenant ce que vous avez choisi pour elle, la notice secondaire sera supprimée.</p>
+
+<p style="color: rgb(153, 0, 0);">Important: It is important to rebuild your zebra index immediately after merging records. If a search is performed for a record which has been deleted Koha will present the patrons with an error in the OPAC.</p>
+
+<p><strong>See the full documentation for Merging Items in the <a href="http://manual.koha-community.org/3.12/en/stafflists.html#mergebibrecs">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

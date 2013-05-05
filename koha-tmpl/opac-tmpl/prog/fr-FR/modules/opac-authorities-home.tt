@@ -1,0 +1,52 @@
+[% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha online[% END %] catalog &rsaquo; Authority search
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body id="opac-authorities">
+[% IF ( OpacNav ) %]<div id="doc3" class="yui-t1">[% ELSE %]<div id="doc3" class="yui-t7">[% END %] <div id="bd">
+[% INCLUDE 'masthead.inc' %] <div id="yui-main">
+ <div class="yui-b"><div class="yui-g">
+<div id="userauthhome" class="container">
+<form name="f" action="/cgi-bin/koha/opac-authorities-home.pl" method="get">
+ <input type="hidden" name="op" value="do_search" />
+ <input type="hidden" name="type" value="opac" />
+<fieldset class="rows">
+ <legend>Authority search</legend>
+<ol>
+ <li><label for="authtypecode">Chercher:</label> <select name="authtypecode" id="authtypecode">
+ [% FOREACH authtypesloo IN authtypesloop %] [% IF ( authtypesloo.selected ) %]<option value="[% authtypesloo.value %]" selected="selected">[% authtypesloo.authtypetext %]</option>
+ [% ELSE %]<option value="[% authtypesloo.value %]"> [% authtypesloo.authtypetext %]</option>
+ [% END %] [% END %]</select>
+ <select name="operator" id="anywhere">
+ <option value="contains">contient</option>
+ <option value="start">commence par</option>
+ <option value="is">est exactement</option>
+ </select>
+ <input type="text" name="value" id="value" value="[% value %]" />
+ <select name="marclist" id="marclist">
+ <option value="any" selected="selected">in keyword</option>
+ <option value="match">in any heading</option>
+ <option value="mainentry">in main entry</option>
+ </select>
+ <input type="hidden" name="and_or" value="and" />
+ <input type="hidden" name="excluding" value="" />
+ </li>
+ <li><label for="orderby">Classer par&nbsp;: </label><select name="orderby" id="orderby">
+ <option value="">Aucun</option>
+ <option value="HeadingAsc" selected="selected">Ordre croissant</option>
+ <option value="HeadingDsc">Ordre décroissant</option>
+ </select>
+ </li></ol>
+ </fieldset>
+ <fieldset class="action">
+ <input value="Valider" type="submit" class="submit" />
+ </fieldset>
+ </form>
+</div>
+</div>
+</div>
+</div>
+[% IF ( OpacNav ) %] <div class="yui-b">
+<div id="leftmenus" class="container">
+[% INCLUDE 'navigation.inc' %] </div>
+</div>[% END %] </div>
+[% INCLUDE 'opac-bottom.inc' %] 

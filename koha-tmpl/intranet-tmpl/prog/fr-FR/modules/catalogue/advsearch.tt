@@ -1,0 +1,232 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Catalogue &rsaquo; Recherche avancée</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/JavaScript" language="JavaScript">
+	/**
+	 *  Function add_field();
+	 *  This function allows to display a new field to search.
+	 */
+	function add_field() {
+	    var ButtonPlus = document.getElementById("ButtonPlus");
+		var line = ButtonPlus.parentNode;
+		var dad  = line.parentNode;
+		dad.appendChild(line.cloneNode(true));
+		line.removeChild(ButtonPlus);
+	}
+	$(document).ready(function() {
+		$("input[name=q]:eq(0)").focus();
+        $('#advsearches').tabs();
+	});
+</script>
+</head>
+<body id="catalog_advsearch" class="catalog">
+
+[% INCLUDE 'header.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; Recherche avancée</div>
+
+<div id="doc" class="yui-t7">
+ <div id="bd">
+ 
+<form action="search.pl" method="get">
+<div id="advanced-search">
+<h1>Recherche avancée</h1>
+
+[% IF ( outer_servers_loop ) %]
+<!-- DATABASES -->
+
+<fieldset>
+ <legend>Sélectionnez des bases de données locales</legend>
+ [% FOREACH local_servers_loo IN local_servers_loop %] [% IF ( local_servers_loo.checked ) %]<input type="checkbox" id="[% local_servers_loo.id %]" name="[% local_servers_loo.name %]" checked="checked" value="[% local_servers_loo.value %]" />[% ELSE %]<input type="checkbox" id="[% local_servers_loo.id %]" name="[% local_servers_loo.name %]" value="[% local_servers_loo.value %]" />[% END %]<label for="[% local_servers_loo.id %]"><img width="16" height="16" alt="[% local_servers_loo.id %]" src="[% themelang %]/img/[% local_servers_loo.icon %]" /> [% local_servers_loo.label %]</label>[% END %] </fieldset>
+<!-- /DATABASES -->
+[% END %]
+
+[% IF ( outer_servers_loop ) %]
+<!-- REMOTE DATABASES -->
+<fieldset id="databases">
+ <legend>Sélectionnez les bases de données distantes</legend>
+ [% FOREACH outer_servers_loo IN outer_servers_loop %] [% IF ( outer_servers_loo.checked ) %]<input type="checkbox" id="[% outer_servers_loo.id %]" name="[% outer_servers_loo.name %]" checked="checked" value="[% outer_servers_loo.value %]" />[% ELSE %]<input type="checkbox" id="[% outer_servers_loo.id %]" name="[% outer_servers_loo.name %]" value="[% outer_servers_loo.value %]" />[% END %] <label for="[% outer_servers_loo.id %]"><img alt="[% outer_servers_loo.id %]" src="[% themelang %]/images/[% outer_servers_loo.icon %]" />[% outer_servers_loo.label %]</label>
+ [% END %] </fieldset>
+<!-- /REMOTE DATABASES -->
+[% END %]
+
+<!-- BOOLEAN SEARCH OPTIONS -->
+ <fieldset id="searchterms">
+ <legend>Recherche de</legend>
+ [% FOREACH search_box IN search_boxes_loop %] [% IF ( search_boxes_label ) %]<div style="text-indent: 4.5em;">[% ELSE %]<div>[% END %] [% IF ( expanded_options ) %] [% IF ( search_box.boolean ) %] <select name="op">
+ <option value="and" selected="selected">and</option>
+ <option value="or">ou</option>
+ <option value="not">sauf</option>
+ </select>
+ [% END %] [% END %] [% INCLUDE 'search_indexes.inc' %] <input value="" name="q" type="text" title="Entrer les termes de recherche" size="30" />
+ [% IF ( expanded_options ) %] [% IF ( search_box.add_field ) %] <a href="JavaScript:add_field();" id="ButtonPlus" title="Ajouter un autre champ">[+]</a>
+ [% END %] [% IF ( search_box.scan_index ) %] <label for="scan">Parcourir les index</label> <input type="checkbox" name="scan" id="scan" value="1" />
+ [% END %] [% END %] </div>
+ [% END %] </fieldset>
+<!-- /BOOLEAN SEARCH OPTIONS -->
+
+<!-- SEARCH BUTTONS -->
+ <fieldset class="action" id="submit1"><input accesskey="s" value="Rechercher" class="submit" type="submit" />
+ [% IF ( expanded_options ) %] <a href="/cgi-bin/koha/catalogue/search.pl?expanded_options=0">[Moins d'options]</a>
+ [% ELSE %] <a href="/cgi-bin/koha/catalogue/search.pl?expanded_options=1">[Plus d'options]</a>
+ [% END %] <a href="/cgi-bin/koha/catalogue/search.pl?do=Clear">[Nouvelle recherche]</a>
+ </fieldset>
+<!-- /SEARCH BUTTONS -->
+</div>
+<!-- MC-TYPE LIMITS -->
+ <div class="yui-g">
+ <div id="advsearches" class="toptabs">
+ <ul>
+ [% FOREACH advsearchloo IN advancedsearchesloop %] <li id="advsearch-tab-[% advsearchloo.advanced_search_type %]">
+ <a href="#advsearch-[% advsearchloo.advanced_search_type %]">
+ [% IF ( advsearchloo.advanced_search_type == 'itemtypes' ) %]Type de document [% ELSIF ( advsearchloo.advanced_search_type == 'ccode' ) %]Collection [% ELSIF ( advsearchloo.advanced_search_type == 'loc' ) %]Etagère [% ELSE %]Autre chose [% END %] </a>
+ </li>
+ [% END %] </ul>
+ [% FOREACH advsearchloo IN advancedsearchesloop %] <div id="advsearch-[% advsearchloo.advanced_search_type %]" class="advsearch">
+ <h4>Limit to any of the following:</h4>
+ <table>
+ <tr>
+ [% FOREACH itemtypeloo IN advsearchloo.code_loop %] <td><input type="checkbox" id="[% itemtypeloo.ccl FILTER remove(',') %]-[% itemtypeloo.number %]" name="limit" value="mc-[% itemtypeloo.ccl %]:[% itemtypeloo.code %]"/><label for="[% itemtypeloo.ccl FILTER remove(',') %]-[% itemtypeloo.number %]">[% UNLESS ( noItemTypeImages ) %][% IF ( itemtypeloo.imageurl ) %]<img border="0" src="[% itemtypeloo.imageurl %]" alt="[% itemtypeloo.description %]" />[% END %]&nbsp;[% END %] [% itemtypeloo.description %]</label></td>
+ [% IF ( loop.last ) %]</tr>[% ELSE %][% UNLESS ( loop.count % 5 ) %]</tr><tr>[% END %][% END %] [% END %] </table>
+ </div>
+ [% END %]
+<!-- /MC-TYPE LIMIT -->
+[% IF ( expanded_options ) %]
+<!-- BASIC LIMITS -->
+ <fieldset id="basiclimits">
+ <legend>Limits</legend>
+<fieldset id="pubrange">
+<!-- PUB / COPY YEAR LIMIT --><!-- FIXME: add publication,copyright,acquisition options -->
+ <p><label for="limit-yr">Année&nbsp;: </label>
+ <input type="text" size="15" name="limit-yr" id="limit-yr" value=""/>&nbsp;&nbsp;(format: aaaa-aaaa)</p>
+<!-- /PUB / COPY YEAR LIMIT -->
+</fieldset>
+<fieldset id="language">
+<!-- LANGUAGE LIMIT -->
+ <p><label for="language-limit">Language: </label> 
+ <select name="limit" id="language-limit">
+ <option value="">Pas de limite</option>
+ [% FOREACH search_languages_loo IN search_languages_loop %] [% IF ( search_languages_loo.selected ) %] <option value="ln,rtrn:[% search_languages_loo.iso639_2_code %]" selected="selected">[% search_languages_loo.language_description %]</option>
+ [% ELSE %] <option value="ln,rtrn:[% search_languages_loo.iso639_2_code %]">[% search_languages_loo.language_description %]</option>
+ [% END %] [% END %] </select></p><!-- <a href="">Show all languages</a>-->
+<!-- /LANGUAGE LIMIT -->
+</fieldset>
+</fieldset>
+<!-- /BASIC LIMITS -->
+[% END %]
+
+
+[% IF ( UNIMARC ) %]
+[% INCLUDE 'subtypes_unimarc.inc' %]
+[% ELSE %]
+<!-- SUBTYPE LIMITS -->
+ <fieldset id="subtype">
+ <legend>Limites de sous-type</legend><p>
+ 
+ <select name="limit" class="subtype">
+ <option value="" selected="selected" class="menuheader">Tout public</option>
+ <option value="aud:a">Préscolaire</option>
+ <option value="aud:b">Primaire</option>
+ <option value="aud:c">Pré-adolescent</option>
+ <option value="aud:d">Adolescent</option>
+ <option value="aud:e">Adulte</option>
+ <option value="aud:f">Specialized</option>
+ <option value="aud:g">Général</option>
+ <option value="aud:j">Jeunesse</option>
+ </select>
+ 
+ <select name="limit" class="subtype">
+ <option value="" selected="selected" class="menuheader">Tout contenu</option>
+ <option value="fic:1" >Fiction</option>
+ <option value="fic:0" >Documentaire</option>
+ <option value="bio:b" >Biographie</option>
+ <option value="mus:j" >Musical recording</option>
+ <option value="mus:i" >Enregistrement non musical</option>
+ </select>
+
+ 
+ <select name="limit" class="subtype">
+ <option value="" selected="selected" class="menuheader">Tout format</option>
+ <option value="l-format:ta" >Impression normale</option>
+ <option value="l-format:tb" >Large print</option>
+ <option value="l-format:fk" >Braille</option>
+ <option value="" >-----------</option>
+ <option value="l-format:sd" >CD Audio</option>
+ <option value="l-format:ss" >Cassette audio</option>
+ <option value="l-format:vf" >Bande VHS / Videocassette</option>
+ <option value="l-format:vd" >DVD Vidéo / Vidéodisque</option>
+ <option value="l-format:co" >Logiciel sur CD</option>
+ <option value="l-format:cr" >Site Web</option>
+ </select>
+ 
+ <select name="limit" class="subtype">
+ <option value="" >Autres types de contenu</option>
+ <option value="ctype:a" >résumé/sommaire</option>
+ <option value="ctype:b" >Bibliographies</option>
+ <option value="ctype:c" >Catalogues</option>
+ <option value="ctype:d" >Dictionaries</option>
+ <option value="ctype:e" >Encyclopédies</option>
+ <option value="ctype:f" >Livres de poche</option>
+ <option value="ctype:g" >Legal articles</option>
+ <option value="ctype:i" >Index</option>
+ <option value="ctype:j" >Brevet</option>
+ <option value="ctype:k" >Discographies</option>
+ <option value="ctype:l" >Legislation</option>
+ <option value="ctype:m" >Thèses</option>
+ <option value="ctype:n" >Enquêtes</option>
+ <option value="ctype:o" >Commentaires</option>
+ <option value="ctype:p" >Textes de programmes</option>
+ <option value="ctype:q" >Filmographies</option>
+ <option value="ctype:r" >Directories</option>
+ <option value="ctype:s" >Statistiques</option>
+ <option value="ctype:t" >Rapports techniques</option>
+ <option value="ctype:v" >Legal cases and case notes</option>
+ <option value="ctype:w" >Law reports and digests</option>
+ <option value="ctype:z" >Traités</option>
+ </select>
+ </p>
+
+</fieldset>
+[% END %]
+
+<!-- AVAILABILITY LIMITS -->
+ <fieldset id="availability"><legend>Location and availability</legend>
+<fieldset id="currently-avail">
+ <p><label for="available-items">Seulement les documents actuellement en rayon</label> <input type="checkbox" id="available-items" name="limit" value="available" /></p>
+</fieldset>
+
+<fieldset id="select-libs">
+ <p><label for="branchloop">Sites&nbsp;:</label><select name="limit" id="branchloop" onchange='if(this.value != ""){document.getElementById("categoryloop").disabled=true;} else {document.getElementById("categoryloop").disabled=false;}'>
+ <option value="">Tous les sites</option>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <option value="branch:[% branchloo.value %]" selected="selected">[% branchloo.branchname %]</option>
+ [% ELSE %] <option value="branch:[% branchloo.value %]">[% branchloo.branchname %]</option>
+ [% END %] [% END %] </select></p>
+ <!-- <input type="hidden" name="limit" value="branch: MAIN" /> -->
+ [% IF ( searchdomainloop ) %]
+ <p>OU</p> <!-- should addjs to grey out group pulldown if a library is selected. -->
+ <p><label for="categoryloop">Groups of libraries: </label><select name="multibranchlimit" id="categoryloop">
+ <option value=""> -- none -- </option>
+ [% FOREACH searchdomainloo IN searchdomainloop %] <option value="[% searchdomainloo.categorycode %]">[% searchdomainloo.categoryname %]</option>
+ [% END %] </select></p>
+ [% END %] </fieldset>
+ </fieldset>
+<!-- /AVAILABILITY LIMITS -->
+
+<!-- RANK LIMITS -->
+<fieldset id="sortby"><legend>Sorting</legend>
+ <p>
+ <label for="sort_by">Sort by: </label><select id="sort_by" name="sort_by">
+ [% INCLUDE 'resort_form.inc' %] </select>
+ </p>
+</fieldset>
+<!-- /RANK LIMITS -->
+
+<!-- SEARCH BUTTONS -->
+ <fieldset class="action" id="submit2"><input accesskey="s" value="Rechercher" class="submit" type="submit" />
+ [% IF ( expanded_options ) %] <a href="/cgi-bin/koha/catalogue/search.pl?expanded_options=0">[Moins d'options]</a>
+ [% ELSE %] <a href="/cgi-bin/koha/catalogue/search.pl?expanded_options=1">[Plus d'options]</a>
+ [% END %] <a href="/cgi-bin/koha/catalogue/search.pl?do=Clear">[Nouvelle recherche]</a> 
+ </fieldset>
+<!-- /SEARCH BUTTONS -->
+</div>
+</div>
+</form>
+</div>
+
+[% INCLUDE 'intranet-bottom.inc' %] 

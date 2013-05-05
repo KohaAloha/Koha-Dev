@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Vérifier dates d'expiration</h1>
+
+<p>Dans la fiche d'un périodique, vous définissez une durée d'abonnement. Avec l'outil d'expiration, vous pouvez voir quels abonnements sont sur le point d'expirer. Pour utiliser cet outil, cliquez sur Vérifier les dates d'expiration dans le menu des Périodiques.</p>
+
+<p>Dans le formulaire qui s'affiche, entrez au moins une date sur laquelle faire la recherche.</p>
+
+<p>Le résultat présente tous les abonnements qui expirent avant la date que vous avez entrée. De là, vous pouvez voir le détail d'un abonnement ou bien le renouveler en un click.</P>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/serialexpiration.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

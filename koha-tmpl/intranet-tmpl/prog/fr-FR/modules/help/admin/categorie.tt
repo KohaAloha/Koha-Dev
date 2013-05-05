@@ -1,0 +1,80 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron Categories</h1>
+
+<p>Les catégories d'adhérent vous permettent d'organiser, de regrouper vos publics en fonction de différents critères, tels que l'âge, l'appartenance à un groupe, etc.</p>
+
+<p>Les adhérents sont rattachés à l'une des 6 catégories principales&nbsp;: </p>
+
+<ul>
+ <li>Adulte <ul>
+ <li>Most common patron type, usually used for a general 'Patron' category.</li>
+</ul>
+</li>
+ <li>Enfant <ul>
+ <li>Un adhérent Enfant peut avoir un garant auquel on le rattache.</li>
+</ul>
+</li>
+ <li>Staff
+<ul>
+ <li>Les adhérent appartenant à la catégorie personnel ont accès à l'interface professionnelle du logiciel.</li>
+</ul>
+</li>
+ <li>Etablissement <ul>
+ <li>Etablissement= Un établissement auquel sont rattachés des adhérents professionnels.</li>
+</ul>
+</li>
+ <li>Professionnel <ul>
+ <li>Les adhérents Professionnel peuvent être liés à des adhérents Etablissement.</li>
+</ul>
+</li>
+ <li>Statistique <ul>
+ <li>Ce type d'adhérent est utilisé uniquement à des fins statistiques, par exemple pour suivre les prêts sur place.</li>
+</ul>
+</li>
+</ul>
+
+<h2>Ajout d'une Catégorie d'adhérent</h2>
+
+<p>To add a new patron category click 'New Category' at the top of the page</p>
+
+<ul>
+ <li>The 'Category Code' is an identifier for your new code.
+<ul>
+ <li style="color: #990000;">Important: The category code is limited to 10 characters (numbers and letters)</li>
+</ul>
+</li>
+ <li>Entrez une explication plus complète en "Description"</li>
+ <li>La durée d'inscription (en mois) doit être renseignée si vous inscrivez vos lecteurs pour une durée limitée (par ex. des cartes d'étudiant expirent après neuf mois ou à une date spécifique).<ul>
+ <li style="color: #990000;">Important : Vous ne pouvez saisir une valeur à la fois en mois ou à une date fixe. Choisissez l'une ou l'autre méthode.</li>
+</ul>
+</li>
+ <li>Some patron categories can have a minimum age (in years) requirement associated with them, enter this age in the 'Age required'
+<ul>
+ <li style="color: #990000;">Important: This value will only be checked if BorrowerMandatoryField defines the dateofbirth as a required field on the patron record</li>
+</ul>
+</li>
+ <li>Patron categories can also have a maximum age (in years) associated with them (such as children), enter this age in the 'Upperage limit'
+<ul>
+ <li style="color: #990000;">Important: This value will only be checked if BorrowerMandatoryField defines the dateofbirth as a required field on the patron record</li>
+</ul>
+</li>
+ <li>Si vous faites payer l'inscription à la bibliothèque à certains adhérents, par exemple aux personnes qui ne sont pas de la région, vous pouvez entrez un montant dans la rubrique Frais d'inscription.<ul>
+ <li style="color: #990000;">Important: Only enter numbers and decimals in this field</li>
+</ul>
+</li>
+ <li>Si vous voulez envoyer des lettres de réclamation à cette catégorie d'adhérent, mettez à Oui le champ Message de retard requis.</li>
+ <li>Si vous facturez à vos adhérents les réservations, entrez un montant dans le champ Frais de réservation.<ul>
+ <li style="color: #990000;">Important: Only enter numbers and decimals in this field</li>
+</ul>
+</li>
+ <li>Dans le champ Type de catégorie, choisissez une des six grandes catégories.</li>
+ <li>The Branch Limitations let you limit this patron category to only some branches in your library system. Select 'All branches' if you would like any library to be able to use this category.</li>
+ <li>Finalement, vous pouvez assigner à une catégorie d'adhérent des préférences par défaut d'acheminement des messages.<ul>
+ <li style="color: #990000;">Important: Requires that you have EnhancedMessagingPreferences enabled</li>
+ <li style="color: #990000;">Important : Cela peut être changé individuellement par adhérent. Ce paramètre est une valeur par défaut qui vise à faciliter la saisie de toute une catégorie d'adhérent.</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>See the full documentation for Patron Categories in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#patcats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

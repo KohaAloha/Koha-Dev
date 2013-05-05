@@ -1,0 +1,32 @@
+[% INCLUDE 'help-top.inc' %] <h1>Layouts</h1>
+
+<p>Le format définit le texte et les images qui seront imprimés sur la carte et leur emplacement.</p>
+
+<h2>Créer une nouvelle mise en page</h2>
+
+<p>Pour ajouter un nouveau format, cliquez sur le bouton Format en haut de la page et choisissez Nouveau format</p>
+
+<p>En utilisant le formulaire qui apparaît, vous pouvez créer un profil afin de corriger toute anomalie d'impression de votre modèle.</p>
+
+<ul>
+ <li>The name you assign to the layout is for your benefit, name it something that will be easy to identify at a later date</li>
+ <li>La liste des unités vous permet de choisir l'unité de mesure qui sera utilisé dans la définition du format.</li>
+ <li>Notez ensuite si le modèle est destiné au recto ou au verso de la carte <ul>
+ <li>Si vous avez des cartes de bibliothèque à deux faces, il vous faut un modèle pour le recto et pour le verso.</li>
+</ul>
+</li>
+ <li>Vous pouvez ajouter à vos cartes jusqu'à trois lignes de texte. C'est du texte statistique ou le contenu de la fiche de l'adhérent. Vous ajouter des rubriques de la fiche de l'adhérent en plaçant leur nom entre crochet, par exemple &lt;firstname&gt;</li>
+ <li>Pour chaque ligne de texte, vous pouvez choisir votre police de caractères, sa taille et l'emplacement du texte sur la carte en utilisant les coordonnées inférieures X et Y</li>
+ <li>Il faut cocher l'option Imprimer numéro de carte comme code à barres, si vous voulez afficher le code à barre et le numéro de carte. Cela transformera le numéro de carte en un code à barre. Si vous voulez que le numéro soit imprimé lisiblement pour un humain, activez l'option Imprimer les numéro de carte en texte.</li>
+ <li>Finalement, vous pouvez choisir jusqu'à deux images à imprimer sur la carte. <ul>
+ <li>L'une peut être la photo de l'adhérent que vous pouvez redimensionner pour correpondre à vos besoins.</li>
+ <li>The other image can be something like a library logo or symbol that you uploaded using the 'Manage Images' module of the Patron Card Creator Tool.</li>
+</ul>
+</li>
+</ul>
+
+<p>Après enregistrement, vos formats seront visibles sur la page 'Gérer les formats'.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html#cardlayouts">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

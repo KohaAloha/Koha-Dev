@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Receiving Orders</h1>
+
+<p>Les commandes peuvent être réceptionnées à partir de la page d'information du vendeur ou de la page de résultat de recherche des vendeurs.</p>
+
+<p>After clicking 'Receive shipment' you will be asked to enter a vendor invoice number, a shipment received date, a shipping cost and a budget to subtract that shipping amount from.</p>
+
+<p>La page de réception liste tous les exemplairs qui sont encore en commande chez le fournisseur, quelle que soit le panier des exemplairs.</p>
+
+<p>Pour réceptionner un document précis, cliquez sur le lien "réceptionner" à droite de la ligne de commande.</p>
+
+<p>From this form you can alter the cost information. You can also choose to mark only part of the order as received if the vendor didn't send your entire order by checking only the boxes next to the items on the left that you want to receive. The values you enter in the 'Replacement cost' and 'Actual cost' will automatically populate the item record by filling in subfield v (Cost, replacement price) and subfield g (Cost, normal purchase price) on the item record after saving.</p>
+
+<p>You can also make edits to the item record from this form by clicking the 'Edit' link next to each item. This will allow you to enter in accurate call numbers and barcodes if you'd like to do that at the point of receipt. Once you have made any changes necessary (to the order and/or items, click 'Save' to mark the item(s) as received.</p>
+
+<p>When you're finished receiving items you can navigate away from this page or click the 'Finish receiving' button at the bottom of the screen.</p>
+
+<p>You will also see that the item is received and/or cancelled if you view the basket.</p>
+
+<p><strong>See the full documentation for Receiving Orders in the <a href="http://manual.koha-community.org/3.12/en/receiveacqorder.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

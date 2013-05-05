@@ -1,0 +1,28 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>[% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha[% END %] Catalogue &rsaquo; Envoi du panier</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body style="padding: 1em;" id="cart_sendbasketform" class="cart">
+<div class="container">[% IF ( email_add ) %] [% IF ( SENT ) %] <h3>Message envoyé</h3>
+ <p>Le panier a été envoyé à : [% email_add %]</p>
+ <p><a class="focus close" href="#">Fermer la fenêtre</a></p>
+ [% END %] [% IF ( error ) %] <p>Impossible d'envoyer le panier...</p>
+ [% END %] [% ELSE %] <form action="[% url %]" method="post">
+
+<fieldset class="rows"> 
+<legend>Envoyer votre panier</legend>
+<ol> <li>
+ <label for="email_add">Courriel&nbsp;:</label>
+ <input type="text" id="email_add" name="email_add" size="43" class="focus" />
+ </li>
+ <li>
+ <label for="comment">Commentaire :</label>
+ <textarea id="comment" name="comment" rows="4" cols="40"></textarea>
+ </li>
+ <li>
+ <input type="hidden" name="bib_list" value="[% bib_list %]" />
+ </li></ol></fieldset>
+ <fieldset class="action"> <input value="Envoyer" type="submit" /> <a class="cancel close" href="#">Annuler</a> </fieldset>
+</form>
+
+[% END %]</div>
+</body>
+</html>

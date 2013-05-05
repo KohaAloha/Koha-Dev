@@ -1,0 +1,51 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Contrôle doublons</title>
+[% INCLUDE 'doc-head-close.inc' %] <style type="text/css">
+		#custom-doc { width:44.23em;*width:43.12em;min-width:491px; margin:auto; text-align:left; } 
+	</style>
+</head>
+<body id="pat_moremember-brief" class="pat" style="padding:.5em;">
+<div id="custom-doc" class="yui-t7">
+ <div id="bd">
+ <h3>[% UNLESS ( I ) %] [% title %] [% firstname %] [% END %] [% surname %] ([% cardnumber %])</h3>
+<div class="yui-g">
+<div class="yui-u first">
+ <div id="patron-information" style="padding: .5em;">
+
+ [% UNLESS ( I ) %][% IF ( othernames ) %]&ldquo;[% othernames %]&rdquo;[% END %] <p class="address">[% streetnumber %] [% IF ( roaddetails ) %] [% roaddetails %] [% END %] [% address %]<br />
+ [% IF ( address2 ) %][% address2 %]<br />[% END %] [% IF ( city ) %][% city %][% END %] [% IF ( zipcode ) %][% zipcode %]<br />[% END %] [% IF ( country ) %][% country %][% END %]</p>
+
+ <div class="rows">
+ <ol>
+ [% IF ( I ) %] [% IF ( phonepro ) %]<li><span class="label">Téléphone de l'établissementé&nbsp;: </span>[% phonepro %]</li>[% END %] [% IF ( emailpro ) %]<li><span class="label">Courriel de l'établissement&nbsp;: </span>[% emailpro %]</li>[% END %] [% ELSE %] [% IF ( phone ) %]<li><span class="label">Téléphone principal&nbsp;: </span>[% phone %]</li>[% END %] [% IF ( mobile ) %]<li><span class="label">Téléphone secondaire&nbsp;: </span>[% mobile %]</li>[% END %] [% IF ( phonepro ) %]<li><span class="label">Autre téléphone&nbsp;: </span>[% phonepro %]</li>[% END %] [% END %] [% IF ( P ) %] [% IF ( phone ) %]<li><span class="label">Téléphone principal&nbsp;: </span>[% phone %]</li>[% END %] [% IF ( mobile ) %]<li><span class="label">Mobile secondaire : </span>[% mobile %]</li>[% END %] [% END %] [% IF ( fax ) %]<li><span class="label">Fax&nbsp;: </span>[% fax %]</li>[% END %] [% UNLESS ( I ) %] [% IF ( email ) %]<li><span class="label">Courriel principal&nbsp;:</span><a href="mailto:[% email %]">[% email %]</a></li>[% END %] [% IF ( emailpro ) %]<li><span class="label">Courriel secondaire : </span><a href="mailto:[% emailpro %]">[% emailpro %]</a></li>[% END %] [% END %] <li><span class="label">Initiales&nbsp;: </span>[% initials %]</li>
+ <li><span class="label">Date de naissance&nbsp;:</span>[% dateofbirth %]</li>
+ <li><span class="label">Genre&nbsp;</span>[% IF ( sex == 'F' ) %]Femme[% ELSIF ( sex == 'M' ) %]Homme[% ELSE %][% sex %][% END %]</li>[% END %] [% IF ( printethnicityline ) %] <li><span class="label">Ethnie&nbsp;: </span>[% ethnicity %]</li>
+ <li><span class="label">Note sur l'ethnie&nbsp;: </span>[% ethnotes %]</li>
+ [% END %] [% IF ( isguarantee ) %] [% IF ( guaranteeloop ) %] <li><span class="label">Cautions&nbsp;: </span><ul>[% FOREACH guaranteeloo IN guaranteeloop %]<li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% guaranteeloo.borrowernumber %]">[% guaranteeloo.name %] </a></li>[% END %]</ul></li>
+ [% END %] [% ELSE %] [% IF ( guarantorborrowernumber ) %] <li><span class="label">Garant&nbsp;: </span><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% guarantorborrowernumber %]">[% guarantorsurname %], [% guarantorfirstname %]</a></li>
+ [% END %] [% END %] </ol>
+ </div>
+ </div>
+ </div>
+ <div class="yui-u">
+ <div id="patron-library-details">
+ <h3>Library use</h3>
+ <div class="rows">
+ <ol>
+ <li><span class="label">N° de carte&nbsp;: </span>[% cardnumber %]</li>
+ <li><span class="label">N° d'adhérent&nbsp;: </span> [% borrowernumber %]</li>
+ <li><span class="label">Catégorie&nbsp;: </span>[% description %] ([% categorycode %])</li>
+ <li><span class="label">Date d'inscription&nbsp;: </span>[% dateenrolled %]</li>
+ <li><span class="label">Date d'expiration&nbsp;:</span>
+ [% IF ( was_renewed ) %] <strong class="reregistrinfo">[% dateexpiry %]</strong>
+ [% ELSE %] [% dateexpiry %] [% END %] </li>
+ <li><span class="label">Library: </span>[% branchname %]</li>
+
+ [% IF ( sort1 ) %]<li><span class="label">Sort field 1:</span>[% lib1 %]</li>[% END %] [% IF ( sort2 ) %]<li><span class="label">Sort field 2:</span>[% lib2 %]</li>[% END %] </ol>
+ </div>
+ </div>
+ <fieldset class="action"><input value="Fermer la fenêtre" type="button" class="submit" onclick="window.close();" /></fieldset>
+ </div>
+ </div>
+</div>
+</div>
+[% INCLUDE 'popup-bottom.inc' %] 

@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %] <h1>Statistiques sur les acquisitions</h1>
+
+<p>En utilisant le formulaire fourni, choisissez quels champs vous voulez voir afficher dans la colonne et quels champs afficher dans la rangée.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p>Quand vous générez le rapport, vous aurez à choisir entre compter et faire la somme des valeurs.</p>
+
+<p>En choisissant le montant, vous modifiez le résulat pour qu'il soit la somme des montants.</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#acqstats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

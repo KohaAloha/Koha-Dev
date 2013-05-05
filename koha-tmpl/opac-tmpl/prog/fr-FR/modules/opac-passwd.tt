@@ -1,0 +1,35 @@
+[% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha en-ligne[% END %] Catalogue &rsaquo; Changer mon mot de passe [% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="opac-passwd">
+<div id="doc3" class="yui-t1">
+ <div id="bd">
+[% INCLUDE 'masthead.inc' %] <div id="yui-main">
+ <div class="yui-b"><div class="yui-g">
+ <div id="userpasswd" class="container">
+ <h3><a href="/cgi-bin/koha/opac-user.pl">Compte adhérent de [% firstname %] [% surname %]</a> &#8674; Change your password </h3>
+
+ [% IF ( Error_messages ) %] <div class="dialog error"> <h3>Il y a eu un problème avec votre validation</h3>
+ <p>
+ [% IF ( PassMismatch ) %] Les mots de passe ne correspondent pas. Veuillez resaisir votre nouveau mot de passe. [% END %] [% IF ( ShortPass ) %] Votre nouveau mot de passe doit contenir au moins [% minpasslen %] caractères [% END %] [% IF ( WrongPass ) %] Votre mot de passe actuel a été mal saisi. Si ce problème persiste, contactez un bibliothécaire afin de reinitialiser votre mot de passe. [% END %] </p></div>
+ [% END %] [% IF ( OpacPasswordChange ) %] [% IF ( Ask_data ) %] <form action="/cgi-bin/koha/opac-passwd.pl" name="mainform" id="mainform" method="post"><fieldset class="brief">
+ [% UNLESS ( ShortPass ) %]<div class="hint">Votre mot de passe doit avoir au moins [% minpasslen %] caractères.</div>[% END %] <ol> <li><label for="Oldkey">Mot de passe actuel&nbsp;:</label> <input type="password" id="Oldkey" size="25"  name="Oldkey" /></li>
+ <li><label for="Newkey">Nouveau mot de passe&nbsp;:</label> <input type="password" id="Newkey"  size="25"  name="Newkey" /></li>
+ <li><label for="Confirm">Confirmer votre nouveau mot de passe&nbsp;:</label> <input type="password"  id="Confirm" size="25" name="Confirm" /></li></ol></fieldset>
+ <fieldset class="action"><input value="Soumettre les modifications" type="submit" class="submit" /> <a href="/cgi-bin/koha/opac-user.pl" class="cancel">Annuler</a></fieldset>
+ </form>
+ [% END %] [% ELSE %]<div class="dialog alert">Vous ne pouvez pas changer votre mot de passe.</div>
+ [% END %] [% IF ( password_updated ) %]<div class="dialog message"><h1>Mot de passe mis à jour</h1>
+ Votre mot de passe a été modifié</div>
+ <form action="/cgi-bin/koha/opac-user.pl" method="post">
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <p><input value="Revenir à votre fiche" type="submit" class="icon back" /></p>
+ </form>
+ [% END %] </div>
+</div>
+</div>
+</div>
+<div class="yui-b">
+<div id="leftmenus" class="container">
+[% INCLUDE 'navigation.inc' IsPatronPage=1 %] </div>
+</div>
+</div>
+[% INCLUDE 'opac-bottom.inc' %] 

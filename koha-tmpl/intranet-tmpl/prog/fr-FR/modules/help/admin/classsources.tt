@@ -1,0 +1,56 @@
+[% INCLUDE 'help-top.inc' %] <h1>Classification Sources</h1>
+
+<p>Source of classification or shelving scheme is an Authorized Values category that is mapped to field 942$2 in Koha's MARC Bibliographic frameworks.</p>
+
+<p>Les valeurs fréquentes dans ce champs sont&nbsp;:</p>
+
+<ul>
+ <li>ddc - Dewey Decimal Classification</li>
+ <li>lcc - Library of Congress Classification</li>
+</ul>
+
+<p>Si, à l'installation de Koha, vous avez choisi d'installer des sources de classification, vous verrez également d'autres valeurs :</p>
+
+<ul>
+ <li>ANSCR (enregistrement sonore)</li>
+ <li>Classification SuDOC</li>
+ <li>Universal Decimal Classification</li>
+ <li>Other/Generic Classification</li>
+</ul>
+
+<h2>Adding/Editing Classification Sources</h2>
+
+<p>Vous pouvez ajouter vos propres sources de classification en utilisant le bouton Source de classification. Pour modifier une source, utilisez le lien Modifier.</p>
+
+<p>En saisie :</p>
+
+<ul>
+ <li>Vous devrez saisir un code et une description.</li>
+ <li>Cochez Source utilisée si vous voulez que la valeur apparaisse dans la liste pour cette catégorie.</li>
+ <li>Sélectionnez la règle de classement appropriée dans la liste.</li>
+</ul>
+
+<h2>Classification Filing Rules</h2>
+
+<p>Les règles de classement déterminent l'ordre dans lequel les exemplaires sont placés sur les étagères.</p>
+
+<p>Les valeurs prédéfinies dans Koha sont :</p>
+
+<ul>
+ <li>Dewey</li>
+ <li>LCC</li>
+ <li>Générique</li>
+</ul>
+
+<p>Filing rules are mapped to Classification sources. You can setup new filing rules by using the New Filing Rule button. To edit use the Edit link.</p>
+
+<p>En saisie :</p>
+
+<ul>
+ <li>Entrez un code et une description</li>
+ <li>Choisissez une routine de classement : dewer, génrique, lcc.</li>
+</ul>
+
+<p><strong>See the full documentation for Classification Sources in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#classificationsources">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

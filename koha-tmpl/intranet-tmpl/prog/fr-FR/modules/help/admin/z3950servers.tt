@@ -1,0 +1,39 @@
+[% INCLUDE 'help-top.inc' %] <h1>Z39.50 Servers</h1>
+
+<p>Koha dispose d'un outil puissant de dérivation de notices. Avec Koha, vous vous connectez à tout serveur Z39.50 public ou contrôlé par mot de passe.</p>
+
+<p>Koha arrive avec une liste par défaut de serveurs Z39.50. Vous pouvez en ajouter ou supprimer des serveurs existants.</p>
+
+<p>Pour trouver des serveurs Z39.50 supplémentaires, utilisez IRSpy d'Indexdata : <a href="http://irspy.indexdata.com">http://irspy.indexdata.com</a></p>
+
+<h2>Add a Z39.50 Target</h2>
+<ul>
+ <li>From the main Z39.50 page, click 'New Z39.50 Server'
+<ul>
+ <li>L'identifiant et le mot de passe ne sont nécessaires que pour les serveurs dont l'accès est restreint.</li>
+</ul>
+</li>
+</ul>
+
+<h2>Suggested Z39.50 Targets</h2>
+
+<p>The following targets have been used successfully by other Koha libraries (in the Americas):</p>
+
+<ul>
+ <li>CUYAHOGA COUNTY PUBLIC webcat.cuyahoga.lib.oh.us:210 INNOPAC</li>
+ <li>GREATER SUDBURY PUBLIC 216.223.90.51:210 INNOPAC</li>
+ <li>HALIFAX PUBLIC catalogue.halifaxpubliclibraries.ca:210 horizon</li>
+ <li>HALTON HILLS PUBLIC cat.hhpl.on.ca:210 halton_hills</li>
+ <li>LIBRARY OF CONGRESS lx2.loc.gov:210 LCDB</li>
+ <li>LONDON PUBLIC LIBRARY catalogue.londonpubliclibrary.ca:210 INNOPAC</li>
+ <li>MANITOBA PUBLIC library.gov.mb.ca:210 horizon</li>
+ <li>MILTON PL cat.mpl.on.ca:210 horizon</li>
+ <li>NATIONAL LIBRARY OF WALES cat.llgc.org.uk:210 default</li>
+ <li>TORONTO PUBLIC symphony.torontopubliclibrary.ca:2200 unicorn</li>
+ <li>TRI-UNI 129.97.129.194:7090 voyager</li>
+ <li>VANCOUVER PUBLIC LIBRARY z3950.vpl.ca:210 Horizon</li>
+</ul>
+
+<p><strong>See the full documentation for Z39.50 Servers in the <a href="http://manual.koha-community.org/3.12/en/additionaladmin.html#z3950admin">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

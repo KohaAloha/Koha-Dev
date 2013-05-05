@@ -1,0 +1,13 @@
+[% INCLUDE 'help-top.inc' %] <h1>Stop Words</h1>
+
+<p>Les mots vides que vous voulez ignorer en recherche.</p>
+
+<p>Koha arrive avec une liste standard de mots vides que vous pouvez modifier par la suite en Administration.</p>
+
+<p>To add a new stop word to the list, click the 'New Stop Word' button and add the word you'd like ignored</p>
+
+<p style="color: #990000">Important: If you change something in this table, ask your administrator to run misc/batchRebuildBiblioTables.pl script.</p>
+
+<p><strong>See the full documentation for Stop Words in the <a href="http://manual.koha-community.org/3.12/en/additionaladmin.html#stopwordsadmin">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

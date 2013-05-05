@@ -1,0 +1,56 @@
+[% INCLUDE 'help-top.inc' %] <h1>Item Types</h1>
+
+<p>Koha vous permet d'organiser votre collection par type de document et code de collection.</p>
+
+<p>Les types d'exemplaire désignent généralement le type matériel du document (livre, CD, DVD, etc.), mais ils peuvent employer de toute autre façon.</p>
+
+<h2>Adding Item Types</h2>
+
+<p>To add a new item type, simply click the 'New Item Type' button at the top of the Item Types page.</p>
+
+<ul>
+ <li>In the 'Item Type' field, enter a short code for your item type</li>
+ <li>The description is the plain text definition of the item type</li>
+ <li>Vous pouvez choisir d'associer une image à un type de document<ul>
+ <li>Vous pouvez choisir l'image dans une collection prédéfinie</li>
+ <li>Vous pouvez sélectionner l'image par son URL sur un serveur distant</li>
+ <li>Ou bien vous pouvez simplement ne pas associer d'image au type d'exemplaire</li>
+ <li style="color: #990000;">Important : Vous devez activer la préférence système noItemTypeImages afin de faire apparaître les images à l'OPAC.<ul>
+ <li>Get there: More &gt; Administration &gt; Global System Preferences &gt; Admin</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>Pour les exemplaires qui ne circulent pas, cochez Exclu du prêt.<ul>
+ <li>L'option 'Exclu du prêt' peut être utilisé pour les exemplaires qui peuvent être prêtés</li>
+</ul>
+</li>
+ <li>Entrez le nombre total de renouvellements autorisés pour le type d'exemplaire dans le champ Renouvellements.</li>
+ <li>Si vous appliquez un coût de location pour certains documents (par ex. les DVD), entrez la somme dans le champ 'Coût du prêt'<ul>
+ <li style="color: #990000;">Important: Do not enter symbols in this field, only numbers and decimal points (ex. $5.00 should be entered as 5 or 5.00)</li>
+ <li>Cela facturera l'adhérent au moment du prêt</li>
+</ul>
+</li>
+ <li>When finished, click 'Save Changes'
+<ul>
+ <li>Tip: All fields, with the exception of the 'Item Type' will be editable from the Item Types list</li>
+</ul>
+</li>
+ <li>Le nouveau type de document apparaîtra sur la liste</li>
+</ul>
+
+<h2>Editing Item Types</h2>
+
+<p>Chaque type d'exemplaire est suivi d'un bouton Modifier. Cliquez dessus pour modifier le type.</p>
+
+<p>You will not be able to edit the code you assigned as the 'Item Type' but you will be able to edit the description for the item.</p>
+
+<h2>Deleting Item Types</h2>
+
+<p>Chaque type d'exemplaire est suivi d'un bouton Modifier. Cliquez dessus pour modifier le type.</p>
+
+<p>Vous ne pourrez pas supprimer des types d'exemplaire qui sont utilisés dans votre système par au moins un exemplaire.</p>
+
+<p><strong>See the full documentation for Item Types in the <a href="http://manual.koha-community.org/3.12/en/basicparams.html#itemtypeadmin">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

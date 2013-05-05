@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>Checkout History</h1>
+
+<p>Chaque notice bibliographique conserve l'historique de ses opérations de circulation (avec ou sans les informations relatives aux adhérents selon votre paramétrage). Mais chaque exemplaire a également sa propre page d'historique. Pour voir celle-ci, cliquez sur l'onglet Exemplaires de la notice que vous êtes en train de visualiser.</p>
+
+<p>Sous le titre Historique, il y a un lien Voir l'historique des prêtes des exemplaires. En cliquant ce lien, la page historique des exemplaires s'affiche. Elle est sensiblement différente de l'historique de la notice bibliographique.</p>
+
+<p><strong>See the full documentation for Item Checkout History in the <a href="http://manual.koha-community.org/3.12/en/catitems.html#itemcirchistory">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,78 @@
+[% INCLUDE 'help-top.inc' %] <h1>Ajouter un abonnement à un périodique</h1>
+
+<p>Vous ajoutez des abonnements en cliquant sur le bouton Ajouter > Ajouter abonnement sur la page de détail de toute notice bibliographique ou bien en allant dans le module Périodiques et en cliquant sur Ajouter abonnement.</p>
+
+<p>Si vous ajoutez un abonnement à partir du module Périodiques, un formulaire vide vous est présenté. Ce formulaire est prérempli, si vous ajoutez un abonnement à partir d'une notice bibliographique.</p>
+
+<ul>
+ <li>Bibliothécaire affiche l'identifiant du bibliothécaire connecté.</li>
+ <li>Fournisseur est trouvé soit en cherchant les vendeurs entrés dans votre système via le module Acquisitions soit en entrant directement l'identifiant du vendeur.<ul>
+ <li>L'information sur le fournisseur n'est pas requise.</li>
+ <li>Pour réclamer les fascicules manquants ou en retard, vous devez entrer les informations sur le fournisseur.</li>
+</ul>
+</li>
+ <li>'Notice biblio' est la notice MARC à laquelle vous voulez ajouter l'abonnement.<ul>
+ <li>Cela peut être réalisé en cherchant une notice : vous cliquez sur Rechercher la notice sous la boîte de saisie ; ou bien en entrant directement le numéro d'une notice. </li>
+</ul>
+</li>
+ <li>Vous choisissez ensuite si un nouvel exemplaire est créé lorsque vous bulletinez un fascicule</li>
+ <li>'Localisation', valeur de la localisation à la bibliothèque</li>
+ <li>Cote contient le préfixe des cotes de vos exemplaires</li>
+ <li>Site est le nom du site qui détient l'abonnement.<ul>
+ <li>Si plus d'un site à un abonnement à ce périodique, il faut créer un abonnement par site.</li>
+ <li>Cela peut être réalisé facilement en utilisant l'option Modifier > Dupliquer la notice sur la page d'information de l'abonnement, puis en ne changeant que le contenu du champ Site.</li>
+</ul>
+</li>
+ <li>Période de grâce est le nombre de jours avant que le statut d'un fascicule passe automatiquement de Attendu à En attente, puis de En attente à En retarde.</li>
+ <li>Utilisez Note OPAC pour toute information que vous voulez montrer au public à l'OPAC.</li>
+ <li>Note privée est utilisée pour les notes qui sont montrées uniquement aux bibliothécaires dans l'interface professionnelle.</li>
+ <li>Pour configurer une liste de circulation du périodique, choisissez dans Notification de l'adhérent l'option Liste de circulation.<ul>
+ <li>Pour que cette option apparaissent, il faut avoir au préalable définie une notification Liste de circulation dans l'outil de gestion des notifications.</li>
+ <li>Learn more about Routing Lists later in this manual</li>
+</ul>
+</li>
+ <li>Les options d'affichage OPAC et bibliothécaires permettent de contrôler combien de fascicules apparaissent par défaut avec les notices bibliographiques à l'OPAC et dans l'interface professionnelle.<ul>
+ <li>Si aucune n'est entrée, les préférences systèmes seront utilisées : OPACSerialIssueDisplayCount et StaffSerialIssueDisplayCount.</li>
+</ul>
+</li>
+ <li>Dans Première date de parution, vous entrez la date du fascicule que vous avez en main, la date à partir de laquelle l'échéancier des fascicules à venir est calculé.</li>
+ <li>Plusieurs options prédéfinies sont proposées dans Périodicité.<ul>
+ <li>Sans périodicité : certains abonnement (des revues scientifiques de haut niveau) n'ont pas de périodicité. Quand vous vous abonnez à ce type de revue, vous demandez à recevoir six fascicules par exemple, qui peuvent aussi bien arriver dans un ans, deux ans, ou plus encore.</li>
+ <li>Inconnu : à sélectionner si aucun des autres choix proposés n'est pertinent.</li>
+ <li>Irrégulier : Le périodique ne paraît pas régulièrement mais a une périodicité. Vous savez qu'il y a un numéro de janvier, octobre et décembre, par exemple, mais les fascicules arrivent ensuite irrégulièrement.</li>
+ <li>2/quotidien : 2 / jour</li>
+ <li>Quotidien : 1 / jour</li>
+ <li>Trihebdomadaire : 3 fois par semaine</li>
+ <li>Hebdomadaire : 1 / semaine</li>
+ <li>Bimensuel : </li>
+ <li>Trihebdomadaire : 1 / 3 semaines</li>
+ <li>Mensuel (1/mois)</li>
+ <li>Bimestriel (6/an) : 1 / 2 mois</li>
+ <li>Trimestriel (4/an) : 1 / 3 mois</li>
+ <li>Trimestriel (saision) : trimestriel relié aux saison, été, automone, hiver, printemps.</li>
+ <li>Biannuel : 2 / an</li>
+ <li>Annuel : 1 / an</li>
+ <li>Bisannuel :  1 / 2 ans</li>
+</ul>
+</li>
+ <li>En cochant Historique manuel, vous pourrez entrez des fascicules en-dehors du modèle de numérotation défini.</li>
+ <li>Modèle de numérotation vous aide à déterminer comment les numéros des fascicules sont imprimés sur chaque revue.<ul>
+ <li>Commencez par le numéro du fascicule que vous avez en main, celui dont vous avez placé la date dans le champ Première date de parution.</li>
+ <li>Si vous avez choisi un Modèle de numérotation différent de Numéro dans le champ Commence par, entrez le numéro du dernier fascicule avant le numéro de volume.<ul>
+ <li>Si vous choisissez le modèle de numérotation Numéro, vous aurez un champ Fascicules attendus dans lequel vous entrez le nombre total de fascicules que vous vous attendez à recevoir.</li>
+</ul>
+</li>
+ <li>Vous pouvez créer votre propre modèle de numéroation en choisissant Aucun de ci-dessus et en cliquant sur  le bouton Afficher/masquer le prévisionnel avancé en bas du formulaire.</li>
+</ul>
+</li>
+ <li>Date de début de l'abonnement est la date laquelle l'abonnement commence. On l'utilise pour paramétrer les alertes de renouvellement.</li>
+ <li>Durée d'abonnement indique le nombre de fasciciles ou de mois de l'abonnement. On l'utilise également pour paramétrer les alertes de renouvellement.</li>
+ <li>Date de fin de l'abonnement ne doit être saisie que pour les abonnements qui sont terminés (si vous entrez rétrospectivement vos périodiques).</li>
+ <li>La Formule de numérotation est modifiable afin d'adapter précisément le numéro à imprimer sur l'exemplaire et sur les pages d'information relatives à l'abonnement.</li>
+</ul>
+
+<p>Cliquez sur Enregister abonnement pour sauvegarder votre saisie.</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/serials.html#newsubscription">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

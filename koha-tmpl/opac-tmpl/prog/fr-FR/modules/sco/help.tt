@@ -1,0 +1,35 @@
+[% INCLUDE 'doc-head-open.inc' %][% LibraryName %] &rsaquo; Prêt en libre service</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Koha [% Version %]" /> <!-- leave this for stats -->
+<link rel="shortcut icon" href="[% themelang %]/includes/favicon.ico" type="image/x-icon" />
+
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/sco.css" />
+[% IF ( SCOUserCSS ) %]<style type="text/css">[% SCOUserCSS %]</style>[% END %] [% IF ( SCOUserJS ) %]<script type="text/javascript">[% SCOUserJS %]</script>[% END %] </head>
+<body>
+<div id="doc" class="yui-t7">
+ <div id="bd">
+ <div class="yui-g">
+
+<h1>Aide pour le prêt en libre service</h1>
+
+[% IF ( SelfCheckHelpMessage ) %] <div id="selfcheckhelpmessage">
+[% SelfCheckHelpMessage %] </div>
+[% END %] <p>Si vous utilisez le prêt en auto-contôle pour la première fois, ou bien si le système semble ne pas se comporter comme prévu, n'hésitez pas à consulter le guide d'utilisation pour vous dépanner.</p>
+
+<h3>Etape 1&nbsp;: saisissez votre identifiant utilisateur[% IF ( SelfCheckoutByLogin ) %] et votre mot de passe[% END %]</h3>
+<p>Entrez votre identifiant adhérent[% IF ( SelfCheckoutByLogin ) %] et mot de passe[% END %], puis cliquez sur le bouton "Soumettre" (ou appuyez sur la touche <Entrée>)</p>
+
+<h3>Etape 2&nbsp;: scannez le code-barres pour chaque document, un à la fois</h3>
+<p>Scannez les documents et attendez que la page se rafraîchisse pour scanner le document suivant. Le document emprunté doit apparaître dans la liste des prêts. Le bouton "Soumettre" doit être utilisé seulement si vous saisissez les code-barres manuellement.</p>
+
+<h3>Etape 3&nbsp;: cliquez sur le bouton Terminer</h3>
+<p>Si vous ne cliquez pas sur le bouton Finir, votre session se fermera automatiquement dans [% SelfCheckTimeout %] secondes.</p>
+
+ <div class="button">
+ <a href="javascript:history.go(-1)">Retourner au système de prêt libre service</a>
+ </div>
+
+</div></div></div>
+</body>
+</html>
+

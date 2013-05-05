@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Basket Groups</h1>
+
+<p>Un bordereau de commande est un groupe de panier sur lequel vous pouvez effectuer des opérations.</p>
+
+<h2>Ajouter un bordereau</h2>
+
+<p>A basket group is simply a group of baskets. In some libraries, you have several staff members who create baskets, and, at the end of a period of time, someone then groups them together to send to the vendor in bulk. That said, it is possible to have one basket in a basket group if that's the workflow used in your library.</p>
+
+<p><strong>See the full documentation for Basket Groups in the <a href="http://manual.koha-community.org/3.12/en/placingacqorder.html#acqbasketgroup">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

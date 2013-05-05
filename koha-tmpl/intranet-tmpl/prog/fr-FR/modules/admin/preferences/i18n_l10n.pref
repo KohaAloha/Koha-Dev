@@ -1,0 +1,54 @@
+--- 
+International: 
+  - 
+    - Renseigner les dates au format
+    - 
+      choices: 
+        iso: yyyy-mm-dd
+        metric: jj/mm/aaaa
+        us: mm/jj/aaaa
+      default: us
+      pref: dateformat
+    - .
+  - 
+    - Format times in
+    - 
+      choices: 
+        12hr: 12 hour format ( e.g. "02:18 PM" )
+        24hr: 24 hour format ( e.g. "14:18" )
+      default: 24hr
+      pref: TimeFormat
+    - .
+  - 
+    - Utiliser
+    - 
+      choices: 
+        Monday: Lundi
+        Sunday: Dimanche
+      default: Sunday
+      pref: CalendarFirstDayOfWeek
+    - comme premier jour de la semaine dans le calendrier
+  - 
+    - "Activer \xC3\xA0 l'interface pro les langues suivantes :"
+    - 
+      pref: language
+      type: staff-languages
+  - 
+    - 
+      choices: 
+        "": Ne pas permettre
+        1: Permettre
+      default: '0'
+      pref: opaclanguagesdisplay
+    - "aux adh\xC3\xA9rents de changer la langue d'utilisation de Koha \xC3\xA0 l'OPAC."
+  - 
+    - "Activer \xC3\xA0 l'OPAC les langues suivantes :"
+    - 
+      pref: opaclanguages
+      type: opac-languages
+  - 
+    - Use the alphabet
+    - 
+      class: long
+      pref: alphabet
+    - for lists of browsable letters. This should be a space separated list of uppercase letters.

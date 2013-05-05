@@ -1,0 +1,16 @@
+[% INCLUDE 'help-top.inc' %] <h1>Créer facture manuelle</h1>
+
+<p>Pour les amendes qui ne sont pas facturées automatiquement, les bibliothécaires peuvent créer des factures manuelles.</p>
+<ul>
+ <li>Commencez par choisir le type de facture que vous voulez créer <ul>
+ <li>Pour placer des valeurs supplémentaires dans la liste des types de facture, ajoutez-les à la liste de valeurs autorisées MANUAL_INV.</li>
+</ul>
+</li>
+ <li>Si des frais sont associés à un exemplaire, vous pouvez entrer son code à barres afin que la ligne d'exemplaire montre un lien vers celui-ci.</li>
+ <li>The description field is where you will enter the description of the charge</li>
+ <li>Ne saisissez pas de symbole monétaire dans la rubrique Montant. Entrez juste des chiffres et le séparateur décimal.</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur la Création de factures manuelles dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#manualinvoice">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

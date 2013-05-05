@@ -1,0 +1,48 @@
+[% INCLUDE 'help-top.inc' %] <h1>Record Matching Rules</h1>
+
+<p>Les règles de concordance sont utilisées au moment de l'import de notices MARC dans Koha.</p>
+
+<p>Les règles que vous définissez ici seront utilisées pour préparer l'importation de vos notices.</p>
+
+<p>Pour créer une nouvelle règle de concordance.</p>
+
+<ul>
+ <li>Click 'New Record Matching Rule'
+<ul>
+ <li>Choisissez un nom unique et saisissez-le dans le champ Code la règle de concordance.</li>
+ <li>la 'Description' est une chaine expliquant ce qu'est la règle</li>
+ <li>'Seuil de correspondance' - Le nombre total de 'points' que doit gagner une notice pour être considérée comme un doublon</li>
+ <li>Les Points de concordance sont définis pour choisir les champs sur lesquels effectuer l'opération de mise en concordance.</li>
+ <li>'Index de recherche' peut être trouvé en examinant le fichier ccl.properties de votre système. C'est ce fichier qui indique dans quels éléments des notices MARC effectuer les recherches.</li>
+ <li>'Score' - Le nombre de 'points' que rapporte l'identification sur ce champ. Si la somme de tous les scores des champs est supérieure au seuil de concordance, la notice entrante est considérée comme étant en doublon avec une notice du catalogue</li>
+ <li>Entrez le champ MARC que vous voulez mettre en correspondance dans la rubrique Champ</li>
+ <li>Entrez le sous-champ du champ MARC que vous voulez mettre en correspondance dans la rubrique Sous-champs</li>
+ <li>'Décalage' - A utiliser avec les champs de contrôle, 001-009</li>
+ <li>'Longueur' - A utiliser avec les champs de contrôle, 001-009</li>
+ <li>Koha n'a pas pour le moment qu'une seule règle de normalisation qui enlève les caractères inutiles comme la virgule ou le point virgule. La valeur que vous entrez ici n'a pas d'impact sur le processus de normalisation.</li>
+ <li>Concordance requise - ??</li>
+</ul>
+</li>
+</ul>
+
+<h2>Sample Record Matching Rule: Control Number</h2>
+
+<ul>
+ <li>Seuil de concordance : 100</li>
+ <li>Points concordanca (unique) : </li>
+ <li>Recherche index&nbsp;:Control-number</li>
+ <li>Score: 101</li>
+ <li>Tag : 001 <ul>
+ <li>Ce champ est le numéro de contrôle assigné à la notice par l'établissement qui l'a créée, qui l'utilise ou la distribue.</li>
+</ul>
+</li>
+ <li>Sous-champ&nbsp;: a</li>
+ <li>Décalage&nbsp;: 0</li>
+ <li>Length: 0</li>
+ <li>Règle de normalisation&nbsp;: Control-number</li>
+ <li>Required Match checks: none (remove the blank one)</li>
+</ul>
+
+<p><strong>See the full documentation for Record Matching Rules in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#recordmatchingrules">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

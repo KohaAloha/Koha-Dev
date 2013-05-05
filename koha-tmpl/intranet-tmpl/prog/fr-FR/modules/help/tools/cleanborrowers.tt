@@ -1,0 +1,24 @@
+[% INCLUDE 'help-top.inc' %] <h1>Adhérent (anonymiser et supprimer)</h1>
+
+<p>Cet outil vous permet, par lots, d'anonymiser l'historique de circulation ou de supprimer des comptes adhérents. Cela signifie que le système conserve un lien entre prêts et exemplaires, mais supprime le lien avec l'adhérent.</p>
+
+<p style="color: #990000;">Important: Patrons with outstanding fines or items checked out are not saved. They are not completely removed from the system (they are only moved to the delete_borrowers table), but this tool does not provide as many checks as one may desire.</p>
+
+<p style="color: #990000;">Important: Before using this tool it is recommended that you backup your database. Changes made here are permanent.</p>
+
+<p style="color: #990000;">Important: The anonymization will fail quietly if AnonymousPatron preference does not contain a valid value.</p>
+
+<p>Pour supprimer ou anonymiser des adhérents</p>
+
+<ul>
+ <li>Check the 'Verify' box on the task you would like to complete (Delete or Anonymize)</li>
+ <li>Entrez la date avant laquelle vous voulez modifier les données.</li>
+ <li>If deleting patrons you can also choose to find patrons with a specific expiration date or category</li>
+ <li>Cliquez sur Suivant</li>
+ <li>Une demande de confirmation est affichée.</li>
+ <li>En cliquant sur Finir, vos données seront supprimées ou anonymisées.</li>
+</ul>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/anonpatrons.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

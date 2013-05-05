@@ -1,0 +1,129 @@
+--- 
+Administration: 
+  Authentification CAS: 
+    - 
+      - 
+        choices: 
+          "": Ne pas utiliser
+          1: Utiliser
+        default: '0'
+        pref: casAuthentication
+      - CAS pour l'authentification
+    - 
+      - 
+        choices: 
+          "": "Ne pas se d\xC3\xA9connecter"
+          1: "Se d\xC3\xA9connecter"
+        default: '0'
+        pref: casLogout
+      - "de CAS quand on se d\xC3\xA9connecte de Koha."
+    - 
+      - "Le serveur d'authentification CAS se trouve \xC3\xA0"
+      - 
+        pref: casServerUrl
+    - 
+      - Utiliser
+      - 
+        choices: 
+          Common Name: le Nom de famille
+          None: aucun
+          emailAddress: l'adresse email
+        default: None
+        pref: AllowPkiAuth
+      - champ pour le certificat d'authentification client SSL
+  Mozilla Persona: 
+    - 
+      - 
+        choices: 
+          "": Don't Allow
+          1: Allow
+        default: '0'
+        pref: Persona
+      - Mozilla persona for login
+  Options d'authentification: 
+    - 
+      - "D\xC3\xA9connecter automatiquement les utilisateurs apr\xC3\xA8s"
+      - 
+        class: integer
+        pref: timeout
+      - "secondes d'inactivit\xC3\xA9. Ajouter d va le sp\xC3\xA9cifier en jours, i.e. un timeout de 1d est un jour"
+    - 
+      - 
+        choices: 
+          "": Requiert
+          1: Ne requiert pas
+        default: '0'
+        pref: AutoLocation
+      - "que le personnel soit connect\xC3\xA9 d'un ordinateur dont l'adresse IP se trouve dans l'interval sp\xC3\xA9cifi\xC3\xA9 pour <a href=\"/cgi-bin/koha/admin/branches.pl\">sa biblioth\xC3\xA8que</a>."
+    - 
+      - Enregistrer les sessions d'utilisation du logicel dans
+      - 
+        choices: 
+          Pg: "la base de donn\xC3\xA9es PostgreSQL (pas encore support\xC3\xA9)"
+          memcached: dans un serveur memcached
+          mysql: "la base de donn\xC3\xA9es MySQL "
+          tmp: un fichier temportaire
+        default: mysql
+        pref: SessionStorage
+    - 
+      - 
+        choices: 
+          "": "Ne pas emp\xC3\xAAcher"
+          1: "Emp\xC3\xAAcher"
+        default: '0'
+        pref: IndependantBranches
+      - "le personnel (mais pas le super-biblioth\xC3\xA9caire) de modifier les info appartenant aux autres biblioth\xC3\xA8ques (r\xC3\xA9servations, exemplaires, emprunteurs, etc.)"
+  Options de l'interface: 
+    - 
+      - Utiliser
+      - 
+        class: email
+        pref: KohaAdminEmailAddress
+      - "comme adresse mail pour l'administrateur Koha. (C'est l'adresse De: pour les emails \xC3\xA0 moins qu'une soit d\xC3\xA9finie pour le site, et c'est l'adresse destinataire lorsqu'une erreur interne survient"
+    - 
+      - Montrer
+      - 
+        choices: 
+          "0": aucune
+          1: quelque
+          2: beaucoup d'
+        default: '0'
+        pref: DebugLevel
+      - "information de d\xC3\xA9bugage quand une erreur interne se produit"
+    - 
+      - 
+        choices: 
+          "": Afficher
+          1: Ne pas afficher
+        default: '0'
+        pref: noItemTypeImages
+      - les images des types d'exemplaire dans le catalogue.
+    - 
+      - "S\xC3\xA9parer les colonnes dans les rapports export\xC3\xA9s avec"
+      - 
+        choices: 
+          "#": "'s"
+          ",": virgule
+          /: barre oblique
+          ;: point virgule
+          \: barre oblique inverse
+          tabulation: tabulation
+        default: ","
+        pref: delimiter
+      - "par d\xC3\xA9faut."
+    - 
+      - 
+        choices: 
+          "": Interdire
+          1: Permettre
+        pref: virtualshelves
+      - "au personnel et aux usagers de cr\xC3\xA9er et de voir des listes enregistr\xC3\xA9es de livres."
+  Search Engine: 
+    - 
+      - 
+        choices: 
+          Solr: Solr
+          Zebra: Zebra
+        default: Zebra
+        pref: SearchEngine
+      - is the search engine used.

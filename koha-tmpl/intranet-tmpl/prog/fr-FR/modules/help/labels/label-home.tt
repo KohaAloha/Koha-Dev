@@ -1,0 +1,43 @@
+[% INCLUDE 'help-top.inc' %] <h1>Créateur d'étiquette</h1>
+
+<p>Le Créateur d'étiquettes vous permet d'utiliser les formats et modèles que vous avez définis pour imprimer une grande variété d'étiquettes incluant les codes barre. Voici certaines fonctionnalités du module Créateur d'étiquettes : </p>
+
+<ul>
+ <li>Personnaliser les formats d'étiquette</li>
+ <li>Design custom label templates for printed labels</li>
+ <li>Créer et gérer des lots d'étiquettes</li>
+ <li>Exporte un ou plusieurs lots</li>
+ <li>Exporte une ou plusieurs étiquettes dans un lot</li>
+ <li>Exporte les données d'étiquette dans l'un des trois formats :<ul>
+ <li>PDF - lisible par tout reader PDF standard, rendant les étiquettes imprimables directement sur une imprimante&nbsp;</li>
+ <li>CSV - Exporte les données d'étiquettes au format que vous avez choisi, permettant aux étiquettes d'être importées dans diverses applications</li>
+ <li>XML - inclus comme format d'export alternatif</li>
+</ul>
+</li>
+</ul>
+
+<p>En haut de chaque écran du Créateur d'étiquettes, vous voyez une barre d'outils permettant un accès rapide aux fonctionnalités. Le menu sur la gauche de chaque écran permet également un accès facile aux différentes sections du Créateur d'étiquettes. Le fil d'ariane vers le haut de chaque écran donne des indications précises sur là où vous êtes dans le module Créateur d'étiquettes et permet une navigation rapide vers les sections consultées précédemment. Enfin, vous pouvez trouver plus d'informations détaillées sur chaque section du Créateur d'étiquettes en cliquant l'aide en ligne dans le coin en haut à droite de chaque page.</p>
+
+<p>The developers of the Label Creator module hope you will find this an extremely useful tool in the course of your cataloging work. You are encouraged to submit any enhancement requests as well as any bugs via Koha Project Bugzilla.</p>
+
+<h2>Modèles</h2>
+
+<p>Un modèle est le type d'étiquettes/cartes que vous utilisez. Ce peut être Avery·5160 pour les étiquettes d'adresse, Gaylord·47-284 pour les étiquettes de dos ou Avery·28371 pour les cartes adhérent, par exemple. Ces étiquettes incluent toutes les informations dont vous avez besoin pour paramétrer Koha, ces informations pouvant être sur l'emballage, ou si ce n'est pas le cas pouvant généralement être trouvées sur le site web du fournisseur.</p>
+
+<h2>Profils</h2>
+
+<p>Un profil est un paramétrage "d'ajustement" appliqué à un modèle donné juste avant l'impression pour compenser des anomalies uniques et spécifiques à une imprimante donnée (à laquelle le profil est rattaché). Ceci signifie que si vous paramétrez un modèle et imprimez un test de données et trouvez que les exemplaires ne sont pas alignés de la même façon sur chaque étiquette, vous avez besoin de définir un profil pour chaque imprimante, pour compenser la différence des styles d'impression, comme le décalage du texte vers la gauche, la droite, le haut ou le bas.</p>
+
+<p>Si vos étiquettes s'impriment exactement comme vous voulez, vous n'aurez pas à utiliser un profil.</p>
+
+<h2>Layouts</h2>
+
+<p>Une disposition est utilisée pour définir les champs que vous voulez voir sur les étiquettes.</p>
+
+<h2>Lots</h2>
+
+<p>Les lots sont composés des codes à barres que vous voulez imprimer. Dans cet écran, recherchez les exemplaires pour lesquels vous voulez imprimer une étiquette.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/labelcreator.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

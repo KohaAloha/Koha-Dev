@@ -1,0 +1,37 @@
+[% INCLUDE 'help-top.inc' %] <h1>MARC Bibliographic Frameworks</h1>
+
+<p>Think of Frameworks as templates for creating new bibliographic records. Koha comes with some predefined frameworks that can be edited or deleted, and librarians can create their own frameworks for content specific to their libraries.</p>
+
+<p>Do not delete or edit the Default Framework since this will cause problems with your cataloging records - always create a new template based on the Default Framework, or alter the other Frameworks.</p>
+
+<p>Après avoir cliqué sur le lien Structure MARC qui se trouve sur la droite de chaque grille, vous pouvez choisir le nombre de champs qui sont affichés sur une page en utilisant les options de pagination qui se trouvent en tête de la table".</p>
+
+<h2>Add New Framework</h2>
+
+<p>Pour ajouter une nouvelle grille</p>
+
+<ul>
+ <li>Click 'New Framework'
+<ul>
+ <li>Saisissez un code d'au plus quatre caractères</li>
+ <li>Use the Description field to enter a more detailed definition of your framework</li>
+</ul>
+</li>
+ <li>Cliquez 'Valider'</li>
+ <li>Once your Framework is added click 'MARC structure' to the right of it on the list of Frameworks
+<ul>
+ <li>You will be asked to choose a Framework to base your new Framework off of, this will make it easier than starting from scratch</li>
+</ul>
+</li>
+ <li>Once your Framework appears on the screen you can edit or delete each field by following the instructions for editing subfields</li>
+</ul>
+
+<h2>Edit Existing Frameworks</h2>
+
+<p>Clicking 'Edit' to the right of a Framework will only allow you to edit the Description for the Framework</p>
+
+<p>To make edits to the fields associated with the Framework you must first click 'MARC Structure' and then follow the instructions for editing subfields</p>
+
+<p><strong>See the full documentation for Frameworks in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#marcbibframeworks">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

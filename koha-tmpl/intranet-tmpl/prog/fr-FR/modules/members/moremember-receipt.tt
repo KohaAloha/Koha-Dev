@@ -1,0 +1,41 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Imprimer un reçu pour [% cardnumber %]</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="[% IF ( IntranetFavicon ) %][% IntranetFavicon %][% ELSE %][% themelang %]/includes/favicon.ico[% END %]" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="[% themelang %]/css/print.css" />
+
+<script type="text/javascript">
+    function printThenClose() {
+        window.print();
+        window.close();
+    }
+</script>
+</head>
+<body id="pat_moremember-receipt" class="pat" onload="printThenClose();">
+
+<div id="receipt">
+
+<h3>[% LibraryName %]</h3>
+[% IF ( branchname ) %][% branchname %]<br />[% END %] Prêté à [% firstname %] [% surname %] <br />
+(<a href="/cgi-bin/koha/circ/circulation.pl?findborrower=[% cardnumber %]">[% cardnumber %]</a>)<br />
+
+[% todaysdate %]<br />
+
+[% IF ( quickslip ) %] <h4>Checked out today</h4>
+[% FOREACH issueloo IN issueloop %] [% IF ( issueloo.red ) %][% ELSE %] [% IF ( issueloo.today ) %] <p><a href="/cgi-bin/koha/catalogue/detail.pl?item=[% issueloo.itemnumber %]&amp;biblionumber=[% issueloo.biblionumber %]&amp;bi=[% issueloo.biblioitemnumber %]">[% issueloo.title |html %]</a><br />
+Code à barres&nbsp;: [% issueloo.barcode %]<br />
+Date de retour prévue: [% issueloo.date_due %]<br /></p>
+ [% END %] [% END %] [% END %] [% ELSE %] <h4>Prêté </h4>
+[% FOREACH issueloo IN issueloop %] [% IF ( issueloo.red ) %][% ELSE %] <p><a href="/cgi-bin/koha/catalogue/detail.pl?item=[% issueloo.itemnumber %]&amp;biblionumber=[% issueloo.biblionumber %]&amp;bi=[% issueloo.biblioitemnumber %]">[% issueloo.title |html %]</a><br />
+Code à barres&nbsp;: [% issueloo.barcode %]<br />
+Date de retour prévue: [% issueloo.date_due %]<br /></p>
+ [% END %] [% END %] [% END %] [% IF ( quickslip ) %] [% ELSE %] [% IF ( overdues_exist ) %] <h4>Retards</h4>
+ [% FOREACH issueloo IN issueloop %] [% IF ( issueloo.red ) %] <p><a href="/cgi-bin/koha/catalogue/detail.pl?item=[% issueloo.itemnumber %]&amp;biblionumber=[% issueloo.biblionumber %]&amp;bi=[% issueloo.biblioitemnumber %]">[% issueloo.title |html %]</a><br />
+Code à barres&nbsp;: [% issueloo.barcode %]<br />
+Date de retour prévue: [% issueloo.date_due %]</p>
+[% END %] [% END %] [% END %] [% END %] [% IF ( koha_news_count ) %] <hr><h4 style="text-align: center; font-style:italic;">Nouvelles</h4>
+ <!-- [% koha_news_count %] recent news item(s) -->
+ [% FOREACH koha_new IN koha_news %]
+ <div class="newsitem" id="news[% koha_new.idnew %]"><h5 style="margin-bottom: 1px; margin-top: 1px"><b>[% koha_new.title %]</b></h5>
+ <p style="margin-bottom: 1px; margin-top: 1px">[% koha_new.new %]</p>
+ <p class="newsfooter" style="font-size: 8pt; font-style:italic; margin-bottom: 1px; margin-top: 1px"> Posté le&nbsp;: [% koha_new.newdate %] </p><hr /></div>
+ [% END %] [% END %] [% INCLUDE 'intranet-bottom.inc' %] 

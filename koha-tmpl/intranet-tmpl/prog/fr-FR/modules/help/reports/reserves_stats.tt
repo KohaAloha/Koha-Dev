@@ -1,0 +1,13 @@
+[% INCLUDE 'help-top.inc' %] <h1>Statistiques de réservation</h1>
+
+<p><strong>Note:</strong> These reports are limited in what data they can look at, so it's often recommended to use custom reports for official end of the year statistics.</p>
+
+<p>Using the form provided you can see statistics for holds placed, filled, cancelled and more at your library. From the form choose what value you want to display in the column and what value to show in the row. You can also choose from the filters on the far right of the form.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p><strong>See the full documentation for Holds Statistics in the <a href="http://manual.koha-community.org/3.12/en/statsreports.html#holdstats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

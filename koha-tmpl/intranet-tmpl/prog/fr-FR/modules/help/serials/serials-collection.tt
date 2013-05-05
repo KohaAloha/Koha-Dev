@@ -1,0 +1,13 @@
+[% INCLUDE 'help-top.inc' %] <h1>Etat de collection</h1>
+
+<p>Cette page affiche un résumé de l'abonnement avec tous les fascicules qui ont été reçus, sont attendus ou sont en retard.</p>
+
+<p>Vous pouvez à partir d'ici choisir de moidifier un fascicule spécifique ou bien d'en recevoir de nouveaux.</p>
+
+<p>Pour modifier ou recevoir un fascicule, cliquez simplement la boîte dans la colonne Modifier puis cliquez sur le bouton Modifier périodique.</p>
+
+<p>Si vous ajoutez plusieurs fascicules à la fois ou si le dernier fascicule attendu a du retard, vous pouvez cliquer sur Générer le suivant afin de créer le fascicule suivante.</p>
+
+<p><strong>Voir la documentation complète sur les Périodiques dans le <a href="http://manual.koha-community.org/3.12/en/serials.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

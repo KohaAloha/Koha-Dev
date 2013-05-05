@@ -1,0 +1,106 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron details</h1>
+
+<p>Quand vous examinez la fiche d'un adhérent, vous choisissez parmi les onglets de gauche, le type d'information que vous souhaitez voir.</p>
+
+<h2>Prêt</h2>
+
+<p>Pour obtenir une aide sur les opérations de prêt, cliquez sur l'onglet Prêts et, dans la page qui s'ouvre, cliquez sur l'Aide.</p>
+
+<h2>Details</h2>
+
+<p>Toutes les informations adhérents apparaîtront sur l'onglet 'Détail'. Cela inclut toutes les informations de contact, les notes, les préférences de notification, ..., saisis lors de l'ajout de l'adhérent. Dans le cas d'adhérents marqués comme 'Enfants' ou 'Professionnels', les informations concernant leur garant seront également affichées.</p>
+
+<ul>
+<li>Un adhérent "enfant" sera rattaché à son garant</li>
+<li>Sur la fiche d'un garant, tous ses enfants (ou toutes les personnes pour lesquels il se porte garant) sont affichés.</li>
+</ul>  <p>Sur la page de détail d'un adhérent, sous la section contenant ses informations personnelles, il y a une section à onglets contenant ses exemplaires empruntés, en retard et réservés.</p>
+
+<p>S'ils ont de la famille inscrite à la bibliothèque, les bibliothécaires peuvent voir ce qu'ont emprunté les autres membre de la famille.</p>
+
+<h2>Amendes</h2>
+
+<p>L'onglet Amendes affiche l'historique complet des opérations comptables de l'adhérent. Contrairement à son nom, l'onglet Amendes ne montre pas uniquement des amendes. Il montre également les frais d'inscription, les montants des emprunts, s'il y a lieu, les frais de réservations et toute opération monétaire.</p>
+
+<h2>Historique de prêts</h2>
+
+<p>L'onglet d'historique des prêts est affiché si vous avez activé la préférence système intranetreadinghistory. Si vous avez activé la préférence système OPACPrivacy, et si l'adhérent a décidé que la bibliothèque ne peut pas garder l'historique de ses prêts, cet onglet n'affichera que les exemplaires qui sont actuellement empruntés.</p>
+
+<h2>Log des modifications</h2>
+
+<p>Si vous avez configuré BorrowersLog pour suivre les changements apportés aux fiches des adhérents, l'onglet Log des modifications est visible et affiche toutes ces informations.</p>
+
+<ul>
+<li>Le champ Bibliothécaire montre le numéro d'adhérent (utilisateur) de la personne qui a effectué les changements.</li>
+<li>Le champ Objet contient le numéro de l'adhérent qui est examiné.</li>
+</ul>
+
+<h2>Notifications</h2>
+
+<p>Les préférences de notification de l'adhérent sont configurées en saisie de l'adhérent. Cet onglet montre les messages qui ont été envoyés ainsi que ceux qui sont en attente d'expédition.</p>
+
+<p>Vous verrez le texte complet du message qui a été envoyé en cliquant sur son titre.</p>
+
+<h2>Statistiques</h2>
+
+<p>Depending on what you set for the values of your StatisticsFields system preference, you can see statistics for one patron's circulation actions.</p>
+
+<h2>Files</h2>
+
+<p>If you set the EnableBorrowerFiles preference to 'Do' the Files tab will be visible on the patron information page.</p>
+
+<p>From here you can upload files to attach to the patron record.</p>
+
+<p>All files that are uploaded will appear above a form where additional files can be uploaded from.</p>
+
+<h2>Modifier des adhérents</h2>
+
+<p>Il y a dans Koha de nombreuses façons de modifier la fiche d'un adhérent.</p>
+
+<ul>
+ <li>Pour modifier l'intégralité de la fiche de l'adhérent, cliquez sur le bouton Modifier qui se trouve en haut de la fiche.</li>
+ <li>Pour ne modifier que la mot de passe de l'adhérent, cliquez sur le bouton Changer mot de passe.<ul>
+ <li>Koha ne peut pas afficher un mot de passe déjà défini. Laissez le champ en blanc pour ne pas changer le mot de passe.</li>
+ <li>This form can automatically generate a random password if you click the link labeled "Click to fill with a randomly generated suggestion. Passwords will be displayed as text."</li>
+</ul>
+</li>
+ <li>Pour modifier une section particulière de la fiche d'un adhérent, par exemple la section Usager de la bibliothèque, cliquez sur le lien Modifier en bas de la section.</li>
+ <li>Une image adhérent peut être ajoutée en recherchant l'image sur votre machine depuis la section 'Chargement photos d'adhérents'<ul>
+ <li>This form will not appear if you have the patronimages system preference to not allow patron images</li>
+ <li>Pour ajouter les images des adhérents par lots, utilisez l'outil Images des adhérents.</li>
+</ul>
+</li>
+ <li>Il est également possible de bloquer des adhérents (les empêcher d'emprunter) en activant des pièges.<ul>
+ <li>Si vous voulez que le personnel qui réalise les prêts confirme l'adresse d'un adhérent avant de le laisser emprunter, vous pouvez activer le piège Parti sans laisser d'adresse.</li>
+ <li>If you would like to bar a patron from the library you can set the 'Restricted' flag
+<ul>
+ <li>This flag can automatically be set with the Overdue/Notice StatusTriggers</li>
+</ul>
+</li>
+ <li>If you enter in a date and/or note related to the restriction you will see that in the restricted message as well</li>
+ <li>Si un adhérent signale qu'il a perdu sa carte de bibliothèque, vous pouvez activer sur sa fiche le piège Perdu afin de bloquer toute utilisation frauduleuse de sa carte.</li>
+</ul>
+</li>
+ <li>Children patrons do not become adults automatically in Koha. To upgrade a child patron to and adult patron category click on the 'More' menu and choose 'Update Child to Adult Patron'
+<ul>
+ <li>You will then be presented with a pop up window asking which one of your adult patron categories this Child should be updated to</li>
+</ul>
+</li>
+</ul>
+
+<h2>Dupliquer des adhérents</h2>
+
+<p>Sometimes when you're adding a new family to your system you don't want to type the contact information over and over. Koha allows for you to duplicate a patron and change only the parts you want to (or need to) change.</p>
+
+<ul>
+ <li>Ouvrez la fiche de l'adhérent sur lequel vous voulez vous baser vos duplications.</li>
+ <li>Cliquez sur le bouton 'dupliquer' en haut de la fiche</li>
+ <li>Tous les champs, à l'exception du prénom, du numéro de carte, de l'identifiant et du mot de passe ont été dupliqués. Saisissez les champs manquants, et cliquez sur 'Enregistrer' <ul>
+ <li><span style="background-color: #ffe599;">ASTUCE : En cliquant dans un champ déjà renseigné, vous verrez que les données qu'il contient seront effacées, ce qui accélère la saisie d'une nouvelle information</span></li>
+</ul>
+</li>
+ <li>Vous serez amené à un écran présentant le nouvel adhérent</li>
+</ul>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

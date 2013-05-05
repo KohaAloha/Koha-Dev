@@ -1,0 +1,479 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Adhérents &rsaquo; [% IF ( unknowuser ) %] L'adhérent n'existe pas [% ELSE %] Détail adhérent pour [% INCLUDE 'patron-title.inc' %] [% END %] </title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <link rel="stylesheet" type="text/css" href="/intranet-tmpl/prog/en/css/datatables.css" />
+<script type="text/javascript" src="/intranet-tmpl/prog/en/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="/intranet-tmpl/prog/en/js/datatables.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery-ui-timepicker-addon.js"></script>
+<script type="text/JavaScript">
+//<![CDATA[
+$(document).ready(function() {
+    $('#finesholdsissues').tabs({
+        // Correct table sizing for tables hidden in tabs
+        // http://www.datatables.net/examples/api/tabs_and_scrolling.html
+        "show": function(event, ui) {
+            var oTable = $('div.dataTables_wrapper>table', ui.panel).dataTable();
+            if ( oTable.length > 0 ) {
+                oTable.fnAdjustColumnSizing();
+            }
+        }
+    } );
+    $("#issuest").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sDom": 't',
+        "aoColumnDefs": [
+            { "aTargets": [ -1,-2 ], "bSortable": false, "bSearchable": false }
+        ],
+        "aoColumns": [
+            { "sType": "title-string" },null,null,{ "sType": "title-string" },null,null,null,null,null,null
+        ],
+        "bPaginate": false
+    }));
+    $("#relissuest").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sDom": 't',
+        "aoColumns": [
+            { "sType": "title-string" },null,null,{ "sType": "title-string" },null,null,null,null,null
+        ],
+        "bPaginate": false
+    }));
+    $("#holdst").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sDom": 't',
+        "aoColumnDefs": [
+            { "aTargets": [ -1,-2 ], "bSortable": false, "bSearchable": false }
+        ],
+        "aoColumns": [
+            { "sType": "title-string" },null,null,null,null,null,null
+        ],
+        "bPaginate": false
+    }));
+    [% IF ( picture ) %]
+    // new YAHOO.widget.Button("delpicture");   // FIXME: formatting mismatch between YUI and normal button
+	$('#delpicture').click(function(){
+		 return confirm(_("Êtes vous sûr de vouloir supprimer cette photo?"));
+	});
+	$('#manage-patron-image').find("input[value*=Upload]").click(function(){
+        if($("#uploadfile").val() == ""){
+            alert(_("Sélectionnez le fichier à importer"));
+            return false;
+        }
+        return confirm(_("Êtes vous sûr de vouloir supprimer cette photo?Cela sera irréversible."));
+	});[% END %]
+	$("#renew_all"      ).click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=items]"   ); $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); });
+	$("#CheckAllitems"  ).click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=items]"   ); $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); return false; });
+    $("#CheckNoitems"   ).click(function(){ $(".checkboxed").unCheckCheckboxes(":input[name*=items]"); return false; });
+	$("#CheckAllreturns").click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=barcodes]"); $(".checkboxed").unCheckCheckboxes(":input[name*=items]"); return false; });
+    $("#CheckNoreturns" ).click(function(){ $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); return false; });
+
+    $("#relrenew_all"      ).click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=items]"   ); $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); });
+    $("#relCheckAllitems"  ).click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=items]"   ); $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); return false; });
+    $("#relCheckNoitems"   ).click(function(){ $(".checkboxed").unCheckCheckboxes(":input[name*=items]"); return false; });
+    $("#relCheckAllreturns").click(function(){ $(".checkboxed").checkCheckboxes(":input[name*=barcodes]"); $(".checkboxed").unCheckCheckboxes(":input[name*=items]"); return false; });
+    $("#relCheckNoreturns" ).click(function(){ $(".checkboxed").unCheckCheckboxes(":input[name*=barcodes]"); return false; });
+
+
+    [% IF ( CAN_user_circulate_override_renewals ) %]
+    [% IF ( AllowRenewalLimitOverride ) %]
+    $( '#override_limit' ).click( function () {
+        if ( this.checked ) {
+           $( '.renewals-allowed' ).show(); $( '.renewals-disabled' ).hide();
+        } else {
+           $( '.renewals-allowed' ).hide(); $( '.renewals-disabled' ).show();
+        }
+    } ).attr( 'checked', false );
+    [% END %]
+    [% END %]
+	$("td").click(function(e){
+		if(e.target.tagName.toLowerCase() == 'td'){
+           $(this).find("input:checkbox").each( function() {
+               $(this).attr('checked', !$(this).attr('checked'));
+			   if($(this).attr('checked')){
+                    $(this).parent().siblings().find("input:checkbox").each(function(){
+                       if($(this).attr('checked')){ $(this).removeAttr('checked'); }
+                   });
+			   }
+           });
+		}
+	});
+    $("#suspend_until").datepicker({ minDate: 1 }); // require that hold suspended until date is after today
+    $("#newduedate").datetimepicker({
+        minDate: 1, // require that renewal date is after today
+        hour: 23,
+        minute: 59
+    });
+ });
+function uncheck_sibling(me){
+nodename=me.getAttribute("name");
+if (nodename =="barcodes[]"){
+    var Node=me.parentNode.previousSibling;
+    while (Node.nodeName!="TD"){Node=Node.previousSibling}
+    var Nodes=Node.childNodes;
+    for (var i=0;i<Nodes.length;i++){
+      if (Nodes[i].nodeName=="INPUT" && Nodes[i].getAttribute("type")=="checkbox"){
+        Nodes[i].checked=false;
+      }     
+   }   
+
+}else {
+    var Node=me.parentNode.nextSibling;
+    while (Node.nodeName!="TD"){Node=Node.nextSibling}
+    var Nodes=Node.childNodes;
+    for (var i=0;i<Nodes.length;i++){
+      if (Nodes[i].nodeName=="INPUT" && Nodes[i].getAttribute("type")=="checkbox"){
+        Nodes[i].checked=false;
+      }     
+   }   
+}
+}
+function validate1(date) {
+    var today = new Date();
+    if ( date < today ) {
+        return true;
+     } else {
+        return false;
+     }
+};
+//]]>
+</script>
+
+</head>
+<body id="pat_moremember" class="pat">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a>
+&rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a>
+&rsaquo; [% IF ( unknowuser ) %]L'adhérent n'existe pas[% ELSE %]Info sur l'adhérent [% INCLUDE 'patron-title.inc' %][% END %] </div>
+
+<div id="doc3" class="yui-t1">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% INCLUDE 'members-toolbar.inc' %] [% IF ( error ) %] <div class="dialog alert">
+ [% IF ( AUTH_UPDATE_FAILED ) %] <h3>Mise à jour du mot de passe ECHOUE</h3>
+ <strong>Permissions insuffisantes.</strong>
+ <p>Autres champs mis à jour.</p>
+ [% END %] [% IF ( CANT_DELETE_STAFF ) %] <h3>Impossible de supprimer l'adhérent</h3>
+ <p>Permissions insuffisantes.</p>
+ [% END %] [% IF ( CANT_DELETE_OTHERLIBRARY ) %] <h3>Imposible de supprimer des adhérents d'autres sites avec les réglages actuels</h3>
+ <p>Permissions insuffisantes.</p>
+ [% END %] [% IF ( CANT_DELETE ) %] <h3>Impossible de supprimer l'adhérent</h3>
+ <p>Permissions insuffisantes.</p>
+ [% END %] </div>
+[% END %] <div class="yui-g">
+
+[% IF ( unknowuser ) %] <div class="dialog message">Cet adhérent n'existe pas.</div>
+[% ELSE %] [% IF ( was_renewed ) %]<div class="dialog message">La carte a été renouvelée jusqu'au [% dateexpiry %].</div>[% END %] [% IF ( flagged ) %] <div id="circmessages" class="circmessage attention">
+ <ul>
+ [% IF ( userdebarred ) %] <li class="blocker">L'adhérent est suspendu[% IF ( userdebarreddate ) %] jusqu'au [% userdebarreddate%] [% IF (debarredcomment ) %]([% debarredcomment %])[% END %][% END %] <form class="inline compact" action="/cgi-bin/koha/members/setdebar.pl" method="post">
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input type="submit" value="Lift restriction" />
+ </form>
+ </li>
+ [% END %] [% IF ( gonenoaddress ) %]<li class="blocker">L'adresse de l'adhérent semble erronée.</li>[% END %] [% IF ( lost ) %]<li class="blocker">La carte a été déclarée perdue.</li>[% END %] </ul>
+ </div>
+ [% END %] <h3>[% UNLESS ( I ) %] [% title %] [% firstname %] [% END %] [% surname %] ([% cardnumber %])</h3>
+ <div class="yui-u first">
+<div id="patron-information" style="padding : .5em;">
+
+ [% UNLESS ( I ) %][% IF ( othernames ) %]&ldquo;[% othernames %]&rdquo;[% END %] <p class="address">[% streetnumber %] [% IF ( roaddetails ) %] [% roaddetails %] [% END %] [% address %]<br />
+ [% IF ( address2 ) %][% address2 %]<br />[% END %] [% IF ( city ) %][% city %][% END %] [% IF ( state ) %][% state %][% END %] [% IF ( zipcode ) %][% zipcode %]<br />[% END %] [% IF ( country ) %][% country %][% END %]</p>
+ 
+ <div class="rows">
+ <ol>
+ [% IF ( I ) %] [% IF ( phonepro ) %]<li><span class="label">Téléphone de l'établissementé&nbsp;: </span>[% phonepro %]</li>[% END %] [% IF ( emailpro ) %]<li><span class="label">Courriel de l'établissement&nbsp;: </span>[% emailpro %]</li>[% END %] [% ELSE %] [% IF ( phone ) %]<li><span class="label">Téléphone principal&nbsp;: </span>[% phone %]</li>[% END %] [% IF ( mobile ) %]<li><span class="label">Téléphone secondaire&nbsp;: </span>[% mobile %]</li>[% END %] [% IF ( phonepro ) %]<li><span class="label">Autre téléphone&nbsp;: </span>[% phonepro %]</li>[% END %] [% END %] [% IF ( P ) %] [% IF ( phone ) %]<li><span class="label">Téléphone principal&nbsp;: </span>[% phone %]</li>[% END %] [% IF ( mobile ) %]<li><span class="label">Téléphone secondaire&nbsp;: </span>[% mobile %]</li>[% END %] [% END %] [% IF ( fax ) %]<li><span class="label">Fax&nbsp;: </span>[% fax %]</li>[% END %] [% UNLESS ( I ) %] [% IF ( email ) %]<li><span class="label">Courriel principal&nbsp;:</span><a href="mailto:[% email %]">[% email %]</a></li>[% END %] [% IF ( emailpro ) %]<li><span class="label">Courriel secondaire : </span><a href="mailto:[% emailpro %]">[% emailpro %]</a></li>[% END %] [% END %] [% IF ( initials ) %]<li><span class="label">Initiales&nbsp;: </span>[% initials %]</li>[% END %] [% IF ( dateofbirth ) %]<li><span class="label">Date de naissance&nbsp;:</span>[% dateofbirth %]</li>[% END %] [% IF ( sex ) %]<li><span class="label">Genre&nbsp;</span>
+ [% IF ( sex == 'F' ) %]Femme[% ELSIF ( sex == 'M' ) %]Homme[% ELSE %][% sex %][% END %] </li>[% END %][% END %] [% IF ( printethnicityline ) %] <li><span class="label">Ethnie&nbsp;: </span>[% ethnicity %]</li>
+ <li><span class="label">Note sur l'ethnie&nbsp;: </span>[% ethnotes %]</li>
+ [% END %] [% IF ( isguarantee ) %] [% IF ( guaranteeloop ) %] <li><span class="label">Cautions&nbsp;: </span><ul>[% FOREACH guaranteeloo IN guaranteeloop %]<li><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% guaranteeloo.borrowernumber %]">[% guaranteeloo.name %] </a></li>[% END %]</ul></li>
+ [% END %] [% ELSE %] [% IF ( guarantorborrowernumber ) %] <li><span class="label">Garant&nbsp;: </span><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% guarantorborrowernumber %]">[% guarantorsurname %], [% guarantorfirstname %]</a></li>
+ [% END %] [% END %] </ol>
+</div>
+ <div class="action">
+ [% IF ( guarantorborrowernumber ) %] <a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=1&amp;guarantorid=[% guarantorborrowernumber %]">Modifier</a>
+ [% ELSE %] <a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=1">Modifier</a>
+ [% END %]</div>
+
+</div>
+
+<!-- Begin Upload Patron Image Section -->
+
+<div id="manage-patron-image">
+[% IF ( patronimages ) %] [% IF ( CAN_user_tools_batch_upload_patron_images ) %] <form method="post" action="/cgi-bin/koha/tools/picture-upload.pl" enctype="multipart/form-data">
+ <fieldset class="brief">
+ [% IF ( picture ) %] <legend>Gestion de la photo de l'adhérent</legend>
+ <div class="hint">Mettre à jour la photo de [% title %] [% surname %] : sélectionnez un fichier image et cliquez sur 'Télécharger'<br />Cliquer sur le bouton "supprimer" pour enlever l'image actuelle. [% ELSE %] <legend>Télécharger la photo de l'adhérent</legend>
+ <div class="hint">[% title %] [% firstname %] [% surname %] n'a pas d'image. Pour importer une image pour [% title %] [% surname %], saisissez le nom du fichier image à télécharger. [% END %] <br />Seuls les formats PNG, GIF, JPEG et XPM sont gérés.</div>
+ <input type="hidden" id="image" name="filetype" value="image" />
+ <input type="hidden" id="cardnumber" name="cardnumber" value="[% cardnumber %]" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <ol>
+ <li>
+ <label for="uploadfile">Sélectionnez le fichier à importer&nbsp;: </label><input type="file" id="uploadfile" name="uploadfile" />
+ </li>
+ </ol>
+ <fieldset class="action">
+ <input value="Télécharger" type="submit" class="submit" />
+ <input name="op" type="hidden" value="Upload" />
+ [% IF ( picture ) %]<a id="delpicture" href="/cgi-bin/koha/tools/picture-upload.pl?op=Delete&amp;cardnumber=[% cardnumber %]&amp;borrowernumber=[% borrowernumber %]" class="delete">Supprimer</a>[% END %] </fieldset>
+ </fieldset>
+ </form>
+ [% END %] [% END %] </div>
+
+<!-- End Upload Patron Image Section -->
+
+[% IF ( ExtendedPatronAttributes ) %]
+[% UNLESS ( no_patron_attribute_types ) %]
+<div id="patron-extended-attributes" style="padding-top: 1em;">
+<h3>Attributs et identifiants supplémentaires</h3>
+[% FOREACH attribute IN attributes_loop %] [% IF attribute.class %] <div id="aai_[% attribute.class %]" class="rows">
+ [% ELSE %] <div id="aai" class="rows">
+ [% END %] <h4>[% attribute.lib %]</h4>
+ <ol>
+ [% FOREACH item IN attribute.items %] <li>
+ <span class="label">[% item.description %]: </span>
+ [% IF ( item.value_description ) %] [% item.value_description %] [% ELSE %] [% item.value| html_line_break %] [% END %] </li>
+ [% END %] </ol>
+ </div>
+[% END %] </div>
+<div class="action"><a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=4">Modifier</a></div>
+[% END %] [% END %] [% IF ( EnhancedMessagingPreferences ) %] <div id="patron-messaging-prefs" style="padding-top: 1em;">
+<h3>Préférences notifications adhérent</h3>
+[% INCLUDE 'messaging-preference-form.inc' %] [% IF ( SMSSendDriver ) %] <div class="rows"> <ol><li><span class="label">Numéro SMS&nbsp;:</span>[% SMSnumber %] </li></ol></div>
+ [% END %] </div>
+<div class="action"><a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=5">Modifier</a></div>
+[% END %] </div>
+ <div class="yui-u"> 
+ <div id="patron-library-details">
+ <h3>Library use</h3>
+<div class="rows"> 
+<ol>
+ <li><span class="label">N° de carte&nbsp;: </span>[% cardnumber %]</li>
+ <li><span class="label">N° d'adhérent&nbsp;: </span> [% borrowernumber %]</li>
+ <li><span class="label">Catégorie&nbsp;: </span>[% description %] ([% categorycode %])</li>
+ <li><span class="label">Date d'inscription&nbsp;: </span>[% dateenrolled %]</li>
+ 
+ <li><span class="label">Date d'expiration&nbsp;:</span>
+ [% IF ( was_renewed ) %] <strong class="reregistrinfo">[% dateexpiry %]</strong>
+ [% ELSE %] [% dateexpiry %] [% END %] </li>
+ 
+ <li><span class="label">Library: </span>[% branchname %]</li>
+
+ [% IF ( OPACPrivacy ) %]<li><span class="label">Vie privée&nbsp;:</span>
+ [% IF ( privacy0 ) %]Toujours[% END %] [% IF ( privacy1 ) %]Defaut[% END %] [% IF ( privacy2 ) %]Jamais[% END %] </li>[% END %] [% IF ( sort1 ) %]<li><span class="label">Sort field 1:</span>[% lib1 %]</li>[% END %] [% IF ( sort2 ) %]<li><span class="label">Sort field 2:</span>[% lib2 %]</li>[% END %] <li><span class="label">Identifiant&nbsp;: </span>[% userid %]</li>
+ <li><span class="label">Mot de passe&nbsp;: </span>
+ [% IF ( password ) %] ******* [% ELSE %] <span class="problem"><a href="/cgi-bin/koha/members/member-password.pl?member=[% borrowernumber %]">Indéfini&nbsp;</a></span>
+ [% END %] </li>
+ [% IF ( borrowernotes ) %]<li><span class="label">Note de circulation&nbsp;: </span>[% borrowernotes %]</li>[% END %] [% IF ( opacnote ) %]<li><span class="label">Note OPAC&nbsp;:</span>[% opacnote %]</li>[% END %] </ol>
+ </div>
+ </div>
+ <div class="action"><a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=3">Modifier</a></div>
+ 
+ [% UNLESS ( I ) %] <div id="patron-alternate-address" style="padding-top: 1em;">
+ <h3>Autre adresse</h3>
+ <div class="rows"> <ol><li><span class="label">Adresse&nbsp;: </span>[% B_address %]</li>
+ <li><span class="label">Adresse (suite)&nbsp;: </span>[% B_address2 %]</li>
+ <li><span class="label">Ville&nbsp;: </span>[% B_city %]</li>
+ [% IF ( B_state ) %]<li><span class="label">Etat&nbsp;: </span>[% B_state %]</li>[% END %] <li><span class="label">Code postal&nbsp;: </span>[% B_zipcode %]</li>
+ [% IF ( B_country ) %]<li><span class="label">Pays : </span>[% B_country %]</li>[% END %] [% IF ( B_phone ) %]<li><span class="label">Téléphone&nbsp;: </span>[% B_phone %]</li>[% END %] [% IF ( B_email ) %]<li><span class="label">Courriel&nbsp;: </span><a href="mailto:[% B_email %]">[% email %]</a></li>[% END %]</ol></div>
+</div>
+<div class="action"><a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=6">Modifier</a></div>
+ [% END %] <div id="patron-alternative-contact" style="padding-top: 1em;">
+ <h3>Autre contact</h3>
+ <div class="rows"> <ol><li><span class="label">Nom de famille&nbsp;: </span>[% altcontactsurname %]</li>
+ <li><span class="label">Prénom&nbsp;: </span>[% altcontactfirstname %]</li> 
+ <li><span class="label">Adresse&nbsp;: </span>[% altcontactaddress1 %]</li>
+ <li><span class="label">Adresse (suite)&nbsp;: </span>[% altcontactaddress2 %]</li>
+ <li><span class="label">Ville&nbsp;: </span>[% altcontactaddress3 %]</li>
+ [% IF ( altcontactstate ) %]<li><span class="label">Etat&nbsp;: </span>[% altcontactstate %]</li>[% END %] <li><span class="label">Code postal&nbsp;: </span>[% altcontactzipcode %]</li>
+ [% IF ( altcontactcountry ) %]<li><span class="label">Pays : </span>[% altcontactcountry %]</li>[% END %] [% IF ( altcontactphone ) %]<li><span class="label">Téléphone&nbsp;: </span>[% altcontactphone %]</li>[% END %] </ol></div>
+</div>
+<div class="action"><a href="memberentry.pl?op=modify&amp;borrowernumber=[% borrowernumber %]&amp;step=2">Modifier</a></div>
+
+</div>
+</div>
+
+<div id="finesholdsissues" class="toptabs">
+ <ul>
+ <li><a href="#checkedout">[% issueloop.size %] Prêt(s)</a></li>
+ [% IF relissueloop.size %] <li><a href="#relissues">Prêts de la famille</a></li>
+ [% END %] <li><a href="#finesandcharges">Amendes & Frais</a></li>
+ <li>[% IF ( countreserv ) %] <a href="#onhold">[% countreserv %] Réservation(s)</a> [% ELSE %] <a href="#onhold">0 Holds</a>
+ [% END %]</li>
+ </ul>
+
+ <form action="/cgi-bin/koha/reserve/renewscript.pl" method="post" class="checkboxed">
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input type="hidden" name="branch" value="[% branch %]" />
+<div id="checkedout">
+ [% IF ( issueloop ) %] <table id="issuest">
+ <thead>
+ <tr>
+ <th scope="col">Date de retour</th>
+ <th scope="col">Titre</th>
+ <th scope="col">Type de document</th>
+ <th scope="col">Emprunté le</th> 
+ <th scope="col">Emprunté à</th> 
+ <th scope="col">Cote </th>
+ <th scope="col">Frais</th>
+ <th scope="col">Prix</th>
+ <th scope="col">Renouveler <p class="column-tool"><a href="#" id="CheckAllitems">Tout sélectionner</a> | <a href="#" id="CheckNoitems">aucun</a></p></th>
+ <th scope="col">Retour <p class="column-tool"><a href="#" id="CheckAllreturns">Tout sélectionner</a> | <a href="#" id="CheckNoreturns">aucun</a></p></th>
+ </tr></thead>
+ [% INCLUDE 'checkouts-table-footer.inc' %] <tbody>
+ [% FOREACH issueloo IN issueloop %] [% IF ( issueloo.overdue ) %] <tr class="problem">
+ [% ELSE %] <tr>
+ [% END %] [% IF ( issueloo.red ) %] <td class="od">
+ [% ELSE %] <td>
+ [% END %] <span title="[% issueloo.date_due %]">[% issueloo.date_due | $KohaDates %]</span>
+ [% IF ( issueloo.itemlost ) %] <span class="lost">[% issueloo.itemlost %]</span>
+ [% END %] [% IF ( issueloo.damaged ) %] <span class="dmg">[% issueloo.itemdamaged %]</span>
+ [% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% issueloo.biblionumber %]"><strong>[% issueloo.title |html %]</strong></a>[% IF ( issueloo.author ) %], par [% issueloo.author %][% END %] [% IF ( issueloo.publishercode ) %]; [% issueloo.publishercode %] [% END %] [% IF ( issueloo.publicationyear ) %], [% issueloo.publicationyear %][% END %] <a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber=[% issueloo.biblionumber %]&amp;itemnumber=[% issueloo.itemnumber %]#item[% issueloo.itemnumber %]">[% issueloo.barcode %]</a></td>
+<td>[% UNLESS ( noItemTypeImages ) %] [% IF ( issueloo.itemtype_image ) %]<img src="[% issueloo.itemtype_image %]" alt="" />[% END %][% END %][% issueloo.itemtype_description %]</td>
+ <td><span title="[% issueloo.issuedate %]">[% issueloo.issuedate | $KohaDates%]</span></td>
+ <td>[% issueloo.issuingbranchname %]</td>
+ <td>[% issueloo.itemcallnumber %]</td>
+ <td>[% issueloo.charge %]</td>
+ <td>[% issueloo.replacementprice %]</td>
+ [% IF ( issueloo.renew_failed ) %] <td class="problem">Échec du renouvellement</td>
+ [% ELSE %] <td><span style="padding: 0 1em;">[% IF ( issueloo.renewals ) %][% issueloo.renewals %][% ELSE %][% END %]</span>
+ [% IF ( issueloo.norenew ) %] [% IF ( issueloo.can_confirm ) %]<span class="renewals-allowed" style="display: none">
+ <input type="checkbox" name="all_items[]" value="[% issueloo.itemnumber %]" checked="checked" style="display: none;" />
+ [% IF ( issueloo.od ) %] <input type="checkbox" name="items[]" value="[% issueloo.itemnumber %]" checked="checked" />
+ [% ELSE %] <input type="checkbox" name="items[]" value="[% issueloo.itemnumber %]" />
+ [% END %] </span>
+ <span class="renewals-disabled">
+ [% END %] [% IF ( issueloo.norenew_reason_on_reserve ) %] <a href="/cgi-bin/koha/reserve/request.pl?biblionumber=[% issueloo.biblionumber %]">Réservations</a>
+ [% END %] [% IF ( issueloo.norenew_reason_too_many ) %] Non Renouvelable [% END %] [% IF ( issueloo.can_confirm ) %] </span>
+ [% END %] [% ELSE %] <input type="checkbox" name="all_items[]" value="[% issueloo.itemnumber %]" checked="checked" style="display: none;" />
+ [% IF ( issueloo.red ) %] <input type="checkbox" name="items[]" value="[% issueloo.itemnumber %]" checked="checked" onclick="uncheck_sibling(this);" />
+ [% ELSE %] <input type="checkbox" name="items[]" value="[% issueloo.itemnumber %]" onclick="uncheck_sibling(this);" />
+ [% END %] [% END %] </td>
+ [% END %] [% IF ( issueloo.return_failed ) %] <td class="problem">Check-in failed</td>
+ [% ELSE %] [% IF ( issueloo.norenew_reason_on_reserve ) %] <td><a href="/cgi-bin/koha/reserve/request.pl?biblionumber=[% issueloo.biblionumber %]">Réservé pour</a></td>
+ [% ELSE %] <td><input type="checkbox" name="barcodes[]"  value="[% issueloo.barcode %]" onclick="uncheck_sibling(this);" />
+ <input type="checkbox" name="all_barcodes[]" value="[% issueloo.barcode %]" checked="checked" style="display: none;" />
+ </td>
+ [% END %] [% END %] </tr>
+ [% END %] </tbody>
+ </table>
+ <fieldset class="action">
+ [% IF ( CAN_user_circulate_override_renewals ) %] [% IF ( AllowRenewalLimitOverride ) %] <label for="override_limit">Outrepasser renouvellement&nbsp;:</label>
+ <input type="checkbox" name="override_limit" id="override_limit" value="1" />
+ [% END %] [% END %] <input value="Renouveler ou retourner le(s) document(s) coché(s)" name="renew_checked" type="submit" />
+ <input value="Tout renouveler" name="renew_all" type="submit" id="renew_all" />
+ </fieldset>
+ [% ELSE %]<p>Cet adhérent n'a pas de document en prêt.</p>
+[% END %] </div>
+
+
+[% IF relissueloop %] <div id="relissues">
+ <table id="relissuest">
+ <thead>
+ <tr>
+ <th scope="col">Date de retour</th>
+ <th scope="col">Titre</th>
+ <th scope="col">Type de document</th>
+ <th scope="col">Emprunté le</th> 
+ <th scope="col">Emprunté à</th>
+ <th scope="col">Cote </th>
+ <th scope="col">Frais</th>
+ <th scope="col">Prix</th>
+ <th scope="col">Adhérent</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH relissueloo IN relissueloop %] [% IF ( relissueloo.overdue ) %] <tr class="problem">
+ [% ELSE %] <tr>
+ [% END %] [% IF ( relissueloo.red ) %] <td class="od">
+ [% ELSE %] <td>
+ [% END %] <span title="[% relissueloo.date_due %]">[% relissueloo.date_due | $KohaDates %]</span>
+ [% IF ( relissueloo.itemlost ) %] <span class="lost">[% relissueloo.itemlost %]</span>
+ [% END %] [% IF ( relissueloo.damaged ) %] <span class="dmg">[% relissueloo.itemdamaged %]</span>
+ [% END %] </td>
+ <td><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% relissueloo.biblionumber %]"><strong>[% relissueloo.title |html %]</strong></a>[% IF relissueloo.author %], par [% relissueloo.author %][% END %] [% IF relissueloo.publishercode %]; [% relissueloo.publishercode %] [% END %] [% IF relissueloo.publicationyear %], [% relissueloo.publicationyear %][% END %] <a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber=[% relissueloo.biblionumber %]&amp;itemnumber=[% relissueloo.itemnumber %]#item[% relissueloo.itemnumber %]">[% relissueloo.barcode %]</a></td>
+<td>[% UNLESS ( noItemTypeImages ) %] [% IF ( relissueloo.itemtype_image ) %]<img src="[% relissueloo.itemtype_image %]" alt="" />[% END %][% END %][% relissueloo.itemtype_description %]</td>
+ <td><span title="[% relissueloo.issuedate %]">[% relissueloo.issuedate | $KohaDates %]</span></td>
+ <td>[% relissueloo.issuingbranchname %]</td>
+ <td>[% relissueloo.itemcallnumber %]</td>
+ <td>[% relissueloo.charge %]</td>
+ <td>[% relissueloo.replacementprice %]</td>
+ <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% relissueloo.borrowernumber %]">[% relissueloo.firstname %] [% relissueloo.surname %] ([% relissueloo.cardnumber %])</a></td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </div>
+[% END %] </form>
+
+<div id="finesandcharges">
+ [% IF ( totaldue_raw ) %] <p>Total dû&nbsp;: [% totaldue %]</p>
+ [% ELSE %] <p>Pas de charges à recouvrer</p>
+ [% END %] </div>
+
+<div id="onhold">
+[% IF ( reservloop ) %] <form action="/cgi-bin/koha/reserve/modrequest.pl" method="post">
+ <input type="hidden" name="from" value="borrower" />
+ <table id="holdst">
+ <thead><tr>
+ <th>Date de réservation</th>
+ <th>Titre</th>
+ <th>Cote</th>
+ <th>Code à barres</th>
+ <th>Priorité</th>
+ <th>Supprimer ?</th>
+ <th>&nbsp;</th>
+ </tr></thead>
+ <tbody>[% FOREACH reservloo IN reservloop %] <tr class="[% reservloo.color %]">
+ <td><span title="[% reservloo.reservedate %]">[% reservloo.reservedate | $KohaDates %]</span></td>
+ <td>
+ <a href="/cgi-bin/koha/reserve/request.pl?biblionumber=[% reservloo.biblionumber %]">[% reservloo.title |html %]</a>[% IF ( reservloo.author ) %], par [% reservloo.author %][% END %]</td>
+ <td>[% reservloo.itemcallnumber %]</td>
+ <td>[% IF ( reservloo.waiting ) %] <em>L'exemplaire est<strong>mis de coté</strong></em>
+ [% END %] [% IF ( reservloo.transfered ) %] <em>Exemplaire<strong>en transit</strong> de [% reservloo.frombranch %] depuis le [% reservloo.datesent %]</em>
+ [% END %] [% IF ( reservloo.nottransfered ) %] <em>L'exemplaire n'a pas encore été transféré de [% reservloo.nottransferedby %]</em>
+ [% END %] [% IF ( reservloo.barcodereserv ) %] <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% reservloo.biblionumber %]">[% reservloo.barcodereserv %]</a>
+ [% END %] </td>
+ <td>[% IF ( reservloo.waitingposition ) %]<strong>[% reservloo.waitingposition %]</strong>[% END %]</td>
+ <td><select name="rank-request">
+ <option value="n">Non</option>
+ <option value="del">Oui</option>
+ </select>
+ <input type="hidden" name="biblionumber" value="[% reservloo.biblionumber %]" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ </td>
+ <td>[% IF ( reservloo.suspend ) %]Suspendu [% IF ( reservloo.suspend_until ) %] jusqu'à [% reservloo.suspend_until | $KohaDates %][% END %][% END %]</td>
+ </tr>
+ [% END %]</tbody>
+ </table>
+
+ <fieldset class="action"><input value="Annuler réservation" name="submit" type="submit" class="cancel" /></fieldset>
+ </form>
+
+ [% IF SuspendHoldsIntranet %] <fieldset class="action">
+ <form action="/cgi-bin/koha/reserve/modrequest_suspendall.pl" method="post">
+ <input type="hidden" name="from" value="borrower" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input value="Suspendre toutes les réservations" type="submit" />
+
+ [% IF AutoResumeSuspendedHolds %] <label for="suspend_until">jusqu'à</label>
+ <input type="text" size="10" id="suspend_until" name="suspend_until"/>
+ <span class="hint">Specify date on which to resume [% INCLUDE 'date-format.inc' %]: </span>
+ [% END %] </form>
+ </fieldset>
+
+ <fieldset class="action">
+ <form action="/cgi-bin/koha/reserve/modrequest_suspendall.pl" method="post">
+ <input type="hidden" name="from" value="borrower" />
+ <input type="hidden" name="borrowernumber" value="[% borrowernumber %]" />
+ <input type="hidden" name="suspend" value="0" />
+ <input value="Reprendre toutes les réservations suspendues" type="submit" />
+ </form>
+ </fieldset>
+ [% END # IF SuspendHoldsIntranet %] [% ELSE %]<p>Cet adhérent n'a pas de réservation</p>[% END %] </div>
+
+</div>
+[% END %] <!-- unknowuser -->
+
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

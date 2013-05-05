@@ -1,0 +1,32 @@
+[% INCLUDE 'help-top.inc' %] <h1>Modèles</h1>
+
+<p>Un modèle est le type d'étiquettes/cartes que vous utilisez. Ce peut être Avery·5160 pour les étiquettes d'adresse, Gaylord·47-284 pour les étiquettes de dos ou Avery·28371 pour les cartes adhérent, par exemple. Ces étiquettes incluent toutes les informations dont vous avez besoin pour paramétrer Koha, ces informations pouvant être sur l'emballage, ou si ce n'est pas le cas pouvant généralement être trouvées sur le site web du fournisseur.</p>
+
+<h2>Ajouter un modèle</h2>
+
+<p>Pour ajouter un nouveau modèle, cliquez sur le bouton 'Modèles' et choisissez 'Nouveau modèle'</p>
+
+<p>En utilisant le formulaire qui apparaît, vous pouvez définir le modèle de vos étiquettes ou de vos cartes.</p>
+
+<ul>
+ <li>L'identifiant du modèle est généré automatiquement après sauvegarde du modèle.</li>
+ <li>Le code du modèle doit être choisi pour vous aider à identifier facilement le modèle dans une liste.</li>
+ <li>Vous utilisez la Description du modèle afin d'ajouter des informations sur le modèle</li>
+ <li>The Units pull down is used to define what measurement scale you're going to be using for the template. This should probably match the unit of measurement used on the template description provided by the product vendor.&nbsp;</li>
+ <li>The measurements, number of columns and number of rows can be found on the vendor product packaging or website.
+<ul>
+ <li style="color: #990000">Important: If you do not supply a left text margin in the template, a 3/16" (13.5 point) left text margin will apply by default.</li>
+</ul>
+</li>
+ <li>Un profil est un paramétrage "d'ajustement" appliqué à un modèle donné juste avant l'impression pour compenser des anomalies uniques et spécifiques à une imprimante donnée (à laquelle le profil est rattaché). <ul>
+ <li>Avant de sélectionner un profil d'étiquette, essayez d'imprimer quelques exemples, vous pourrez plus facilement définir un profil qui correspond à votre combinaison d'imprimante et d'étiquettes.</li>
+ <li>Si vous avez trouvé des anomalies dans le document imprimé, créez un profil et rattachez-le au modèle.</li>
+</ul>
+</li>
+</ul>
+
+<p>After saving, your templates will appear on the 'Manage Templates' page.</p>
+
+<p><strong>See the full documentation for Label Templates in the <a href="http://manual.koha-community.org/3.12/en/labelcreator.html#labeltemplates">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

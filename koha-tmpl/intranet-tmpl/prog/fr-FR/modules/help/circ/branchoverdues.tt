@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Retards avec amendes</h1>
+
+<p>This report will show you any overdues at your library that have accrued fines on them.</p>
+
+<p>If you would like to limit the report you can use the pull down menu at the top to limit to a specific shelving location at your library. To see overdues with fines at other libraries you will have to change your library or log in at that library.</p>
+
+<p style="color: #990000">Important: If you do not charge fines and/or don't have the fines cron job running you will see no data on this report.</p>
+
+<p><strong>See the full documentation for Overdues with Fines in the <a href="http://manual.koha-community.org/3.12/en/circreports.html#overduesfines">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

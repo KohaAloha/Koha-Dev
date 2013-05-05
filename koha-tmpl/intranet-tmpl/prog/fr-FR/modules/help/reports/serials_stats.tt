@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Serials statistics</h1>
+
+<p>En utilisant le formulaire fourni, choisissez comment vous voulez lister vos périodiques dans votre système.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p><strong>Voir la documentation complète sur les Statistiques des périodiques dans le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#serialstats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

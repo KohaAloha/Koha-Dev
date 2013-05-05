@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %] <h1>Layouts</h1>
+
+<p>Le format définit le texte et les images qui seront imprimés sur la carte et leur emplacement.</p>
+
+<h1>Profils</h1>
+
+<p>Un profil est un paramétrage "d'ajustement" appliqué à un modèle donné juste avant l'impression pour compenser des anomalies uniques et spécifiques à une imprimante donnée (à laquelle le profil est rattaché). Ceci signifie que si vous paramétrez un modèle et imprimez un test de données et trouvez que les exemplaires ne sont pas alignés de la même façon sur chaque étiquette, vous avez besoin de définir un profil pour chaque imprimante, pour compenser la différence des styles d'impression, comme le décalage du texte vers la gauche, la droite, le haut ou le bas.</p>
+
+<h1>Modèles</h1>
+
+<p>Un modèle est le type d'étiquettes/cartes que vous utilisez. Ce peut être Avery·5160 pour les étiquettes d'adresse, Gaylord·47-284 pour les étiquettes de dos ou Avery·28371 pour les cartes adhérent, par exemple. Ces étiquettes incluent toutes les informations dont vous avez besoin pour paramétrer Koha, ces informations pouvant être sur l'emballage, ou si ce n'est pas le cas pouvant généralement être trouvées sur le site web du fournisseur.</p>
+
+<h2>Lots</h2>
+
+<p>Un lot est un ensemble d'adhérents pour lesquels vous souhaitez générer les cartes</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

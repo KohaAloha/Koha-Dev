@@ -1,0 +1,67 @@
+[% INCLUDE 'help-top.inc' %] <h1>Holidays calendar</h1>
+
+<p>Libraries can define library closings and holidays to be used when calculating due dates. You can make use of the Calendar by turning on the proper system preferences:</p>
+
+<ul>
+ <li><em>Get there: </em>More &gt; Administration &gt; Global System Preferences &gt; Circulation &gt; useDaysMode
+<ul>
+ <li>Sélectionnez la méthode de calcul des dates de retour: sélectionnez Calendar pour utiliser le calendrier de fermetures, et Days pour ignorer le calendrier de fermetures</li>
+</ul>
+</li>
+ <li><em>Aller à&nbsp;:</em> More &gt; Administration &gt; Global System Preferences &gt; Circulation &gt; finescalendar
+<ul>
+ <li>Le calendrier des fermetures est utilisé pour le calcul des amendes.</li>
+</ul>
+</li>
+</ul>
+
+<h3>Ajouter des jours</h3>
+
+<p>Avant d'ajouter des jours, choisissez le site pour lequel vous voulez définir des jours de fermeture. Lorsque vous ajouterez des jours, vous pourrez préciser s'il se rapporte à un site ou bien à tous les sites. Pour ajouter un jour :</p>
+
+<ul>
+ <li>Cliquez sur la date du calendrier que vous voulez marquer comme jour de fermeture</li>
+ <li>In the form that appears above the calendar, enter the closing information (for more info on each option click the question mark [?] to the right of the option)
+<ul>
+ <li>Library will be filled in automatically based on the library you chose from the pull down at the top of the page</li>
+ <li>L'information sur la date sera également renseignée automatiquement en fonction de la date que vous avez choisie dans le calendrier</li>
+ <li>Définir les jours de fermeture de la bibliothèque</li>
+ <li>Next you can choose if this event is a one time event or if it is repeatable.
+<ul>
+ <li>If this is a one day holiday choose 'Holiday only on this day'</li>
+ <li>If this is a weekly closing (like a weekend day) then you can choose 'Holiday repeated every same day of the week'</li>
+ <li>If this is an annual holiday closing choose 'Holiday repeated yearly on the same date'</li>
+ <li>If the library is going to be closed for the week or a range of time choose 'Holiday on a range' and enter a 'To Date' at the top</li>
+ <li>If the library is going to be closed for a range of time each year (such as summer holidays for schools) choose 'Holiday repeated yearly on a range' and enter a 'To Date' at the top</li>
+</ul>
+</li>
+ <li>Finally decide if this event should be applied to all libraries or just the one you have originally selected
+<ul>
+ <li>If you'd rather enter all the holidays and then copy them all to another library all at once you can use the copy menu below the calendar</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>Après avoir sauvegardé vous verrez les événements affichés sous le calendrier</li>
+</ul>
+
+<h3>Modification des jours de fermeture</h3>
+
+<p>Pour modifier un jour de fermeture :</p>
+
+<ul>
+ <li>Cliquez dans le calendrier sur le jour que vous voulez modifier. </li>
+ <li>Sur ce formulaire, vous saisissez les jours de fermeture de votre bibliothèque, ajout, modification et suppression, toutes ces actions requérant que vous cliquiez sur le bouton Enregistrer pour qu'elles soient validées.</li>
+ <li>En cliquant sur des jours de fermeture répétables vous obtiendrez des options sensiblement différentes<ul>
+ <li>Dans le formulaire au-dessus, vous noterez la présence d'une option Générér une exception. Choisissez-la pour que la date soit ouvrée même si la bibliothèque est habituellement fermée ce jour-la.</li>
+</ul>
+</li>
+</ul>
+
+<h3>Aide supplémentaire</h3>
+
+<p>Quand vous ajoutez ou que vous modifiez des jours de fermeture, vous pouvez obtenir une aide supplémentaire en cliquant sur le plus bleu qui se trouve en regard des différentes rubriques du formulaire.</p>
+
+<p><strong>Voir la documentation complète sur le Calendrier dans le <a href="http://manual.koha-community.org/3.12/en/calholidays.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

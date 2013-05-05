@@ -1,0 +1,348 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; [% UNLESS ( basketno ) %]Ajouter [% END %][% IF ( delete_confirm ) %]Supprimer [% END %]panier [% basketname|html %] ([% basketno %]) de [% name|html %]</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+    function updateColumnsVisibility(visible) {
+        if ( visible ) {
+            $("table .gste, .gsti").show();
+        } else {
+            [% IF ( listincgst ) %]
+                $("table .gste").hide();
+            [% ELSE %]
+                $("table .gsti").hide();
+            [% END %]
+        }
+    }
+
+    $(document).ready(function() {
+        $("#show_all_details").click(function(){
+            updateColumnsVisibility($(this+":checked").val());
+        });
+
+        $("#show_all_details").attr('checked', false);
+        updateColumnsVisibility(false);
+    });
+//]]>
+</script>
+
+[% UNLESS ( closedate ) %] <script type="text/javascript">
+//<![CDATA[
+            function confirm_close() {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir fermer ce panier ?"));
+                if (is_confirmed) {
+                    window.location = "[% script_name %]?op=close&basketno=[% basketno %]";
+                }
+            }
+            function confirm_deletion() {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir supprimer cette panier ?"));
+                if (is_confirmed) {
+                    window.location = "[% script_name %]?op=delete_confirm&basketno=[% basketno %]&booksellerid=[% booksellerid %]";
+                }
+            }
+            function confirm_delete_item(ordernumber, biblionumber) {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir supprimer cette ligne de commande ?"));
+                if (is_confirmed) {
+                    window.location = "addorder.pl?ordernumber="+ordernumber+"&basketno=[% basketno %]&quantity=0&biblionumber="+biblionumber;
+                }
+            }
+            
+            function confirm_delete_biblio(ordernumber, biblionumber) {
+                var is_confirmed = confirm(_("Êtes vous sûr de vouloir supprimer cette notice et cette commande ?"));
+                if (is_confirmed) {
+                    window.location = "addorder.pl?ordernumber="+ordernumber+"&basketno=[% basketno %]&quantity=0&biblionumber="+biblionumber+"&delbiblio=1";
+                    }
+            }
+
+//]]>
+</script>
+[% ELSE %] <script type="text/javascript">
+//<![CDATA[
+    $(document).ready(function(){
+        $("#basketgroupid").change(function(){
+            if($(this).val() == "new"){
+                location.href="/cgi-bin/koha/acqui/basketgroup.pl?op=add&booksellerid=[% booksellerid %]";
+            }
+        });
+    });
+//]]>
+</script>
+[% UNLESS ( grouped ) %] <script type="text/javascript">
+//<![CDATA[
+            function confirm_reopen() {
+                var skip = [% IF ( skip_confirm_reopen ) %] 1 [% ELSE %] 0 [% END %];
+                var is_confirmed = skip || confirm(_("Êtes vous sûr de vouloir rouvrir ce panier ?"));
+                if (is_confirmed) {
+                    window.location = "[% script_name %]?op=reopen&basketno=[% basketno %]";
+                }
+            }
+//]]>
+</script>
+[% END %] [% END %] <script type="text/javascript">
+//<![CDATA[
+    $(document).ready(function() {
+        var orderst = $("#orders").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "sPaginationType": "four_button",
+            [% IF ( active ) %]
+              [% UNLESS ( closedate ) %]
+                "aoColumnDefs": [
+                    { "aTargets": [ -1, -2 ], "bSortable": false, "bSearchable": false },
+                ],
+              [% END %]
+            [% END %]
+        } ) );
+        var cancelledorderst = $("#cancelledorderst").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "sPaginationType": "four_button"
+        } ) );
+        $("#delbasketbutton").on("click",function(e){
+            e.preventDefault();
+            confirm_deletion();
+        });
+        $("#reopenbutton").on("click",function(e){
+            e.preventDefault();
+            confirm_reopen();
+        });
+    });
+//]]>
+</script>
+
+<style type="text/css">
+.sortmsg {font-size: 80%;}
+</style>
+</head>
+<body id="acq_basket" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% name|html %]</a> &rsaquo; [% UNLESS ( basketno ) %]Nouveau [% END %][% IF ( delete_confirm ) %]Supprimer [% END %]panier [% basketname|html %] ([% basketno %]) de [% name|html %]</div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% UNLESS ( confirm_close ) %] [% UNLESS ( selectbasketg ) %] [% UNLESS ( closedate ) %] <div id="toolbar" class="btn-toolbar">
+ <div class="btn-group"><a href="basketheader.pl?booksellerid=[% booksellerid %]&amp;basketno=[% basketno %]&amp;op=add_form" class="btn btn-small" id="basketheadbutton"><i class="icon-pencil"></i> Edit basket</a></div>
+ <div class="btn-group"><a href="#" class="btn btn-small" id="delbasketbutton"><i class="icon-remove"></i> Supprimer ce panier</a></div>
+ [% IF ( unclosable ) %] [% ELSIF ( uncertainprices ) %] <div class="btn-group"><a href="/cgi-bin/koha/acqui/uncertainprice.pl?booksellerid=[% booksellerid %]&amp;owner=1" class="btn btn-small" id="uncertpricesbutton">Prix indéterminés</a></div>
+ [% ELSE %] <div class="btn-group">
+ <a href="[% script_name %]?op=close&amp;basketno=[% basketno %]&amp;booksellerid=[% booksellerid %]" class="btn btn-small" id="closebutton"><i class="icon-remove-sign"></i> Fermer ce panier</a>
+ </div>
+ [% END %] <div class="btn-group"><a href="[% script_name %]?op=export&amp;basketno=[% basketno %]&amp;booksellerid=[% booksellerid %]" class="btn btn-small" id="exportbutton"><i class="icon-download"></i> Exporter ce panier au format CSV</a></div>
+
+ </div>
+ [% ELSE %] [% UNLESS ( grouped ) %] <div id="toolbar" class="btn-toolbar">
+ <div class="btn-group"><a href="#" class="btn btn-small" id="reopenbutton"><i class="icon-refresh"></i> Réouvrir ce panier</a></div>
+ <div class="btn-group"><a href="[% script_name %]?op=export&amp;basketno=[% basketno %]&amp;booksellerid=[% booksellerid %]" class="btn btn-small" id="exportbutton"><i class="icon-download"></i> Exporter ce panier au format CSV</a></div>
+ </div>
+ [% END %] [% END %] [% END %] [% IF ( NO_BOOKSELLER ) %] <h2>Fournisseur non trouvé</h2>
+ [% ELSE %] [% IF ( delete_confirmed ) %] <h3>Panier supprimé</h3>
+ <META HTTP-EQUIV=Refresh CONTENT="0; url=booksellers.pl">
+ [% ELSE %] <h1>[% UNLESS ( basketno ) %]Nouveau [% END %][% IF ( delete_confirm ) %]Supprimer [% END %]Panier [% basketname|html %] ([% basketno %]) pour <a href="supplier.pl?booksellerid=[% booksellerid %]">[% name|html %]</a></h1>
+ [% IF ( delete_confirm ) %] <h2>
+ <span class="yui-button yui-link-button">
+ <em class="first-child">
+ <a href="[% script_name %]?op=delete_confirm&amp;basketno=[% basketno %]&amp;booksellerid=[% booksellerid %]" class="yui-link-button">Oui, supprimer ce panier !</a>
+ </em>
+ </span>
+ <span class="yui-button yui-link-button">
+ <em class="first-child">
+ <a href="[% script_name %]?basketno=[% basketno %]" class="yui-link-button">Annuler</a>
+ </em>
+ </span>
+ </h2>
+ [% END %] [% IF ( basketno ) %] <div id="acqui_basket_summary" class="yui-g">
+ <div class="rows">
+ <div class="yui-u first">
+ <ol>
+ [% IF ( basketnote ) %]<li><span class="label">Note interne:</span> [% basketnote %]</li>[% END %] [% IF ( basketbooksellernote ) %]<li><span class="label">Note fournisseur</span> [% basketbooksellernote %]</li>[% END %] [% IF ( basketcontractno ) %] <li><span class="label">Nom du contrat:</span> <a href="../admin/aqcontract.pl?op=add_form&amp;contractnumber=[% basketcontractno %]&amp;booksellerid=[% booksellerid %]">[% basketcontractname %]</a></li>
+ [% END %] [% IF ( deliveryplace ) %]<li><span class="label">Adresse de livraison:</span> [% deliveryplace %]</li>[% END %] [% IF ( billingplace ) %]<li><span class="label">Adresse de facturation :</span> [% billingplace %]</li>[% END %] [% IF ( authorisedbyname ) %]<li><span class="label">Géré par&nbsp; :</span> [% authorisedbyname %]</li>[% END %] [% IF ( creationdate ) %]<li><span class="label">Ouvert le :</span> [% creationdate | $KohaDates %]</li>[% END %] [% IF ( closedate ) %]<li><span class="label">Fermé le&nbsp;: </span> [% closedate | $KohaDates %]</li>[% END %] [% IF ( estimateddeliverydate ) %]<li><span class="label">Date de livraison estimée :</span> [% estimateddeliverydate | $KohaDates  %]</li>[% END %] </ol>
+ </div>
+ [% IF ( closedate ) %] <div class="yui-u">
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="post">
+ <ol>
+ <li>
+ <span class="label">Bordereau :</span>
+ [% IF basketgroup.closed %]
+ [% basketgroup.name %] (closed)
+ [% ELSE %]
+ </li>
+ <li>
+ <select id="basketgroupid" name="basketgroupid">
+ <option value="new">Ajouter un nouveau groupe</option>
+ [% FOREACH bg IN basketgroups %] [% IF ( bg.default ) %] <option value="[% bg.id %]" selected="selected">[% bg.name %]</option>
+ [% ELSE %] [% UNLESS bg.closed %] <option value="[% bg.id %]">[% bg.name %]</option>
+ [% ELSE %] <option value="[% bg.id %]" disabled="disabled">[% bg.name %] (closed)</option>
+ [% END %] [% END %] [% END %] </select>
+ <input type="hidden" id="basketno" value="[% basketno %]" name="basketno" />
+ <input type="hidden" value="mod_basket" name="op" />
+ <input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ <input value="Changer le bordereau" type="submit" />
+ [% END %] </li>
+ [% IF ( basketgroupdeliveryplace ) %]<li><span class="label">Basket group delivery place:</span> [% basketgroupdeliveryplace %]</li>[% END %] [% IF ( basketgroupbillingplace ) %]<li><span class="label">Basket group billing place:</span> [% basketgroupbillingplace %]</li>[% END %] </ol>
+ </form>
+ </div>
+ [% END %] </div>
+ </div>
+ [% END %] [% UNLESS ( delete_confirm ) %] <div id="acqui_basket_content" class="yui-g">
+ [% IF ( books_loop ) %] <h2>Commandes</h2>
+ <label for="show_all_details">
+ <input type="checkbox" style="vertical-align: middle;" id="show_all_details" />
+ Show all details
+ </label>
+ <table id="orders">
+ <thead>
+ <tr>
+ <th>Commande</th>
+ <th class="gste">RRP tax exc.</th>
+ <th class="gste">ecost tax exc.</th>
+ <th class="gsti">RRP tax inc.</th>
+ <th class="gsti">ecost tax inc.</th>
+ <th>Qté</th>
+ <th class="gste">Total tax exc. ([% currency %])</th>
+ <th class="gsti">Total TTC ([% currency %])</th>
+ <th>GST %</th>
+ <th>GST</th>
+ <th>Poste budgétaire</th>
+ [% IF ( active ) %] [% UNLESS ( closedate ) %] <th>Modifier</th>
+ <th>Supprimer</th>
+ [% END %] [% END %] </tr>
+ </thead>
+ <tfoot>
+ [% FOREACH foot_loo IN book_foot_loop %] <tr>
+ <th>Total (GST [% foot_loo.gstgsti %])</th>
+ <th class="gste">&nbsp;</th>
+ <th class="gste">&nbsp;</th>
+ <th class="gsti">&nbsp;</th>
+ <th class="gsti">&nbsp;</th>
+ <th>[% foot_loo.quantity %]</th>
+ <th class="gste">[% foot_loo.totalgste %]</th>
+ <th class="gsti">[% foot_loo.totalgsti %]</th>
+ <th>&nbsp;</th>
+ <th>[% foot_loo.gstvalue %]</th>
+ <th>&nbsp;</th>
+ [% IF ( active ) %] [% UNLESS ( closedate ) %] <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ [% END %] [% END %] </tr>
+ [% END %] <tr>
+ <th>Total ([% currency %])</th>
+ <th class="gste">&nbsp;</th>
+ <th class="gste">&nbsp;</th>
+ <th class="gsti">&nbsp;</th>
+ <th class="gsti">&nbsp;</th>
+ <th>[% total_quantity %]</th>
+ <th class="gste">[% total_gste %]</th>
+ <th class="gsti">[% total_gsti %]</th>
+ <th>&nbsp;</th>
+ <th>[% total_gstvalue %]</th>
+ <th>&nbsp;</th>
+ [% IF ( active ) %] [% UNLESS ( closedate ) %] <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ [% END %] [% END %] </tr>
+ </tfoot>
+ <tbody>
+ [% FOREACH books_loo IN books_loop %] [% IF ( books_loo.order_received ) %]<tr class="disabled">[% ELSE %][% IF ( books_loo.toggle ) %]<tr class="highlight">[% ELSE %]<tr>[% END %][% END %] <td>
+ <p>[% IF ( books_loo.order_received ) %] (réception)[% END %] <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% books_loo.biblionumber %]">[% books_loo.title |html %]</a> par [% books_loo.author %] <br />
+ [% IF ( books_loo.isbn ) %] - [% books_loo.isbn %][% END %] [% IF ( books_loo.issn ) %] - [% books_loo.issn %][% END %] [% IF ( books_loo.publishercode ) %], [% books_loo.publishercode %][% END %] [% IF ( books_loo.publicationyear ) %], [% books_loo.publicationyear %][% END %] [% IF ( books_loo.editionstatement ) %], [% books_loo.editionstatement %][% END %] [% IF ( books_loo.suggestionid ) %] <br/>
+ Suggéré par : [% books_loo.surnamesuggestedby %][% IF ( books_loo.firstnamesuggestedby ) %], [% books_loo.firstnamesuggestedby %] [% END %] (<a href="/cgi-bin/koha/suggestion/suggestion.pl?suggestionid=[% books_loo.suggestionid %]&amp;op=show">suggestion #[% books_loo.suggestionid %]</a>) [% END %] </p>
+ [% IF ( books_loo.notes ) %] <p class="ordernote"><strong>Note&nbsp;:</strong>[% books_loo.notes|html %] [<a href="/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% books_loo.ordernumber %]">Modifier la note</a>]</p>
+ [% ELSE %] <p>[<a href="/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% books_loo.ordernumber %]">Ajouter une note</a>]</p>
+ [% END %] </td>
+ <td class="number gste [% IF books_loo.rrpgste.search('^0') %]error[% END %]">[% books_loo.rrpgste %]</td>
+ <td class="number gste [% IF books_loo.ecostgste.search('^0') %]error[% END %]">[% books_loo.ecostgste %]</td>
+ <td class="number gsti [% IF books_loo.rrpgsti.search('^0') %]error[% END %]">[% books_loo.rrpgsti %]</td>
+ <td class="number gsti [% IF books_loo.ecostgsti.search('^0') %]error[% END %]">[% books_loo.ecostgsti %]</td>
+ <td class="number [% IF books_loo.quantity.search('^0') %]error[% END %]">[% books_loo.quantity %]</td>
+ <td class="number gste [% IF books_loo.totalgste.search('^0') %]error[% END %]">[% books_loo.totalgste %]</td>
+ <td class="number gsti [% IF books_loo.totalgsti.search('^0') %]error[% END %]">[% books_loo.totalgsti %]</td>
+ <td class="number [% IF books_loo.gstgsti.search('^0') %]error[% END %]">[% books_loo.gstgsti %]</td>
+ <td class="number [% IF books_loo.gstvalue.search('^0') %]error[% END %]">[% books_loo.gstvalue %]</td>
+ <td>[% books_loo.budget_name %]</td>
+ [% IF ( active ) %] [% UNLESS ( closedate ) %] <td>
+ <a href="neworderempty.pl?ordernumber=[% books_loo.ordernumber %]&amp;booksellerid=[% booksellerid %]&amp;basketno=[% basketno %]">Modifier</a>
+ </td>
+ <td>
+ [% IF ( books_loo.left_holds_on_order ) %] <span class="button" title="Impossible de supprimer la commande. ([% books_loo.holds_on_order %]) réservations lui sont liées. Annulez d'abord les réservations">Impossible de supprimer la commande</span><br>
+ [% ELSE %] <a href="javascript:confirm_delete_item([% books_loo.ordernumber %],[% books_loo.biblionumber %])" class="button">Supprimer la commande</a><br>
+ [% END %] [% IF ( books_loo.can_del_bib ) %] <a href="javascript:confirm_delete_biblio([% books_loo.ordernumber %],[% books_loo.biblionumber %])" class="button">Supprimer la commande et la notice</a><br>
+ [% ELSE %] <span class="button" title="Impossible de supprimer la notice du catalogue. Voir ci-dessous pourquoi">Impossible de supprimer la commande et la notice</span><br>
+ [% END %] [% IF ( books_loo.left_item ) %] <b title="Impossible de supprimer la notice du catalogue parce qu'il y a [% books_loo.items %] réservation(s)">[% books_loo.items %] exemplaire(s) restant(s)</b><br>
+ [% END %] [% IF ( books_loo.left_biblio ) %] <b title="Impossible de supprimer la notice du catalogue. Supprimez d'abord les autres commandes qui y sont liées">[% books_loo.biblios %] commandes restantes</b><br>
+ [% END %] [% IF ( books_loo.left_subscription ) %] <b title="Impossible de supprimer la notice du catalogue. Supprimez d'abord les abonnements">[% books_loo.subscriptions %] abonnements restants</b><br>
+ [% END %] [% IF ( books_loo.left_holds ) %] <b title="Impossible de supprimer la notice du catalogue ou la commande. Annuler d'abord les réservations.">[% books_loo.holds %] Réservation(s) en trop</b>
+ [% END %] </td>
+ [% END %] [% END %] </tr>
+ [% END %] </tbody>
+ </table>
+ [% END %] [% IF ( listincgst ) %]<small class="highlight">** Les prix fournisseurs incluent déjà la TVA.</small>
+ [% END %] </div>
+ [% IF (cancelledorders_loop) %] <div id="cancelledorders">
+ <h2>Commandes annulées </h2>
+ <table id="cancelledorderst">
+ <thead>
+ <tr>
+ <th>Commande</th>
+ <th class="gste">RRP tax exc.</th>
+ <th class="gste">ecost tax exc.</th>
+ <th class="gsti">RRP tax inc.</th>
+ <th class="gsti">ecost tax inc.</th>
+ <th>Qté</th>
+ <th class="gste">Total tax exc. ([% currency %])</th>
+ <th class="gsti">Total TTC ([% currency %])</th>
+ <th>GST %</th>
+ <th>GST</th>
+ <th>Poste budgétaire</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH order IN cancelledorders_loop %] <tr style="color:grey">
+ <td>
+ <p>
+ [% IF ( order.order_received ) %] (réceptionné)[% END %] [% IF (order.title) %] par  [% order.title |html %] [% order.author %]<br />
+ [% ELSE %] <em>Notice bibliographique supprimée, impossible de trouver ce titre</em><br />
+ [% END %] [% IF ( order.notes ) %] [% order.notes %][% END %] [% IF ( order.isbn ) %] - [% order.isbn %][% END %] [% IF ( order.issn ) %] - [% order.issn %][% END %] [% IF ( order.publishercode ) %], [% order.publishercode %][% END %] [% IF ( order.publicationyear ) %], [% order.publicationyear %][% END %] [% IF ( books_loo.editionstatement ) %], [% books_loo.editionstatement %][% END %] </p>
+ </td>
+ <td class="number gste">[% order.rrpgste %]</td>
+ <td class="number gste">[% order.ecostgste %]</td>
+ <td class="number gsti">[% order.rrpgsti %]</td>
+ <td class="number gsti">[% order.ecostgsti %]</td>
+ <td class="number">[% order.quantity %]</td>
+ <td class="number gste">[% order.totalgste %]</td>
+ <td class="number gsti">[% order.totalgsti %]</td>
+ <td class="number">[% order.gstgsti %]</td>
+ <td class="number">[% order.gstvalue %]</td>
+ <td>[% order.budget_name %] </tr>
+ [% END %] </tbody>
+ </table>
+ </div>
+ [% END %] <br />
+ [% UNLESS ( closedate ) %]
+ [% INCLUDE 'acquisitions-add-to-basket.inc' %]
+ [% END %]
+ [% END %]
+[% END %]
+[% END %] [% ELSE %] <!-- if we want just to select a basketgroup for a closed basket -->
+ [% END %]
+[% IF ( confirm_close ) %]
+ <div id="closebasket_needsconfirmation" class="dialog alert">
+
+ <form action="/cgi-bin/koha/acqui/basket.pl" class="confirm">
+ <h1>Êtes vous sûr de vouloir fermer le panier [% basketname|html %] ?</h1>
+ <p>
+ <label for="createbasketgroup">Attacher ce panier à un nouveau bordereau avec le même nom</label>
+ <input type="checkbox" id="createbasketgroup" name="createbasketgroup"/>
+ </p>
+ <input type="hidden" id="basketno" value="[% basketno %]" name="basketno" />
+ <input type="hidden" value="close" name="op" />
+ <input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ <input type="hidden" name="confirm" value="1" />
+ <input type="hidden" name="basketgroupname" value="[% basketgroupname %]" />
+ <input type="submit" class="approve" value="Yes, close (Y)" accesskey="y" />
+ <input type="submit" class="deny" value="No, don't close (N)" accesskey="n" onclick="javascript:window.location='/cgi-bin/koha/acqui/basket.pl?basketno=[% basketno %]';return false;" />
+ </form>
+ </div>
+ [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

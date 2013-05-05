@@ -1,0 +1,37 @@
+[% INCLUDE 'help-top.inc' %] <h1>Budgets</h1>
+
+<p>Budgets are used for tracking accounting values related to acquisitions. For example you could create a Budget for the current year (ex. 2012) and then break that into Funds for different areas of the library (ex. Books, Audio, etc).</p>
+
+<p>When visiting the main budget administration you will see two tabs, one for active and one for inactive budgets.</p>
+
+<h2>Ajouter un budget</h2>
+
+<p>Budgets can either be created from scratch or by duplicating the previous year's budget.</p>
+
+<p>To duplicate a budget from a previous year, click on the link for the budget name from the list of budgets.</p>
+
+<p>On the screen listing the budget breakdown click the Edit button at the top and choose to Duplicate budget.</p>
+
+<p>You will be presented with a form where you simply need to enter the new start and end date and save the budget.</p>
+
+<p>This will not only duplicate your budget, but all of the funds associated with that budget so that you can reuse budgets and funds from year to year.</p>
+
+<p>If you haven't used Koha before for acquisitions then you'll need to start fresh with a new budget. To add a new budget click the 'New Budget' button.</p>
+
+<ul>
+ <li>Choisissez la période pour laquelle ce budget est prévu, que ce soit une année universitaire, fiscale ou calendaire.</li>
+
+ <li>The Description should be something that will help you identify the budget when ordering</li>
+
+ <li>Ne saisissez pas symbole dans la rubrique Montant. Entrez juste des chiffres et le séparateur décimal.</li>
+
+ <li>Rendre un budget actif le rend utilisable dans les commandes du module Acquisition, même si la commande est placée après la date de fin du budget, ceci afin de vous permettre d'enregistrer des commandes qui ont été faites sur une période antérieure.</li>
+
+ <li>Verrouiller un budget signifie que ses postes budgétaires ne pourront plus être modifiés par les bibliothécaires</li>
+</ul>
+
+<p>Once you have made your edits, click the 'Save Changes' button. You will be brought to a list of your existing budgets.</p>
+
+<p><strong>See the full documentation for Budgets in the <a href="http://manual.koha-community.org/3.12/en/acqadmin.html#budgetplanning">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

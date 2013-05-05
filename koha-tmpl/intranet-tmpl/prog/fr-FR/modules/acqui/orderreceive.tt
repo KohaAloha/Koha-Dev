@@ -1,0 +1,316 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Contenu du colis&nbsp;: [% name %] [% IF ( invoice ) %]ref fournisseur, [% invoice %][% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'additem.js.inc' %] <script type="text/javascript" src="[% themelang %]/js/additem.js"> </script>
+<script type="text/javascript">
+
+var nav = window.Event ? true : false;
+if (nav) {
+	window.captureEvents(Event.KEYDOWN);
+	window.onkeydown = NetscapeEventHandler_KeyDown;
+} else {
+	document.onkeydown = IEEventHandler_KeyDown;
+}
+
+function NetscapeEventHandler_KeyDown(e) {
+	if (e.which == 13 && e.target.type != 'textarea' && e.target.type != 'submit') { return false; }
+	return true;
+}
+
+function IEEventHandler_KeyDown() {
+	if (event.keyCode == 13 && event.srcElement.type != 'textarea' && event.srcElement.type != 'submit')
+		return false;
+	return true;
+}
+//<![CDATA[
+    function Check(form) {
+        [% IF (AcqCreateItemReceiving) %]
+            var total_errors=0;
+            $("input[name='mandatory'],select[name='mandatory']").each(function(i){
+                if($(this).val() == 1){
+                    var mandatory_field = $("input[name='field_value'],select[name='field_value']").eq(i);
+                    if(mandatory_field.val() == ''){
+                        mandatory_field.addClass("missing");
+                        total_errors++;
+                    }
+                }
+            });
+
+            if (total_errors != 0) {
+                var alertString = _("Formulaire non soumis à cause du (des) problème(s) suivant(s)");
+                alertString += "\n------------------------------------------------------------------------------------\n";
+                alertString += "\n- "+ total_errors+_(" champs obligatoires vides (surlignés)");
+                alert(alertString);
+                return false;
+            }
+
+            if(check_additem('[% UniqueItemFields %]') == false){
+                alert(_("Valeurs en double détectées. Merci de corriger ces erreurs et renvoyez le formulaire.") );
+                return false;
+            };
+
+            // Remove last itemblock if it is not in items_list
+            var lastitemblock = $("#outeritemblock > div:last");
+            var tobedeleted = true;
+            var listitems = $("#items_list tr");
+            $(listitems).each(function(){
+                if($(this).attr('idblock') == $(lastitemblock).attr('id')){
+                    tobedeleted = false;
+                }
+            });
+            if(tobedeleted){
+                $(lastitemblock).remove();
+            }
+
+            if(check_additem('[% UniqueItemFields %]') == false){
+                alert(_("Valeurs en double détectées. Merci de corriger ces erreurs et renvoyez le formulaire.") );
+                if(tobedeleted) {
+                    $(lastitemblock).appendTo("#outeritemblock");
+                }
+                return false;
+            };
+        [% END %]
+
+        return true;
+    }
+
+    [% IF (AcqCreateItem == 'ordering') %]
+        var items_columns = [null, null, 'barcode', 'homebranchname',
+            'holdingbranchname', 'notforloan', 'restricted', 'location',
+            'itemcallnumber', 'copynumber', 'stocknumber', 'collection',
+            'itemtype', 'materials', 'itemnotes'];
+
+        function PopupEditPage(biblionumber, itemnumber) {
+            var url = "/cgi-bin/koha/cataloguing/additem.pl?op=edititem&biblionumber="
+                + biblionumber + "&itemnumber=" + itemnumber + "&popup=1#edititem";
+            var w = window.open(url);
+            var watchClose = setInterval(function() {
+                if (w.closed) {
+                    clearTimeout(watchClose);
+                    $.getJSON('/cgi-bin/koha/catalogue/getitem-ajax.pl',
+                        {
+                            'itemnumber': itemnumber
+                        },
+                        function(item) {
+                            var tds = $("#item_"+itemnumber+" td");
+                            for(var i=2; i<tds.length; i++) {
+                                var column = items_columns[i];
+                                $(tds[i]).text(item[column]);
+                            }
+                        }
+                    );
+                }
+            }, 500);
+        }
+
+        function CalcQtyToReceive() {
+            var qty = $("input[name='items_to_receive']:checked").length;
+            $("#quantity").val(qty);
+        }
+
+        function CheckNItems(n) {
+            $("input[name='items_to_receive']").each(function() {
+                $(this).attr('checked', false);
+            });
+            $("input[name='items_to_receive']:lt("+n+")").each(function () {
+                $(this).attr('checked', true);
+            });
+        }
+    [% END %]
+
+    $(document).ready(function() {
+        [% IF (AcqCreateItemReceiving) %]
+            cloneItemBlock(0, '[% UniqueItemFields %]');
+        [% ELSIF (AcqCreateItem == 'ordering') && not subscriptionid %]
+            $("input[name='items_to_receive']").change(function() {
+                CalcQtyToReceive();
+            });
+            CalcQtyToReceive();
+            $("#quantity").keyup(function() {
+                var qty = parseInt($("#quantity").val());
+                var qtyto = parseInt($("#quantity_to_receive").val());
+                if(qty > qtyto) {
+                    $("#qtyrecerror").show();
+                } else {
+                    $("#qtyrecerror").hide();
+                }
+                CheckNItems($(this).val());
+            });
+        [% END %]
+    });
+//]]>
+</script>
+</head>
+<body id="acq_orderreceive" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% name %]</a> &rsaquo; Recevoir les exemplaires de : [% name %] [% IF ( invoice ) %][[% invoice %]][% END %] (commande n°[% ordernumber %])</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h1>Réceptionner des documents&nbsp;:: [% name %] [% IF ( invoice ) %][[% invoice %]] [% END %] (ligne cmde N°[% ordernumber %])</h1>
+
+[% IF ( count ) %] <form action="/cgi-bin/koha/acqui/finishreceive.pl" method="post" onsubmit="return Check(this);">
+<div class="yui-g">
+<div class="yui-u first">
+ <div class="error" style="display:none"></div>
+
+ <fieldset class="rows">
+ <legend>Détails</legend>
+ <ol><li><span class="label">Titre&nbsp;: </span><span class="title">[% title |html %]</span></li>
+ <li> <span class="label">Auteur&nbsp;: </span>
+ [% author %]</li>
+ <li><span class="label">Copyright&nbsp;: </span>
+ [% copyrightdate %]</li>
+ <li> <span class="label">ISBN&nbsp;: </span>
+ [% isbn %]</li>
+ <li> <span class="label">Collection&nbsp;:</span>
+ [% seriestitle %]</li>
+ </ol>
+ </fieldset>
+
+ [% IF ( suggestionid ) %] <fieldset class="rows">
+ <legend>Suggestion</legend>
+ <ol>
+ <li>
+ <span class="label">Suggéré par : </span>
+ [% surnamesuggestedby %][% IF ( firstnamesuggestedby ) %], [% firstnamesuggestedby %][% END %] (<a href="/cgi-bin/koha/suggestion/suggestion.pl?suggestionid=[% suggestionid %]&amp;op=show">suggestion #[% suggestionid %]</a>) </li>
+ </ol>
+ </fieldset>
+ [% END %] [% IF (AcqCreateItemReceiving) %] <div id="items_list" style="display:none">
+ <p><b>Liste des exemplaires</b></p>
+ <div style="width:100%;overflow:auto;">
+ <table>
+ <thead>
+ <tr>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>Code à barres</th>
+ <th>Site propriétaire</th>
+ <th>Site dépositaire</th>
+ <th>Exclu du prêt</th>
+ <th>Suspendu</th>
+ <th>Location</th>
+ <th>Cote</th>
+ <th>Numéro de copie</th>
+ <th>N° d'inventaire</th>
+ <th>Collection&nbsp;: </th>
+ <th>Type de document</th>
+ <th>Matériels</th>
+ <th>Notes</th>
+ </tr>
+ </thead>
+ <tbody>
+ </tbody>
+ </table>
+ </div>
+ </div>
+
+ [% UNLESS subscriptionid %] <fieldset class="rows" id="itemfieldset">
+ <legend>Exemplaire</legend>
+ [% IF ( NoACQframework ) %] <p class="required">
+ Pas de grille ACQ, grille par défaut utilisée. Vous pouvez créer une grille de catalogage avec le code ACQ, la grille sera utilisée pour les exemplaires</p>
+ [% END %] <div id="outeritemblock"></div>
+ </fieldset>
+ [% END %] [% ELSIF (AcqCreateItem == 'ordering') %] [% IF (items.size) %] <h5>Exemplaires</h5>
+ <div style="width:100%;overflow:auto">
+ <table>
+ <thead>
+ <tr>
+ <th>Receive?</th>
+ <th>&nbsp;</th>
+ <th>Code à barres</th>
+ <th>Propriétaire</th>
+ <th>Site dépositaire</th>
+ <th>Exclu du prêt</th>
+ <th>Suspendu</th>
+ <th>Location</th>
+ <th>Cote</th>
+ <th>Numéro de copie</th>
+ <th>N° d'inventaire</th>
+ <th>Collection&nbsp;: </th>
+ <th>Type de document</th>
+ <th>Matériels</th>
+ <th>Notes</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH item IN items %] <tr id="item_[% item.itemnumber %]">
+ <td style="text-align:center"><input type="checkbox" name="items_to_receive" value="[% item.itemnumber %]" /></td>
+ <td><a style="cursor:pointer" onclick="PopupEditPage([% item.biblionumber %],[% item.itemnumber %]);">Modifier</a></td>
+ <td>[% item.barcode %]</td>
+ <td>[% item.homebranchname %]</td>
+ <td>[% item.holdingbranchname %]</td>
+ <td>[% item.notforloan %]</td>
+ <td>[% item.restricted %]</td>
+ <td>[% item.location %]</td>
+ <td>[% item.itemcallnumber %]</td>
+ <td>[% item.copynumber %]</td>
+ <td>[% item.stocknumber %]</td>
+ <td>[% item.collection %]</td>
+ <td>[% item.itemtype %]</td>
+ <td>[% item.materials %]</td>
+ <td>[% item.itemnotes %]</td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </div>
+ [% END %] [% END %] <input type="hidden" name="biblionumber" value="[% biblionumber %]" />
+ <input type="hidden" name="invoiceid" value="[% invoiceid %]" />
+ <input type="hidden" name="ordernumber" value="[% ordernumber %]" />
+ <input type="hidden" name="biblioitemnumber" value="[% biblioitemnumber %]" />
+ <input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ <input type="hidden" name="datereceived" value="[% datereceived_iso %]" />
+ <input type="hidden" name="gstrate" value="[% gstrate %]" />
+ </div>
+ <div class="yui-u">
+ <fieldset class="rows">
+ <legend>Détails financiers</legend>
+ <ol>
+ <li><label for="datereceived">Date received: </label><span> [% datereceived %] </span></li>
+ <li><label for="bookfund">Budget&nbsp;: </label><span> [% bookfund %] </span></li>
+ <li><label for="creator">Créé par :</label><span> [% IF ( memberfirstname and membersurname ) %][% IF ( memberfirstname ) %][% memberfirstname %][% END %] [% membersurname %][% ELSE %]Aucun nom[% END %]</span></li>
+ <li><label for="quantity_to_receive">Quantité à recevoir&nbsp;:</label><span class="label">
+ [% IF ( edit and not subscriptionid) %] <input type="text" id="quantity_to_receive" name="quantity" value="[% quantity %]" />
+ [% ELSE%] <input type="text" readonly="readonly" id="quantity_to_receive" name="quantity" value="[% quantity %]" />
+ [% END %] </span></li>
+ <li><label for="quantity">Quantité reçue&nbsp;:</label>
+ [% IF (AcqCreateItemReceiving) %] [% IF ( subscriptionid ) %] <input readonly="readonly" type="text" size="20" name="quantityrec" id="quantity" value="1" />
+ [% ELSE %] <input readonly="readonly" type="text" size="20" name="quantityrec" id="quantity" value="0" />
+ [% END %] [% ELSE %] [% IF ( quantityreceived ) %] [% IF ( edit ) %] <input type="text" size="20" name="quantityrec" id="quantity" value="[% quantityreceived %]" />
+ <input id="origquantityrec" readonly="readonly" type="hidden" name="origquantityrec" value="[% quantityreceived %]" />
+ [% ELSE %] [% IF ( items ) %] <input readonly="readonly" type="text" size="20" name="quantityrec" id="quantity" value="[% quantityreceivedplus1 %]" />
+ [% ELSE %] <input type="text" size="20" name="quantityrec" id="quantity" value="[% quantityreceivedplus1 %]" />
+ [% END %] <input id="origquantityrec" readonly="readonly" type="hidden" name="origquantityrec" value="[% quantityreceived %]" />
+ [% END %] [% ELSE %] [% IF ( subscriptionid ) %] <input type="text" readonly="readonly" id="quantity" size="20" name="quantityrec" value="1" />
+ [% ELSE %] <input type="text" id="quantity" size="20" name="quantityrec" value="1" />
+ [% END %] <input id="origquantityrec" readonly="readonly" type="hidden" name="origquantityrec" value="0" />
+ [% END %] <div id="qtyrecerror" style="display:none">
+ <p class="error">Warning, you have entered more items than expected.
+ Items will not be created.</p>
+ </div>
+ [% END %][%# IF (AcqCreateItemReceiving) %] </li>
+ <li><label for="rrp">Coût de remplacement&nbsp;: </label><input type="text" size="20" name="rrp" id="rrp" value="[% rrp %]" /></li>
+ <li><label for="ecost">Coût budgété&nbsp;:</label><input type="text" size="20" name="ecost" id="ecost" value="[% ecost %]" /></li>
+ <li><label for="cost">Coût réel&nbsp;:</label>
+ [% IF ( unitprice ) %] <input type="text" size="20" name="cost" id="cost" value="[% unitprice %]" />
+ [% ELSE %] <input type="text" size="20" name="cost" id="cost" value="[% ecost %]" />
+ [% END %]</li></ol>
+ <label for="note">Notes&nbsp;: </label><textarea name="note" width="40" rows="8" >[% notes %]</textarea>
+ </fieldset>
+
+</div>
+</div><div class="yui-g"><fieldset class="action">
+ <input accesskey="w" value="Enregistrer" type="submit" class="button" />
+ <a class="cancel" href="/cgi-bin/koha/acqui/parcel.pl?invoiceid=[% invoiceid %]">Annuler</a>
+</fieldset></div> </form>
+[% ELSE %]
+ This ordernumber does not exist.
+[% END %]
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

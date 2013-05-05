@@ -1,0 +1,27 @@
+[% INCLUDE 'help-top.inc' %] <h1>MARC import</h1>
+
+<p>This tool can be used to import both bibliographic and authority records that are saved in MARC format. Importing records into Koha includes two steps. The first is to stage records for import.</p>
+
+<ul>
+ <li>Premièrement, cherchez le fichier MARC sur votre ordinateur</li>
+ <li>A l'étape suivante, vous aurez la possibilité de mettre en correspondance les notices avec celles de votre catalogue et d'importer des exemplaires<ul>
+ <li>Saisissez un commentaire sur ce fichier afin de l'identifier aisément quand vous utiliserez l'outil de gestion des notices MARC chargée</li>
+ <li>Tell Koha which type of file this is, bibliographic or authority</li>
+ <li>Choose the character encoding</li>
+ <li>Choisissez de rechercher ou non les notices correspondantes<ul>
+ <li>Vous configurez les règles de concordance en Administration</li>
+</ul>
+</li>
+ <li>Choisissez ensuite ce qu'il faut faire des notices correspondantes s'il y en a</li>
+ <li>Finalement, choisissez ce qu'il faut faire des notices qui sont uniques</li>
+ <li>Next you can choose whether or not to import the item data found in the MARC records (if the file you're loading is a bibliographic file)</li>
+</ul>
+</li>
+ <li>Cliquez sur Prépart pour l'import</li>
+ <li>Vous serez amené à un écran de confirmation.</li>
+ <li>Pour terminer le traitement, allez l'outil Gérer les notices MARC préparées</li>
+</ul>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/stagemarc.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

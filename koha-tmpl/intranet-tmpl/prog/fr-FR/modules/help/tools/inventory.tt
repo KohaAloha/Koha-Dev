@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %] <h1>Inventaire/récolement</h1>
+
+<p>L'outil Inventaire/récolement de Koha est utilisable de deux façons. Soit vous imprimez une liste par rayonnage sur laquelle vous marquez les exemplaires indisponibles. Soit vous chargez un fichier texte des codes à barres collectés au moyen d'un lecteur portable.</p>
+
+<p>Si vous n'avez pas la possibilité de scanner vos codes à barres dans la bibliothèque, vous avez l'option de créer une liste basée sur des critères.</p>
+
+<p>Choisissez quelle bibliothèque, rayonnage, intervalle de cotes, statut d'exemplaire et date à laquelle les exemplaires ont été vus pour la dernière fois afin de générer une liste que vous pourrez imprimer et utilisez ensuite quand vous examinerez et testerez physiquement vos collections</p>
+
+<p>Autrement vous pouvez exporter la liste dans un fichier CSV pour modification dans une application sur votre poste de travail. Cochez simplement la case 'Export csv' pour générer ce fichier.</p>
+
+<p>Une fois que vous avez retrouvé les exemplaires dans les rayonnages, vous pouvez revenir à cette liste et désélectionner les exemplaires qui auront leur date vue pour la dernière fois mise à la date du jour</p>
+
+<p>Si vous avez un scanner portable ou un ordinateur portable avec un scanner USB, vous pouvez vous déplacer dans la bibliothèque et scanner les codes à barres de vos documents. Le fichier ainsi généré peut être charger directement dans Koha.</p>
+
+<p>Choisissez un fichier texte et la date que vous souhaitez utiliser pour marquer les exemplaires comme vus pour la dernière fois, puis cliquez sur 'Envoyer' </p>
+
+<p><strong>Voir la documentation complète sur le Récolement dans le <a href="http://manual.koha-community.org/3.12/en/inventory.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

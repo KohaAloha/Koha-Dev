@@ -1,0 +1,39 @@
+[% INCLUDE 'help-top.inc' %] <h1>Gestion des notices MARC traitées</h1>
+
+<p>Une fois que vous aurez chargé vos notices à importer, vous pourrez terminer l'importation en utilisant cet outil.</p>
+
+<ul>
+ <li>Dans la liste des notices préparées, cliquez sur le nom du fichier que vous voulez finir d'importer dans votre catalogue<ul>
+ <li>Vous remarquerez que les notices qui ont déjà été importées sont signalées dans la colonne Statut</li>
+</ul>
+</li>
+ <li>Un résumé de votre import s'affiche avec la possibilité de changer vos règles de concordance</li>
+ <li>Sous le résumé de l'importation, il y a une option qui permet de sélectionner la grille à laquelle associer tout le lot de notices.<ul>
+ <li>Il n'est pas nécessaire de choisir une grille différent de Défaut, mais cela peut être utile pour lancer ensuite des rapports ou bien avoir le bon niveau bibliographique sélectionné.</li>
+</ul>
+</li>
+ <li>En dessous du résumé se trouve la liste des notices qui seront importées <ul>
+ <li>Vérifiez la synthèse avant de terminer votre import afin d'être sûr que vos règles de concordance et que les notices soient bien conforme à ce que vous attendiez</li>
+</ul>
+</li>
+ <li>Cliquez sur 'Importer dans le Catalogue' afin de terminer l'import</li>
+ <li>Une fois votre import terminé, un lien vers les nouvelles notices appraitra sur la droite de chaque titre importé</li>
+ <li>Vous pouvez annuler une importation</li>
+</ul>
+
+<p>Les notices importées en utilisant cet outil restent dans le réservoir jusqu'à ce qu'elles en soient retirées explicitement. Ces notices apparaitront en résulstat de recherche dans le module de catalogage</p>
+
+<p>Pour enlever les exemplaires du réservoir:</p>
+
+<ul>
+ <li>Allez sur la page principale de l'outil de gestions des notices MARC préparées</li>
+ <li>Pour effacer un lot, cliquez sur le bouton Effacer sur sa droite</li>
+ <li>Vous serez amené à un écran de confirmation.<ul>
+ <li>Accepter la suppression et les notices seront supprimées du réservoir et le statut sera changé en 'nettoyé'</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/managestaged.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

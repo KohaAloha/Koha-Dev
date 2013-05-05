@@ -1,0 +1,117 @@
+[% INCLUDE 'help-top.inc' %] <h1>MARC Bibliographic Frameworks Subfields</h1>
+
+<p>Frameworks are made up of MARC fields and subfields. To make edits to most Frameworks you must edit the fields and subfields. Clicking 'Edit' to the right of each subfield will allow you to make changes to the text associated with the field</p>
+
+<ul>
+ <li>Chaque champ a un tag (un code numérique sur trois chiffres) <ul>
+ <li>Le Texte pour bibliothécaire est ce qui est montré aux bibliothécaires à l'OPAC si la préférence système advancedMARCeditor est activée.</li>
+ <li>Le Texte pour l'OPAC est ce qui est affiché à l'OPAC en Vue MARC.</li>
+ <li>Si vous cochez Répétable, en saisie, il y aura un signe plus à côté de ce champ grâce auquel vous pourrez entrer des répétitions de ce champ.</li>
+ <li>Si vous cochez Obligatoire, la notice ne pourra pas être enregistrée si elle ne contient rien dans ce champ.</li>
+ <li>'Authorized value' is where you define an authorized value that your catalogers can choose from a pull down to fill this field in
+To edit the subfields associated with the tag, click 'Subfields' to the right of the tag on the 'MARC Structure' listing</li>
+</ul>
+</li>
+ <li>A partir de la liste des sous-champs, vous pouvez cliquer sur 'supprimer' à droite de chaque sous-champ</li>
+ <li>Pour modifier les sous-champs, cliquez sur le lien Sous-champs.</li>
+ <li>Pour chaque sous-champ vous pouvez choisir&nbsp;: <ul>
+ <li>Texte pour bibliothécaire <ul>
+ <li>c'est ce qui est affiché avant le sous-champ dans l'intranet</li>
+</ul>
+</li>
+ <li>Texte à l'OPAC&nbsp <ul>
+ <li>ce qui est apparaît avant le champ à l'OPAC.</li>
+ <li>S'il est vide, c'est le texte pour les bibliothécaires qui est utilisé  à la place</li>
+</ul>
+</li>
+ <li>Répétable <ul>
+ <li>le champ sera suivi d'un signe plus afin de vous permettre d'ajouter plusieurs répétitions de ce tag</li>
+</ul>
+</li>
+ <li>Obligatoire <ul>
+ <li>l'enregistrement ne pourra pas se faire tant que vous n'aurez pas assigné une valeur à ce tag</li>
+</ul>
+</li>
+ <li>Géré dans l'ongleti <ul>
+ <li>Géré dans l'onglet&nbsp;: se rapporte à l'onglet où le sous-champ est affiché. Ignorer signifie que le sous-champ n'est pas géré .</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Default value
+<ul>
+ <li>définit ce que vous voulez entrer dans le champ par défaut. C'est modifiable mais cela fait gagner du temps à la saisie.</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Visibility
+<ul>
+ <li>Allows you to set the visibility options for a MARC field.</li>
+ <ul>
+ <li><strong>OPAC</strong> - Checking this box determines whether the subfield is visible in the public interface. Unchecking it hides the field in the public interface.</li>
+ <li><strong>Intranet</strong> - Checking this box determines whether the subfield is visible in the staff interface. Unchecking it hides the field in the staff interface.</li>
+ <li><strong>Editor</strong> - Checking this box makes the subfield available to the MARC editor. Unchecking it indicates the field should not be shown in the editor.</li>
+ <li><strong>Collapsed</strong> - Checking this box determines whether the subfield is expanded or collapsed in the MARC editor; the subfield will appear as a clickable link to expand and edit the subfield. Unchecking it indicates that the field will be expanded by default.</li>
+ <li><strong>Flagged</strong> - This setting is exclusive of all other visibility options, and flags the field.</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Longueur max <ul>
+ <li>Define the max characters to fill.</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Is a url
+<ul>
+ <li>if checked, it means that the subfield is a url and can be clicked</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Link
+<ul>
+ <li>Si vous entrez ici un champ/sous-champ (200b), un lien apparaît après le sous-champ dans la page de Détail MARC. Cette vue est présente dans l'interface professionnelle pas à l'OPAC. Si le bibliothécaire clique sur ce lien, une recherche est lancée sur le champ/sous-champ. Cela peut servir à : <ul>
+ <li>sur un champ comme l'auteur (200f), mettez 200f ici, et vous pourrez trouver toutes les notices avec cet auteur</li>
+ <li>sur un champ de lien (4xx), pour "sauter" sur d'une notice à une autre. Par exemple, mettez 011a dans le 464$x. Vous trouverez le périodique avec cet ISSN.</li>
+</ul>
+</li>
+ <li style="color: #990000;">NOTE: If you change this value you must ask your administrator to run misc/batchRebuildBiblioTables.pl.</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Lien Koha <ul>
+ <li>Koha est compatible multi-MARC. Ainsi, il ne sait pas ce que 245$a signifie, pas plus que 200$f (ces 2 champs étant le titre en MARC21 et en UNIMARC !).Ainsi dans cette liste vous pouvez "lier "un champ MARC à sa signification. Quand l'utilisateur veut rechercher par "titre", ce lien est utilisé pour savoir ce qui est cherché (245 si vous êtes en MARC21, 200 en UNIMARC).</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Valeur autorisée<ul>
+ <li>signifie que la valeur ne peut pas être entrée par le bibliothécaire, mais qu'elle doit être choisie dans une liste de valeurs autorisées.</li>
+ <li>Dans l'exemple ci-dessus, en saisie, le champ 504a montrera les valeurs de la liste de valeurs autorisées MARC504.</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Thésaurus <ul>
+ <li>signifie que la valeur n'est pas du texte libre, mais doit être choisie dans la liste d'autorité de la catégorie choisie</li>
+</ul>
+</li>
+</ul>
+<ul>
+ <li>Plugin <ul>
+ <li>signifie que la valeur est calculée ou gérée par une extension (un plugin). Les extensions peuvent presque tout faire !</li>
+ <li>module d'extension&nbsp;: signifie que la valeur est calculée ou gérée par un module d'extension.Par exemple, dans UNIMARC il y a des modules d'extension pour chaque champ 1xx, qui sont des champs codés.Le module d'extension est une aide considérable pour le catalogueur!</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>To save your changes simply click the 'Save Changes' button at the top of the screen</li>
+</ul>
+
+<p><strong>See the full documentation for MARC Frameworks in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#marcbibframeworks">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

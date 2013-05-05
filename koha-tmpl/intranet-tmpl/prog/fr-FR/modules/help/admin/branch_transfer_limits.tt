@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %] <h1>Library Transfer Limits</h1>
+
+<p>Limit the ability to transfer items between libraries based on the library sending, the library receiving, and the collection code involved.</p>
+
+<p>Ces règles ne sont effectives que si la préférence système UseBranchTransferLimits est activée.</p>
+
+<p>Avant de commencer, vous devez choisir à quel site ces paramètres vont s'appliquer.</p>
+
+<p>Les limites de transferts sont basées sur les codes de collection définis dans les valeurs autorisées.</p>
+
+<p>Les codes de collection apparaîtront dans des onglets au-dessus des boîtes à cocher.</p>
+
+<p>Cochez les cases des bibliothèques pour lesquelles vous acceptez de faire des retours</p>
+
+<p>Dans l'exemple ci-dessous, la bibliothèque Centrale acceptera les retours d'exemplaires en provenance de toutes les bibliothèques sauf de la bibliothèque César.</p>
+
+<p><strong>See the full documentation for Library Transfer Limits in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#libtransferlimits">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,229 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Fournisseur [% bookselname %]</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+function confirm_deletion() {
+    if (confirm(_("Confirmer la suppression de ce fournisseur ?"))) {
+        window.location="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]&op=delete";
+    }
+}
+function check(f) {
+if (f.company.value == "") {
+    alert(_("Vous devez donner un nom à ce fournisseur."));
+    return false;
+}
+    f.submit();
+}
+
+ $(document).ready(function() {
+    [% IF (dateformat == 'metric') %]
+        dt_add_type_uk_date();
+    [% END %]
+    var contractst = $("#contractst").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "aoColumnDefs": [
+          { "aTargets": [ -1, -2 ], "bSortable": false, "bSearchable": false },
+          [% IF (dateformat == 'metric') %]
+            { "aTargets": [ 2, 3 ], "sType": "uk_date" },
+          [% END %]
+        ],
+        'sDom': 't',
+        'bPaginate': false,
+        'bFilter': false,
+        'bInfo': false,
+    } ) );
+ });
+//]]>
+</script>
+</head>
+<body id="acq_supplier" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; [% IF ( enter ) %][% IF ( booksellerid ) %] <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% name %]</a> &rsaquo; Mise à jour : [% name %][% ELSE %]Ajouter un fournisseur[% END %] [% ELSE %][% name %][% END %]</div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% IF ( enter ) %] [% IF ( booksellerid ) %] <h1>Mettre à jour&nbsp;: [% name %]</h1>
+ [% ELSE %] <h1>Ajouter un fournisseur</h1>
+ [% END %] [% END %] [% UNLESS ( enter ) %][% INCLUDE 'acquisitions-toolbar.inc' %][% END %] [% IF ( enter ) %] <form action="updatesupplier.pl" name="updatesupplier" method="post">
+ <div class="yui-g">
+ <input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ <fieldset class="rows">
+ <legend>Coordonnées du fournisseur</legend>
+ <ol><li><label for="company" class="required">Name: * </label>
+ <input type="text" size="40" id="company" name="company" value="[% name %]" /></li>
+ <li><label for="company_postal">Adresse postale&nbsp;: </label>
+ <textarea id="company_postal" name="company_postal" cols="40" rows="3">[% postal %]</textarea></li>
+ <li><label for="physical">Adresse physique&nbsp;: </label>
+ <textarea id="physical" name="physical" cols="40" rows="3">[% address1 %][% address2 %][% address3 %][% address4 %]</textarea></li>
+ <li><label for="company_phone">Téléphone&nbsp;: </label>
+ <input type="text" size="20" id="company_phone" name="company_phone" value="[% phone %]" /></li>
+ <li><label for="company_fax">Fax&nbsp;: </label>
+ <input type="text" size="20" id="company_fax" name="company_fax" value="[% fax %]" /></li>
+ <li><label for="website">Site Web&nbsp;: </label>
+ <input type="text" size="40" id="website" name="website" value="[% url %]" /></li>
+ <li><label for="accountnumber">Numéro de compte : </label>
+ <input type="text" size="40" id="accountnumber" name="accountnumber" value="[% accountnumber %]" /></li></ol>
+ </fieldset>
+ <fieldset class="rows">
+ <legend>Coordonnées du contact</legend>
+ <ol> <li><label for="company_contact_name">Nom du contact&nbsp;:</label>
+ <input type="text" size="40" id="company_contact_name" name="company_contact_name" value="[% contact %]" /></li>
+ <li><label for="company_contact_position">Position&nbsp;: </label>
+ <input type="text" size="40" id="company_contact_position" name="company_contact_position" value="[% contpos %]" /></li>
+ <li><label for="contact_phone">Téléphone&nbsp;: </label>
+ <input type="text" size="20" id="contact_phone" name="contact_phone" value="[% contphone %]" /> </li>
+ <li><label for="contact_phone_2">Autre téléphone&nbsp;:</label>
+ <input type="text" size="20" id="contact_phone_2" name="contact_phone_2" value="[% contaltphone %]" /></li>
+ <li><label for="contact_fax">Fax&nbsp;: </label>
+ <input type="text" size="20" id="contact_fax" name="contact_fax" value="[% contfax %]" /></li>
+ <li><label for="company_email">Courriel&nbsp;: </label>
+ <input type="text" size="40" id="company_email" name="company_email" value="[% contemail %]" /></li>
+ <li><label for="contact_notes">Notes&nbsp;: </label>
+ <textarea id="contact_notes" name="contact_notes" cols="40" rows="4">[% contnotes %]</textarea></li></ol>
+ </fieldset>
+ </div>
+ <div class="yui-g">
+ <fieldset class="rows">
+ <legend>Paramètres pour les commandes</legend>
+ <ol class="radio"><li><label for="activestatus" class="radio">Le fournisseur est</label>
+ [% IF ( active ) %] <label for="activestatus">Actif</label> <input type="radio" id="activestatus" name="status" value="1" checked="checked" />
+ <label for="inactivestatus">Inactif</label> <input type="radio" id="inactivestatus" name="status" value="0" />
+ [% ELSE %] <label for="activestatus">Actif</label> <input type="radio" id="activestatus" name="status" value="1" />
+ <label for="inactivestatus">Inactif</label> <input type="radio" id="inactivestatus" name="status" value="0" checked="checked" />
+ [% END %]</li>
+ </ol>
+ <ol>
+ <li><label for="list_currency">List prices are: </label>
+ <select name="list_currency" id="list_currency">
+ [% FOREACH loop_currenc IN loop_currency %] [% IF ( loop_currenc.listprice ) %]<option value="[% loop_currenc.currency %]" selected="1">[% loop_currenc.currency %]</option>
+ [% ELSE %]<option value="[% loop_currenc.currency %]">[% loop_currenc.currency %]</option>[% END %] [% END %] </select>
+ </li>
+ <li><label for="invoice_currency">Les factures sont en&nbsp;:</label>
+ <select name="invoice_currency" id="invoice_currency">
+ [% FOREACH loop_currenc IN loop_currency %] [% IF ( loop_currenc.invoiceprice ) %]<option value="[% loop_currenc.currency %]" selected="1">[% loop_currenc.currency %]</option>
+ [% ELSE %]<option value="[% loop_currenc.currency %]">[% loop_currenc.currency %]</option>[% END %] [% END %] </select>
+ </li>
+ </ol>
+ <ol class="radio">
+ <li><label for="gstyes" class="radio">Tax number registered:</label>
+ [% IF ( gstreg ) %] <label for="gstyes">Oui</label> <input type="radio" name="gst" id="gstyes" value="1" checked="checked" />
+ <label for="gstno">Non</label> <input type="radio" name="gst" id="gstno" value="0" />
+ [% ELSE %] <label for="gstyes">Oui</label> <input type="radio" name="gst" id="gstyes" value="1" />
+ <label for="gstno">Non</label> <input type="radio" name="gst" id="gstno" value="0" checked="checked" />
+ [% END %]</li>
+ 
+ <li><label for="list_gstyes" class="radio">List prices:</label>
+ [% IF ( listincgst ) %] <label for="list_gstyes">TVA comprise</label> <input type="radio" id="list_gstyes" name="list_gst" value="1" checked="checked" />
+ <label for="list_gstno">ne comprend pas la TVA</label> <input type="radio" id="list_gstno" name="list_gst" value="0" />
+ [% ELSE %] <label for="list_gstyes">TVA comprise</label> <input type="radio" id="list_gstyes" name="list_gst" value="1" />
+ <label for="list_gstno">ne comprend pas la TVA</label> <input type="radio" id="list_gstno" name="list_gst" value="0" checked="checked" />
+ [% END %]</li>
+ 
+ <li><label for="invoice_gstyes" class="radio">Prix facturés:</label>
+ [% IF ( invoiceincgst ) %] <label for="invoice_gstyes">TVA comprise</label> <input type="radio" id="invoice_gstyes" name="invoice_gst" value="1" checked="checked" />
+ <label for="invoice_gstno">ne comprend pas la TVA</label> <input type="radio" id="invoice_gstno" name="invoice_gst" value="0" />
+ [% ELSE %] <label for="invoice_gstyes">TVA comprise</label> <input type="radio" id="invoice_gstyes" name="invoice_gst" value="1" />
+ <label for="invoice_gstno">ne comprend pas la TVA</label> <input type="radio" id="invoice_gstno" name="invoice_gst" value="0" checked="checked" />
+ [% END %]</li>
+ </ol>
+ [% IF gst_values %] <ol>
+ <li>
+ <label for="gst">Taux de TVA&nbsp;:</label>
+ <select name="gstrate" id="gstrate">
+ [% FOREACH gst IN gst_values %] [% IF ( gstrate == gst.option ) %] <option value="[% gst.option %]" selected="selected">[% gst.option * 100 | format ("%.1f") %] %</option>
+ [% ELSE %] <option value="[% gst.option %]">[% gst.option * 100 | format ("%.1f") %] %</option>
+ [% END %] [% END %] </select>
+ </li>
+ </ol>
+ [% ELSE %] <input type="hidden" name="gstrate" value="0" />
+ [% END %] <ol>
+ <li><label for="discount">Discount: </label>
+ <input type="text" size="6" id="discount" name="discount" value="[% discount | format ("%.1f") %]" />%</li>
+ <li>
+ <label for="deliverytime">Heure de livraison : </label>
+ <input type="text" size="2" id="deliverytime" name="deliverytime" value="[% deliverytime %]" /> jours </li>
+ <li><label for="notes">Notes&nbsp;: </label>
+ <textarea cols="40" rows="4" id="notes" name="notes" >[% notes %]</textarea></li></ol>
+ </fieldset>
+ <fieldset class="action"><input value="Enregistrer" type="button" onclick="check(this.form);" /> [% IF ( booksellerid ) %] <a class="cancel" href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% ELSE %]<a class="cancel" href="/cgi-bin/koha/acqui/acqui-home.pl">
+ [% END %]Annuler</a></fieldset>
+ </div>
+ </form>
+[% ELSE %] <h1>[% name %]</h1>
+ <div class="yui-g">
+ <div id="supplier-company-details" class="yui-u first">
+ <h2>Détail fournisseur</h2>
+ <p><span class="label">Nom du fournisseur&nbsp;: </span>[% name %]</p>
+ <p><span class="label">Adresse postale&nbsp;: </span>[% postal %]</p>
+ <p><span class="label">Adresse physique&nbsp;: </span>[% address1 %][% address2 %][% address3 %][% address4 %]</p>
+ <p><span class="label">Téléphone&nbsp;: </span>[% phone %]</p>
+ <p><span class="label">Fax&nbsp;: </span>[% fax %]</p>
+ [% IF ( url ) %] <p><span class="label">Site Web&nbsp;: </span><a href="[% url %]">[% url %]</a></p>
+ [% END %] [% IF ( accountnumber ) %] <p><span class="label">Numéro de compte : </span>[% accountnumber %]</p>
+ [% END %] </div>
+ <div id="supplier-contact-details" class="yui-u">
+ <h2>Coordonnées du contact</h2>
+ <p><span class="label">Nom du contact&nbsp;:</span>[% contact %]</p>
+ <p><span class="label">Position&nbsp;: </span>[% contpos %]</p>
+ <p><span class="label">Téléphone&nbsp;: </span>[% contphone %]</p>
+ <p><span class="label">Autre téléphone&nbsp;:</span>[% contaltphone %]</p>
+ <p><span class="label">Fax&nbsp;: </span>[% contfax %]</p>
+ [% IF ( contemail ) %] <p><span class="label">Courriel&nbsp;: </span><a href="mailto:[% contemail %]">[% contemail %]</a></p>
+ [% END %] [% IF ( contnotes ) %] <p><span class="label">Notes&nbsp;: </span>[% contnotes %]</p>
+ [% END %] </div>
+ </div>
+ <div id="supplier-ordering-information" class="yui-g">
+ <h3>Paramètres pour les commandes</h3>
+ <p><strong>Le fournisseur est&nbsp;:</strong>
+ [% IF ( active ) %] Actif [% ELSE %] Inactif [% END %]</p>
+ <p><strong>List prices are: </strong>[% listprice %]</p>
+ <p><strong>Les factures sont en&nbsp;:</strong>[% invoiceprice %]</p>
+ [% IF ( gstrate ) %]<p><strong>N° TVA intracom&nbsp;: </strong>
+ [% IF ( gstreg ) %]Oui[% ELSE %]Non[% END %]</p>
+ <p><strong>List item price includes tax: </strong>
+ [% IF ( listincgst ) %]Oui[% ELSE %]Non[% END %]</p>
+ <p><strong>Le prix de l'exemplaire de la facture comprend la TVA : </strong>
+ [% IF ( invoiceincgst ) %]Oui[% ELSE %]Non[% END %]</p>[% END %] <p><strong>Discount: </strong>
+ [% discount | format("%.1f") %] %</p>
+ <p><strong>Taux de TVA&nbsp;:</strong>
+ [% 0 + gstrate * 100 | format("%.1f") %] %</p>
+ [% IF deliverytime.defined %] <p><strong>Heure de livraison : </strong>
+ [% deliverytime %] jours</p>
+ [% END %] [% IF ( notes ) %]<p><strong>Notes&nbsp;: </strong>
+ [% notes %]</p>[% END %] </div>
+ [% IF ( contracts ) %] <div id="supplier-contracts" class="yui-g">
+ <h2>Contrat(s)</h2>
+ <table id="contractst">
+ <thead>
+ <tr>
+ <th scope="col">Name</th>
+ <th scope="col">Description</th>
+ <th scope="col">Start date</th>
+ <th scope="col">Date de fin</th>
+ <th scope="col">&nbsp; </th>
+ <th scope="col">&nbsp; </th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH contract IN contracts %] [% IF ( loop.even ) %]<tr class="highlight">[% ELSE %]<tr>[% END %] <td>
+ <a href="/cgi-bin/koha/admin/aqcontract.pl?op=add_form&amp;contractnumber=[% contract.contractnumber %]&amp;booksellerid=[% contract.booksellerid %]">[% contract.contractname %]</a>
+ </td>
+ <td>[% contract.contractdescription %]</td>
+ <td>[% contract.contractstartdate | $KohaDates %]</td>
+ <td>[% contract.contractenddate | $KohaDates %]</td>
+ <td><a href="/cgi-bin/koha/admin/aqcontract.pl?op=add_form&amp;contractnumber=[% contract.contractnumber %]&amp;booksellerid=[% contract.booksellerid %]">Modifier</a></td>
+ <td><a href="/cgi-bin/koha/admin/aqcontract.pl?op=delete_confirm&amp;contractnumber=[% contract.contractnumber %]&amp;booksellerid=[% contract.booksellerid %]">Supprimer</a></td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </div>
+ [% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'vendor-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

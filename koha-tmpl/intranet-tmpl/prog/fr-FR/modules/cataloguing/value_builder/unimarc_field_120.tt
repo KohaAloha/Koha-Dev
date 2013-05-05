@@ -1,0 +1,469 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 120</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_120" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 120</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td><label for="f1">indicateur de couleur</label></td>
+ <td>
+ <select name="f1" id="f1" size="1">
+ [% IF ( f1a ) %] <option value="a" selected="selected">monocolore</option>
+ [% ELSE %] <option value="a">monocolore</option>
+ [% END %] [% IF ( f1b ) %] <option value="b" selected="selected">multi-couleurs</option>
+ [% ELSE %] <option value="b">multi-couleurs</option>
+ [% END %] </select>
+ </td></tr><tr>
+ <td><label for="f2">Index&nbsp;:</label></td>
+ <td>
+ <select name="f2" id="f2" size="1">
+ [% IF ( f2a ) %] <option value="a" selected="selected">index ou liste de noms sur la carte elle-même</option>
+ [% ELSE %] <option value="a">index ou liste de noms sur la carte elle-même</option>
+ [% END %] [% IF ( f2b ) %] <option value="b" selected="selected"> index ou liste de noms accompagnant la carte en livret</option>
+ [% ELSE %] <option value="b"> index ou liste de noms accompagnant la carte en livret</option>
+ [% END %] [% IF ( f2c ) %] <option value="c" selected="selected">index ou liste de noms présents mais la localisation n'est pas spécifiée</option>
+ [% ELSE %] <option value="c">index ou liste de noms présents mais la localisation n'est pas spécifiée</option>
+ [% END %] [% IF ( f2y ) %] <option value="y" selected="selected">pas d'index ni liste de noms</option>
+ [% ELSE %] <option value="y">pas d'index ni liste de noms</option>
+ [% END %] </select>
+ </td></tr><tr>
+ <td><label for="f3">Narrative text indicator</label></td>
+ <td>
+ <select name="f3" id="f3" size="1">
+
+ [% IF ( f3a ) %] <option value="a" selected="selected">texte sur le document cartographique lui-même</option>
+ [% ELSE %] <option value="a">texte sur le document cartographique lui-même</option>
+ [% END %] [% IF ( f3b ) %] <option value="b" selected="selected">texte accompagnant la carte dans un pamphlet, livret...</option>
+ [% ELSE %] <option value="b">texte accompagnant la carte dans un pamphlet, livret...</option>
+ [% END %] [% IF ( f3y ) %] <option value="y" selected="selected">n'est pas un texte narratif</option>
+ [% ELSE %] <option value="y">n'est pas un texte narratif</option>
+ [% END %] </select>
+ </td></tr><tr>
+ <td><label for="f4">Code de représentation du relief&nbsp;:</label></td>
+ <td>
+ <select name="f4" id="f4" size="1">
+ [% IF ( f4space ) %] <option value=" " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value=" ">valeur non obligatoire</option>
+ [% END %] [% IF ( f4a ) %] <option value="a" selected="selected">contours</option>
+ [% ELSE %] <option value="a">contours</option>
+ [% END %] [% IF ( f4b ) %] <option value="b" selected="selected">relief par estompage</option>
+ [% ELSE %] <option value="b">relief par estompage</option>
+ [% END %] [% IF ( f4c ) %] <option value="c" selected="selected">teintes hypsométriques - procédé par couches</option>
+ [% ELSE %] <option value="c">teintes hypsométriques - procédé par couches</option>
+ [% END %] [% IF ( f4d ) %] <option value="d" selected="selected">hachures</option>
+ [% ELSE %] <option value="d">hachures</option>
+ [% END %] [% IF ( f4e ) %] <option value="e" selected="selected">nathymétrie - sonar</option>
+ [% ELSE %] <option value="e">nathymétrie - sonar</option>
+ [% END %] [% IF ( f4f ) %] <option value="f" selected="selected">courbes figuratives</option>
+ [% ELSE %] <option value="f">courbes figuratives</option>
+ [% END %] [% IF ( f4g ) %] <option value="g" selected="selected">points cotés</option>
+ [% ELSE %] <option value="g">points cotés</option>
+ [% END %] [% IF ( f4h ) %] <option value="h" selected="selected">autres méthodes de couleur</option>
+ [% ELSE %] <option value="h">autres méthodes de couleur</option>
+ [% END %] [% IF ( f4i ) %] <option value="i" selected="selected">pictorially</option>
+ [% ELSE %] <option value="i">pictorially</option>
+ [% END %] [% IF ( f4j ) %] <option value="j" selected="selected">morphographies</option>
+ [% ELSE %] <option value="j">morphographies</option>
+ [% END %] [% IF ( f4k ) %] <option value="k" selected="selected">bathymetrie - isolines</option>
+ [% ELSE %] <option value="k">bathymetrie - isolines</option>
+ [% END %] [% IF ( f4x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f4z ) %] <option value="z" selected="selected">autres méthodes de représentation du relief</option>
+ [% ELSE %] <option value="z">autres méthodes de représentation du relief</option>
+ [% END %] </select>
+ </td>
+ </tr><tr>
+ <td><label for="f5">Code de représentation du relief&nbsp;:</label></td>
+ <td>
+ <select name="f5" id="f5" size="1">
+ [% IF ( f5space ) %] <option value=" " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value=" ">valeur non obligatoire</option>
+ [% END %] [% IF ( f5a ) %] <option value="a" selected="selected">contours</option>
+ [% ELSE %] <option value="a">contours</option>
+ [% END %] [% IF ( f5b ) %] <option value="b" selected="selected">relief par estompage</option>
+ [% ELSE %] <option value="b">relief par estompage</option>
+ [% END %] [% IF ( f5c ) %] <option value="c" selected="selected">teintes hypsométriques - procédé par couches</option>
+ [% ELSE %] <option value="c">teintes hypsométriques - procédé par couches</option>
+ [% END %] [% IF ( f5d ) %] <option value="d" selected="selected">hachures</option>
+ [% ELSE %] <option value="d">hachures</option>
+ [% END %] [% IF ( f5e ) %] <option value="e" selected="selected">nathymétrie - sonar</option>
+ [% ELSE %] <option value="e">nathymétrie - sonar</option>
+ [% END %] [% IF ( f5f ) %] <option value="f" selected="selected">courbes figuratives</option>
+ [% ELSE %] <option value="f">courbes figuratives</option>
+ [% END %] [% IF ( f5g ) %] <option value="g" selected="selected">points cotés</option>
+ [% ELSE %] <option value="g">points cotés</option>
+ [% END %] [% IF ( f5h ) %] <option value="h" selected="selected">autres méthodes de couleur</option>
+ [% ELSE %] <option value="h">autres méthodes de couleur</option>
+ [% END %] [% IF ( f5i ) %] <option value="i" selected="selected">pictorially</option>
+ [% ELSE %] <option value="i">pictorially</option>
+ [% END %] [% IF ( f5j ) %] <option value="j" selected="selected">morphographies</option>
+ [% ELSE %] <option value="j">morphographies</option>
+ [% END %] [% IF ( f5k ) %] <option value="k" selected="selected">bathymetrie - isolines</option>
+ [% ELSE %] <option value="k">bathymetrie - isolines</option>
+ [% END %] [% IF ( f5x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f5z ) %] <option value="z" selected="selected">autres méthodes de représentation du relief</option>
+ [% ELSE %] <option value="z">autres méthodes de représentation du relief</option>
+ [% END %] </select>
+ </td>
+ </tr><tr>
+ <td><label for="f6">Code de représentation du relief&nbsp;:</label></td>
+ <td>
+ <select name="f6" id="f6" size="1">
+ 
+ [% IF ( f6space ) %] <option value=" " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value=" ">valeur non obligatoire</option>
+ [% END %] [% IF ( f6a ) %] <option value="a" selected="selected">contours</option>
+ [% ELSE %] <option value="a">contours</option>
+ [% END %] [% IF ( f6b ) %] <option value="b" selected="selected">relief par estompage</option>
+ [% ELSE %] <option value="b">relief par estompage</option>
+ [% END %] [% IF ( f6c ) %] <option value="c" selected="selected">teintes hypsométriques - procédé par couches</option>
+ [% ELSE %] <option value="c">teintes hypsométriques - procédé par couches</option>
+ [% END %] [% IF ( f6d ) %] <option value="d" selected="selected">hachures</option>
+ [% ELSE %] <option value="d">hachures</option>
+ [% END %] [% IF ( f6e ) %] <option value="e" selected="selected">nathymétrie - sonar</option>
+ [% ELSE %] <option value="e">nathymétrie - sonar</option>
+ [% END %] [% IF ( f6f ) %] <option value="f" selected="selected">courbes figuratives</option>
+ [% ELSE %] <option value="f">courbes figuratives</option>
+ [% END %] [% IF ( f6g ) %] <option value="g" selected="selected">points cotés</option>
+ [% ELSE %] <option value="g">points cotés</option>
+ [% END %] [% IF ( f6h ) %] <option value="h" selected="selected">autres méthodes de couleur</option>
+ [% ELSE %] <option value="h">autres méthodes de couleur</option>
+ [% END %] [% IF ( f6i ) %] <option value="i" selected="selected">pictorially</option>
+ [% ELSE %] <option value="i">pictorially</option>
+ [% END %] [% IF ( f6j ) %] <option value="j" selected="selected">morphographies</option>
+ [% ELSE %] <option value="j">morphographies</option>
+ [% END %] [% IF ( f6k ) %] <option value="k" selected="selected">bathymetrie - isolines</option>
+ [% ELSE %] <option value="k">bathymetrie - isolines</option>
+ [% END %] [% IF ( f6x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f6z ) %] <option value="z" selected="selected">autres méthodes de représentation du relief</option>
+ [% ELSE %] <option value="z">autres méthodes de représentation du relief</option>
+ [% END %] </select>
+ </td>
+ </tr><tr>
+ <td><label for="f7">Code de représentation du relief&nbsp;:</label></td>
+ <td>
+ <select name="f7" id="f7" size="1">
+ [% IF ( f7space ) %] <option value=" " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value=" ">valeur non obligatoire</option>
+ [% END %] [% IF ( f7a ) %] <option value="a" selected="selected">contours</option>
+ [% ELSE %] <option value="a">contours</option>
+ [% END %] [% IF ( f7b ) %] <option value="b" selected="selected">relief par estompage</option>
+ [% ELSE %] <option value="b">relief par estompage</option>
+ [% END %] [% IF ( f7c ) %] <option value="c" selected="selected">teintes hypsométriques - procédé par couches</option>
+ [% ELSE %] <option value="c">teintes hypsométriques - procédé par couches</option>
+ [% END %] [% IF ( f7d ) %] <option value="d" selected="selected">hachures</option>
+ [% ELSE %] <option value="d">hachures</option>
+ [% END %] [% IF ( f7e ) %] <option value="e" selected="selected">nathymétrie - sonar</option>
+ [% ELSE %] <option value="e">nathymétrie - sonar</option>
+ [% END %] [% IF ( f7f ) %] <option value="f" selected="selected">courbes figuratives</option>
+ [% ELSE %] <option value="f">courbes figuratives</option>
+ [% END %] [% IF ( f7g ) %] <option value="g" selected="selected">points cotés</option>
+ [% ELSE %] <option value="g">points cotés</option>
+ [% END %] [% IF ( f7h ) %] <option value="h" selected="selected">autres méthodes de couleur</option>
+ [% ELSE %] <option value="h">autres méthodes de couleur</option>
+ [% END %] [% IF ( f7i ) %] <option value="i" selected="selected">pictorially</option>
+ [% ELSE %] <option value="i">pictorially</option>
+ [% END %] [% IF ( f7j ) %] <option value="j" selected="selected">morphographies</option>
+ [% ELSE %] <option value="j">morphographies</option>
+ [% END %] [% IF ( f7k ) %] <option value="k" selected="selected">bathymetrie - isolines</option>
+ [% ELSE %] <option value="k">bathymetrie - isolines</option>
+ [% END %] [% IF ( f7x ) %] <option value="x" selected="selected">non applicable</option>
+ [% ELSE %] <option value="x">non applicable</option>
+ [% END %] [% IF ( f7z ) %] <option value="z" selected="selected">autres méthodes de représentation du relief</option>
+ [% ELSE %] <option value="z">autres méthodes de représentation du relief</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ <tr> <td><label for="f8">projection cartographique</label></td>
+ <td>
+ <select name="f8" id="f8" size="1">
+
+ [% IF ( f8aa ) %] <option value="aa" selected="selected">Aitoff</option>
+ [% ELSE %] <option value="aa">Aitoff</option>
+ [% END %] [% IF ( f8bb ) %] <option value="bb" selected="selected">gnomonique</option>
+ [% ELSE %] <option value="bb">gnomonique</option>
+ [% END %] [% IF ( f8ac ) %] <option value="ac" selected="selected">Lambert's azimuthal equal area</option>
+ [% ELSE %] <option value="ac">Lambert's azimuthal equal area</option>
+ [% END %] [% IF ( f8ad ) %] <option value="ad" selected="selected">orthographique</option>
+ [% ELSE %] <option value="ad">orthographique</option>
+ [% END %] [% IF ( f8ae ) %] <option value="ae" selected="selected">azimuthal equidistant</option>
+ [% ELSE %] <option value="ae">azimuthal equidistant</option>
+ [% END %] [% IF ( f8af ) %] <option value="af" selected="selected">stereographique</option>
+ [% ELSE %] <option value="af">stereographique</option>
+ [% END %] [% IF ( f8ag ) %] <option value="ag" selected="selected">azimuthal equal area</option>
+ [% ELSE %] <option value="ag">azimuthal equal area</option>
+ [% END %] [% IF ( f8au ) %] <option value="au" selected="selected">azimuthal, specific type unknown</option>
+ [% ELSE %] <option value="au">azimuthal, specific type unknown</option>
+ [% END %] [% IF ( f8az ) %] <option value="az" selected="selected">azimuthal, other known specific type</option>
+ [% ELSE %] <option value="az">azimuthal, other known specific type</option>
+ [% END %] [% IF ( f8ba ) %] <option value="ba" selected="selected">Gall</option>
+ [% ELSE %] <option value="ba">Gall</option>
+ [% END %] [% IF ( f8bb ) %] <option value="bb" selected="selected">homolographique de Goode</option>
+ [% ELSE %] <option value="bb">homolographique de Goode</option>
+ [% END %] [% IF ( f8ca ) %] <option value="ca" selected="selected">aire d'Albers</option>
+ [% ELSE %] <option value="ca">aire d'Albers</option>
+ [% END %] [% IF ( f8cb ) %] <option value="cb" selected="selected">Bonne</option>
+ [% ELSE %] <option value="cb">Bonne</option>
+ [% END %] [% IF ( f8cc ) %] <option value="cc" selected="selected">Lambert's conformal conict</option>
+ [% ELSE %] <option value="cc">Lambert's conformal conic</option>
+ [% END %] [% IF ( f8cd ) %] <option value="cd" selected="selected">conique (simple)</option>
+ [% ELSE %] <option value="cd">conique (simple)</option>
+ [% END %] [% IF ( f8ce ) %] <option value="ce" selected="selected">bipolaire de Miller</option>
+ [% ELSE %] <option value="ce">bipolaire de Miller</option>
+ [% END %] [% IF ( f8cf ) %] <option value="cf" selected="selected">De Lisle</option>
+ [% ELSE %] <option value="cf">De Lisle</option>
+ [% END %] [% IF ( f8cg ) %] <option value="cg" selected="selected">projection of the International Map of the World</option>
+ [% ELSE %] <option value="cg">projection of the International Map of the World</option>
+ [% END %] [% IF ( f8ch ) %] <option value="ch" selected="selected">Conique conforme de Tissot</option>
+ [% ELSE %] <option value="ch">Conique conforme de Tissot</option>
+ [% END %] [% IF ( f8cp ) %] <option value="cp" selected="selected">polyconic</option>
+ [% ELSE %] <option value="cp">polyconic</option>
+ [% END %] [% IF ( f8cu ) %] <option value="cu" selected="selected">conique, type spécifique inconnu</option>
+ [% ELSE %] <option value="cu">conique, type spécifique inconnu</option>
+ [% END %] [% IF ( f8cz ) %] <option value="cz" selected="selected">conique, autre type spécifique connu</option>
+ [% ELSE %] <option value="cz">conique, autre type spécifique connu</option>
+ [% END %] [% IF ( f8da ) %] <option value="da" selected="selected">armadillo</option>
+ [% ELSE %] <option value="da">armadillo</option>
+ [% END %] [% IF ( f8db ) %] <option value="db" selected="selected">papillon</option>
+ [% ELSE %] <option value="db">papillon</option>
+ [% END %] [% IF ( f8bc ) %] <option value="bc" selected="selected">Lambert's cylindrical equal area</option>
+ [% ELSE %] <option value="bc">Lambert's cylindrical equal area</option>
+ [% END %] [% IF ( f8bd ) %] <option value="bd" selected="selected">Mercator</option>
+ [% ELSE %] <option value="bd">Mercator</option>
+ [% END %] [% IF ( f8be ) %] <option value="be" selected="selected">Miller</option>
+ [% ELSE %] <option value="be">Miller</option>
+ [% END %] [% IF ( f8bf ) %] <option value="bf" selected="selected">Mollweide</option>
+ [% ELSE %] <option value="bf">Mollweide</option>
+ [% END %] [% IF ( f8bg ) %] <option value="bg" selected="selected">sinusoïdale</option>
+ [% ELSE %] <option value="bg">sinusoïdale</option>
+ [% END %] [% IF ( f8bh ) %] <option value="bh" selected="selected">Mercator transverse</option>
+ [% ELSE %] <option value="bh">Mercator transverse</option>
+ [% END %] [% IF ( f8bi ) %] <option value="bi" selected="selected">Gauss</option>
+ [% ELSE %] <option value="bi">Gauss</option>
+ [% END %] [% IF ( f8bj ) %] <option value="bj" selected="selected">Plate Carree</option>
+ [% ELSE %] <option value="bj">Plate Carree</option>
+ [% END %] [% IF ( f8bk ) %] <option value="bk" selected="selected">de Cassini</option>
+ [% ELSE %] <option value="bk">de Cassini</option>
+ [% END %] [% IF ( f8bl ) %] <option value="bl" selected="selected">Laborde</option>
+ [% ELSE %] <option value="bl">Laborde</option>
+ [% END %] [% IF ( f8bm ) %] <option value="bm" selected="selected">Mercator oblique</option>
+ [% ELSE %] <option value="bm">Mercator oblique</option>
+ [% END %] [% IF ( f8bu ) %] <option value="bu" selected="selected">cylindrique, type spécifique inconnu</option>
+ [% ELSE %] <option value="bu">cylindrique, type spécifique inconnu</option>
+ [% END %] [% IF ( f8bz ) %] <option value="bz" selected="selected">cylindrique, autre type spécifique connu</option>
+ [% ELSE %] <option value="bz">cylindrique, autre type spécifique connu</option>
+ [% END %] [% IF ( f8dc ) %] <option value="dc" selected="selected">Eckert</option>
+ [% ELSE %] <option value="dc">Eckert</option>
+ [% END %] [% IF ( f8dd ) %] <option value="dd" selected="selected">Homolosine de Goode</option>
+ [% ELSE %] <option value="dd">Homolosine de Goode</option>
+ [% END %] [% IF ( f8de ) %] <option value="de" selected="selected">bipolaire de Miller</option>
+ [% ELSE %] <option value="de">bipolaire de Miller</option>
+ [% END %] [% IF ( f8df ) %] <option value="df" selected="selected">Van der Griten</option>
+ [% ELSE %] <option value="df">Van der Griten</option>
+ [% END %] [% IF ( f8dg ) %] <option value="dg" selected="selected">dimaxion</option>
+ [% ELSE %] <option value="dg">dimaxion</option>
+ [% END %] [% IF ( f8dh ) %] <option value="dh" selected="selected">cordiforme</option>
+ [% ELSE %] <option value="dh">cordiforme</option>
+ [% END %] [% IF ( f8di ) %] <option value="di" selected="selected">polyhedric</option>
+ [% ELSE %] <option value="di">polyhedric</option>
+ [% END %] [% IF ( f8uu ) %] <option value="uu" selected="selected">type de projection inconnue</option>
+ [% ELSE %] <option value="uu">type de projection inconnue</option>
+ [% END %] [% IF ( f8xx ) %] <option value="xx" selected="selected">non applicable</option>
+ [% ELSE %] <option value="xx">non applicable</option>
+ [% END %] [% IF ( f8zz ) %] <option value="zz" selected="selected">autre type inconnu</option>
+ [% ELSE %] <option value="zz">autre type inconnu</option>
+ [% END %] </select>
+
+ </td></tr><tr><td><label for="f9">Méridien de référence&nbsp;:</label></td>
+ <td>
+ <select name="f9" id="f9" size="1">
+ [% IF ( f9dblspace ) %] <option value="  " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value="  ">valeur non obligatoire</option>
+ [% END %] [% IF ( f9aa ) %] <option value="aa" selected="selected">Greenwich, Royaume Uni</option>
+ [% ELSE %] <option value="aa">Greenwich, Royaume Uni</option>
+ [% END %] [% IF ( f9ab ) %] <option value="ab" selected="selected">Amsterdam, Pays-BAs</option>
+ [% ELSE %] <option value="ab">Amsterdam, Pays-BAs</option>
+ [% END %] [% IF ( f9ac ) %] <option value="ac" selected="selected">Athénes, Grèce</option>
+ [% ELSE %] <option value="ac">Athénes, Grèce</option>
+ [% END %] [% IF ( f9ad ) %] <option value="ad" selected="selected">Batavia (Djakarta), Indonesie</option>
+ [% ELSE %] <option value="ad">Batavia (Djakarta), Indonesie</option>
+ [% END %] [% IF ( f9ae ) %] <option value="ae" selected="selected">Berne, Suisse</option>
+ [% ELSE %] <option value="ae">Berne, Suisse</option>
+ [% END %] [% IF ( f9af ) %] <option value="af" selected="selected">Bogota, Colombie</option>
+ [% ELSE %] <option value="af">Bogota, Colombie</option>
+ [% END %] [% IF ( f9ag ) %] <option value="ag" selected="selected">Bombay, Inde</option>
+ [% ELSE %] <option value="ag">Bombay, Inde</option>
+ [% END %] [% IF ( f9ah ) %] <option value="ah" selected="selected">Bruxelles, Belgique</option>
+ [% ELSE %] <option value="ah">Bruxelles, Belgique</option>
+ [% END %] [% IF ( f9ai ) %] <option value="ai" selected="selected">Cadix, Espagne</option>
+ [% ELSE %] <option value="ai">Cadix, Espagne</option>
+ [% END %] [% IF ( f9aj ) %] <option value="aj" selected="selected">Capetown, Afrique du Sud</option>
+ [% ELSE %] <option value="aj">Capetown, Afrique du Sud</option>
+ [% END %] [% IF ( f9ak ) %] <option value="ak" selected="selected">Caracas, Venezuela</option>
+ [% ELSE %] <option value="ak">Caracas, Venezuela</option>
+ [% END %] [% IF ( f9al ) %] <option value="al" selected="selected">Copenhague, Danemark</option>
+ [% ELSE %] <option value="al">Copenhague, Danemark</option>
+ [% END %] [% IF ( f9am ) %] <option value="am" selected="selected">Cordoba, Argentine</option>
+ [% ELSE %] <option value="am">Cordoba, Argentine</option>
+ [% END %] [% IF ( f9an ) %] <option value="an" selected="selected">Ferro, $îles Canarie</option>
+ [% ELSE %] <option value="an">Ferro, $îles Canarie</option>
+ [% END %] [% IF ( f9ao ) %] <option value="ao" selected="selected">Helsinki, Finlande</option>
+ [% ELSE %] <option value="ao">Helsinki, Finlande</option>
+ [% END %] [% IF ( f9ap ) %] <option value="ap" selected="selected">Istanboul, Turquie</option>
+ [% ELSE %] <option value="ap">Istanboul, Turquie</option>
+ [% END %] [% IF ( f9aq ) %] <option value="aq" selected="selected">Julianehaab, Greenland</option>
+ [% ELSE %] <option value="aq">Julianehaab, Greenland</option>
+ [% END %] [% IF ( f9ar ) %] <option value="ar" selected="selected">Lisbon, Portugal</option>
+ [% ELSE %] <option value="ar">Lisbon, Portugal</option>
+ [% END %] [% IF ( f9as ) %] <option value="as" selected="selected">Londres, Royaume Uni</option>
+ [% ELSE %] <option value="as">Londres, Royaume Uni</option>
+ [% END %] [% IF ( f9at ) %] <option value="at" selected="selected">Madras, Inde</option>
+ [% ELSE %] <option value="at">Madras, Inde</option>
+ [% END %] [% IF ( f9ba ) %] <option value="ba" selected="selected">Madrid, Espagne</option>
+ [% ELSE %] <option value="ba">Madrid, Espagne</option>
+ [% END %] [% IF ( f9bb ) %] <option value="bb" selected="selected">Mexico City, Mexique</option>
+ [% ELSE %] <option value="bb">Mexico City, Mexique</option>
+ [% END %] [% IF ( f9bc ) %] <option value="bc" selected="selected">Moscow, Russia</option>
+ [% ELSE %] <option value="bc">Moscow, Russia</option>
+ [% END %] [% IF ( f9bd ) %] <option value="bd" selected="selected">Munich, Germany</option>
+ [% ELSE %] <option value="bd">Munich, Germany</option>
+ [% END %] [% IF ( f9be ) %] <option value="be" selected="selected">Naples, Italy</option>
+ [% ELSE %] <option value="be">Naples, Italy</option>
+ [% END %] [% IF ( f9bf ) %] <option value="bf" selected="selected">Oslo (Christiania), Norvège</option>
+ [% ELSE %] <option value="bf">Oslo (Christiania), Norvège</option>
+ [% END %] [% IF ( f9bg ) %] <option value="bg" selected="selected">Paris, France</option>
+ [% ELSE %] <option value="bg">Paris, France</option>
+ [% END %] [% IF ( f9bh ) %] <option value="bh" selected="selected">Pékin, République Populaire de Chine</option>
+ [% ELSE %] <option value="bh">Pékin, République Populaire de Chine</option>
+ [% END %] [% IF ( f9bi ) %] <option value="bi" selected="selected">Philadelphie, USA</option>
+ [% ELSE %] <option value="bi">Philadelphie, USA</option>
+ [% END %] [% IF ( f9bj ) %] <option value="bj" selected="selected">Pulkova (Leningrad), Russie</option>
+ [% ELSE %] <option value="bj">Pulkova (Leningrad), Russie</option>
+ [% END %] [% IF ( f9bk ) %] <option value="bk" selected="selected">Rio de Janeiro, Brésil</option>
+ [% ELSE %] <option value="bk">Rio de Janeiro, Brésil</option>
+ [% END %] [% IF ( f9bl ) %] <option value="bl" selected="selected">Rome, Italie</option>
+ [% ELSE %] <option value="bl">Rome, Italie</option>
+ [% END %] [% IF ( f9bm ) %] <option value="bm" selected="selected">Santiago, Chilie</option>
+ [% ELSE %] <option value="bm">Santiago, Chilie</option>
+ [% END %] [% IF ( f9bn ) %] <option value="bn" selected="selected">Stockholm, Suède</option>
+ [% ELSE %] <option value="bn">Stockholm, Suède</option>
+ [% END %] [% IF ( f9bo ) %] <option value="bo" selected="selected">Sydney, Australie</option>
+ [% ELSE %] <option value="bo">Sydney, Australie</option>
+ [% END %] [% IF ( f9bp ) %] <option value="bp" selected="selected">Tirana, Albanie</option>
+ [% ELSE %] <option value="bp">Tirana, Albanie</option>
+ [% END %] [% IF ( f9bq ) %] <option value="bq" selected="selected">Tokyo, Japon</option>
+ [% ELSE %] <option value="bq">Tokyo, Japon</option>
+ [% END %] [% IF ( f9br ) %] <option value="br" selected="selected">Washington, DC, USA</option>
+ [% ELSE %] <option value="br">Washington, DC, USA</option>
+ [% END %] [% IF ( f9uu ) %] <option value="uu" selected="selected">inconnu</option>
+ [% ELSE %] <option value="uu">inconnu</option>
+ [% END %] [% IF ( f9zz ) %] <option value="zz" selected="selected">autre</option>
+ [% ELSE %] <option value="zz">autre</option>
+ [% END %] </select>
+
+ </td></tr><tr> <td><label for="f10">Méridien de référence&nbsp;:</label></td>
+ <td>
+ <select name="f10" id="f10" size="1">
+ 
+ [% IF ( f10dblspace ) %] <option value="  " selected="selected">valeur non obligatoire</option>
+ [% ELSE %] <option value="  ">valeur non obligatoire</option>
+ [% END %] [% IF ( f10aa ) %] <option value="aa" selected="selected">Greenwich, Royaume Uni</option>
+ [% ELSE %] <option value="aa">Greenwich, Royaume Uni</option>
+ [% END %] [% IF ( f10ab ) %] <option value="ab" selected="selected">Amsterdam, Pays-BAs</option>
+ [% ELSE %] <option value="ab">Amsterdam, Pays-BAs</option>
+ [% END %] [% IF ( f10ac ) %] <option value="ac" selected="selected">Athénes, Grèce</option>
+ [% ELSE %] <option value="ac">Athénes, Grèce</option>
+ [% END %] [% IF ( f10ad ) %] <option value="ad" selected="selected">Batavia (Djakarta), Indonesie</option>
+ [% ELSE %] <option value="ad">Batavia (Djakarta), Indonesie</option>
+ [% END %] [% IF ( f10ae ) %] <option value="ae" selected="selected">Berne, Suisse</option>
+ [% ELSE %] <option value="ae">Berne, Suisse</option>
+ [% END %] [% IF ( f10af ) %] <option value="af" selected="selected">Bogota, Colombie</option>
+ [% ELSE %] <option value="af">Bogota, Colombie</option>
+ [% END %] [% IF ( f10ag ) %] <option value="ag" selected="selected">Bombay, Inde</option>
+ [% ELSE %] <option value="ag">Bombay, Inde</option>
+ [% END %] [% IF ( f10ah ) %] <option value="ah" selected="selected">Bruxelles, Belgique</option>
+ [% ELSE %] <option value="ah">Bruxelles, Belgique</option>
+ [% END %] [% IF ( f10ai ) %] <option value="ai" selected="selected">Cadix, Espagne</option>
+ [% ELSE %] <option value="ai">Cadix, Espagne</option>
+ [% END %] [% IF ( f10aj ) %] <option value="aj" selected="selected">Capetown, Afrique du Sud</option>
+ [% ELSE %] <option value="aj">Capetown, Afrique du Sud</option>
+ [% END %] [% IF ( f10ak ) %] <option value="ak" selected="selected">Caracas, Venezuela</option>
+ [% ELSE %] <option value="ak">Caracas, Venezuela</option>
+ [% END %] [% IF ( f10al ) %] <option value="al" selected="selected">Copenhague, Danemark</option>
+ [% ELSE %] <option value="al">Copenhague, Danemark</option>
+ [% END %] [% IF ( f10am ) %] <option value="am" selected="selected">Cordoba, Argentine</option>
+ [% ELSE %] <option value="am">Cordoba, Argentine</option>
+ [% END %] [% IF ( f10an ) %] <option value="an" selected="selected">Ferro, $îles Canarie</option>
+ [% ELSE %] <option value="an">Ferro, $îles Canarie</option>
+ [% END %] [% IF ( f10ao ) %] <option value="ao" selected="selected">Helsinki, Finlande</option>
+ [% ELSE %] <option value="ao">Helsinki, Finlande</option>
+ [% END %] [% IF ( f10ap ) %] <option value="ap" selected="selected">Istanboul, Turquie</option>
+ [% ELSE %] <option value="ap">Istanboul, Turquie</option>
+ [% END %] [% IF ( f10aq ) %] <option value="aq" selected="selected">Julianehaab, Greenland</option>
+ [% ELSE %] <option value="aq">Julianehaab, Greenland</option>
+ [% END %] [% IF ( f10ar ) %] <option value="ar" selected="selected">Lisbon, Portugal</option>
+ [% ELSE %] <option value="ar">Lisbon, Portugal</option>
+ [% END %] [% IF ( f10as ) %] <option value="as" selected="selected">Londres, Royaume Uni</option>
+ [% ELSE %] <option value="as">Londres, Royaume Uni</option>
+ [% END %] [% IF ( f10at ) %] <option value="at" selected="selected">Madras, Inde</option>
+ [% ELSE %] <option value="at">Madras, Inde</option>
+ [% END %] [% IF ( f10ba ) %] <option value="ba" selected="selected">Madrid, Espagne</option>
+ [% ELSE %] <option value="ba">Madrid, Espagne</option>
+ [% END %] [% IF ( f10bb ) %] <option value="bb" selected="selected">Mexico City, Mexique</option>
+ [% ELSE %] <option value="bb">Mexico City, Mexique</option>
+ [% END %] [% IF ( f10bc ) %] <option value="bc" selected="selected">Moscow, Russia</option>
+ [% ELSE %] <option value="bc">Moscow, Russia</option>
+ [% END %] [% IF ( f10bd ) %] <option value="bd" selected="selected">Munich, Germany</option>
+ [% ELSE %] <option value="bd">Munich, Germany</option>
+ [% END %] [% IF ( f10be ) %] <option value="be" selected="selected">Naples, Italy</option>
+ [% ELSE %] <option value="be">Naples, Italy</option>
+ [% END %] [% IF ( f10bf ) %] <option value="bf" selected="selected">Oslo (Christiania), Norvège</option>
+ [% ELSE %] <option value="bf">Oslo (Christiania), Norvège</option>
+ [% END %] [% IF ( f10bg ) %] <option value="bg" selected="selected">Paris, France</option>
+ [% ELSE %] <option value="bg">Paris, France</option>
+ [% END %] [% IF ( f10bh ) %] <option value="bh" selected="selected">Pékin, République Populaire de Chine</option>
+ [% ELSE %] <option value="bh">Pékin, République Populaire de Chine</option>
+ [% END %] [% IF ( f10bi ) %] <option value="bi" selected="selected">Philadelphie, USA</option>
+ [% ELSE %] <option value="bi">Philadelphie, USA</option>
+ [% END %] [% IF ( f10bj ) %] <option value="bj" selected="selected">Pulkova (Leningrad), Russie</option>
+ [% ELSE %] <option value="bj">Pulkova (Leningrad), Russie</option>
+ [% END %] [% IF ( f10bk ) %] <option value="bk" selected="selected">Rio de Janeiro, Brésil</option>
+ [% ELSE %] <option value="bk">Rio de Janeiro, Brésil</option>
+ [% END %] [% IF ( f10bl ) %] <option value="bl" selected="selected">Rome, Italie</option>
+ [% ELSE %] <option value="bl">Rome, Italie</option>
+ [% END %] [% IF ( f10bm ) %] <option value="bm" selected="selected">Santiago, Chilie</option>
+ [% ELSE %] <option value="bm">Santiago, Chilie</option>
+ [% END %] [% IF ( f10bn ) %] <option value="bn" selected="selected">Stockholm, Suède</option>
+ [% ELSE %] <option value="bn">Stockholm, Suède</option>
+ [% END %] [% IF ( f10bo ) %] <option value="bo" selected="selected">Sydney, Australie</option>
+ [% ELSE %] <option value="bo">Sydney, Australie</option>
+ [% END %] [% IF ( f10bp ) %] <option value="bp" selected="selected">Tirana, Albanie</option>
+ [% ELSE %] <option value="bp">Tirana, Albanie</option>
+ [% END %] [% IF ( f10bq ) %] <option value="bq" selected="selected">Tokyo, Japon</option>
+ [% ELSE %] <option value="bq">Tokyo, Japon</option>
+ [% END %] [% IF ( f10br ) %] <option value="br" selected="selected">Washington, DC, USA</option>
+ [% ELSE %] <option value="br">Washington, DC, USA</option>
+ [% END %] [% IF ( f10uu ) %] <option value="uu" selected="selected">inconnu</option>
+ [% ELSE %] <option value="uu">inconnu</option>
+ [% END %] [% IF ( f10zz ) %] <option value="zz" selected="selected">autre</option>
+ [% ELSE %] <option value="zz">autre</option>
+ [% END %] </select>
+ </td></tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+	function report() {
+	    var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+            field.value =  document.f_pop.f1.value + document.f_pop.f2.value +document.f_pop.f3.value +document.f_pop.f4.value +document.f_pop.f5.value +document.f_pop.f6.value +document.f_pop.f7.value +document.f_pop.f8.value +document.f_pop.f9.value +document.f_pop.f10.value;
+	    self.close();
+	    return false;
+	}
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

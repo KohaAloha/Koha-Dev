@@ -1,0 +1,147 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Commandes en retard</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+[% INCLUDE 'calendar.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+[% IF (dateformat == 'metric') %]
+    dt_add_type_uk_date();
+[% END %]
+$(document).ready(function() {
+    var late_orderst = $("#late_orders").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "aoColumnDefs": [
+            { "aTargets": [ -1 ], "bSortable": false, "bSearchable": false },
+        ],
+        "sPaginationType": "four_button"
+    } ) );
+
+    $("input:checkbox[name=claim_for]").click(function(){
+        var booksellerid = $(this).attr('booksellerid');
+        if ( $("input:checkbox[name=claim_for]:checked").length > 0) {
+            $("input:checkbox[name=claim_for][booksellerid!="+booksellerid+"]").attr('disabled', true);
+        } else {
+            $("input:checkbox[name=claim_for]").attr('disabled', false);
+        }
+    });
+    $('#CheckAll').click(function(){ $("#late_orders td").checkCheckboxes();});
+    $('#CheckNone').click(function(){ $("#late_orders td").unCheckCheckboxes();});
+});
+//]]>
+</script>
+</head>
+<body id="acq_lateorders" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="lateorders.pl">Late orders</a></div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ 
+<h1>[% IF ( Supplier ) %][% Supplier %] : [% END %]Commandes en retard</h1>
+<div id="acqui_lateorders">
+
+[% IF error_claim %] [% IF ( error_claim == "no_email" ) %] <div class="error">Ce fournisseur n'a pas de mail</div>
+ [% ELSE %] <div class="error">[% error_claim %]</div>
+ [% END %] [% END %] [% IF info_claim %] <div class="dialog message">Le mail a été envoyé.</div>
+[% END %] [% IF ( lateorders ) %] <form action="lateorders.pl" name="claim" method="post">
+ <input type="hidden" name="op" value="send_alert" />
+ <input type="hidden" name="delay" value="[% delay %]" />
+ <input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ [% IF ( letters ) %] <p><label for="letter_code">Réclamer en utilisant la notification&nbsp;:</label><select name="letter_code" id="letter_code">
+ [% FOREACH letter IN letters %] <option value="[% letter.code %]">[% letter.name %]</option>
+ [% END %] </select>
+ </p>
+ [% END %] <table id="late_orders">
+ <thead>
+ <tr>
+ <th>Date de la commande</th>
+ <th>Date de livraison estimée</th>
+ <th>Fournisseur</th>
+ <th>Information</th>
+ <th>Coût total</th>
+ <th>Panier</th>
+ <th>Décompte des réclamations</th>
+ <th>Date de réclamation</th>
+ [% IF Supplier %] <th><a id="CheckAll" href="#">Tout sélectionner</a><br /><a id="CheckNone" href="#">Désélectionner tout</a></th>
+ [% ELSE %] <th></th>
+ [% END %] </tr>
+ </thead>
+ <tbody>
+ [% FOREACH lateorder IN lateorders %] [% UNLESS ( loop.odd ) %]<tr class="highlight">
+ [% ELSE %]<tr>[% END %] <td>
+ ([% lateorder.supplierid %]) [% lateorder.orderdate %] ([% lateorder.latesince %] jours) </td>
+ <td>
+ [% IF ( lateorder.estimateddeliverydate ) %] [% lateorder.estimateddeliverydate | $KohaDates  %] [% END %] </td>
+ <td>
+ [% lateorder.supplier %] </td>
+ <td>
+ <b>[% lateorder.title |html %]</b>
+ [% IF ( lateorder.author ) %]<br/><i>Auteur&nbsp;:</i> [% lateorder.author %][% END %] [% IF ( lateorder.publisher ) %] <br/><i>édité par&nbsp;:</i> [% lateorder.publisher %] [% IF ( lateorder.publicationyear ) %] <i> dans </i>[% lateorder.publicationyear %] [% END %] [% END %] </td>
+ <td>
+ [% lateorder.unitpricesupplier %]x[% lateorder.quantity %] = [% lateorder.subtotal %] <p title="budget">[% lateorder.budget %]</p>
+ </td>
+ <td>
+ <p><a href="basket.pl?basketno=[% lateorder.basketno %]" title="panier">
+ [% lateorder.basketno %] </a>
+ </p>
+ <p title="Site">[% lateorder.branch %]</p>
+ </td>
+ <td>[% lateorder.claims_count %]</td>
+ <td>[% lateorder.claimed_date %]</td>
+ <td>
+ [% UNLESS lateorder.budget_lock %] <input type="checkbox" class="checkbox" name="claim_for" value="[% lateorder.ordernumber %]"  booksellerid="[% lateorder.supplierid %]"/>
+ [% END %] </td>
+ </td>
+ </tr>
+ [% END %] </tbody>
+ <tfoot>
+ <tr> 
+ <th>Total</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>[% total %]</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <td>
+ <input value="Réclamation commande" type="submit" />
+ </td>
+ </tr>
+ </tfoot>
+ </table>
+</form>
+[% ELSE %]<p>Il n'y a pas de commande en retard.</p>
+[% END %] </div>
+</div>
+</div>
+<div class="yui-b">
+<form action="lateorders.pl" method="get">
+<fieldset class="brief">
+<h4>Résultat du filtre&nbsp;:</h4>
+[% FOREACH ERROR_LOO IN ERROR_LOOP %] [% IF ( ERROR_LOO.delay_digits ) %]<p class="error">The number of days ([% ERROR_LOO.bad_delay %]) must be a number between 0 and 999.</p>[% END %] [% END %] <ol>
+ <li><label for="delay">Date de la commande</label><input size="3" maxlength="3" id="delay" type="text" name="delay" value="[% delay %]" /> jours</li>
+ <li><label for="from">Estimated delivery date from: </label>
+ <input type="text" size="10" id="from" name="estimateddeliverydatefrom" value="[% estimateddeliverydatefrom %]" class="datepickerfrom" />
+ <div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+ </li>
+ <li><label for="to">et le&nbsp;:</label>
+ <input type="text" size="10" id="to" name="estimateddeliverydateto" value="[% estimateddeliverydateto %]" class="datepickerto" />
+ <div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+ </li>
+
+ <li><label for="booksellerid">Fournisseur&nbsp;:</label>
+ <select id="booksellerid" size="1" tabindex="" name="booksellerid">
+ <option value=""/>
+ [% FOREACH SUPPLIER_LOO IN SUPPLIER_LOOP %] [% IF ( SUPPLIER_LOO.selected ) %]<option value="[% SUPPLIER_LOO.id %]" selected="selected">[% SUPPLIER_LOO.name %]</option>
+ [% ELSE %]<option value="[% SUPPLIER_LOO.id %]">[% SUPPLIER_LOO.name %]</option>[% END %] [% END %] </select>
+</ol>
+ <fieldset class="action"><input value="Sélectionner" type="submit" /></fieldset>
+</fieldset>
+ </form>
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

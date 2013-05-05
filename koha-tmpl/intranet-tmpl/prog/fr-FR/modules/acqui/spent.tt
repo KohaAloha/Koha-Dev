@@ -1,0 +1,95 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Dépensé</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+ $(document).ready(function() {
+    [% IF (dateformat == 'metric') %]
+        dt_add_type_uk_date();
+    [% END %]
+    var spent = $("#spent").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "sPaginationType": "four_button"
+    } ) );
+ });
+ //]]>
+</script>
+</head>
+<body id="acq_spent" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; Dépensé - [% fund_code %]</div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h1>Poste budgétaire : [% fund_code %] </h1>
+<h2>Spent</h2>
+
+
+<table cellspacing="0" cellpadding="0" border="0" id="spent" class="collapse">
+ <thead>
+ <tr>
+ <th> Titre </th>
+ <th> Commande</th>
+ <th> Fournisseur </th>
+ <th> Facture</th>
+ <th> Type de document</th>
+ <th> Reçu</th>
+ <th> Prix unitaire </th>
+ <th> Commandé le</th>
+ <th> Date received </th>
+ <th> Sous-total</th>
+ </tr>
+ </thead>
+
+[% FOREACH order IN spent %] [% IF loop.odd %] <tr class="highlight">
+ [% ELSE %] <tr>
+ [% END %] <td class="cell">
+ [% order.title %] </td>
+ <td class="cell">
+ <a href="/cgi-bin/koha/acqui/orderreceive.pl?ordernumber=[% order.ordernumber %]&amp;biblio=[% order.biblionumber %]&amp;invoiceid=[% order.invoiceid %]">[% order.ordernumber %]</a>
+ </td>
+ <td class="cell">
+ <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% order.booksellerid %]">[% order.booksellerid %]</a>
+ </td>
+ <td class="cell">
+ <a href="/cgi-bin/koha/acqui/invoice.pl?invoiceid=[% order.invoiceid %]">[% order.invoicenumber %]</a>
+ </td>
+ <td class="cell">
+ [% order.itype %] </td>
+ <td class="cell">
+ [% order.quantityreceived %] </td>
+ <td class="cell" align="right">
+ [% order.unitprice %] </td>
+ <td class="cell" align="right">
+ [% order.entrydate | $KohaDates %] </td>
+ <td class="cell" align="right">
+ [% order.datereceived | $KohaDates %] </td>
+ <td class="cell" align="right">
+ [% order.rowtotal %] </td>
+ </tr>
+[% END %] <tfoot>
+ [% IF shipmentcosts.size %] <tr valign="top">
+ <td colspan="9"> Sub total </td>
+ <td align="right"> [% subtotal %] </td>
+ </tr>
+ [% FOREACH shipmentcost IN shipmentcosts %] <tr>
+ <td></td>
+ <td colspan="8">Shipment cost for invoice [% shipmentcost.invoicenumber %]</td>
+ <td class="total">[% shipmentcost.shipmentcost %]</td>
+ </tr>
+ [% END %] [% END %] <tr>
+ <td colspan="9">TOTAL</td>
+ <td class="total">[% total %]</td>
+ </tr>
+ </tfoot>
+</table>
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

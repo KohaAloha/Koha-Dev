@@ -1,0 +1,27 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; [% IF ( nopermission ) %]Accès refusé[% END %] [% IF ( timed_out ) %]La session a expiré[% END %] [% IF ( different_ip ) %]Votre adresse IP a changé[% END %] [% IF ( invalid_username_or_password ) %]Identifiant ou mot de passe invalide[% END %] [% IF ( loginprompt ) %]Se connecter à Koha[% END %] </title>
+
+[% INCLUDE 'installer-doc-head-close.inc' %] <div id="login">
+<h1><a>Installeur de Koha 3.0</a></h1>
+[% IF ( nopermission ) %] <div id="login_error"><strong>Erreur&nbsp;: </strong>Utilisateur non autorisé <a href="/cgi-bin/koha/mainpage.pl?logout.x=1">cliquer pour se déconnecter</a></div>
+[% END %] [% IF ( timed_out ) %] <div id="login_error"><strong>Erreur&nbsp;: </strong>Votre session a pris fin, reconnectez-vous SVP</div>
+[% END %] [% IF ( different_ip ) %] <div id="login_error"><strong>Erreur&nbsp;: </strong>Votre adresse IP a changé, reconnectez-vous</div>
+[% END %] [% IF ( invalid_username_or_password ) %] <div id="login_error"><strong>Erreur&nbsp;: </strong>Nom d'utilisateur ou mot de passe invalide</div>
+[% END %]
+
+[% IF ( loginprompt ) %]
+<!-- login prompt time-->
+<form action="[% url %]" method="post" name="mainform" id="mainform">
+[% FOREACH INPUT IN INPUTS %] <input type="hidden" name="[% INPUT.name |html %]" value="[% INPUT.value |html %]" />
+[% END %] <h3>Bienvenue dans l'installateur web de Koha</h3>
+<p>Avant que nous commencions, merci de vérifier que vous avez les autorisations qu'il faut pour continuer. Merci d'ouvrir une session avec le nom d'utilisateur et le mot de passe qui vous ont été donnés par votre administrateur système et localisé dans votre<code>koha-conf.xml</code> Fichier de configuration.</p>
+<p>Merci d'entrer vos nom d'utilisateur et mot de passe</p>
+<p><label>Identifiant&nbsp;: <br />
+<input type="text" name="userid" id="userid" class="input" value="[% userid %]" size="20" tabindex="1" /></label>
+</p>
+<p><label>Mot de passe&nbsp;: <br />
+<input type="password" name="password" id="password" class="input" value="" size="20" tabindex="2" /></label>
+</p>
+<p class="submit"><input tabindex="4" value="Connexion" id="submit" type="submit" /></p>
+</form>
+
+[% END %] [% INCLUDE 'intranet-bottom.inc' %] 

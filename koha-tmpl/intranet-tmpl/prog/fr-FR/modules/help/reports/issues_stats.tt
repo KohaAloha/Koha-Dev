@@ -1,0 +1,20 @@
+[% INCLUDE 'help-top.inc' %] <h1>Stats de circulation</h1>
+
+<p>En utilisant le formulaire fourni, choisissez quels champs vous voulez voir afficher dans la colonne et quels champs afficher dans la rangée.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p style="background-color: #ffe599">A savoir : Pour obtenir une image complète de votre circulation mensuelle ou quotidiennement, vous pouvez lancer l'état deux fois, une fois par type de transaction.</p>
+
+<p>Cet état utilise les champs Période ou Date. C'est un filtre qui permet de limiter le résultat à un mois donnée en sélectionnant simplement le premier jour du mois et le premier jour du mois suivant. Par ex., 1/10 à 1/11 donne les statistiques du mois d'octobre.<ul>
+ <li>Pour obtenir les statistiques quotidiennes, donnez un intervalle de dates. Par exemple : Je veux les dates qui commencent par XXX jusque la date XXX exclue.</li>
+ <li>Pour un mois entier, un exemple d'intervalle serait : 01/12/2010 à 01/01/2011</li>
+ <li>Pour une année entière, un exemple d'intervalle serait : 01/01/2010 à 01/01/2011</li>
+ <li>Pour une seule journée, un exemple serait: 15/12/2010 à 16/12/2010 pour trouver tout ce qui a circulé le 15</li>
+</ul>
+
+<p><strong>Voir la documentation complète des statistiques de circulation le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#circstats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

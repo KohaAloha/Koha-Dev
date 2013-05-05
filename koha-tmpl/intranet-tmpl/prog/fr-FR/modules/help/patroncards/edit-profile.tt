@@ -1,0 +1,30 @@
+[% INCLUDE 'help-top.inc' %] <h1>Profils</h1>
+
+<p>Un profil est un paramétrage "d'ajustement" appliqué à un modèle donné juste avant l'impression pour compenser des anomalies uniques et spécifiques à une imprimante donnée (à laquelle le profil est rattaché). Ceci signifie que si vous paramétrez un modèle et imprimez un test de données et trouvez que les exemplaires ne sont pas alignés de la même façon sur chaque étiquette, vous avez besoin de définir un profil pour chaque imprimante, pour compenser la différence des styles d'impression, comme le décalage du texte vers la gauche, la droite, le haut ou le bas.</p>
+
+<p>Si vos cartes s'impriment exactement comme vous voulez, vous n'aurez pas à utiliser un profil.</p>
+
+<h2>Ajouter un profil</h2>
+
+<p>Pour ajouter un nouveau profil, cliquez sur le bouton 'Profils' et choisissez 'Nouveau Profil'</p>
+
+<p>En utilisant le formulaire qui apparaît, vous pouvez créer un profil afin de corriger toute anomalie d'impression de votre modèle.</p>
+
+<ul>
+ <li>Il n'est pas nécessaire que les noms de l'imprimante et du chargeur de papier correspondent à ce qui est défini dans votre imprimante. Ils sont là pour référence et pour vous permettre de vous souvenir facilement de l'imprimante pour laquelle vous avez créé le profil.</li>
+ <li>Le modèle sera rempli en une fois quand vous aurez choisi le profil</li>
+ <li>La liste des unités vous permet de choisir l'unité de mesure utilisée dans la définition du profil.</li>
+ <li>Le Décalage décrit ce qui arrive quand l'image est décentrée verticalement ou horizontalement. Creep décrit une condition où la distance entre les étiquettes change dans la page.<ul>
+ <li>Un offset négatif va décaler l'image sur la gauche et vers le haut. Un offset positif ca décaler l'image vers le bas et vers la droite.</li>
+ <li>Exemple : Le texte est à 1cm du bord gauche de la première étiquette, à 1,2cm de la gauche de la deuxième étiquette et à 1,4cm du bord gauche de la troisième. Cela signifie que le décalage horizontal doit être fixé à 0,2cm pour tenir compte des différences observées.</li>
+</ul>
+</li>
+</ul>
+
+<p>Après enregistrement, vos profils seront visibles sur la page 'Gérer les profils'.</p>
+
+<p>Une fois que vous avez enregistré votre nouveau profil; vous pouvez retourner à la liste des modèles et choisir de modifier le modèle correspondant à ce profil.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html#patronprofile">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

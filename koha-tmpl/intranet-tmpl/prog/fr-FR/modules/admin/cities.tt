@@ -1,0 +1,129 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; [% IF ( add_form ) %]Communes &rsaquo; [% IF ( cityid ) %] Modifier commune [% ELSE %] Ajouter une commune [% END %][% ELSE %][% IF ( delete_confirm ) %]Communes &rsaquo; Confirmer suppression de la commune [% ELSE %] Communes[% END %][% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+    function Check(f) {
+        if (f.city_zipcode.value.length == 0 && f.city_name.value.length == 0 ) {
+            alert(_("Il manque la ville et le code postal"));
+        } else{
+            document.Aform.submit();
+        }
+    }
+    $(document).ready(function() {
+        $("#table_cities").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "aoColumnDefs": [
+                { "aTargets": [ -1, -2 ], "bSortable": false, "bSearchable": false },
+            ],
+            "aaSorting": [[ 1, "asc" ]],
+            "iDisplayLength": 10,
+            "aLengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+        }));
+    });
+//]]>
+</script>
+</head>
+<body id="admin_cities" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cities-admin-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a>
+ &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a>
+ &rsaquo; <a href="/cgi-bin/koha/admin/cities.pl">Communes</a>
+ [% IF ( add_form ) %] &rsaquo; [% IF ( cityid ) %]Modifier la[% ELSE %]Ajouter une[% END %] ville [% ELSIF ( delete_confirm ) %] &rsaquo; Confirmer la suppression de la ville [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( add_form ) %] [% IF ( cityid ) %] <h1>Modifier une commune</h1>
+ [% ELSE %] <h1>Ajouter une commune</h1>
+ [% END %] <form action="[% script_name %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="checked" value="0" />
+ <input type="hidden" name="cityid" value="[% cityid %]" />
+
+<fieldset class="rows"><ol> [% IF ( cityid ) %] <li>
+ <span class="label">Identifiant commune&nbsp;:</span>[% cityid %]</li>
+ [% END %] <li>
+ <label for="city_name" class="required" title="obligatoire">Ville&nbsp;: </label>
+ <input type="text" name="city_name" id="city_name" size="80" maxlength="100" value="[% city_name |html %]" />
+ </li>
+ <li>
+ <label for="city_state">Etat&nbsp;: </label>
+ <input type="text" name="city_state" id="city_state" size="80" maxlength="100" value="[% city_state |html %]" />
+ </li>
+ <li> 
+ <label for="city_zipcode" class="required" title="obligatoire">Code postal&nbsp;: </label>
+ <input type="text" name="city_zipcode" id="city_zipcode" size="20" maxlength="20" value="[% city_zipcode %]" />
+ </li>
+ <li>
+ <label for="city_country">Pays : </label>
+ <input type="text" name="city_country" id="city_country" size="80" maxlength="100" value="[% city_country |html %]" />
+ </li></ol></fieldset>
+ 
+ <fieldset class="action">
+ <input value="Valider" class="button" type="button" onclick="Check(this.form)" /> <a class="cancel" href="/cgi-bin/koha/admin/cities.pl">Annuler</a>
+ </fieldset>
+ </form>
+
+[% END %] [% IF ( delete_confirm ) %] <div class="dialog alert">
+ <h3>Supprimer la commune "[% city_name %] ?"</h3>
+ <table>
+ <tr><th>Identifiant commune</th>
+ <td>[% cityid %]</td>
+ </tr>
+ <tr><th>Ville</th>
+ <td>[% city_name %]</td>
+ </tr>
+ <tr><th>Etat</th>
+ <td>[% city_state %]</td>
+ </tr>
+ <tr><th>Code postal&nbsp;:</th>
+ <td>[% city_zipcode %]</td>
+ </tr>
+ <tr><th>Pays</th>
+ <td>[% city_country %]</td>
+ </tr>
+ </table>
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="delete_confirmed" />
+ <input type="hidden" name="cityid" value="[% cityid %]" />
+ <input value="Oui, supprimer" type="submit" class="approve" />
+ </form>
+ <form action="[% script_name %]" method="get">
+ <input value="Non, ne pas supprimer" type="submit" class="deny" />
+ </form>
+</div>
+[% END %] [% IF ( else ) %] <div id="toolbar" class="btn-toolbar">
+ <a class="btn btn-small" id="newcity" href="[% script_name %]?op=add_form"><i class="icon-plus"></i> Ajouter une commune</a>
+</div>
+
+ <h2>Communes</h2>
+ [% IF ( searchfield ) %] Recherche&nbsp;: [% searchfield %] [% END %] [% IF ( loop ) %] <table id="table_cities">
+ <thead>
+ <th>Identifiant commune</th>
+ <th>Ville</th>
+ <th>Etat</th>
+ <th>Code postal&nbsp;:</th>
+ <th>Pays</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </thead>
+ [% FOREACH loo IN loop %] [% UNLESS ( loop.odd ) %] <tr class="highlight">
+ [% ELSE %] <tr>
+ [% END %] <td>[% loo.cityid %]</td>
+ <td>[% loo.city_name %]</td>
+ <td>[% loo.city_state %]</td>
+ <td>[% loo.city_zipcode %]</td>
+ <td>[% loo.city_country %]</td>
+ <td><a href="[% loo.script_name %]?op=add_form&amp;cityid=[% loo.cityid %]">Modifier</a></td>
+ <td><a href="[% loo.script_name %]?op=delete_confirm&amp;cityid=[% loo.cityid %]">Supprimer</a></td>
+ </tr>
+ [% END %] </table>[% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

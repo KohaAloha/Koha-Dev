@@ -1,0 +1,22 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron fines</h1>
+
+<p>L'onglet Amendes affiche l'historique complet des opérations comptables de l'adhérent. Contrairement à son nom, l'onglet Amendes ne montre pas uniquement des amendes. Il montre également les frais d'inscription, les montants des emprunts, s'il y a lieu, les frais de réservations et toute opération monétaire.</p>
+
+<h2>Facturation des frais et des amendes</h2>
+
+<p>Most fees and fines will be charged automatically if the fines cron job is running:</p>
+
+<ul>
+ <li>Les amendes seront facturées en fonction de vos Règles de circulation et d'amendes.</li>
+ <li>Les frais de réservation sont calculés sur la base des règles que vous avez définies dans les Type d'adhérent en Administration.</li>
+ <li>Le coût du prêt est facturé sur le base du paramétrage de vos Types de d'exemplaire en Administration.</li>
+ <li>ASTUCE&nbsp;: Marquer un exemplaire 'perdu' dans la page de modification des exemplaires associera automatiquement un coût de remplacement à l'adhérent lié.</li>
+</ul>
+
+<h2>Impression de facture</h2>
+
+<p>Il y a un lien Imprimer sur la droite de chaque compte. Cliquez sur ce lien pour imprimer une facture qui contiendra la date et la description de l'opération, ainsi que le solde du compte.</p>
+
+<p><strong>Voir la documentation complète sur les Amendes des adhérents dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#patronfines">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

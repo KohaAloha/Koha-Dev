@@ -1,0 +1,209 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; [% IF ( else ) %]Serveurs Z39.50 [% END %] [% IF ( add_form ) %] Serveurs Z39.50 &rsaquo; [% IF ( searchfield ) %]Modifier le serveur Z39.50 [% searchfield %][% ELSE %]Ajouter serveur Z39.50 [% END %][% END %] [% IF ( delete_confirm ) %]Serveurs Z39.50 &rsaquo; Confirmer la suppression [% END %] [% IF ( add_validate ) %]Serveurs Z39.50 &rsaquo; Serveur Z39.50 ajouté[% END %] [% IF ( delete_confirmed ) %]Serveurs Z39.50 &rsaquo; Serveur Z39.50 supprimé[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] [% IF ( else ) %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+[% END %] [% IF ( add_form ) %] <script type="text/javascript">
+//<![CDATA[
+        //
+        function isNotNull(f,noalert) {
+                if (f.value.length ==0) {
+                    return false;
+                }
+                return true;
+        }
+        //
+        function toUC(f) {
+                var x=f.value.toUpperCase();
+                f.value=x;
+                return true;
+        }
+        //
+        function isNum(v,maybenull) {
+        var n = new Number(v.value);
+        if (isNaN(n)) {
+                return false;
+                }
+        if (maybenull==0 && v.value=='') {
+                return false;
+        }
+        return true;
+        }
+        //
+        function isDate(f) {
+                var t = Date.parse(f.value);
+                if (isNaN(t)) {
+                       return false;                       
+                }
+        }
+        //
+        function Check(f) {
+                var ok=1;
+                var _alertString="";
+                var alertString2;
+                if (f.searchfield.value.length==0) {_alertString += "- target name missing\n";
+                }
+                if (f.host.value.length==0) {_alertString += "- host missing\n";
+                }
+                if (f.port.value.length==0) {_alertString += "- port missing\n";
+                }
+                if (f.db.value.length==0) {_alertString += "- database missing\n";
+                }
+                if (isNaN(f.port.value)) {_alertString += "- port must be a number\n";
+                }
+                if (isNaN(f.rank.value)) {_alertString += "- rank must be a number\n";
+                }
+                if (_alertString.length==0) {document.Aform.submit();
+                } else {alertString2 = "Form not submitted because of the following problem(s)\n";alertString2 += "------------------------------------------------------------------------------------\n\n";alertString2 += _alertString;alert(alertString2);
+                }
+        }
+        //]]>
+</script>
+[% END %] [% IF ( else ) %] <script type="text/javascript">
+    //<![CDATA[
+     $(document).ready(function() {
+        [% IF ( loop ) %]$("#serverst").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "aoColumnDefs": [
+                { "aTargets": [ 2,3,4,7,8,9,10,11 ], "bSortable": false, "bSearchable": false },
+            ],
+            "iDisplayLength": 20,
+            "aLengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "sPaginationType": "four_button"
+        }));[% END %]
+     });
+    //]]>
+    </script>
+[% END %] </head>
+<body id="admin_z3950servers" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'z3950-admin-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; [% IF ( else ) %]Serveurs Z39.50[% END %] [% IF ( add_form ) %] <a href="/cgi-bin/koha/admin/z3950servers.pl">Serveurs Z39.50</a> &rsaquo; [% IF ( searchfield ) %]Modifier un serveur Z39.50 [% searchfield %][% ELSE %]Nouveau serveur Z39.50[% END %][% END %] [% IF ( delete_confirm ) %] <a href="/cgi-bin/koha/admin/z3950servers.pl">Serveurs Z39.50</a> &rsaquo; Confirmer la suppression[% END %] [% IF ( add_validate ) %] <a href="/cgi-bin/koha/admin/z3950servers.pl">Serveurs Z39.50</a> &rsaquo; Serveur z3950 ajouté[% END %] [% IF ( delete_confirmed ) %] <a href="/cgi-bin/koha/admin/z3950servers.pl">Serveurs Z39.50</a> &rsaquo; Serveur Z39.50 supprimé[% END %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( add_form ) %] <form action="[% script_name %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+[% IF ( searchfield ) %] <h1>Modifier le serveur Z39.50</h1>
+ [% ELSE %] <h1>Ajouter un serveur Z39.50</h1>
+ [% END %] <fieldset class="rows">
+ <ol>[% IF ( searchfield ) %] <li><span class="label">Serveur Z39.50&nbsp;: </span> <input type="hidden" name="searchfield" value="[% searchfield %]" />[% searchfield %]</li>
+ [% ELSE %] <li><label for="searchfield">Serveur Z39.50&nbsp;: </label> <input type="text" name="searchfield" id="searchfield" size="65" maxlength="100" onblur="toUC(this)" /></li>
+ [% END %] <li><label for="host">Adresse du serveur&nbsp;:</label> <input type="text" name="host" id="host" size="30" value="[% host %]" />
+ </li>
+ <li><label for="port">Port&nbsp;:</label> <input type="text" name="port" id="port" size="5" value="[% port %]" onblur="isNum(this)" />
+ </li>
+ <li><label for="db">Base&nbsp;:</label> <input type="text" name="db" id="db" value="[% db %]" />
+ </li>
+ <li><label for="userid">Identifiant&nbsp;: </label> <input type="text" name="userid" id="userid" value="[% userid %]" />
+ </li>
+ <li><label for="password">Mot de passe&nbsp;: </label> <input type="text" name="password" id="password" value="[% password %]" />
+ </li>
+ <li><label for="checked">Actif (recherché par défaut)&nbsp;:</label>
+ [% IF ( checked ) %] <input type="checkbox" name="checked" id="checked" value="1" checked="checked" />
+ [% ELSE %] <input type="checkbox" name="checked" id="checked" value="1" />
+ [% END %] </li>
+ <li><label for="rank">Rang (ordre d'affichage)&nbsp;:</label> <input type="text" name="rank" id="rank" size="4" value="[% rank %]" onblur="isNum(this)" />
+ </li> 
+ <li><label for="syntax">Syntaxe (Z39-50 peut envoyer<br /> des notices dans divers formats. En choisir un) : </label> 
+<select name="syntax">
+[% IF ( syntaxUNIMARC ) %] <option value="UNIMARC" selected="selected">UNIMARC</option>
+[% ELSE %] <option value="UNIMARC">UNIMARC</option>
+[% END %] [% IF ( syntaxINTERMARC ) %] <option value="INTERMARC" selected="selected">INTERMARC</option>
+[% ELSE %] <option value="INTERMARC">INTERMARC</option>
+[% END %] [% IF ( syntaxCCF ) %] <option value="CCF" selected="selected">CCF</option>
+[% ELSE %] <option value="CCF">CCF</option>
+[% END %] [% IF ( syntaxUSMARC ) %] <option value="USMARC" selected="selected">MARC21/USMARC</option>
+[% ELSE %] <option value="USMARC">MARC21/USMARC</option>
+[% END %] [% IF ( syntaxUKMARC ) %] <option value="UKMARC" selected="selected">UKMARC</option>
+[% ELSE %] <option value="UKMARC">UKMARC</option>
+[% END %] [% IF ( syntaxNORMARC ) %] <option value="NORMARC" selected="selected">NORMARC</option>
+[% ELSE %] <option value="NORMARC">NORMARC</option>
+[% END %] [% IF ( syntaxLIBRISMARC ) %] <option value="LIBRISMARC" selected="selected">LIBRISMARC</option>
+[% ELSE %] <option value="LIBRISMARC">LIBRISMARC</option>
+[% END %] [% IF ( syntaxDANMARC ) %] <option value="DANMARC" selected="selected">DANMARC</option>
+[% ELSE %] <option value="DANMARC">DANMARC</option>
+[% END %] [% IF ( syntaxFINMARC ) %] <option value="FINMARC" selected="selected">FINMARC</option>
+[% ELSE %] <option value="FINMARC">FINMARC</option>
+[% END %] [% IF ( syntaxCANMARC ) %] <option value="CANMARC" selected="selected">CANMARC</option>
+[% ELSE %] <option value="CANMARC">CANMARC</option>
+[% END %] [% IF ( syntaxSBN ) %] <option value="SBN" selected="selected">SBN</option>
+[% ELSE %] <option value="SBN">SBN</option>
+[% END %] [% IF ( syntaxPICAMARC ) %] <option value="PICAMARC" selected="selected">PICAMARC</option>
+[% ELSE %] <option value="PICAMARC">PICAMARC</option>
+[% END %] [% IF ( syntaxAUSMARC ) %] <option value="AUSMARC" selected="selected">AUSMARC</option>
+[% ELSE %] <option value="AUSMARC">AUSMARC</option>
+[% END %] [% IF ( syntaxIBERMARC ) %] <option value="IBERMARC" selected="selected">IBERMARC</option>
+[% ELSE %] <option value="IBERMARC">IBERMARC</option>
+[% END %] [% IF ( syntaxCATMARC ) %] <option value="CATMARC" selected="selected">CATMARC</option>
+[% ELSE %] <option value="CATMARC">CATMARC</option>
+[% END %] [% IF ( syntaxMALMARC ) %] <option value="MALMARC" selected="selected">MALMARC</option>
+[% ELSE %] <option value="MALMARC">MALMARC</option>
+[% END %] </select>
+</li>
+
+ <li><label for="encoding">Syntaxe (Z39-50 peut envoyer<br /> des notices dans divers formats. En choisir un) : </label> 
+<select name="encoding">
+[% FOREACH enc IN [ 'utf8' 'EUC-KR' 'ISO_5426' 'ISO_6937' 'ISO_8859-1' 'MARC-8' ] %] [% IF ( encoding == enc ) %] <option value="[% enc %]" selected="selected">[% enc %]</option>
+ [% ELSE %] <option value="[% enc %]">[% enc %]</option>
+ [% END %] [% END %] </select>
+</li>
+ <li><label for="timeout">Attent (0 = rien)  </label>
+ <input type="text" name="timeout" id="timeout" size="4" value="[% timeout %]" onblur="isNum(this)" /> secondes </li>
+</ol>
+ </fieldset>
+ 
+ <fieldset class="action"><input value="Enregistrer" type="button" onclick="Check(this.form)" /> <a class="cancel" href="/cgi-bin/koha/admin/z3950servers.pl">Annuler</a></fieldset>
+ </form>
+[% END %] [% IF ( add_validate ) %] <h3>Serveur Z39.50 ajouté</h3>
+<form action="[% script_name %]" method="post">
+ <input type="submit" value="OK" />
+ </form>
+[% END %] [% IF ( delete_confirm ) %] [% reqsel %] <h3>Confirmer la suppression du serveur [% searchfield %]</h3>
+ <ul>
+ <li><strong>Cible&nbsp;: </strong> [% searchfield %]</li>
+ <li><strong>Adresse du serveur&nbsp;:</strong>[% host %]</li>
+ <li><strong>Port&nbsp;:</strong>[% port %]</li>
+ <li><strong>Base&nbsp;:</strong>[% db %]</li>
+ <li><strong>Identifiant&nbsp;: </strong>[% userid %]</li>
+ <li><strong>Mot de passe&nbsp;: </strong>[% password %]</li>
+ <li><strong>Actif&nbsp;:</strong>[% checked %]</li>
+ <li><strong>Rang&nbsp;:</strong>[% rank %]</li>
+ <li><strong>Syntaxe&nbsp;:</strong>[% syntax %]</li>
+ <li><strong>Encodage&nbsp;:</strong>[% encoding %]</li>
+ <li><strong>Attente : </strong>[% timeout %]</li>
+ </ul> <form action="[% script_name %]" method="post"><input type="hidden" name="op" value="delete_confirmed" /><input type="hidden" name="searchfield" value="[% searchfield %]" /><input value="Supprimer ce serveur" type="submit" /></form> <form action="[% script_name %]" method="post"><input type="submit" value="Do Not Delete" /></form>
+
+
+
+[% END %] [% IF ( delete_confirmed ) %] <h3>Serveur Z39.50 supprimé</h3>
+<form action="[% script_name %]" method="post">
+ <input type="submit" value="OK" />
+</form>
+[% END %] [% IF ( else ) %] <div id="toolbar" class="btn-toolbar">
+ <a id="newserver" class="btn btn-small" href="/cgi-bin/koha/admin/z3950servers.pl?op=add_form"><i class="icon-plus"></i> Ajouter un serveur Z39.50</a>
+</div>
+
+<h3>Gestion des serveurs Z39.50</h3>
+
+ [% IF ( searchfield ) %] Vous recherchiez [% searchfield %] [% END %] <table id="serverst">
+ <thead><tr><th>Cible</th><th>Nom du serveur hôte/port</th><th>Base de données</th><th>Identifiant</th><th>Mot de passe</th><th>Vérifié</th><th>Rang</th><th>Syntaxe</th><th>Encodage</th><th>Attente dépassée</th><th>&nbsp;</th><th>&nbsp;</th>
+ </tr></thead>
+ <tbody>[% FOREACH loo IN loop %] [% UNLESS ( loop.odd ) %] <tr class="highlight">
+ [% ELSE %] <tr>
+ [% END %] <td><a href="[% loo.script_name %]?op=add_form&amp;searchfield=[% loo.name |url %]">[% loo.name %]</a></td><td>[% loo.host %]&nbsp;: [% loo.port %]</td><td>[% loo.db %]</td><td>[% loo.userid %]</td><td>[% loo.password %]</td><td>[% IF ( loo.checked ) %]Oui[% ELSE %]Non[% END %]</td><td>[% loo.rank %]</td> <td>[% loo.syntax %]</td><td>[% loo.encoding %]</td><td>[% loo.timeout %]</td><td><a href="[% loo.script_name %]?op=add_form&amp;searchfield=[% loo.name |url %]">Modifier</a></td><td><a href="[% loo.script_name %]?op=delete_confirm&amp;searchfield=[% loo.name |url %]">Supprimer</a></td> </tr>
+ [% END %]</tbody>
+ </table>
+
+[% IF ( offsetgtzero ) %]<form action="[% script_name %]" method="get">
+ <input type="hidden" name="offset" value="[% prevpage %]" />
+ <input value="&lt;&lt; Précédent" type="submit">
+</form>[% END %] [% IF ( ltcount ) %]<form action="[% script_name %]" method="get">
+ <input type="hidden" name="offset" value="[% nextpage %]" />
+ <input value="Suivant >>" type="submit" />
+</form> [% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

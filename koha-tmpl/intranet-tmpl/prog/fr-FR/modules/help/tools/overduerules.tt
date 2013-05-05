@@ -1,0 +1,41 @@
+[% INCLUDE 'help-top.inc' %] <h1>Déclencheurs de relances/statut retard</h1>
+
+<p>Il faut d'abord définir ces messages dans les déclencheurs de notification si vous voulez qu'ils soient utilisés.</p>
+
+<p style="color: #990000;">Important: In order to have overdue notices sent to your patrons, you need to set that patron category to require overdue notices.</p>
+
+<p>L'outil de déclenchement des noticfications vous permet d'envoyer jusqu'à trois avis de retard aux adhérentes.</p>
+
+<ul>
+ <li>Le délai est un nombre de jours avant que le prêt le plus ancien soit pris en compte et qu'une action soit lancée.<ul>
+ <li style="color: #990000;">Important: If you want Koha to trigger an action (send a letter or restrict member), a delay value is required.</li>
+</ul>
+</li>
+ <li>Pour envoyer des notifications supplémentaires, cliquez sur les onglets Deuxième et Troisième</li>
+ <li>Si vous voulez empêcher un adhérent de faire des prêts, en raison par exemple de ses retards, cochez le piège Suspendu. Un message apparaîtra au moment du prêt informant l'opérateur que l'adhérent est bloqué en raison de ses retards.</li>
+ <li>Voir un exemple de d'avis de retard</li>
+</ul>
+
+<h3>Avis de retard d'exemple</h3>
+
+<p>Nicole Engard<br>410 Library Rd. <br>Philadelphia, PA 19107</p>
+
+<p>Dear Nicole Engard (23529000035726),</p>
+
+<p>Selon notre système informatisé, à l'instant de ce message, vous avez des documents en retard. Merci de les retourner ou les renouveler dès que possible afin d'éviter des pénalités de retard croissantes.</p>
+
+<p>Si vous avez un mot de passe, vous pourrez l'utiliser avec votre numéro de carte de bibliothèque afin d'effectuer des renouvellement en ligne.</p>
+
+<p>Si vous pensez avoir rendu les documents ci-dessous, veuillez contacter la bibliothèque. Le personnel vous aidera à résoudre ce problème.</p>
+
+<p>The following item(s) are currently overdue:</p>
+
+<p>07/08/2008 Creating drug-free schools and communities : 502326000054 Fox, C. Lynn.</p>
+
+<p>06/27/2008 Eating fractions / 502326000022 McMillan, Bruce.</p>
+
+<p>Sincerely, Library Staff</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/noticetriggers.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,71 @@
+[% INCLUDE 'help-top.inc' %] <h1>Recherche</h1>
+
+<p>Pour avoir plus d'options de recherche, cliquez sur [Plus d'options] en bas de page: une recherche booléenne plus riche sera disponible.</p>
+
+<h2>Searching Subtypes on the Staff Client</h2>
+
+<p>Voici les différentes limites de la recherche avancée&nbsp;:</p>
+
+<h3>Audience</h3>
+
+<p>The index name is 'aud' and it's derived from 008/22</p>
+
+<ul><li>aud:a Preschool</li>
+<li>aud:b Primary</li>
+<li>aud:c Pre-Adolescent</li>
+<li>aud:d Adolescent</li>
+<li>aud:e Adult</li>
+<li>aud:f Specialized</li>
+<li>aud:g General</li>
+<li>aud:j Juvenile</li></ul>
+
+<h3>Contenu</h3>
+
+<p>There are three indexes that comprise Content: 'fic' is derived from 003/33; 'bio' is derived from the 008/34 and 'mus' is derived from LEADER/06. Common values for each of these are:</p>
+
+<ul><li>fic:1 Fiction</li>
+<li>fic:0 Documentaire</li>
+<li>bio:b Biographie</li>
+<li>mus:j Enregistrement musical</li>
+<li>mus:i Enregistrement non musical</li></ul>
+
+<h3>Format</h3>
+
+<p>The index name is 'l-format' and it's an index of positions 007/01 and 007/02. Common values are:</p>
+
+<ul><li>l-format:ta a- Impression normale</li>
+<li>l-format:tb b- Gros caractères</li>
+<li>l-format:fk c- Braille</li>
+<li>I-format:sd CD audio</li>
+<li>l-format:ss Cassette audio</li>
+<li>l-format:vf Bande VHS / Videocassette</li>
+<li>l-format:vd DVD Video / Videodisque</li>
+<li>l-format:co CD Software</li>
+<li>I-format:cr Site web</li></ul>
+
+<h3>Additional Content Types</h3>
+
+<p>The index name is 'ctype' is taken from the 008 and it's where we get the 'additional content types'. It's position 008/24-28 field. Common values are: </p>
+
+<ul><li>ctype:a résumé/sommaire</li>
+<li>ctype:b Bibliographies<li>ctype:c Catalogues</li>
+<li>ctype:d Dictionnaires</li>
+<li>ctype:e Encyclopédies</li>
+<li>ctype:f Livres de poche</li>
+<li>ctype:g Articles de loi</li>
+<li>ctype:i Index<li>ctype:j Brevet</li>
+<li>ctype:k Discographies</li>
+<li>ctype:l Lois</li>
+<li>ctype:m Thèses</li>
+<li>ctype:n Enquêtes</li>
+<li>ctype:o Commentaires<li>ctype:p Textes de programmes</li>
+<li>ctype:q Filmographies</li>
+<li>ctype:r Répertoires</li>
+<li>ctype:s Statistiques</li>
+<li>ctype:t Rapports techniques</li>
+<li>ctype:v Jurisprudence<li>ctype:w Rapports de lois et recueils</li>
+<li>ctype:z Traités</li></ul>
+
+<p><strong>See the full documentation for Searching in the <a href="http://manual.koha-community.org/3.12/en/searching.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

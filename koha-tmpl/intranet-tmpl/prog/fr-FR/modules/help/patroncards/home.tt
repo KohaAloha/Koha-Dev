@@ -1,0 +1,20 @@
+[% INCLUDE 'help-top.inc' %] <h1>Créateur de cartes adhérent</h1>
+
+<p>Le Créateur de cartes adhérent vous permet d'utiliser les formats et modèles que vous avez définis pour imprimer une grande variété d'étiquettes incluant les codes barre. Voici certaines fonctionnalités du module Créateur de cartes adhérent : </p>
+
+<ul>
+ <li>Personnaliser les formats de carte adhérent</li>
+ <li>Design custom card templates for printed patron cards</li>
+ <li>Créer et gérer des lots de cartes adhérent</li>
+ <li>Exporte un ou plusieurs lots</li>
+ <li>Exporte une ou plusieurs cartes adhérent dans un lot</li>
+ <li>Exporte les données de carte au format PDF lisible par tout reader PDF standard, rendant les cartes adhérent imprimables directement sur une imprimante</li>
+</ul>
+
+<p>En haut de chaque écran du Créateur de cartes adhérent, vous voyez une barre d'outils permettant un accès rapide aux fonctionnalités. Le menu sur la gauche de chaque écran permet également un accès facile aux différentes sections du Créateur de cartes adhérent. Le fil d'ariane vers le haut de chaque écran donne des indications précises sur là où vous êtes dans le module Créateur de cartes adhérent et permet une navigation rapide vers les sections consultées précédemment. Enfin, vous pouvez trouver plus d'informations détaillées sur chaque section du Créateur de cartes adhérent en cliquant l'aide en ligne dans le coin en haut à droite de chaque page.</p>
+
+<p>The developers of the Patron Card Creator module hope you will find this an extremely useful tool. You are encouraged to submit any enhancement requests as well as any bugs via Koha Project Bugzilla.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/patroncardcreator.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

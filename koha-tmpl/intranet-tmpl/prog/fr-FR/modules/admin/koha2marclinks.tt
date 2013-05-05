@@ -1,0 +1,152 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; [% IF ( add_form ) %] Liens Koha => MARC &rsaquo; Connecter [% tablename %].[% kohafield %] à un sous-champ MARC[% END %] [% IF ( else ) %]Lien Koha => MARC [% tagfield %][% END %]</title>
+
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="admin_koha2marclinks" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; [% IF ( add_form ) %] <a href="/cgi-bin/koha/admin/koha2marclinks.pl">Liens Koha => MARC</a> &rsaquo; Connecter [% tablename %].[% kohafield %] à un sous-champ MARC[% END %] [% IF ( else ) %]Liens Koha-MARC[% tagfield %][% END %]</div>
+[% IF ( add_form ) %] <div id="doc" class="yui-t7">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+[% ELSE %] <div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% END %] [% IF ( add_form ) %] <h1>Connecte [% tablename %] [% kohafield %] à un sous-champ MARC</h1>
+ <p>Choisissez et validez un sous-champ MARC pour <strong>[% tablename %]. [% kohafield %]</strong>. Cela modifiera <b>all frameworks</b> ce qui est habituellement ce dont vous avez besoin, mais vous avez été prévenu.</p>
+ <fieldset class="rows"><ol>
+<li><form action="[% script_name %]" method="post"> <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>000s</label>
+ [% marclist0 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <label>1xx</label>
+ [% marclist1 %] <input type="hidden" name="kohafield" value="[% kohafield %]" /><input type="submit" value="OK" /> </form>
+ 
+ </li>
+ <li>
+
+ 
+ <form action="[% script_name %]" method="post"><input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>2xx</label>
+ [% marclist2 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>3xx</label>
+ [% marclist3 %] <input type="submit" value="OK" /> </form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>4xx</label>
+ [% marclist4 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>5xx</label>
+ [% marclist5 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>6xx</label>
+ [% marclist6 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>7xx</label>
+ [% marclist7 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>8xx</label>
+ [% marclist8 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ <li>
+ 
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <label>9xx</label>
+ [% marclist9 %] <input type="submit" value="OK" /></form>
+ 
+ </li>
+ </ol></fieldset>
+ <fieldset class="action">
+ <form action="[% script_name %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tablename" value="[% tablename %]" />
+ <input type="hidden" name="kohafield" value="[% kohafield %]" />
+ <input type="hidden" name="choice" value="" />
+ <input value="Cliquer pour délier" type="submit" />
+ </form>
+ <a class="cancel" href="/cgi-bin/koha/admin/koha2marclinks.pl">Annuler</a>
+ </fieldset>
+[% END %] [% IF ( else ) %] <h1>Liens Koha => MARC [% tagfield %]</h1>
+<form action="[% script_name %]" method="post">
+<p>[% tablename %] <input type="submit" value="OK" /></p>
+</form>
+<table>
+<tr>
+ <th>Champ Koha</th>
+ <th>Champ</th>
+ <th>Sous-champ</th>
+ <th>Lib</th>
+ <th>&nbsp;</th>
+</tr>
+[% FOREACH loo IN loop %] [% UNLESS ( loop.odd ) %] <tr class="highlight">
+[% ELSE %] <tr>
+[% END %] <td><a href="[% loo.edit %]">[% loo.kohafield %]</a></td>
+ <td>[% loo.tagfield %]</td>
+ <td>[% loo.tagsubfield %]</td>
+ <td>[% loo.liblibrarian %]</td>
+ <td><a href="[% loo.edit %]">Modifier</a></td>
+</tr>
+[% END %] </table>
+[% END %] </div>
+</div>
+[% UNLESS ( add_form ) %] <div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+[% END %] </div>
+[% INCLUDE 'intranet-bottom.inc' %] 

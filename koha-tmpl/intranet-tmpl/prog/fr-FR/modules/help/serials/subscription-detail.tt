@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>Détails de l'abonnement</h1>
+
+<p>Cette page affiche toutes les informations relatives à votre abonnement, y compris l'historique de ses fascicules.</p>
+
+<p>Vous pouvez ici modifier vos abonnement, le renouveler et/ou bulletiner des fascicules.</p>
+
+<p><strong>Voir la documentation complète sur les Périodiques dans le <a href="http://manual.koha-community.org/3.12/en/serials.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

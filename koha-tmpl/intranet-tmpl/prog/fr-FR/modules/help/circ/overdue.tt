@@ -1,0 +1,14 @@
+[% INCLUDE 'help-top.inc' %] <h1>Retards</h1>
+
+<p>Ce rapport liste tous les exemplaires qui n'ont pas été rendus à temps à la bibliothèque.</p>
+
+<p>Il est possible de filtrer ce rapport en utilisant les options du menu qui se trouve sur la gauche.</p>
+
+<p style="color: #990000">Important: For libraries with a large patron base, this report may take a significant amount of time to run.</p>
+<ul>
+ <li style="background-color: #ffe599">A savoir : Les bibliothèques importantes peuvent choisir de filtrer le rapport avant de le lancer en activant la préférence système FilterBeforeOverdueReport.</li>
+</ul>
+
+<p><strong>See the full documentation for Overdues in the <a href="http://manual.koha-community.org/3.12/en/circreports.html#overduesreport">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

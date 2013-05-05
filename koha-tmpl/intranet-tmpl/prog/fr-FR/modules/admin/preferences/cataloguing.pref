@@ -1,0 +1,210 @@
+--- 
+Catalogage: 
+  Affichage: 
+    - 
+      - "S\xC3\xA9parer les auteurs multiples, les collections et les sujets r\xC3\xA9p\xC3\xA9t\xC3\xA9s par"
+      - 
+        class: short
+        pref: authoritysep
+      - .
+    - 
+      - Afficher
+      - 
+        pref: URLLinkText
+      - "comme texte des liens incorpor\xC3\xA9s aux notices bibliographiques."
+    - 
+      - 
+        choices: 
+          "": Ne pas utiliser
+          1: Utiliser
+        pref: UseControlNumber
+      - "le num\xC3\xA9ro de contr\xC3\xB4le de la notice (sous-champ $w) et l'identifiant de la notice (001) pour lier des notices entre elles. -- MARC21 773/760 vers notice m\xC3\xA8re."
+    - 
+      - 
+        choices: 
+          "": Afficher
+          1: Ne pas afficher
+        pref: hide_marc
+      - "les num\xC3\xA9ros de zone, les lettres des sous-champs et les indicateurs dans les vues MARC."
+    - 
+      - 
+        choices: 
+          economical: Regrouper
+          standard: Ne pas regrouper
+        pref: LabelMARCView
+      - "les zones de m\xC3\xAAme type qui sont r\xC3\xA9p\xC3\xA9t\xC3\xA9es en une seule zone \xC3\xA0 l'affichage."
+    - 
+      - "Afficher par d\xC3\xA9faut les notices bibliographique dans la vue"
+      - 
+        choices: 
+          isbd: ISBD
+          labeled_marc: "Formulaire \xC3\xA9tiquet\xC3\xA9 MARC"
+          marc: MARC
+          normal: Normale
+        pref: IntranetBiblioDefaultView
+    - 
+      - "Utiliser ceci en tant que mod\xC3\xA8le ISBD"
+      - 
+        class: code
+        pref: ISBD
+        type: textarea
+    - 
+      - 
+        choices: 
+          "": Montrer
+          1: Cacher
+        pref: OpacSuppression
+      - "\xC3\xA0 l'OPAC les exemplaires marqu\xC3\xA9s comme supprim\xC3\xA9s. Notez que vous devez avoir configur\xC3\xA9 l'index <code>Suppress</code> de Zebra et avoir au moins un exemplaire supprim\xC3\xA9 pour que cela fonctionne."
+      - Restrict the suppression to IP adresses outside of the IP range
+      - 
+        class: short
+        pref: OpacSuppressionByIPRange
+      - (Leave blank if not used. Define a range like <code>192.168.</code>.)
+    - 
+      - 
+        choices: 
+          "": Don't separate
+          1: Separate
+        pref: SeparateHoldings
+      - items display into two tabs, where the first tab contains items whose
+      - 
+        choices: 
+          holdingbranch: holding library
+          homebranch: home library
+        pref: SeparateHoldingsBranch
+      - is the logged in user's library. The second tab will contain all other items.
+    - 
+      - Don't show these
+      - 
+        class: multi
+        pref: NotesBlacklist
+      - note fields in title notes separator (OPAC record details) and in the description separator (Staff client record details). The fields should appear separated with commas and according with the Koha MARC format (eg 3.. for UNIMARC, 5.. for MARC21)
+  Etiquettes: 
+    - 
+      - "En utilisation de la fonction d'impression d'\xC3\xA9tiquettes"
+      - 
+        choices: 
+          "": "ne pas faire appara\xC3\xAEtre"
+          1: "faire appara\xC3\xAEtre"
+        pref: SpineLabelAutoPrint
+      - "automatiquement une bo\xC3\xAEte de dialogue d'impression."
+    - 
+      - "Inclure les champs suivants aux \xC3\xA9tiquettes en impression rapide :"
+      - "(Saisissez les colonnes des tables bilbio et biblioitems, entour\xC3\xA9es de &lt; et &gt;.)"
+      - 
+        pref: SpineLabelFormat
+        type: textarea
+    - 
+      - 
+        choices: 
+          "": Ne pas afficher
+          1: Afficher
+        pref: SpineLabelShowPrintOnBibDetails
+      - "sur la page de d\xC3\xA9tail des notices bibliographiques un bouton pour imprimer des \xC3\xA9tiquettes."
+    - ~
+  Interface: 
+    - 
+      - Utiliser
+      - 
+        choices: class-sources
+        pref: DefaultClassificationSource
+      - "comme source de classification par d\xC3\xA9faut."
+    - 
+      - 
+        choices: 
+          "": Afficher
+          1: Ne pas afficher
+        pref: advancedMARCeditor
+      - "la description des champs et sous-champs dans l'\xC3\xA9diteur MARC."
+    - 
+      - 
+        choices: 
+          "": Ne pas afficher
+          1: Afficher
+        pref: EasyAnalyticalRecords
+      - "les fa\xC3\xA7ons simples de cr\xC3\xA9er des relations entre notices (notice analytique)"
+  Structure des notices: 
+    - 
+      - Fill in the default language for field 008 Range 35-37 (e.g. eng, nor, ger, see <a href="http://www.loc.gov/marc/languages/language_code.html">MARC Code List for Languages</a>)
+      - 
+        pref: DefaultLanguageField008
+      - " Empty defaults to eng."
+    - 
+      - "Interpr\xC3\xA8ter et enregistrer les notices MARC dans le format"
+      - 
+        choices: 
+          MARC21: MARC21
+          NORMARC: NORMARC
+          UNIMARC: UNIMARC
+        pref: marcflavour
+      - .
+    - 
+      - Utiliser le type d'exemplaire de niveau
+      - 
+        choices: 
+          "": bibliographique
+          1: exemplaire
+        pref: item-level_itypes
+      - "pour d\xC3\xA9terminer les r\xC3\xA8gles de circulation, d'amende, etc."
+    - 
+      - Recopier les sous-champs MARC
+      - 
+        pref: itemcallnumber
+      - dans la cote de l'exemplaire. Il peut y avoir plusieurs sous-champs. Par exemple, <code>082ab</code> examinera les sous-champs a et b de la zone 082 et les recopiera en 995$i (si la cote est en 995$i).</code>
+    - 
+      - Afficher les sous-champs MARC
+      - 
+        pref: AlternateHoldingsField
+      - "en tant qu'information de localisation pour les notices qui n'ont pas d'exemplaires. Cela peut-\xC3\xAAtre plusieurs sous-champs, par ex. <code>999abhi</code> les sous-champs a, b, h et i de 999, en s\xC3\xA9parant les sous-champs avec"
+      - 
+        pref: AlternateHoldingsSeparator
+      - .
+    - 
+      - "Utiliser le <a href=\"http://www.loc.gov/marc/organizations/orgshome.html\">code MARC de l'\xC3\xA9tablissement</a>"
+      - 
+        pref: MARCOrgCode
+      - "pour remplir par d\xC3\xA9faut la zone appropri\xC3\xA9e dans les nouvelles notices MARC. Laissez \xC3\xA0 blanc pour d\xC3\xA9sactiver."
+    - 
+      - "Quand des exemplaires sont cr\xC3\xA9\xC3\xA9s, leur donner la localisation temporaire"
+      - 
+        class: short
+        pref: NewItemsDefaultLocation
+      - "(doit \xC3\xAAtre un code de localisation valide ou bien laiss\xC3\xA9 vide pour d\xC3\xA9sactiver cette fonctionnalit\xC3\xA9)."
+    - 
+      - 
+        choices: 
+          "": Ne pas copier
+          1: Copier
+        pref: z3950NormalizeAuthor
+      - les auteurs (UNIMARC) des zones
+      - 
+        class: multi
+        pref: z3950AuthorAuthFields
+      - "(s\xC3\xA9par\xC3\xA9es par des virgules) dans les zones MARC appropri\xC3\xA9es en import de notice via Z39.50."
+    - 
+      - "Les codes \xC3\xA0 barres sont g\xC3\xA9n\xC3\xA9r\xC3\xA9s automatiquement sous la forme"
+      - 
+        choices: 
+          EAN13: incremental EAN-13 barcodes
+          "OFF": NON
+          annual: "&lt;ann\xC3\xA9e&gt;-0001, &lt;ann\xC3\xA9e&gt;-0002."
+          hbyymmincr: "&lt;code biblioth\xC3\xA8que&gt;yymm0001"
+          incremental: 1, 2, 3
+        pref: autoBarcode
+    - 
+      - When a new item is added,
+      - 
+        choices: 
+          "": the new item is not prefilled with last created item values.
+          1: the new item is prefilled with last created item values.
+        pref: PrefillItem
+    - 
+      - Define a list of subfields to use when prefilling items (separated by space)
+      - 
+        pref: SubfieldsToUseWhenPrefill
+    - 
+      - Use the languague (ISO 690-2)
+      - 
+        class: short
+        pref: UNIMARCField100Language
+      - as default language in the UNIMARC field 100 when creating a new record or in the field plugin.

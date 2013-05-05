@@ -1,0 +1,9 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron notices</h1>
+
+<p>Les préférences de notification de l'adhérent sont configurées en saisie de l'adhérent. Cet onglet montre les messages qui ont été envoyés ainsi que ceux qui sont en attente d'expédition.</p>
+
+<p>Vous verrez le texte complet du message qui a été envoyé en cliquant sur son titre.</p>
+
+<p><strong>Voir la documentation complète sur les Notifications aux adhérents dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#patnotices">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

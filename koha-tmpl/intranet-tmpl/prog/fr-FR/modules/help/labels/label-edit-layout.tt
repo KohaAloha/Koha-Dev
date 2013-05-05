@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %] <h1>Layouts</h1>
+
+<p>Une disposition est utilisée pour définir les champs que vous voulez voir sur les étiquettes.</p>
+
+<h2>Créer une nouvelle mise en page</h2>
+
+<p>Pour ajouter un nouveau format, cliquez sur le bouton Format en haut de la page et choisissez Nouveau format</p>
+
+<p>En utilisant le formulaire qui apparaît, vous pouvez créer un profil afin de corriger toute anomalie d'impression de votre modèle.</p>
+
+<p>Après enregistrement, vos formats seront visibles sur la page 'Gérer les formats'.</p>
+
+<p><strong>See the full documentation for Label Layouts in the <a href="http://manual.koha-community.org/3.12/en/labelcreator.html#labellayouts">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

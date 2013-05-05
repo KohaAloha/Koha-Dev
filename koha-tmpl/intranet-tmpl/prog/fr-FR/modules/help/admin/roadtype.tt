@@ -1,0 +1,13 @@
+[% INCLUDE 'help-top.inc' %] <h1>Adding Road Types</h1>
+
+<p>To add a road type, click 'New Road Type' and then enter the road type the way you'd like it displayed.</p>
+
+<p>Une fois que vous avez envoyé le formulaire, la nouvelle voie est affichée dans la liste.</p>
+
+<h2>Viewing Road Types on Patron Add form</h2>
+
+<p>Quand vous ajoutez ou modifiez un adhérent, si vous avez défini des types de voie, ceux-ci seront affichés dans une liste du formulaire de saisie.</p>
+
+<p><strong>See the full documentation for Road Types in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#roadtypes">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

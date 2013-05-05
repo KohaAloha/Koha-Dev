@@ -1,0 +1,86 @@
+[% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha online[% END %]
+[% IF ( opacuserlogin ) %]
+ catalog &rsaquo; Log in to your account
+[% ELSE %]
+ catalog &rsaquo; Catalog login disabled
+[% END %]
+[% INCLUDE 'doc-head-close.inc' %]
+
+<!-- Bug 4288: Hide circular 'Log in to Your Account' link in opac-auth.pl -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        if ( $("#auth" ) ) { $("#members ul li a").hide(); }
+    });
+</script>
+</head>
+<body id="opac-login-page">
+<div id="doc3" class="yui-t7">
+ <div id="bd">
+[% INCLUDE 'masthead.inc' %] <div id="yui-g">
+<div id="userauth" class="container">
+<div id="opac-auth">
+<!--CONTENT-->
+[% IF ( opacuserlogin ) %]
+[% IF ( nopermission ) %]
+<!-- This is what is displayed if user doesnt have permission -->
+<p>Désolé, Koha pense que vous n'avez pas les droits pour accéder à cette page. </p>
+[% END %]
+[% IF ( loginprompt ) %]
+<!-- login prompt time-->
+<h3>Me connecter à mon compte</h3>
+[% IF ( timed_out ) %]
+<!-- This is what is displayed if login has timed out -->
+<p>Désolé, votre session a expiré. Merci de vous reconnecter.</p>
+[% END %]
+
+[% IF ( different_ip ) %]
+<!-- This is what is displayed if user doesnt have permission -->
+<p>Vous êtes déjà connecté à Koha depuis une autre adresse IP. Merci de vous reconnecter.</p>
+[% END %]
+
+[% IF ( invalid_username_or_password ) %]
+<!-- This is what is displayed if user doesnt have permission -->
+<p>Vous avez saisi un nom d'utilisateur ou mot de passe invalide, merci de réessayer. Et n'oubliez pas que les noms d'utilisateur et les mots de passe sont sensibles à la casse.</p>
+[% END %] [% IF ( casAuthentication ) %]<h4>Login CAS</h4>
+
+[% IF ( invalidCasLogin ) %]
+<!-- This is what is displayed if cas login has failed -->
+<p>L'authentification CAS a échouée.</p>
+[% END %] <p>Si vous avez un <acronym title="Central Authentication Service">CAS</acronym> compte, [% IF ( casServerUrl ) %] s'il vous plait <a href="[% casServerUrl %]">cliquez ici pour se connecter</a>.<p>
+[% END %] [% IF ( casServersLoop ) %] veuillez choisir le serveur sur lequel vous voulez vous authentifier : </p>
+<ul>
+ [% FOREACH casServer IN casServersLoop %] <li><a href="[% casServer.value %]">[% casServer.name %]</a></li>
+ [% END %] [% END %]</ul>
+
+<h4>Login local</h4>
+<p>Si vous n'avez pas de compte CAS, vous pouvez vous identifier ci-dessous : </p>
+
+[% END %] <form action="[% url %]" name="auth" id="auth" method="post">
+ <input type="hidden" name="koha_login_context" value="opac" />
+<fieldset class="brief">[% FOREACH INPUT IN INPUTS %] <input type="hidden" name="[% INPUT.name |html %]" value="[% INPUT.value |html %]" />
+[% END %] <ol>
+<li><label for="userid">Login</label>
+<input type="text"  size="25" id="userid"  name="userid" /></li>
+<li><label for="password">Mot de passe</label><input type="password"  size="25" id="password"  name="password" /></li>
+</ol></fieldset>
+
+<input value="Me connecter" type="submit" class="submit" />
+<div id="nologininstructions">
+ <h5>Pas encore de mot de passe ?</h5><p> Si vous n'avez pas encore de mot de passe, passez par la banque de prêt la prochaine fois que vous viendrez à la bibliothèque. Nous serons ravis de vous en attribuer un.</p>
+ <h5>Pas de carte de la bibliothèque ?</h5><p> If you don't have a library card, stop by your local library to sign up[% IF PatronSelfRegistration && PatronSelfRegistrationDefaultCategory %]<span id="registrationinstructions"> or <a href="/cgi-bin/koha/opac-memberentry.pl">register here</a></span>[% END %]. </p>
+</div>
+</form>
+
+
+[% END %] [% ELSE %]<h4>L'identification sur l'OPAC n'a pas été activée par la bibliothèque.</h4>
+<ul>
+ <li>Pour signaler cette erreur, vous pouvez <a href="mailto:[% admin %]">email the Koha Administrator</a>.</li>
+ <li>Utilisez le menu en haut pour accéder à une autre partie de Koha.</li>
+</ul>
+[% END %] [% IF persona %]<a href="#" class="persona-button" id="browserid" ><span>Sign in with your Email</span></a>
+[% END %] </div>
+</div>
+</div>
+</div>
+
+[% INCLUDE 'opac-bottom.inc' %] 

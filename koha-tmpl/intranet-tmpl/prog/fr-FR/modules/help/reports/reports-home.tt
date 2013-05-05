@@ -1,0 +1,18 @@
+[% INCLUDE 'help-top.inc' %] <h1>Bilans et statistiques</h1>
+
+<p>Le module de rapports de Koha vous permet de faire des synthèses des donénes de votre système. Il y a deux grands types de rapports : <ul>
+ <li>Rapports personnalisés<ul>
+ <li>Les données de Koha sont stockées dans une base de données MySQL, ce qui signifie que les bibliothécaires peuvent générer autant de rapports qu'ils le souhaitent en utilisant l'Assistant de rapport ou en écrivant directement des requêtes SQL.</li>
+ <li>La <a href="http://schema.koha-community.org/" target="blank">Schéma de la base de données Koha</a> will help you learn the Koha database structure so that you can write effective SQL Queries</li>
+ <li>La <a href="http://wiki.koha-community.org/wiki/SQL_Reports_Library" target="blank">Bibliothèque de rapports Koha</a> lists reports written by Koha users around the world.</li>
+</ul>
+</li>
+ <li>Rapports statistiques <ul>
+ <li>Les rapports statistiques vous montrent des comptes et des totaux. Ces rapports manipulent des nombres et produisent des statistiques sur ceux-ci. Pour des rapports qui retournent des informations détaillées, utilisez l'assistant de rapports.</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>Voir la documentation complète sur les Rapports dans le <a href="http://manual.koha-community.org/3.12/en/reports.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

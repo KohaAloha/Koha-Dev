@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Aide en ligne</h1>
+
+<p>Sorry, there is no help available for this topic, please refer to the <a href="http://manual.koha-community.org/3.12/en/">Koha 3.12 manual</a> (en-ligne)</p>
+
+<form action="/cgi-bin/koha/edithelp.pl" method="post">
+ <input type="hidden" name="referer" value="[% referer %]" />
+ <input type="hidden" name="type" value="addnew" />
+ <input value="Ajouter de l'aide" name="submit" type="submit" class="submit" />
+</form>
+ 
+[% INCLUDE 'help-bottom.inc' %]

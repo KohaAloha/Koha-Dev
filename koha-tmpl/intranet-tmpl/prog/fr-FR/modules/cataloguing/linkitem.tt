@@ -1,0 +1,34 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Catalogage &rsaquo; Lien à l'exemplaire hôte</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="catalog_linkitem" class="catalog">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/cataloguing/addbooks.pl">Catalogage</a> &rsaquo; Attacher un exemplaire hôte à <i>[% bibliotitle |html %]</i></div>
+<div id="doc3" class="yui-t2">
+
+[% IF ( error ) %] <div class="dialog alert">
+ [% IF ( errornomodbiblio ) %]ERREUR: Impossible de modifier la notice.[% END %] [% IF ( errornohostbiblionumber ) %]ERREUR: Impossible de lire l'exemplaire.[% END %] [% IF ( errornohostitemnumber ) %]ERREUR: Impossible d'obtenir un numéro d'exemplaire pour ce code à barres.[% END %] </div>
+ <form action="/cgi-bin/koha/catalogue/MARCdetail.pl" method="post">
+ <input type="submit" value="OK" />
+ <input type="hidden" name="biblionumber" value="[% biblionumber %]" />
+ </form>
+[% ELSE %] [% IF ( success ) %] <div class="dialog">The item has successfully been linked to <i>[% bibliotitle |html %]</i>.</div> 
+ <form action="/cgi-bin/koha/catalogue/MARCdetail.pl" method="post">
+ <input type="submit" value="OK" />
+ <input type="hidden" name="biblionumber" value="[% biblionumber %]" />
+ </form>
+ [% ELSE %] [% IF ( missingparameter ) %] <form method="post" action="/cgi-bin/koha/cataloguing/linkitem.pl">
+ [% IF ( missingbiblionumber ) %] <fieldset id="biblionumber_fieldset">
+ <label for="biblionumber_fieldset">Sélectionnez le numéro de notice à laquelle rattacher l'exemplaire</label>
+ <div class="hint">A partir de la notice numéro&nbsp;:</div>
+ <input type="text" name="biblionumber" id="biblionumber" class="focus" size="14" /> 
+ </fieldset>
+ [% ELSE %] <input type="hidden" name="biblionumber" id="biblionumber" value="[% biblionumber %]" />
+ [% END %] [% IF ( missingbarcode ) %] <fieldset id="barcode_fieldset">
+ <label for="barcode_fieldset">Sélectionnez l'exemplaire hôte auquel lier[% IF ( bibliotitle ) %] <i>[% bibliotitle |html %]</i>[% END %]</label>
+ <div class="hint">Entrez le Code à barres de l'exemplaire :</div>
+ <input type="text" name="barcode" id="barcode" class="barcode focus" size="14" /> 
+ </fieldset>
+ [% ELSE %] <input type="hidden" name="barcode" id="barcode" value="[% barcode %]" />
+ [% END %] <input value="Sélectionner" type="submit" />
+
+ </form>
+ [% END %] [% END %] [% END %] [% INCLUDE 'intranet-bottom.inc' %] 

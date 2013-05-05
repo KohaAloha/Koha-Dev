@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %] <h1>Keyword to MARC Mapping</h1>
+
+<p>Cet outil vous permet de lier des champs MARC à un certain nombre de champs prédéfinis de la base de données.</p>
+
+<p>Actuellement, le seul mot clé utilisé est 'subtitle'</p>
+
+<p>Avec cet outil, vous définissez les champs MARC qui s'affichent sur la page de détail d'une notice bibliographique en utilisant des mots clés. L'exemple suivant utilisera le champ sous-titre.</p>
+
+<p>Using the Framework pull down menu, choose the Framework you would like to apply this rule to. For example, the subtitle for books can be found in the 245$b field.</p>
+
+<p>However the subtitle for DVDs appears in 245$p</p>
+
+<p>Avec cet outil, vous pouvez dire à Koha d'afficher le bon champ sous-tire quand vous visualisez une notice à l'OPAC.</p>
+
+<p>Cet outil peut servir également à chaîner des portions de notices bibliographiques. Si par exemple vous voulez que le numéro de la collection soit affiché à côté du titre dans vos résultat de recherche, vous devez simplement associer 490$v à 'subtitle' avec le 245$b.</p>
+
+<p style="background-color: #ffe599">A savoir : Vous devez chaîner les champs que vous voulez montrer après le titre de l'exemplaire dans l'ordre où vous voulez les voir apparaître.</p>
+
+<p>De futurs développements incluront des champs mots clés supplémentaires.</p>
+
+<p><strong>See the full documentation for Keyword to MARC Mapping in the <a href="http://manual.koha-community.org/3.12/en/catadmin.html#keywordmapping">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

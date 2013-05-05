@@ -1,0 +1,7 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron statistics</h1>
+
+<p>Depending on what you set for the values of your StatisticsFields system preference, you can see statistics for one patron's circulation actions.</p>
+
+<p><strong>Voir la documentation complète sur les Statistiques sur les adhérents dans le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#patronstatstab">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

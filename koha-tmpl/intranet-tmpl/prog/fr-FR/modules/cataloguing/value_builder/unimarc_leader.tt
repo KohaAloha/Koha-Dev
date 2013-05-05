@@ -1,0 +1,164 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Constructeur du label UNIMARC</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_leader" class="cat" style="padding:1em;">
+<h3>Constructeur du label UNIMARC</h3>
+<form name="f_pop" action="">
+<table>
+ <tr>
+ <td>1-4 Taille enregistrement</td>
+ <td>(auto-calculé)</td>
+ </tr>
+ <tr>
+ <td><label for="f5">5- Statut notice</label></td>
+ <td>
+ <select name="f5" id="f5" size="1">
+ [% IF ( f5pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f5c ) %] <option value="c" selected="selected">c- Corrigé ou révisé</option>
+ [% ELSE %] <option value="c">c- Corrigé ou révisé</option>
+ [% END %] [% IF ( f5d ) %] <option value="d" selected="selected">d - Notice supprimée</option>
+ [% ELSE %] <option value="d">d - Notice supprimée</option>
+ [% END %] [% IF ( f5n ) %] <option value="n" selected="selected">n - Nouvelle notice</option>
+ [% ELSE %] <option value="n">n - Nouvelle notice</option>
+ [% END %] [% IF ( f5o ) %] <option value="o" selected="selected">o - Notice fille</option>
+ [% ELSE %] <option value="o">o - Notice fille</option>
+ [% END %] [% IF ( f5p ) %] <option value="p" selected="selected">p- Notice incomplète ou pré-publication</option>
+ [% ELSE %] <option value="p">p- Notice incomplète ou pré-publication</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ <tr>
+ <td><label for="f6">6- Type de notice</label></td>
+ <td>
+ <select name="f6" id="f6" size="1">
+ [% IF ( f6pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f6a ) %] <option value="a" selected="selected">a- Texte</option>
+ [% ELSE %] <option value="a">a- Texte</option>
+ [% END %] [% IF ( f6b ) %] <option value="b" selected="selected">b - Language materials, manuscript</option>
+ [% ELSE %] <option value="b">b - Language materials, manuscript</option>
+ [% END %] [% IF ( f6c ) %] <option value="c" selected="selected">c- Partition musicale imprimée</option>
+ [% ELSE %] <option value="c">c- Partition musicale imprimée</option>
+ [% END %] [% IF ( f6d ) %] <option value="d" selected="selected">d - Partition musicale manuscrite</option>
+ [% ELSE %] <option value="d">d - Partition musicale manuscrite</option>
+ [% END %] [% IF ( f6e ) %] <option value="e" selected="selected">e - Cartographic materials, printed</option>
+ [% ELSE %] <option value="e">e - Cartographic materials, printed</option>
+ [% END %] [% IF ( f6f ) %] <option value="f" selected="selected">f - Document cartographique manuscrit</option>
+ [% ELSE %] <option value="f">f - Document cartographique manuscrit</option>
+ [% END %] [% IF ( f6g ) %] <option value="g" selected="selected">g- média projeté</option>
+ [% ELSE %] <option value="g">g- média projeté</option>
+ [% END %] [% IF ( f6i ) %] <option value="i" selected="selected">i - enregistrement sonore non musical</option>
+ [% ELSE %] <option value="i">i - enregistrement sonore non musical</option>
+ [% END %] [% IF ( f6j ) %] <option value="j" selected="selected">j - enregistrement sonore musical</option>
+ [% ELSE %] <option value="j">j - enregistrement sonore musical</option>
+ [% END %] [% IF ( f6k ) %] <option value="k" selected="selected">k- image non projetable 2D</option>
+ [% ELSE %] <option value="k">k- image non projetable 2D</option>
+ [% END %] [% IF ( f6l ) %] <option value="l" selected="selected">l - Ressource électronique</option>
+ [% ELSE %] <option value="l">l - Ressource électronique</option>
+ [% END %] [% IF ( f6m ) %] <option value="m" selected="selected">m - Multimedia</option>
+ [% ELSE %] <option value="m">m - Multimedia</option>
+ [% END %] [% IF ( f6r ) %] <option value="r" selected="selected">r- artefact 3D </option>
+ [% ELSE %] <option value="r">r- artefact 3D </option>
+ [% END %] </select>
+ </td>
+ </tr>
+ <tr>
+ <td><label for="f7">7- Niveau bibliographique</label></td>
+ <td>
+ <select name="f7" id="f7" size="1">
+ [% IF ( f7pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f7a ) %] <option value="a" selected="selected">a- Partie composante d'une monographie</option>
+ [% ELSE %] <option value="a">a- Partie composante d'une monographie</option>
+ [% END %] [% IF ( f7i ) %] <option value="i" selected="selected">i- Ressource intégrée</option>
+ [% ELSE %] <option value="i">i- Ressource intégrée</option>
+ [% END %] [% IF ( f7c ) %] <option value="c" selected="selected">c- Recueil factice</option>
+ [% ELSE %] <option value="c">c- Recueil factice</option>
+ [% END %] [% IF ( f7m ) %] <option value="m" selected="selected">m - Monographie - Bibliographie</option>
+ [% ELSE %] <option value="m">m - Monographie - Bibliographie</option>
+ [% END %] [% IF ( f7s ) %] <option value="s" selected="selected">s -  Publication en série</option>
+ [% ELSE %] <option value="s">s -  Publication en série</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ 
+ <tr>
+ <td><label for="f8">8- Niveau hiérarchique</label></td>
+ <td>
+ <select name="f8" id="f8" size="1">
+ [% IF ( f8pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f8space ) %] <option value=" " selected="selected"> - Relation hiérachique non définie</option>
+ [% ELSE %] <option value=" "> - Relation hiérachique non définie</option>
+ [% END %] [% IF ( f80 ) %] <option value="0" selected="selected">0 - No hierarchical relationship</option>
+ [% ELSE %] <option value="0">0 - No hierarchical relationship</option>
+ [% END %] [% IF ( f81 ) %] <option value="1" selected="selected">1- Notice de niveau le + élevé (notice mère)</option>
+ [% ELSE %] <option value="1">1- Notice de niveau le + élevé (notice mère)</option>
+ [% END %] [% IF ( f82 ) %] <option value="2" selected="selected">2- Notice de niveau inférieur au niveau le plus élevé (notice fille)</option>
+ [% ELSE %] <option value="2">2- Notice de niveau inférieur au niveau le plus élevé (notice fille)</option>
+ [% END %] </select>
+ </td>
+ </tr>
+
+ <tr>
+ <td>9-16 indicateur/sous-champs/taille</td>
+ <td>(auto-rempli)</td>
+ </tr>
+ <tr>
+ <td><label for="f17">17- Encodage</label></td>
+ <td>
+ <select name="f17" id="f17" size="1">
+ [% IF ( f17pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f17space ) %] <option value=" " selected="selected"> Niveau complet ("document en mains")</option>
+ [% ELSE %] <option value=" "> Niveau complet ("document en mains")</option>
+ [% END %] [% IF ( f171 ) %] <option value="1" selected="selected">1- Non rédigée "document en mains"</option>
+ [% ELSE %] <option value="1">1- Non rédigée "document en mains"</option>
+ [% END %] [% IF ( f172 ) %] <option value="2" selected="selected">2 - Rédigée sur un doc avant publication</option>
+ [% ELSE %] <option value="2">2 - Rédigée sur un doc avant publication</option>
+ [% END %] [% IF ( f173 ) %] <option value="3" selected="selected">3- Notice incomplète</option>
+ [% ELSE %] <option value="3">3- Notice incomplète</option>
+ [% END %] </select>
+ </td>
+ </tr>
+
+ <tr>
+ <td><label for="f18">18- Forme de catalogage descriptif</label></td>
+ <td>
+ <select name="f18" id="f18" size="1">
+ [% IF ( f18pipe ) %] <option value="|" selected="selected">|- Filling character</option>
+ [% ELSE %] <option value="|">|- Filling character</option>
+ [% END %] [% IF ( f18space ) %] <option value=" " selected="selected"> - format ISBD</option>
+ [% ELSE %] <option value=" "> - format ISBD</option>
+ [% END %] [% IF ( f18i ) %] <option value="i" selected="selected">i- partiellement conforme ISBD</option>
+ [% ELSE %] <option value="i">i- partiellement conforme ISBD</option>
+ [% END %] [% IF ( f18n ) %] <option value="n" selected="selected">n - Non conforme ISBD</option>
+ [% ELSE %] <option value="n">n - Non conforme ISBD</option>
+ [% END %] </select>
+ </td>
+ </tr>
+ 
+ <tr>
+ <td>19-24 structure &amp; longueur des entrées</td>
+ <td>(auto-rempli)</td>
+ </tr>
+</table>
+<fieldset class="action"><input type="button" value="OK" onclick="report();" /> <a href="#" class="cancel close">Annuler</a></fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+function report() {
+	    var doc   = opener.document; 
+            var field = doc.getElementById("[% index %]");
+        
+            field.value =  '     '+document.f_pop.f5.value +
+			document.f_pop.f6.value+ document.f_pop.f7.value+
+			document.f_pop.f8.value+ '        '+
+			document.f_pop.f17.value+ document.f_pop.f18.value+' 4500';
+		window.close();
+		return false;
+	}
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

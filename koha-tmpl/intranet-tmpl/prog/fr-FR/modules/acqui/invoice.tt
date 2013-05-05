@@ -1,0 +1,146 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Invoice</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'calendar.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+    $(document).ready(function() {
+        $("#orderst").dataTable($.extend(true, {}, dataTablesDefaults, {
+            bInfo: false,
+            bPaginate: false,
+            bFilter: false,
+            sDom: "t"
+        }));
+    });
+//]]>
+</script>
+</head>
+
+<body>
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="/cgi-bin/koha/acqui/invoices.pl">Invoices</a> &rsaquo; <a href="/cgi-bin/koha/acqui/invoice.pl?invoiceid=[% invoiceid %]">[% invoicenumber %]</a></div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% IF ( modified ) %] <div class="dialog message">
+ <p>Invoice has been modified</p>
+ </div>
+ [% END %] <h1>Invoice: [% invoicenumber %]</h1>
+
+ <p>Fournisseur&nbsp;:<a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% suppliername %]</a></p>
+ <form action="/cgi-bin/koha/acqui/invoice.pl" method="post">
+ <fieldset class="rows">
+ <ol>
+ <li><label for="shipmentdate">Shipment date:</label>
+ <input type="text" size="10" id="shipmentdate" name="shipmentdate" value="[% shipmentdate | $KohaDates %]" readonly="readonly" class="datepicker" /></li>
+
+ <li><label for="billingdate">Billing date:</label>
+ <input type="text" size="10" id="billingdate" name="billingdate" value="[% billingdate | $KohaDates %]" readonly="readonly" class="datepicker" /></li>
+
+ <li><label for="shipmentcost">Shipment cost:</label>
+ <input type="text" size="10" id="shipmentcost" name="shipmentcost" value="[% shipmentcost %]" /></li>
+ <li><label for="shipment_budget_id">Fund:</label>
+ <select id="shipment_budget_id" name="shipment_budget_id">
+ <option value="">No fund</option>
+ [% FOREACH budget IN budgets_loop %] [% IF ( budget.selected ) %] <option selected="selected" value="[% budget.budget_id %]">
+ [% ELSE %] <option value="[% budget.budget_id %]">
+ [% END %] [% budget.budget_name %] </option>
+ [% END %] </select></li>
+
+ [% IF ( invoiceclosedate ) %] <li><span class="label">Statut:</span>
+ Closed on [% invoiceclosedate | $KohaDates %].</li>
+
+ <li><label for="reopen">Reopen: </label> <input type="checkbox" name="reopen" id="reopen" /></li>
+ [% ELSE %] <li><span class="label">Statut:</span>
+ Open.</li>
+
+ <li><label for="close">Close: </label> <input type="checkbox" name="close" id="close" />
+ </li>
+ [% END %] </ol>
+ <input type="hidden" name="op" value="mod" />
+ <input type="hidden" name="invoiceid" value="[% invoiceid %]" />
+ </fieldset>
+ <fieldset class="action">
+ <input value="Enregistrer" type="submit" />
+ </fieldset>
+ </form>
+ <p>
+ <a href="/cgi-bin/koha/acqui/parcel.pl?invoiceid=[% invoiceid %]">Go to receipt page</a>
+ </p>
+ <h2>Invoice details</h2>
+ [% IF orders_loop.size %] <table id="orderst">
+ <thead>
+ <tr>
+ <th>Résumé</th>
+ <th>Editeur</th>
+ <th>Library</th>
+ <th>RRP</th>
+ <th>Est.</th>
+ <th>Qté</th>
+ <th>Total</th>
+ <th>Poste budgétaire</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH order IN orders_loop %] <tr>
+ <td><p><a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% order.biblionumber %]">[% order.title %]</a>
+ [% IF ( order.author ) %] <br /><em>par</em> [% order.author %] [% END %] </p></td>
+ <td>
+ [% IF ( order.publishercode ) %] <p>[% order.publishercode %]
+ [% IF ( order.publicationyear ) %]
+ - [% order.publicationyear %]
+ [% END %]
+ </p>
+ [% END %] </td>
+ <td><p>[% order.branchcode %]</p></td>
+ <td>[% order.rrp %]</td>
+ <td>[% order.ecost %]</td>
+ <td class="number">[% order.quantity %]</td>
+ <td>[% order.total %]</td>
+ <td>[% order.budget_name %]</td>
+ </tr>
+ [% END %] </tbody>
+ <tfoot>
+ <tr>
+ <th colspan="3">Total HT.</th>
+ <th>[% total_rrp_gste %]</th>
+ <th>&nbsp;</th>
+ <th>[% total_quantity %]</th>
+ <th>[% total_est_gste %]</th>
+ <th>&nbsp;</th>
+ </tr>
+ <tr>
+ <th colspan='3'>Tax ([% gist %]%)</th>
+ <th>[% gist_rrp %]</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>[% gist_est %]</th>
+ <th>&nbsp;</th>
+ </tr>
+ <tr>
+ <th colspan='3'>Total TTC ([% currency %])</th>
+ <th>[% total_rrp_gsti %]</th>
+ <th>&nbsp;</th>
+ <th>[% total_quantity %]</th>
+ <th>[% total_est_gsti %]</th>
+ <th>&nbsp;</th>
+ </tr>
+ <tr>
+ <th colspan="3">Total + shipment cost ([% currency %])</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ <th>[% total_quantity %]</th>
+ <th>[% total_gsti_shipment %]</th>
+ <th>&nbsp;</th>
+ </tr>
+ </tfoot>
+ </table>
+ [% ELSE %] <div class="dialog message"><p>No orders yet</p></div>
+ [% END %] </div>
+ </div>
+ <div class="yui-b">
+ [% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

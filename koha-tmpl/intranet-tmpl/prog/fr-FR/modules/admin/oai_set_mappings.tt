@@ -1,0 +1,98 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; OAI sets &rsaquo; OAI set mappings</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+$(document).ready(function() {
+    $("#mappingform").submit(function(){
+      hideDialogBox();
+    });
+    $("#ORbutton").live("click", function(){
+       newCondition();
+       return false;
+    });
+    $(".clear-field").live("click",function(e){
+        clearRow(e.target);
+    });
+});
+
+function newCondition() {
+    var tr = $('#ORbutton').parents('tr');
+    var clone = $(tr).clone();
+    $("#ORbutton").parent('td').replaceWith('<td style="text-align:center">OR</td>');
+    $(tr).parent('tbody').append(clone);
+}
+function clearRow(link){
+    var tr = $(link).parent().parent();
+    var found = tr.find('#ORbutton');
+    if( found.length ){
+      tr.find('input[type="text"]').attr("value","");
+    } else {
+      tr.find('input[type="text"]').attr("value","").end().hide();
+    }
+}
+function hideDialogBox() {
+    $('div.dialog').remove();
+}
+//]]>
+</script>
+</head>
+
+<body id="admin_oai_set_mappings" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; <a href="/cgi-bin/koha/admin/oai_sets.pl">Configuration des Sets OAI</a> &rsaquo; <a href="/cgi-bin/koha/admin/oai_set_mappings.pl?id=[% id %]">Critères des Set OAI</a></div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% IF ( mappings_saved ) %] <div class="dialog message">
+ <h4>Les critères ont été enregistrés</h4>
+ <p><a href="/cgi-bin/koha/admin/oai_sets.pl">Retourner à la gerstion des Sets</a></p>
+ </div>
+ [% END %] <h1>Critères pour le Set '[% setName %]' ([% setSpec %])</h1>
+ [% UNLESS ( mappings ) %] <div class="dialog alert"><p><strong>Attention :</strong> No mappings have been defined for this set</p></div>
+ [% END %] <form action="/cgi-bin/koha/admin/oai_set_mappings.pl" method="post" id="mappingform">
+ <table id="mappings">
+ <thead>
+ <tr>
+ <th>Champ</th>
+ <th>Sous-champ</th>
+ <th>&nbsp;</th>
+ <th>Valeur</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% IF ( mappings ) %] [% FOREACH mapping IN mappings %] <tr>
+ <td><input type="text" name="marcfield" size="3" value="[% mapping.marcfield %]" /></td>
+ <td style="text-align:center"><input type="text" name="marcsubfield" size="1" value="[% mapping.marcsubfield %]" /></td>
+ <td>est égal àest égal à</td>
+ <td><input type="text" name="marcvalue" value="[% mapping.marcvalue %]" /></td>
+ <td style="text-align:center">
+ [% IF ( loop.last ) %] <input value="OU" type="button" id="ORbutton" title="Add another condition" />
+ [% ELSE %] OU [% END %] </td>
+ <td><a class="clear-field" href="#">Supprimer</a></td>
+ </tr>
+ [% END %] [% ELSE %] <tr>
+ <td><input type="text" name="marcfield" size="3" /></td>
+ <td style="text-align:center"><input type="text" name="marcsubfield" size="1" /></td>
+ <td>est égal àest égal à</td>
+ <td><input type="text" name="marcvalue" /></td>
+ <td><input value="OU" type="button" id="ORbutton" /></td>
+ <td><a class="clear-field" href="#">Supprimer</a></td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ <input type="hidden" name="id" value="[% id %]" />
+ <input type="hidden" name="op" value="save" />
+ <fieldset class="action">
+ <input value="Enregistrer" type="submit" /> <a class="cancel" href="/cgi-bin/koha/admin/oai_sets.pl">Annuler</a>
+ </fieldset>
+ </form>
+
+ </div>
+ </div>
+ <div class="yui-b">
+ [% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

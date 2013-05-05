@@ -1,0 +1,7 @@
+[% INCLUDE 'help-top.inc' %] <h1>Ratios de réservation</h1>
+
+<p>Vous obtiendrez le nombre d'exemplaires nécessaires pour maintenir le ratio de réservations par exemplaire visé. Par défaut, la bibliothèque doit avoir trois exemplaires par réservation. Ce rapport signalera le nombre d'exemplaire à racheter pour respecter ce ratio.</p>
+
+<p><strong>See the full documentation for Hold Ratios in the <a href="http://manual.koha-community.org/3.12/en/circreports.html#holdratios">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,15 @@
+[% INCLUDE 'doc-head-open.inc' %] [% USE KohaDates %] <title>Koha &rsaquo; Périodiques [% biblionumber %]</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="ser_serials-home" class="ser">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'serials-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; Périodiques </div>
+
+<div id="doc3" class="yui-t2">
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% INCLUDE 'serials-toolbar.inc' %] </div>
+ </div>
+ <div class="yui-b">
+ [% INCLUDE 'subscriptions-search.inc' %] [% INCLUDE 'serials-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

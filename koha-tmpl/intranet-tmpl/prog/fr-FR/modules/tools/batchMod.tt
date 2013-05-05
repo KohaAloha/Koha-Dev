@@ -1,0 +1,46 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Outils &rsaquo; [% IF ( del ) %]Suppression d'exemplaires par lots[% ELSE %]Modification d'exemplaires par lots[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="tools_batchMod" class="tools">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/tools/tools-home.pl">Outils</a> &rsaquo; [% IF ( del ) %] <a href="/cgi-bin/koha/tools/batchMod.pl?del=1">Suppression d'exemplaires par lot</a>
+ [% ELSE %] <a href="/cgi-bin/koha/tools/batchMod.pl">Modification d'exemplaires par lots</a>
+ [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ <h1>[% IF ( del ) %]Suppression[% ELSE %]Modification[% END %] d'exemplaires par lots</h1>
+ <form method="post" enctype="multipart/form-data" action="/cgi-bin/koha/tools/batchMod.pl">
+ <fieldset class="rows">
+ <legend>Utilisez un fichier</legend>
+ <ol>
+ <li>
+ <label for="barcode_file">Fichier des code à barres&nbsp;: </label><input type="radio" name="filecontent" value="barcode_file" id="barcode_file" checked="checked" /></li>
+ <li>
+ <label for="itemid_file">Item number file: </label><input type="radio" name="filecontent" value="itemid_file" id="itemid_file" />
+ </li>
+ <li><label for="uploadfile">Fichier : </label> <input type="file" id="uploadfile" name="uploadfile" /></li>
+ </ol>
+ </fieldset>
+ <fieldset class="rows">
+ <legend>Ou scanner les exemplaires un par un</legend>
+ <ol>
+ <li>
+ <label for="barcodelist">Liste de code à barres (un par ligne) : </label>
+ <textarea rows="10" cols="30" id="barcodelist" name="barcodelist"></textarea>
+ </li>
+ </ol>
+ </fieldset>
+ <input type="hidden" name="op" value="show" />
+ [% IF ( del ) %]<input type="hidden" name="del" value="1" />[% END %] <fieldset class="action">
+ <input value="Continuer" type="submit" class="button" />
+ <a class="cancel" href="/cgi-bin/koha/tools/tools-home.pl">Annuler</a>
+ </fieldset>
+ </form>
+ </div>
+ </div>
+ <div class="yui-b">
+ [% INCLUDE 'tools-menu.inc' %] </div>
+ </div>
+[% INCLUDE 'intranet-bottom.inc' %] 

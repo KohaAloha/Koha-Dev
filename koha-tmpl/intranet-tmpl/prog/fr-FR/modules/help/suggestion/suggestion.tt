@@ -1,0 +1,39 @@
+[% INCLUDE 'help-top.inc' %] <h1>Purchase suggestions</h1>
+
+<p>Depending on your settings in the suggestion system preference, patrons may be able to make purchase suggestions via the OPAC. When a suggestion is waiting for library review, it will appear on the Acquisitions home page under the vendor search.</p>
+
+<p>It will also appear on the main staff dashboard under the module labels</p>
+
+<p>En cliquant sur Gérer les suggestions, vous arrivez dans l'outil de gestion des suggestions. S'il n'y a pas de suggestion en attente, vous pouvez atteindre cet outil en passant par la page principale du module Acquisitions.</p>
+
+<p>Your suggestions will be sorted into several tabs: Accepted, Pending, Checked, Ordered and/or Rejected. Each accepted or rejected suggestion will show the name of the librarian who managed the suggestion and the reason they gave for accepting or rejecting it (found under 'Status').</p>
+
+<p>An 'Accepted' suggestion is one that you have marked as 'Accepted' using the form below the suggestions. A 'Pending' suggestion is one that is awaiting action from the library. A 'Checked' suggestion is one that has been marked as 'Checked' using the form before the suggestions. An 'Ordered' suggestion is on that has been ordered using the 'From a purchase suggestion' link in your basket. A 'Rejected' suggestion is one that you have marked at 'Rejected' using the form below the list of suggestions.</p>
+
+<p>Pour les bibliothèques qui ont un grand nombre de suggestions, il y a des filtres sur la gauche de la page Gestion des suggestions. Ils permettent de limiter le nombre de titres affichés sur cette page.</p>
+
+<p>En cliquant sur le titre en bleu, vous étendez les options de filtage et en cliquant sur Effacer vous effacez tous les filtres et montrez ainsi toutes les suggestions.</p>
+
+<p><strong>Tip:</strong> The suggestions page will automatically be limited to suggestions for your library. To see information for all (or any other) libraries click on the 'Acquisition information' filter and change the library.</p>
+
+<p>Quand vous passez en revue les suggestions en attente, vous pouvez en sélectionner plusieurs en les cochant dans la liste, puis vous les approuvez ou les rejetez toutes en une fois. Vous pouvez également supprimer complètement une suggestion en cochant Supprimer la sélection.</p>
+
+<p>Another option for libraries with long lists of suggestions is to approve or reject suggestions one by one by clicking on the title of the suggestion to open a summary of the suggestion, including information if the item was purchased.</p>
+
+<p>Clicking 'edit' to the right of the suggested title will open a suggestion editing page.</p>
+
+<p>Dans ce formulaire, vous pouvez modifier la suggestion, la compléter, la corriger. Vous pouvez également l'accepter ou la rejeter.</p>
+
+<ul>
+ <li>Choosing to mark a request as 'Pending' will move the request back to the 'Pending' tab.</li>
+</ul>
+
+<p>Les raisons pour lesquelles les suggestions sont acceptées ou refusées sont définies dans la liste de valeurs autorisées SUGGEST.</p>
+
+<p>Si vous choisissez 'Autres...', vous êtes invité à entrer un texte dans un champ Raison. En cliquant Annuler sur la droite de ce champ, vous revenez à la liste de valeurs autorisées des raisons prédéfinies.</p>
+
+<p>Une fois que vous avez cliqué sur Valider, la suggestion est déplacée dans l'onglet qui convient. Le statut de la suggestion est également mise à jour dans le compte de l'adhérent visible à l'OPAC et un courriel est envoyé à l'adhérent en utilisant le modèle qui correspond au statut que vous avez choisi.</p>
+
+<p><strong>See the full documentation for Purchase Suggestions in the <a href="http://manual.koha-community.org/3.12/en/managesuggest.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

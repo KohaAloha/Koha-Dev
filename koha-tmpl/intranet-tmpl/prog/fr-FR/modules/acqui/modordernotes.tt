@@ -1,0 +1,27 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Acquisitions &rsaquo; Changer les notes de la commande</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+
+<body>
+[% INCLUDE 'header.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% booksellername|html %]</a> &rsaquo; <a href="/cgi-bin/koha/acqui/basket.pl?basketno=[% basketno %]">Panier [% basketname|html %] ([% basketno %])</a> &rsaquo; Modifier les notes de commande</div>
+
+<div id="doc" class="yui-t7">
+
+<div id="bd">
+ <div id="yui-main">
+ <h1>Change les notes (commande n° [% ordernumber %])</h1>
+ <form action="/cgi-bin/koha/acqui/modordernotes.pl" method="post">
+ <fieldset class="brief">
+ <label for="ordernotes">Notes&nbsp;: </label>
+ <textarea id="ordernotes" name="ordernotes" rows="3" cols="30">[% ordernotes %]</textarea>
+ </fieldset>
+ <input type="hidden" name="referrer" value="[% referrer %]" />
+ <input type="hidden" name="ordernumber" value="[% ordernumber %]" />
+ <input type="hidden" name="op" value="save" />
+ <fieldset class="action">
+ <input value="Enregistrer" type="submit" />
+ <a class="cancel" href="[% referrer %]">Annuler</a>
+ </fieldset>
+ </form>
+ </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

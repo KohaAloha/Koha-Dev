@@ -1,0 +1,14 @@
+[% INCLUDE 'help-top.inc' %] <h1>Quick Spine Label Creator</h1>
+
+<p style="background-color: #ffe599">A savoir : Cet outil n'utilise pas de formats ou de modèles, il se contente d'imprimer sur le premier emplacement libre de la feuille d'étiquettes.</p>
+
+<ul>
+ <li>Define the fields you want to print on the spine label in the SpineLabelFormat system preference</li>
+ <li>Formatez l'impression de vos étiquettes en modifiant le fichier spinelabel.css qui se trouve dans koha-tmpl/intranet-tmpl/prog/en/css/</li>
+</ul>
+
+<p>Pour utiliser cette outil, vous avez seulement besoin du code à barre du livre pour lequel vous voulez imprimer une étiquette</p>
+
+<p><strong>See the full documentation for Quick Spine Label Creator in the <a href="http://manual.koha-community.org/3.12/en/quicklabelcreator.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

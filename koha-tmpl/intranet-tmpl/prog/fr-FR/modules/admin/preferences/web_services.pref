@@ -1,0 +1,56 @@
+--- 
+Services web: 
+  ILS-DI: 
+    - 
+      - 
+        choices: 
+          "": Activer
+          1: "D\xC3\xA9sactiver"
+        pref: ILS-DI
+      - les services ILS-DI.
+    - 
+      - 
+        class: Text
+        pref: ILS-DI:AuthorizedIPs
+      - "IP autoris\xC3\xA9es \xC3\xA0 utiliser les services ILS-DI."
+  OAI-PMH: 
+    - 
+      - 
+        choices: 
+          "": "D\xC3\xA9sactiver"
+          1: Activer
+        pref: OAI-PMH
+      - le serveur OAI de Koha
+      - <a href="http://www.openarchives.org/pmh/">OAI-PMH</a> server.
+    - 
+      - "Identifier les enregistrement de ce site avec le pr\xC3\xA9fixe :"
+      - 
+        pref: OAI-PMH:archiveID
+      - ": ."
+    - 
+      - "Renvoyer les r\xC3\xA9sultats par lot de"
+      - 
+        class: integer
+        pref: OAI-PMH:MaxCount
+      - "notices \xC3\xA0 la fois en r\xC3\xA9ponse aux requ\xC3\xAAtes ListRecords et ListIdentifiers."
+    - 
+      - 
+        YAML OAI Koha server configuration file: ~
+      - 
+        class: file
+        pref: OAI-PMH:ConfFile
+      - . If empty, Koha OAI Server operates in normal mode, otherwise it operates in extended mode. In extended mode, it's possible to parameter other formats than marcxml or Dublin Core. OAI-PMH:ConfFile specify a YAML configuration file which list available metadata formats and XSL file used to create them from marcxml records.
+    - 
+      - 
+        choices: 
+          "": "D\xC3\xA9sactiver"
+          1: Activer
+        pref: OAI-PMH:AutoUpdateSets
+      - "la mise \xC3\xA0 jour automatique des sets OAI-PMH quand une notice bibliographique est ajout\xC3\xA9e ou modifi\xC3\xA9e"
+  Reporting: 
+    - 
+      - Only return
+      - 
+        class: integer
+        pref: SvcMaxReportRows
+      - rows of a report requested via the reports web service.

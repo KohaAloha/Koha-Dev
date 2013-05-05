@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Visualiseur des logs</h1>
+
+<p>Toutes les actions ayant lieu dans votre système Koha sont journalisées dans le fichier des log. Vous pouvez limiter les actions journalisées au moyen des préférences systèmes. Les logs sont visualisés au moyen de l'outil de visualisation des logs.</p>
+
+<p>En choisissant différentes combinaisons parmi les options proposées, vous produirez un fichier log spécifique.</p>
+
+<p>Vous noterez que les noms réel ne sont affichés dans les logs, mais seulement les identifiants. </p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/logviewer.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

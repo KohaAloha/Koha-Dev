@@ -1,0 +1,88 @@
+[% INCLUDE 'help-top.inc' %] <h1>Catalogage</h1>
+
+<p>Les notices sont ajoutées à Koha par saisie entière ou par copie. Si vous souhaitez cataloguer entièrement une notice</p>
+
+<ul>
+ <li>Click 'New Record'
+<ul>
+ <li>Choisissez la grille sur laquelle vous voulez baser votre notice</li>
+</ul>
+</li>
+</ul>
+
+<p>Si vous voulez cataloguer une nouvelle notice en la dérivant d'une notice existante dans une autre bibliothèque</p>
+
+<ul>
+ <li>Click 'z39.50 Search'
+<ul>
+ <li>Cherchez la notice que vous voulez cataloguer<ul>
+ <li>A savoir : Si aucun résultat n'est trouvé, essayez de chercher sur moins de champs. Tous les serveurs Z39.50 ne permettent pas de chercher sur les champs proposés.</li>
+</ul>
+</li>
+ <li>Search targets can be altered by using the Z39.50 Admin area.</li>
+ <li>From the results you can view the MARC or Card view for the records or choose to Import them into Koha
+<ul>
+ <li>In addition to the Import link to the right of each title, you can click on the title you're interested in and a menu will pop up with links to preview the record and import it</li>
+ <li>If you don't find the title you need in your Z39.50 search results you can click the 'Try Another Search' button at the bottom left of your results</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>Quand vous ouvrez une grille vide ou que vous importez une notice via Z39.50, un formulaire s'affiche dans lequel vous pouvez poursuivre le catalogage.</p>
+
+<ul>
+ <li>Pour étendre ou réduire un champ, cliquez sur son numéro (ou son étiquette).</li>
+ <li>To get help from the Library of Congress on a Marc tag click the question mark (?) to the right of each field number
+<ul>
+ <li>Si vous considérez que cette information nuit à la lisibilité de la page, vous pouvez désactiver cette option en cliquant sur Montrer les liens vers la doc MARC.</li>
+</ul>
+</li>
+ <li>Sometimes fields may not be editable due to the value in your <span class="link">BiblioAddsAuthorities</span>system preference. If you have this preference set to not allow catalogers to type in fields controlled by authorities you may see a lock symbol to the left of the field.
+<ul>
+ <li>Si cette icône apparaît, vous devez cliquez dessus afin de lancer une recherche d'une autorité existante.</li>
+ <li>Dans la liste des résultats, cliquez sur Choisir autorité afin de la reporter dans votre notice bibliographique.</li>
+</ul>
+</li>
+ <li>Pour dupliquer un champ, cliquez sur le + (signe plus) sur la droite du champ.<ul>
+ <li>Pour positionner les sous-champs correctement, cliquez sur la flèche "vers le haut" à gauche du sous-champ</li>
+ <li>Pour dupliquer un sous-champ, cliquez sur l'icône de clonage à droite du champ. </li>
+ <li>Pour supprimer un sous-champ (s'il y en a plus d'un du même type, cliquez sur le signe moins qui se trouve à droit du champ.</li>
+</ul>
+</li>
+ <li>Cliquez sur ... sur la droite du champ pour utiliser un plugin <ul>
+ <li>Some fixed fields have editors that will change based on the material type you're cataloging (for example the 006 and the 008 fields)</li>
+</ul>
+</li>
+ <li>Une fois que vous avez terminé, cliquez en haut sur le bouton Enregistrer et choisissez si vous voulez enregistrer et voir la notice ou bien enregistrer la notice et poursuivre en ajoutant et modifiant des exemplaires.<ul>
+ <li>Si vous êtes sur le point d'ajouter une notice en doublon à votre catalogue, le système vous le signale.</li>
+</ul>
+</li>
+</ul>
+
+<h2>Modifier des notices</h2>
+
+<p>Pour modifier une notice, vous pouvez cliquer sur le lien Modifier la notice qui est affiché sur la page de résultat d'une recherche, ou bien sur le bouton Modifier de la page de détail d'une notice.</p>
+
+<p>La notice s'ouvrira dans l'éditeur MARC</p>
+
+<p>L'autre option consiste à recherche par Z39.50 une notice complète qui remplacera votre notice. Choisissez dans le menu Modifier l'option Remplacer la notice par Z39.50.</p>
+
+<p>Vous êtes amené sur une page de recherche Z39.50 afin de lancer une recherche du titre en question dans d'autres bibliothèques.</p>
+
+<p>Quand vous avez saisi les données utiles, cliquez 'Sauvegarder'</p>
+
+<h2>Duplication de notices</h2>
+
+<p>Sometimes a copy of the record you need to catalog can't be found via Z39.50. In these cases you can create a duplicate of similar record and edit the necessary pieces to create a new record. To duplicate an existing record click 'Edit as new (duplicate)' from the 'Edit' menu on the bibliographic record</p>
+
+<p>Cela ouvrira une nouvelle notice MARC contenant tous les champs de la notice originale.</p>
+
+<h2>Fusion des notices</h2>
+
+<p>Si vous voulez fusionner plusieurs notices, vous pouvez le faire à partit des listes.</p>
+
+<p><strong>See the full documentation for Cataloging in the <a href="http://manual.koha-community.org/3.12/en/cataloging.html#catbibs">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

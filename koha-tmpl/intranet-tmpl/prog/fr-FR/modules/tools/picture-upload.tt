@@ -1,0 +1,109 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Outils &rsaquo; Charger des photos d'adhérents</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+ $(document).ready(function() {
+	$("#zipfile").click(function(){
+		$("#cardnum").hide();
+	});
+	$("#image").click(function(){
+		$("#cardnum").show();
+	});
+});
+</script>
+</head>
+<body id="tools_picture-upload" class="tools">
+
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/tools/tools-home.pl">Outils</a> &rsaquo; [% IF ( TOTAL ) %]<a href="/cgi-bin/koha/tools/picture-upload.pl">Chargement photos d'adhérents</a> &rsaquo; Results[% ELSE %]Upload patron images[% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+[% IF ( TOTAL ) %] <div class="yui-b">
+ [% IF ( ERRORS ) %] [% IF ( TCOUNTS ) %] <div class="dialog alert">
+ <h3>Patron image(s) uploaded with some errors</h3>
+ </div>
+ [% ELSE %] <div class="dialog alert">
+ <h3>Le chargement des photos des adhérents a échoué</h3>
+ </div>
+ [% END %] [% ELSE %] <div class="dialog message">
+ <h3>Chargement des photos des adhérents réussi</h3>
+ </div>
+ [% END %] <ul class="data">
+ <li>Décompression terminée</li>
+ <li>[% TOTAL %] répertoires scannés.</li>
+ <li>[% HANDLED %] répertoires traités.</li>
+ </ul>
+
+ [% FOREACH COUNT IN COUNTS %] <div class="container">
+ <table>
+ <caption>Réponses</caption>
+ <thead>
+ <tr><th>Nom du fichier</th><th>Numéro de carte</th><th>Réponse</th></tr>
+ </thead>
+ <tbody>
+ [% IF ( COUNT.TCOUNTS ) %]<li>[% COUNT.TCOUNTS %] image(s) déplacée(s) dans la base&nbsp;:</li>[% END %] [% FOREACH filename IN COUNT.filenames %] <tr>
+ <td>[% filename.source %]</td>
+ <td><a href="/cgi-bin/koha/circ/circulation.pl?findborrower=[% filename.cardnumber %]">[% filename.cardnumber %]</a></td>
+ <td>
+ [% IF ( filename.filerrors ) %] [% FOREACH filerror IN filename.filerrors %] [% IF ( filerror.DBERR ) %]<b>ERROR:</b> Image not imported because the database returned an error. Please refer to the error log for more details.
+ [% ELSIF ( filerror.IMGEXISTS ) %]<b>ERROR:</b> Image not imported because this patron does not exist in the database.
+ [% ELSIF ( filerror.MIMERR ) %]<b>ERROR:</b> Image not imported because the image format is unrecognized.
+ [% ELSIF ( filerror.CORERR ) %]<b>ERROR:</b> Image not imported because the image file is corrupted.
+ [% ELSIF ( filerror.OPNERR ) %]<b>ERROR:</b> Image not imported because Koha was unable to open the image for reading.
+ [% ELSIF ( filerror.OVRSIZ ) %]<b>ERROR:</b> Image not imported because the image file is too big (see online help for maximum size).
+ [% ELSIF ( filerror.CRDFIL ) %]<b>ERROR:</b> Image not imported ([% filerror.CRDFIL %] missing).
+ [% ELSE %]<b>ERROR:</b> Image not imported because of an unknown error. Please refer to the error log for more details.
+ [% END %]
+ [% END %]
+ [% ELSE %] imported successfully.
+ [% END %]</td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ </div>
+ [% END %] <ul>
+ [% IF ( borrowernumber ) %] <li><a id="member" href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber %]">Retour au détail de l'adhérent</a></li>
+ [% ELSE %] <li><a id="uploadmore" href="/cgi-bin/koha/tools/picture-upload.pl">Télécharger d'autres images</a></li>
+ <li><a id="doneupload" href="/cgi-bin/koha/tools/tools-home.pl">Retour au Outils</a></li>
+ [% END %]</ul>
+ </div>
+[% ELSE %] <div class="yui-b">
+ <h1>Chargement photos d'adhérents</h1>
+ [% IF ( ERRORS ) %] <div class="dialog alert">
+ [% FOREACH ERROR IN ERRORS %] [% IF ( ERROR.NOTZIP ) %]<li><b>Le fichier à importer ne semble pas être un fichier .zip, son extension est erronée.</b></li>
+ [% ELSIF ( ERROR.NOWRITETEMP ) %]<li><b>Ce script ne peut pas enregistrer le fichier dans le répertoire temporaire.</b></li>
+ [% ELSIF ( ERROR.EMPTYUPLOAD ) %]<li><b>Le fichier à importer semble vide.</b></li>
+ [% ELSIF ( ERROR.OPNLINK ) %]<li><b>Impossible d'ouvrir [% ERROR.OPNLINK %] en lecture.<br />Merci de vérifier qu'il existe.</b></li>
+ [% ELSIF ( ERROR.OPNIMG ) %]<li><b>Impossible d'ouvrir [% ERROR.OPNIMG %] en lecture.<br />Merci de vérifier qu'il existe.</b></li>
+ [% ELSIF ( ERROR.DELERR ) %]<li><b>Délimiteur non reconnu ou manquant.<br />Merci de vérifier que vous utilisez soit une simple quote, soit une tabulation.</b></li>
+ [% ELSIF ( ERROR.UZIPFAIL ) %]<li><b>[% ERROR.UZIPFAIL %] impossible à décompresser<br />Merci de vérifier l'intégrité de votre archive zip.</b></li>
+ [% ELSE %]<li><b>[% ERROR.CORERR %] Une erreur inconnue s'est produite.<br />Merci de voir le log des erreurs pour plus de détails.</b></li>[% END %] [% END %] </div>
+ [% END %] <form method="post" action="/cgi-bin/koha/tools/picture-upload.pl" enctype="multipart/form-data">
+ <fieldset class="brief">
+ <div class="hint"><b>NOTE:</b> Seuls les formats PNG, GIF, JPEG et XPM sont gérés.</div>
+ <ol class="radio">
+ <li class="radio">
+ <label for="zipfile"><input type="radio" id="zipfile" name="filetype" value="zip" checked="checked" /> zip file</label></li>
+ <li>
+ <label for="image">
+ [% IF ( filetype == 'image' ) %]<input type="radio" id="image" name="filetype" value="image" checked="checked" />[% ELSE %]<input type="radio" id="image" name="filetype" value="image" />[% END %] fichier image</label>
+ <ol>
+ <li>
+ <label for="uploadfile">Sélectionnez le fichier à importer&nbsp;: </label><input type="file" id="uploadfile" name="uploadfile" />
+ [% IF ( filetype == 'image' ) %]<span id="cardnum">[% ELSE %]<span id="cardnum" style="display: none">[% END %]<label for="cardnumber">Entrer le N° d'adhérent&nbsp;:</label><input type="text" id="cardnumber" name="cardnumber" value="[% cardnumber %]" size="15" /></span>
+ </li>
+ </ol>
+ </li></ol>
+ </fieldset>
+ <fieldset class="action">
+ <input type="hidden" name="op" value="Upload" />
+ <input value="Télécharger" type="submit" class="submit" />
+ <a href="/cgi-bin/koha/tools/tools-home.pl" class="cancel">Annuler</a>
+ </fieldset>
+ </form>
+ 
+ </div> 
+[% END %] </div>
+<div class="yui-b noprint">
+ [% INCLUDE 'tools-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

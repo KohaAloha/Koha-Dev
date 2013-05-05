@@ -1,0 +1,9 @@
+--- 
+"Cr\xC3\xA9ateurs": 
+  "Cartes des adh\xC3\xA9rents": 
+    - 
+      - "Limiter le nombre d'images stock\xC3\xA9es dans la base de donn\xC3\xA9es \xC3\xA0"
+      - 
+        class: Integer
+        pref: ImageLimit
+      - images.

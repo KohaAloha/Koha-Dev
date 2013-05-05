@@ -1,0 +1,251 @@
+[% USE KohaDates %] [% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha [% END %] &rsaquo; Prêt en libre-service</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Koha [% Version %]" /> <!-- leave this for stats -->
+<link rel="shortcut icon" href="[% themelang %]/includes/favicon.ico" type="image/x-icon" />
+<!-- yui js -->
+<script type="text/javascript" src="[% yuipath %]/utilities/utilities.js"></script>
+<script type="text/javascript" src="[% yuipath %]/container/container-min.js"></script>
+<script type="text/javascript" src="[% yuipath %]/menu/menu-min.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/jquery-ui.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.min.js"></script>
+<script type="text/javascript">//<![CDATA[
+function sco_init() {
+    setTimeout("location.href='/cgi-bin/koha/sco/sco-main.pl?op=logout';",[% SelfCheckTimeout %]);
+}
+function dofocus() {    // named function req'd for body onload event by some FF and IE7 security models
+    // alert("dofocus called");
+    $(".focus:last").select();
+}
+var slip_re = /slip/;
+function printx_window(print_type) {
+  var handler = print_type.match(slip_re) ? "printslip" : "moremember";
+
+  return false;
+}
+function checkout_confirm(patronid) {
+    var   barcode = $("#barcode").val();
+    // alert("checkout_confirm('" + patronid + "') called for barcode '" + barcode + "'");
+    if (! barcode) { dofocus(); return false; }    // no barcode
+    if (barcode == "__KOHA_NEW_CIRC__") {   // magic barcode 
+        window.location.href='/cgi-bin/koha/sco/sco-main.pl?op=logout';
+        return false;
+    }
+    return true;
+}
+
+// build Change Language menus
+YAHOO.util.Event.onContentReady("changelanguage", function () {
+  $(".sublangs").each(function(){
+    var menuid = $(this).attr("id");
+    var menuid = menuid.replace("show","");
+
+    var oMenu = new YAHOO.widget.Menu("sub"+menuid, { zindex: 2 });
+    function positionoMenu() {
+      oMenu.align("bl", "tl");
+    }
+    oMenu.subscribe("beforeShow", function () {
+    if (this.getRoot() == this) {
+      positionoMenu();
+    }
+    });
+    oMenu.render();
+    oMenu.cfg.setProperty("context", ["show"+menuid, "bl", "tl"]);
+    function onYahooClick(p_oEvent) {
+      // Position and display the menu
+      positionoMenu();
+      oMenu.show();
+      // Stop propagation and prevent the default "click" behavior
+      YAHOO.util.Event.stopEvent(p_oEvent);
+    }
+    YAHOO.util.Event.addListener("show"+menuid, "click", onYahooClick);
+    YAHOO.widget.Overlay.windowResizeEvent.subscribe(positionoMenu);
+  });
+});
+
+$.tablesorter.addParser({
+    id: 'articles',
+    is: function(s) {return false;  },
+    format: function(s) { return s.toLowerCase().replace(/^(the|an|a) /,''); },
+    type: 'text'
+});
+
+$(document).ready(function() {
+    dofocus();
+    [% IF ( patronid ) %]sco_init();[% END %]
+    $("#loanTable").tablesorter({
+        [% IF ( dateformat_metric ) %]
+            dateFormat: 'uk',
+        [% END %]
+        widgets:   ['zebra'],
+        sortList:  [[2, 1], [0, 0]],
+        headers: {
+            0: { sorter: 'articles' },
+            3: { sorter: false }
+            [% UNLESS ( nofines ) %], 4: { sorter: false }[% END %]
+        }
+    });
+});
+//]]>
+$(document).ready(function(){
+    $("#logout_form").submit(function(){
+        if(confirm("Would you like to print a receipt?")){
+            window.open("/cgi-bin/koha/sco/printslip.pl?borrowernumber=[% borrowernumber %]&amp;print=qslip");
+        }
+        return true;
+    });
+});
+</script>
+[% IF ( opacuserjs ) %]<script type="text/javascript">[% opacuserjs %]</script>[% END %] [% IF ( SCOUserJS ) %]<script type="text/javascript">[% SCOUserJS %]</script>[% END %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/sco.css" />
+[% IF ( OPACUserCSS ) %]<style type="text/css">[% OPACUserCSS %]</style>[% END %] [% IF ( SCOUserCSS ) %]<style type="text/css">[% SCOUserCSS %]</style>[% END %] </head>
+<body onload="dofocus();">
+
+<div id="doc" class="yui-t7">
+
+<div id="masthead"><h1>[% LibraryName %] Prêt en libre service</h1></div>
+<div id="bd">
+
+[% IF ( impossible ) %]<!-- We tried to issue, but failed. -->
+<div class="dialog alert"><h3>Le document ne peut pas être prété.</h3><p>Sorry, this item cannot be checked out at this station. </p>
+[% IF ( title ) %]<p>Titre&nbsp;: <em>[% title |html %]</em> </p>[% END %] <p>
+ [% IF ( circ_error_UNKNOWN_BARCODE ) %] <em>MESSAGE 1:</em> Ce code à barres n'est pas reconnu. [% ELSIF ( circ_error_max_loans_allowed ) %] <em>MESSAGE 2:</em> You have checked out too many items and can't check out any more.
+ [% ELSIF ( circ_error_ISSUED_TO_ANOTHER ) %]
+ <em>MESSAGE 3:</em> Cet exemplaire est prêté à quelqu'un d'autre. [% ELSIF ( circ_error_NO_MORE_RENEWALS ) %] <em>MESSAGE 4:</em> Vous ne pouvez pas renouveler une nouvelle fois cet exemplaire. [% ELSIF ( circ_error_NOT_FOR_LOAN ) %] <em>MESSAGE 5:</em> Cet exemplaire n'est pas empruntable. [% ELSIF ( circ_error_DEBT ) %] <em>MESSAGE 6:</em> You owe the library [% amount %] and cannot check out.
+ [% ELSIF ( circ_error_WTHDRAWN ) %]
+ <em>MESSAGE 7:</em> Cette exemplaire a été retiré de la collection. [% ELSIF ( circ_error_RESTRICTED ) %] <em>MESSAGE 8:</em>
+ [% ELSIF ( circ_error_RESERVED ) %] <em>MESSAGE 9:</em> This item is on hold for another patron.
+ [% ELSIF ( circ_error_ITEMNOTSAMEBRANCH ) %]
+ <em>MESSAGE 10:</em>
+ [% ELSIF ( circ_error_EXPIRED ) %] <em>MESSAGE 11:</em> Votre compte a expiré. [% ELSIF ( circ_error_DEBARRED ) %] <em>MESSAGE 12:</em> Votre compte a été suspendu. [% ELSIF ( circ_error_CARD_LOST ) %] <em>MESSAGE 13:</em> Cette carte a été déclarée perdue. [% ELSIF ( circ_error_GNA ) %] <em>MESSAGE 14:</em>
+ [% ELSIF ( circ_error_INVALID_DATE ) %] <em>MESSAGE 15:</em>
+ [% END %] Veuillez contacter un biblitohécaire. </p>
+[% IF ( returnitem ) %] [% IF ( AllowSelfCheckReturns ) %]<form action="/cgi-bin/koha/sco/sco-main.pl" name="errorForm" class="inline" method="post">
+ <input type="hidden" name="op" value="returnbook" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% barcode %]" />
+ <input value="Rendre ce document" name="returnbook" type="submit" class="return" />
+</form>
+[% END %] [% END %]<form action="/cgi-bin/koha/sco/sco-main.pl" name="errorForm" class="inline" method="post">
+ <input type="hidden" name="op" value="" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% barcode %]" />
+ <input type="submit" name= "confirm" value="Return to account summary" class="back focus" />
+</form>
+[% END %]
+[% IF ( confirm ) %]<!-- We need to confirm the issue.. -->
+<div class="dialog alert"><h3>Merci de confirmer le prêt&nbsp;:</h3>
+<p>[% IF ( confirm_renew_issue ) %]Ce document est déjà en prêt sur votre compte.[% END %]</p>
+
+[% IF ( renew ) %] [% IF ( AllowSelfCheckReturns ) %]<form action="/cgi-bin/koha/sco/sco-main.pl" name="confirmForm" class="inline" method="post">
+ <input type="hidden" name="op" value="returnbook" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% barcode %]" />
+ <input type="hidden" name="confirmed" value="" />
+ <input value="Rendre l'exemplaire" name="confirm" type="submit" class="return" />
+ </form>
+[% END %] [% END %] [% UNLESS ( renew ) %] <form action="/cgi-bin/koha/sco/sco-main.pl" name="confirmForm" class="inline" method="post">
+ <input type="hidden" name="op" value="checkout" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% barcode %]" />
+ <input type="hidden" name="confirmed" value="1" />
+ <input value="Renouveler l'exemplaire" name="confirm" type="submit" class="renew" />
+ </form>
+[% ELSE %] <form action="/cgi-bin/koha/sco/sco-main.pl" name="confirmForm" class="inline" method="post">
+ <input type="hidden" name="op" value="checkout" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% barcode %]" />
+ <input type="hidden" name="confirmed" value="1" />
+ <input value="Renouveler l'exemplaire" type="submit" class="renew" />
+ </form>
+[% END %] <form action="/cgi-bin/koha/sco/sco-main.pl" name="confirmForm" class="inline" method="post">
+ <input type="hidden" name="op" value="" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input value="Annuler" type="submit" class="cancel" />
+ </form>
+</div>
+[% END %]
+
+[% IF ( nopermission ) %]<!-- This is what is displayed if user doesnt have permission --><div class="dialog alert"><h3>Accès refusé</h3>
+Désolé, le poste de prêt en libre service a perdu l'authentification. Contactez l'administrateur pour résoudre le problème. </div>
+[% END %]
+[% IF ( different_ip ) %]<!-- This is what is displayed if user doesnt have permission --><div class="dialog alert"><h3>Session perdue</h3>Vous accédez au prêt en libre service depuis une autre adresse IP. Merci de vous reconnecter.</div>[% END %]
+[% IF ( invalid_username_or_password ) %]
+<!-- This is what is displayed if user doesnt have permission --><div class="dialog alert"><h3>Notice non trouvée</h3><p>Votre identifiant n'a pas été trouvé dans la base. Merci de rééssayer.</p></div>[% END %] [% UNLESS ( hide_main ) %]<div class="sco_head">
+ [% UNLESS ( validuser ) %] <h3>Prêt libre service</h3>
+ [% END %] <div id="checkouthelp">
+ <a href="/cgi-bin/koha/sco/help.pl">AIDE</a> avec le système de prêt en libre service </div>
+
+ [% IF ( patronid ) %] [% IF ( validuser ) %]<h3 class="warning">Connecté en tant que [% borrowername %].</h3>
+ [% END %] </div>
+ [% IF ( nouser ) %] <div class="dialog alert"><h4>Désolé</h4><p>L'identifiant usager <strong>[% patronid %]</strong> n'a pas été trouvé dans la base. Merci de rééssayer.</p></div>
+ <br />
+ [% END %] [% END %] [% IF ( validuser ) %] [% IF ( display_patron_image ) %]<div class="yui-ge"><div class="yui-u first">[% END %] <div id="newcheckout" class="sco_entry">
+ <form id="scan_form" name="scan_form" method="post" action="/cgi-bin/koha/sco/sco-main.pl" onsubmit="return checkout_confirm('[% patronid %]');">
+ <fieldset><legend> Emprunter[% IF ( AllowSelfCheckReturns ) %], rendre[% END %] ou renouveler une exemplaire: </legend>
+ <label for="barcode">Scannez un nouveau document, ou saissez son code-barres&nbsp;:</label>
+ <input id="barcode" name="barcode" size="20" class="focus" autocomplete="off" />
+ <input type="hidden" name="op" value="checkout" />
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input value="Valider" type="submit" class="submit" /></fieldset>
+ </form>
+ <div><form method="post" action="#" id="logout_form"><input value="Terminé" type="submit" class="finish" /></form></div>
+ </div> <!-- sco_entry --> <!-- newcheckout -->
+ [% IF ( display_patron_image ) %]</div> <!-- /yui-u first -->[% END %]
+ [% IF ( display_patron_image ) %]
+ <div class="yui-u">
+ <img src="/cgi-bin/koha/sco/sco-patron-image.pl?cardnumber=[% cardnumber %]" alt="" />
+ </div>
+ [% END %] </div> <!-- /yui-ge -->
+ <div class="yui-g">
+ <div id="borrowerdetails">
+ [% IF ( issues_count ) %] <table id="loanTable"><caption>Prêts pour [% borrowername %]<span class="count">([% issues_count %] en tout)</span></caption>
+ <!-- ISSUES TABLE ROWS -->
+ <thead>
+ <tr><th>Titre</th><th>Cote</th><th>Retour le</th><th>Renouveler</th>[% UNLESS ( nofines ) %]<th>Amendes</th>[% END %]</tr>
+ </thead>
+
+ <tbody>
+ [% FOREACH ISSUE IN ISSUES %] [% UNLESS ( loop.odd ) %]<tr class="highlight">[% ELSE %]<tr>[% END %]
+ <!-- FIXME: yet another jacket image breakpoint -->
+ <td>[% UNLESS ( noitemlinks ) %]<a href="/cgi-bin/koha/opac-detail.pl?bib=[% ISSUE.biblionumber %]">[% ISSUE.title |html %]</a>[% ELSE %]<strong>[% ISSUE.title |html %]</strong>[% END %]<span class="item-details">
+ [% ISSUE.author %]</span> ([% ISSUE.barcode %])</td>
+ <td>[% ISSUE.itemcallnumber %]</td>
+ [% IF ( ISSUE.overdue ) %]<td class="overdue">[% ISSUE.date_due | $KohaDates %]</td>[% ELSE %]<td>[% ISSUE.date_due | $KohaDates %]</td>[% END %] <td>
+ <form action="/cgi-bin/koha/sco/sco-main.pl" method="post">
+ <input type="hidden" name="patronid" value="[% patronid %]" />
+ <input type="hidden" name="barcode" value="[% ISSUE.barcode %]" />
+ [% IF ( ISSUE.norenew ) %] [% IF ( AllowSelfCheckReturns ) %]<input type="submit" value="Check in item" name="confirm" class="return" />
+ <input type="hidden" name="op" value="returnbook" />
+ <input type="hidden" name="confirmed" value=""  />
+ [% ELSE %] <span>Pas renouvelable</span>
+ [% END %] [% ELSE %]<input type="hidden" name="op" value="checkout" />
+ <input type="hidden" name="confirmed" value="1" />
+ [% UNLESS ( ISSUE.renew ) %]<input value="Renouveler l'exemplaire" name="confirm" type="submit" class="renew" />
+ [% ELSE %]<input value="Renouveler l'exemplaire" type="submit" class="renew" />[% END %] [% END %]</form>
+ </td>
+ [% UNLESS ( nofines ) %]<td>[% IF ( ISSUE.charges ) %]Oui[% ELSE %]Non[% END %]</td>[% END %]</tr>
+ [% END %] </tbody>
+
+ </table>
+ [% ELSE %] <h3>Vous n'avez pas de prêt en cours.</h3>
+ [% END %] </div> <!-- /yui-g -->
+ [% ELSE %]<!-- not validuser -->
+ <div class="sco_entry" >
+ <form id="mainform" action="/cgi-bin/koha/sco/sco-main.pl" name="mainform" method="post">
+ [% IF ( authbylogin ) %] <fieldset class="checkout">
+ <legend>Veuillez vous connecter avec votre identifiant et mot de passe</legend>
+ <label for="patronlogin">Identifiant :</label>
+ <input type="text" id="patronlogin" class="focus" size="20" name="patronlogin" />
+ <label for="patronpw">Mot de passe&nbsp;:</label>
+ <input type="password" id="patronpw" size="20" name="patronpw" />
+ [% ELSE %] <fieldset class="checkout"><label for="patronid">Merci de saisir votre numéro de carte&nbsp;:</label> 
+ <input type="text" id="patronid" class="focus" size="20" name="patronid" autocomplete="off" />
+ [% END %] [% FOREACH INPUT IN INPUTS %]<input type="hidden" name="[% INPUT.name |html %]" value="[% INPUT.value |html %]">[% END %] <input type="hidden" name="op" value="login" />
+ <input value="Valider" type="submit" class="submit" /></fieldset></form>
+ </div>
+ [% END %]
+[% END %] <!-- ( / hide main) --> 
+ 
+ </div>
+</div>
+[% INCLUDE 'opac-bottom.inc' %] 

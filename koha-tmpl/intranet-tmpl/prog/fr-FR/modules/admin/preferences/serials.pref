@@ -1,0 +1,62 @@
+--- 
+"P\xC3\xA9riodiques": 
+  - 
+    - A l'OPAC, montrer l'onglet
+    - 
+      choices: 
+        holdings: Exemplaires
+        serialcollection: Etat de collection
+        subscriptions: Abonnement
+      pref: opacSerialDefaultTab
+    - "par d\xC3\xA9faut pour les p\xC3\xA9riodiques."
+  - 
+    - 
+      choices: 
+        "": Ne pas ajouter
+        1: Ajouter
+      pref: RenewSerialAddsSuggestion
+    - "une suggestion pour une notice biblio quand son p\xC3\xA9riodique attach\xC3\xA9 est renouvel\xC3\xA9."
+  - 
+    - 
+      choices: 
+        "": Ne pas ajouter
+        1: Ajouter
+      pref: RoutingSerials
+    - "les p\xC3\xA9riodiques re\xC3\xA7us \xC3\xA0 leur liste de circulation."
+  - 
+    - 
+      choices: 
+        "": Ne placer
+        1: Placer
+      pref: RoutingListAddReserves
+    - "en r\xC3\xA9servation les p\xC3\xA9riodiques qui se trouvent sur une liste de circulation."
+  - 
+    - "Ins\xC3\xA9rer le note suivante dans toutes les listes de circulation:"
+    - 
+      class: code
+      pref: RoutingListNote
+      type: textarea
+  - 
+    - "Montrer \xC3\xA0 l'interface pro les"
+    - 
+      class: integer
+      pref: StaffSerialIssueDisplayCount
+    - "derniers fascicules d'un p\xC3\xA9riodique."
+  - 
+    - "Montrer \xC3\xA0 l'OPAC les"
+    - 
+      class: integer
+      pref: OPACSerialIssueDisplayCount
+    - "derniers fascicules d'un p\xC3\xA9riodique."
+  - 
+    - "Pour l'affichage des informations d'abonnement pour une notice bibliographique, pr\xC3\xA9s\xC3\xA9lectionner "
+    - 
+      choices: 
+        full: historique complet
+        simplified: "historique abr\xC3\xA9g\xC3\xA9"
+      pref: SubscriptionHistory
+    - affichage de tous les fascicules
+  - 
+    - "Liste des champs qui ne doivent pas \xC3\xAAtre r\xC3\xA9cup\xC3\xA9r\xC3\xA9s quand un abonnement est dupliqu\xC3\xA9 (S\xC3\xA9par\xC3\xA9s par pipe |)"
+    - 
+      pref: SubscriptionDuplicateDroppedInput

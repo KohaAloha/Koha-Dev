@@ -1,0 +1,69 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Circulation &rsaquo; Transferts vers votre site</title>
+[% INCLUDE 'doc-head-close.inc' %] <link rel="stylesheet" type="text/css" href="/intranet-tmpl/prog/en/css/datatables.css" />
+<script type="text/javascript" src="/intranet-tmpl/prog/en/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="/intranet-tmpl/prog/en/js/datatables.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+[% IF (dateformat == 'metric') %]
+dt_add_type_uk_date();
+[% END %]
+$(document).ready(function() {
+    [% FOREACH branchesloo IN branchesloop %]
+    $("#transferst[% branchesloo.branchcode %]").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "aoColumnDefs": [
+            { "aTargets": [ -1 ], "bSortable": false, "bSearchable": false },
+        ],
+        "sDom": 't',
+        "bPaginate": false
+    }));
+    [% END %]
+});
+//]]>
+</script>
+</head>
+<body id="circ_transferstoreceive" class="circ">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'circ-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; Transferts vers votre site</div>
+
+<div id="doc" class="yui-t7">
+
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+
+ <h1>Transferts effectués vers votre site le [% show_date %]</h1>
+ [% IF ( branchesloop ) %] <p>Votre site est destinataire du(es) transfert(s) suivant(s)</p>
+ [% IF ( latetransfers ) %]<p>Les transferts sont <span class="error">considéré comme en retard</span> après [% TransfersMaxDaysWarning %] jours.</p>[% END %] <div id="resultlist">
+ [% FOREACH branchesloo IN branchesloop %] [% IF ( branchesloo.branchcode ) %] <table style="width: 100%" id="transferst[% branchesloo.branchcode %]">
+ <caption>Venant de [% branchesloo.branchname %]</caption>
+ <thead><tr>
+ <th>Date de transfert</th>
+ <th>Titre</th>
+ <th>Réservé pour</th>
+ <th>Site propriétaire</th>
+ <th>Cote </th>
+ <th>&nbsp;</th>
+ </tr></thead>
+ <tbody>[% FOREACH reser IN branchesloo.reserv %] [% IF ( reser.messcompa ) %] <tr class="problem">
+ [% ELSE %] <tr>
+ [% END %] <td><p>[% reser.datetransfer %]</p> [% IF ( reser.messcompa ) %]<span class="error">Le transfert a [% reser.diff %] jour(s) de retard</span>[% END %]</td>
+ <td><span style="display:none;">[% reser.title |html %]</span><!-- invisible title for tablesorter -->
+ [% INCLUDE 'biblio-default-view.inc' biblionumber = reser.biblionumber %][% reser.title |html %] [% IF ( reser.subtitle ) %] [% FOREACH subtitl IN reser.subtitle %][% subtitl.subfield %][% END %][% END %]</a> [% IF ( reser.author ) %]par [% reser.author %][% END %] [% IF ( reser.itemtype ) %]&nbsp; (<b>[% reser.itemtype %]</b>)[% END %] <br />Code à barres&nbsp;: [% reser.barcode %] </td>
+ <td>[% IF ( reser.borrowername ) %] <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% reser.borrowernum %]">
+ [% reser.borrowername %] &nbsp; [% reser.borrowerfirstname %] </a>
+ <br />[% reser.borrowerphone %]<br />
+ [% IF ( reser.borrowermail ) %] <a href="mailto:[% reser.email %]?subject=Reservation: [% reser.title |html %]">
+ [% reser.borrowermail %] </a>
+ [% END %] [% ELSE %] <p>Aucun</p>
+ [% END %] </td>
+ <td>[% reser.homebranch %]</td>
+ <td>[% reser.itemcallnumber %]</td>
+ <td><a href="/cgi-bin/koha/circ/returns.pl?itemnumber=[% reser.itemnumber %]&amp;canceltransfer=1&amp;dest=ttr">Annuler transfert</a></td>
+ </tr>
+ [% END %]</tbody>
+ </table>
+ [% END %] [% END %] </div>
+ [% ELSE %] <p>Pas de transfert à recevoir</p>
+ [% END %] </div>
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

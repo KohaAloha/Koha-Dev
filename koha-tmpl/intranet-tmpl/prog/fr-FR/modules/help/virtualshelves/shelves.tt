@@ -1,0 +1,68 @@
+[% INCLUDE 'help-top.inc' %] <h1>Lists</h1>
+ 
+<p>On crée une liste en allant dans la page Listes et en cliquant sur le bouton Ajouter une liste.</p>
+
+<p>The new list form offers several options for creating your list:</p>
+
+<ul>
+ <li>The name is what will appear on the list of Lists</li>
+ <li>Vous pouvez également choisir comment filtrer la liste</li>
+ <li>Enfin il y a trois trois types de liste que vous pouvez choisir <ul>
+ <li>Une liste privée est gérée par vous et ne peut être vue que par vous-même.</li>
+ <li>Une liste publique peut être vue par tout le monde, mais est gérée par vous seul.</li>
+ <li>Une liste ouverte peut être vue et gérée par tout le monde.</li>
+</ul>
+</li>
+</ul>
+
+<p>On peut également créer une liste à partir de la page de résulat d'une recherche.</p>
+
+<ul>
+ <li>Cliquez la boîte à côté du titre que vous voulez ajouter à la liste</li>
+ <li>Dans le menu Ajouter à, choisissez l'option [Nouvelle liste]<ul>
+ <li>Name the list and choose what type of list this is
+<ul>
+ <li>Une liste privée est gérée par vous et ne peut être vue que par vous-même.</li>
+ <li>Une liste publique peut être vue par tout le monde, mais est gérée par vous seul.</li>
+ <li>Une liste ouverte peut être vue et gérée par tout le monde.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>Une fois que la liste est enregistrée, elle accessible dans la page Liste et dans le menu Ajouter à qui se trouve en haut des pages de résultat d'une recherche.</p>
+
+<h2>Ajouter à une liste</h2>
+
+<p>Pour ajouter des titres à une liste existante, cliquez sur le nom de la liste dans la page Listes.</p>
+
+<p>Dans la page des listes, vous pouvez ajouter des titres en scannant leurs codes à barres dans la boîte de saisie qui se trouve en bas de la page.</p>
+
+<p>On peut également ajouter un titre à une liste en le sélectionnant dans la page de résultat d'une recherche et en choisissant Ajouter à une liste.</p>
+
+<h2>Voir les listes</h2>
+
+<p>Pour le voir le contenu d'une liste, visitez la page Listes de l'interface professionnelle</p>
+
+<p>Vous verrez le contenu d'une liste en cliquant sur son nom.</p>
+
+<h2>Merging Bibliographic Records Via Lists</h2>
+
+<p>The easiest way to merge together duplicate bibliographic records is to add them to a list and use the Merge Tool from there.</p>
+
+<p>Cochez dans la liste les deux notices bibliographiques que vous voulez fusionner. Si vous sélectionnez une seule notice ou plus de deux, vous obtiendrez un message d'erreur.</p>
+
+<p>Once you have selected the records you want to merge, click the 'Merge selected items' button. You will be asked which of the two records you would like to keep as your primary record and which will be deleted after the merge. If the records were created using different frameworks, Koha will also ask you what Framework you would like the newly merged record to use.</p>
+
+<p>On vous présentera les deux notices dans des onglets distincts étiquetés avec le numéro de la notice. Par défaut, tous les champs de la première notice sont sélectionnés. Désélectionnez les champs que vous ne voulez pas conserver. Allez ensuite dans le second onglet et choisissez les champs que vous voulez y prendre.</p>
+
+<p>Si vous essayez d'ajouter deux fois un champs qui n'est pas répétable (comme le champ 200 à la fois de la notice 1 et de la 2), vous obtiendrez un message d'erreur</p>
+
+<p>Once you have completed your selections click the 'merge' button. The primary record will now show the data you chose for it as well as all of the items/holdings from both bib records, and the second record will be deleted.</p>
+
+<p style="color: rgb(153, 0, 0);">Important: It is important to rebuild your zebra index immediately after merging records. If a search is performed for a record which has been deleted Koha will present the patrons with an error in the OPAC.</p>
+
+<p><strong>See the full documentation for Lists in the <a href="http://manual.koha-community.org/3.12/en/stafflists.html#lists">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

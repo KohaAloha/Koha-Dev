@@ -1,0 +1,75 @@
+[% PROCESS 'authorities-search-results.inc' %] [% INCLUDE 'doc-head-open.inc' %] <title>Constructeur de la zone UNIMARC 210c</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="cat_unimarc_field_210c" class="cat" style="padding:1em;">
+<h3>Constructeur de la zone UNIMARC 210c</h3>
+ <h4>Recherche type d'autorité : EDIOTRS</h4>
+ <form name="f" method="post" action="plugin_launcher.pl">
+ <fieldset class="rows">
+ <input type="hidden" name="plugin_name" value="unimarc_field_210c.pl" />
+ <input type="hidden" name="op" value="do_search" />
+ <input type="hidden" name="type" value="intranet" />
+ <input type="hidden" name="nbstatements" value="[% nbstatements %]" />
+ <input type="hidden" name="index" value="[% index %]" />
+ <input type="hidden" name="authtypecode" value="EDITORS" />
+ <input type="hidden" name="q" value="[% index %]" />
+ <input type="hidden" name="marclist" value="all" />
+ <input type="hidden" name="and_or" value="and" />
+ <input type="hidden" name="excluding" value="" />
+ <ol>
+ <li>
+ <select name="orderby" id="orderby">
+ <option value="">Aucun</option>
+ <option value="HeadingAsc" selected="selected">Vedette A-Z</option>
+ <option value="HeadingDsc">Vedette Z-A</option>
+ </select>
+ <select name="operator" id="operator">
+ <option value="contains">contient</option>
+ <option value="start">Commence par</option>
+ <option value="is">est exactement</option>
+ </select>
+ <input type="text" id="value" name="value" value="[% resultstring %]" />
+ </li>
+ </ol>
+ </fieldset>
+ <fieldset class="action">
+ <input value="Rechercher" type="submit" />
+ </fieldset>
+ </form>
+ [% IF ( total ) %] <h3>Résultats recherche autorité</h3>
+ <div class="pages">
+ [% pagination_bar %] </div>[% END %] <p>
+ [% IF ( total ) %] &nbsp;<b>Réponses [% from %] à  [% to %] sur [% total %]</b><br /><br />
+ [% ELSE %] &nbsp; Pas de résultat<br />
+ [% END %] </p>
+[% IF ( total ) %] <div id="resultlist">
+ <table>
+ <tr>
+ <th>Résumé</th>
+ <th>Utilisé</th>
+ <th>Le choisir !</th>
+ </tr>
+ [% FOREACH resul IN result %] <tr>
+ <td>[% PROCESS authresult summary=resul.summary %]</td>
+ <td>[% resul.used %] fois</td>
+ <td>
+ [% IF ( resul.to_report ) %] <a href="javascript:report('[% resul.to_report |replace("'", "\'") |replace('"', '\"') |replace('\n', '\\n') |replace('\r', '\\r') %]')"><img width="32" alt="choisir" src="[% interface %]/[% theme %]/images/arrow.gif" /></a>
+ [% END %] </td>
+ </tr>
+ [% END %] </table>
+ </div>
+[% END %] [% IF ( total ) %]<div class="pages">
+ [% pagination_bar %] </div>
+ [% END %] <script type="text/javascript">
+//<![CDATA[
+function report(summary)
+{    
+    var doc   = opener.document; 
+    var field = doc.getElementById('[% index %]');
+
+    field.value = summary;
+    self.close();
+}
+//]]>
+</script>
+
+[% INCLUDE 'popup-bottom.inc' %] 

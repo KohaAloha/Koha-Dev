@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Cities and Towns</h1>
+
+<p>Vous uniformisez et vous simplifiez la saisie des adhérents en définissant les villes et les communes de votre région. Ainsi quand un adhérent est entré dans le système, le bibliothécaire a juste à choisir une valeur dans la liste et n'a pas à taper une ville et un code postal.</p>
+
+<h2>Adding a City</h2>
+
+<p>Pour ajouter une nouvelle ville, cliquez sur le bouton Ajouter une commune, puis saisissez le nom de la ville et son code postal.</p>
+
+<p>Une fois que vous avez cliqué sur Valider, la ville est enregistrée et elle apparaît dans la liste des villes et communes.</p>
+
+<p>Les villes peuvent être modifiées ou supprimées à tout moment.</p>
+
+<h2>Viewing Cities on Patron Add Form</h2>
+
+<p>If you have defined local cities using the New city form, then when adding or editing a patron record you will see those cities in a pull down menu to make city selection easy.</p>
+
+<p>Cela permet d'entrer rapidement les villes de votre région et ce sans risque d'erreur de saisie, aussi bien sur l'orthographe des villes que leurs codes postales.</p>
+
+<p><strong>See the full documentation for Cities and Towns in the <a href="http://manual.koha-community.org/3.12/en/patscirc.html#citytowns">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

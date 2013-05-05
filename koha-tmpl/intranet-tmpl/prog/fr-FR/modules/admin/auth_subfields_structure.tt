@@ -1,0 +1,151 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; Structure des sous-champs des Grilles d'autorités MARC</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+
+     $(document).ready(function() {
+        $('#subfieldtabs').tabs();
+     });
+
+function displayMoreConstraint(numlayer){
+    var thisdiv = document.getElementById(numlayer);
+    if(thisdiv.getAttribute("class") == "content_hidden"){
+        thisdiv.removeAttribute('class');
+        thisdiv.setAttribute("class","content_visible");
+    } else {
+        thisdiv.removeAttribute('class');
+        thisdiv.setAttribute("class","content_hidden");
+    }
+}
+
+//]]>
+</script>
+</head>
+<body id="admin_auth_subfields_structure" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; <a href="/cgi-bin/koha/admin/authtypes.pl">Types d'autorités</a> &rsaquo; [% IF ( authtypecode ) %]<a href="/cgi-bin/koha/admin/auth_tag_structure.pl?authtypecode=[% authtypecode %]">[% authtypecode %] grille de catalogage</a> &rsaquo; [% ELSE %]<a href="/cgi-bin/koha/admin/auth_tag_structure.pl">Default framework</a> &rsaquo;
+ [% END %]
+ [% IF ( else ) %]Authority MARC subfield structure for [% tagfield %]
+ [% ELSE %]<a href="/cgi-bin/koha/admin/auth_subfields_structure.pl?tagfield=[% tagfield %]&amp;tagsubfield=[% tagsubfield %]&amp;authtypecode=[% authtypecode %]">Authority MARC subfield structure for [% tagfield %]</a> &rsaquo; [% END %] [% IF ( delete_confirm ) %]Confirmer la suppression du sous-champ [% tagsubfield %]?[% END %] [% IF ( delete_confirmed ) %]Donnée supprimée[% END %] [% IF ( add_form ) %] [% IF ( use_heading_flags_p ) %] [% IF ( heading_edit_subfields_p ) %]Modifier les contraintes des sous-champs[% END %] [% ELSE %][% action %][% END %] [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( add_form ) %] <h1>[% IF ( use_heading_flags_p ) %] [% IF ( heading_edit_subfields_p ) %]Modifier les contraintes des sous-champs pour le champ [% tagfield %] autorité [% authtypecode %][% END %] [% ELSE %][% action %][% END %]</h1>
+ <form action="[% script_name %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="authtypecode" value="[% authtypecode %]" />
+ <fieldset class="action"><input value="Enregistrer les modifications" type="submit" class="submit" /> <a class="cancel" href="/cgi-bin/koha/admin/auth_subfields_structure.pl?tagfield=[% tagfield %]&amp;authtypecode=[% authtypecode %]">Annuler</a></fieldset>
+ <div id="subfieldtabs" class="toptabs numbered">
+ <ul>
+ [% FOREACH loo IN loop %]
+ [% IF ( loo.new_subfield ) %]
+ [% IF ( tagfield >=10 ) %]<!-- display new only for > 10 fields -->
+ <li><a href="#sub[% loo.tagsubfield %]field" title="[% loo.liblibrarian %]">Ajouter</a></li>
+ [% END %] [% ELSE %] <li><a href="#sub[% loo.tagsubfield %]field" title="[% loo.liblibrarian %]">
+ [% loo.tagsubfield %] </a></li>
+ [% END %] [% END %] </ul>
+
+ [% FOREACH loo IN loop %] <div id="sub[% loo.tagsubfield %]field">
+ <fieldset class="rows"><ol>
+
+ [% IF ( loo.new_subfield ) %] <li><label for="tagsubfieldinput[% loo.row %]">Code sous-champ&nbsp;: </label>[% loo.tagsubfieldinput %]&nbsp;</li>
+ [% ELSE %] <li>
+ <input type="hidden" name="tagsubfield" value="[% loo.tagsubfield %]" />
+ </li>
+ [% END %] <li><label for="repeatable[% loo.row %]">Répétable&nbsp;: </label>[% loo.repeatable %]&nbsp;</li>
+ <li><label for="mandatory[% loo.row %]">Obligatoire&nbsp;: </label>[% loo.mandatory %]&nbsp;</li>
+ <li><label for="liblibrarian[% loo.row %]">Texte pour bibliothécaire&nbsp;: </label><input id="liblibrarian[% loo.row %]" type="text" name="liblibrarian" value="[% loo.liblibrarian %]" size="40" maxlength="80" /></li>
+ <li><label for="libopac[% loo.row %]">Texte à l'OPAC&nbsp;: </label><input type="text" id="libopac[% loo.row %]" name="libopac" value="[% loo.libopac %]" size="40" maxlength="80" /></li>
+ <li><label for="tab[% loo.row %]">Géré dans l'onglet&nbsp;: </label>[% loo.tab %] (ignore signifie que le sous-champ n'est PAS géré par Koha)</li>
+ <li>
+ <fieldset>
+ <legend>Display</legend>
+ <ol>
+ <li><label for="ohidden[% loo.row %]">Choisir d'afficher ou non:</label>[% loo.ohidden %] </li>
+ <!-- <li><label for="ihidden[% loo.row %]">Intranet:</label>[% loo.ihidden %] </li> -->
+ <!-- <li><label for="ehidden[% loo.row %]">Editor:</label>[% loo.ehidden %] (see online help)</li> -->
+ </ol>
+ </fieldset>
+ </li>
+ <li><label for="isurl[% loo.row %]">Est une URL&nbsp;:</label>[% loo.isurl %] (coché, indique que le sous-champ est une URL valide et peut être cliqué)</li>
+ <li>
+ <fieldset><legend>Aide à la saisie</legend> 
+ <ol>
+ <li><label for="authorised_value[% loo.row %]">Valeur autorisée&nbsp;:</label> [% loo.authorised_value %]</li>
+ <li><label for="frameworkcode[% loo.row %]">Thésaurus&nbsp;:</label> [% loo.frameworkcode %]</li>
+ <li><label for="value_builder[% loo.row %]">Plugin&nbsp;: </label> [% loo.value_builder %]</li>
+ </ol>
+ </fieldset>
+ </li>
+ </ol></fieldset><br class="clear" />
+ </div>
+ [% END %] </div>
+ </form>
+[% END %] [% IF ( delete_confirm ) %] <div class="dialog alert"><h3>Supprimer le sous-champ <span class="ex">'[% tagsubfield %]' ?</span></h3>
+ <form action="[% delete_link %]" method="post"><input type="hidden" name="op" value="delete_confirmed" />
+ <table><tr><th scope="row">Sous-champ&nbsp;:</th> <td>[% tagsubfield %]</td></tr>
+ <tr><th scope="row">Description:</th> <td>[% liblibrarian %]</td></tr></table>
+ <input type="hidden" name="searchfield" value="[% searchfield %]" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="tagsubfield" value="[% tagsubfield %]" />
+ <input type="hidden" name="authtypecode" value="[% authtypecode %]" />
+ <input type="submit" class="approve" value="Yes, delete this subfield" />
+ </form>
+ <form action="[% delete_link %]" method="get">
+ <input type="hidden" name="searchfield" value="[% searchfield %]" />
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="hidden" name="tagsubfield" value="[% tagsubfield %]" />
+ <input type="hidden" name="authtypecode" value="[% authtypecode %]" />
+ <input value="Non, ne pas supprimer" type="submit" class="deny" />
+ </form>
+ </form></div>
+[% END %] [% IF ( delete_confirmed ) %] <div class="dialog message"> <h3>Donnée supprimée</h3>
+ <form action="[% script_name %]" method="post">
+ <input type="hidden" name="tagfield" value="[% tagfield %]" />
+ <input type="submit" class="approve" value="OK" />
+ </form></div>
+[% END %] [% IF ( else ) %] <h1>Gestion de la structure des sous-champs Marc autorités pour [% tagfield %] (autorité [% authtypecode %])</h1>
+<p>Cette page montre les sous-champs associés au champ sélectionné. Vous pouvez modifier les sous-champs ou en ajouter de nouveaux en cliquant sur Modifier.</p>
+<p>La colonne <b>Champ Koha</b> montre que le sous-champ est lié à un champ Koha. Koha peut présenter une interface MARC ou une interface Koha. Ce lien assure la synchronisation des deux modes (dans la base de données), de cette façon vous pouvez passer du mode MARC au mode non-MARC facilement.</p>
+
+<table>
+ <tr>
+ <th>Sous-champ</th>
+ <th>Texte</th>
+ <th>Contraintes</th>
+ <th>Supprimer</th>
+ </tr>
+ [% FOREACH loo IN loop %] [% UNLESS ( loop.odd ) %] <tr class="highlight">
+ [% ELSE %] <tr>
+ [% END %] <td>[% loo.tagsubfield %]</td>
+ <td>
+ [% IF ( loo.subfield_ignored ) %] <i>[% loo.liblibrarian %]</i>
+ [% ELSE %] [% loo.liblibrarian %] [% END %] </td>
+ <td>
+ [% IF ( loo.subfield_ignored ) %] <i>sous-champ ignoré</i>
+ [% ELSE %] <strong>Onglet :</strong>[% loo.tab %], [% IF ( loo.kohafield ) %] | <strong>Champ Koha&nbsp;: </strong> [% loo.kohafield %], [% END %] [% IF ( loo.repeatable ) %]Répétable, [% ELSE %]Pas répétable, [% END %] [% IF ( loo.mandatory ) %]Obligatoire, [% ELSE %]Facultatif, [% END %] [% IF ( loo.hidden ) %]hidden, [% END %] [% IF ( loo.isurl ) %]is a url, [% END %] [% IF ( loo.authorised_value ) %] | <strong>Valeur autorisée&nbsp;: </strong>[% loo.authorised_value %], [% END %] [% IF ( loo.frameworkcode ) %] | <strong>Autorité&nbsp;: </strong>[% loo.frameworkcode %], [% END %] [% IF ( loo.value_builder ) %] | <strong>Plugin&nbsp;: </strong>[% loo.value_builder %],[% END %] [% END %] </td>
+ <td><a href="[% loo.delete %]">Supprimer</a></td>
+ </tr>
+ [% END %] </table>
+
+ <form action="[% script_name %]" method="get">
+ <fieldset class="action"><input type="hidden" name="op" value="add_form" />
+ <input type="hidden" name="tagfield" value="[% edit_tagfield %]" />
+ <input type="hidden" name="authtypecode" value="[% edit_authtypecode %]" />
+ <input value="Modifier les sous-champs" type="submit" />
+ <a class="cancel" href="auth_tag_structure.pl?searchfield=[% tagfield %]&amp;authtypecode=[% authtypecode %]">Annuler</a></fieldset>
+ </form>
+
+ [% IF ( previous ) %] <input type="image" src="[% interface %]/[% theme %]/images/1leftarrow.png" title="previous" alt="previous" border="0" />
+ </a>
+ [% END %] [% IF ( next ) %] [% next %] <input alt="suivant" src="[% interface %]/[% theme %]/images/1rightarrow.png" type="image" title="suivant" border="0" />
+ </a>
+ [% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

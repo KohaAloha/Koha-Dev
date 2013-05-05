@@ -1,0 +1,76 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo;  Circulation &rsaquo; Chargement du fichier de prêts secourus</title>
+[% INCLUDE 'doc-head-close.inc' %] [% INCLUDE 'file-upload.inc' %] <script type="text/javascript" src="[% themelang %]/js/background-job-progressbar.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
+    $("#enqueuefile").hide();
+    $("#processfile").hide();
+});
+
+function CheckUpload(f){
+    if (f.fileToUpload.value == ""){
+        alert(_("Sélectionnez le fichier à importer"));
+    } else {
+        return ajaxFileUpload()
+    }
+    return false;
+}
+
+function CheckForm(f) {
+    if (f.uploadedfileid.value == '') {
+        alert(_("Merci de télécharger un fichier."));
+    } else {
+        $("#fileuploadstatus").hide();
+        $("#fileuploadform").slideUp();
+        return submitBackgroundJob(f);
+    }
+    return false;
+}
+
+//]]>
+</script>
+<style type="text/css">
+	#fileuploadstatus,#jobstatus { margin:.4em; }
+	#fileuploadprogress,#jobprogress{ width:200px;height:10px;border:1px solid #666;background:url('/intranet-tmpl/prog/img/progress.png') -300px 0px no-repeat; }
+</style>
+</head>
+<body id="ocirc_process_koc" class="circ ocirc">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'circ-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; [% IF ( transactions_loaded ) %] <a href="/cgi-bin/koha/offline_circ/process_koc.pl">Chargement d'un fichier de prêts secourus</a> &rsaquo; Résultats[% ELSE %] Chargement du fichier de prêts secourus[% END %]</div>
+
+<div id="doc" class="yui-t7">
+
+ <div id="bd">
+
+[% IF ( transactions_loaded ) %] <h2>Prêt secouru</h2>
+ <p>Vos données sont traitées. Résultat :</p>
+ [% FOREACH message IN messages %] [% IF ( message.message ) %] <div class="dialog alert">
+ [% IF ( message.ERROR_file_version ) %]<p>Attention: fichier version [% message.upload_version %], mais seuls les fichiers version [% message.current_version %] sont normalement importés. On va essayer.</p>[% END %] </div>
+ [% END %] [% IF ( message.ERROR_no_borrower_from_item ) %]<p>Attention: adhérent non retrouvé à partir du code-barre exemplaire ([% message.badbarcode %]). Impossible de faire le retour.</p>[% END %] [% IF ( message.issue ) %]<p>Prêté <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% message.biblionumber %]">[% message.title |html %]</a> ([% message.barcode %]) à <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% message.borrowernumber %]">[% message.firstname %] [% message.surname %]</a> ([% message.cardnumber %]): [% message.datetime %]</p>[% END %] [% IF ( message.renew ) %]<p>Renouvelé <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% message.biblionumber %]">[% message.title |html %]</a> ([% message.barcode %]) pour <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% message.borrowernumber %]">[% message.firstname %] [% message.surname %]</a> ([% message.cardnumber %]): [% message.datetime %]</p>[% END %] [% IF ( message.return ) %]<p>Retourné <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% message.biblionumber %]">[% message.title |html %]</a> ([% message.barcode %]) de <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% message.borrowernumber %]">[% message.firstname %] [% message.surname %]</a> ([% message.cardnumber %]): [% message.datetime %]</p>[% END %] [% IF ( message.payment ) %]<p>Paiement accepté ([% message.amount %]) de <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% message.borrowernumber %]">[% message.firstname %] [% message.surname %]</a> ([% message.cardnumber %]): [% message.datetime %]</p>[% END %] [% END %] [% ELSE %] <h2>Charger les données de prêts secourus</h2>
+
+ <div id="fileuploadform">
+ <form method="post" action="[% SCRIPT_NAME %]" enctype="multipart/form-data">
+ <fieldset class="brief">
+ <ol><li><label for="fileToUpload">Choisissez le fichier .koc : </label>
+ <input type="file" id="fileToUpload" size="50" name="fileToUpload" /></li></ol>
+ <fieldset class="action"><input value="Télécharger fichier" type="button" class="submit" onclick="CheckUpload(this.form);" /></fieldset>
+ </fieldset>
+ </form>
+ <div id="fileuploadstatus" style="display:none">Avancement du téléchargement&nbsp;:<div id="fileuploadprogress"></div> <span id="fileuploadpercent"></span>%</div>
+ <div id="fileuploadfailed" style="display:none"></div>
+ </div>
+
+ <form action="enqueue_koc.pl" id="processfile" method="post" enctype="multipart/form-data">
+ <input type="hidden" name="uploadedfileid" id="uploadedfileid" value="" />
+ <input type="submit" value="Add to offline circulation queue" onclick="return CheckForm(this.form);" id="queueformsubmit" />
+ </form>
+
+ <form action="process_koc.pl" id="enqueuefile" method="post" enctype="multipart/form-data">
+ <input type="hidden" name="uploadedfileid" id="uploadedfileid" value="" />
+ <input type="hidden" name="runinbackground" id="runinbackground" value="" />
+ <input type="hidden" name="completedJobID" id="completedJobID" value="" />
+ <input type="submit" value="Apply directly" onclick="return CheckForm(this.form);" id="mainformsubmit" />
+ <div id="jobstatus" style="display:none">Avancement de la tache&nbsp;:<div id="jobprogress"></div> <span id="jobprogresspercent"></span>%</div>
+ <div id="jobfailed" style="display:none"></div>
+ </form>
+[% END %] </div>
+[% INCLUDE 'intranet-bottom.inc' %] 

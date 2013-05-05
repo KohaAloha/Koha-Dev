@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %] <h1>Transferts</h1>
+
+<p>Si vous travaillez dans une bibliothèque multi-sites, vous pouvez transférer les exemplaires d'une biblitothèque à l'autre en utilisant l'outil Transfert. Pour transférer un exemplaire</p>
+
+<ul>
+ <li>Cliquez sur 'Transfert' dans le menu de Circulation<ul>
+ <li>Entrez le site vers lequel vous voulez réaliser le transfert.</li>
+ <li>Scannez ou saisissez le le code à barres du document que vous voulez transférer</li>
+</ul>
+</li>
+ <li>Cliquez 'Valider'</li>
+ <li>The item will now say that it is in transit</li>
+ <li>Quand l'exemplaire arrive sur l'autre site, un bibliothécaire doit faire le retour de l'exemplaire afin de marquer dans Koha qu'il n'est plus en transit.</li>
+ <li>The item will not be permanently moved to the new library
+<ul>
+ <li>The item shows the same 'Home Library' but has updated the 'Current Location' to note where it resides at this time</li>
+</ul>
+</li>
+</ul>
+
+<p><strong>See the full documentation for Transfers in the <a href="http://manual.koha-community.org/3.12/en/transfers.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

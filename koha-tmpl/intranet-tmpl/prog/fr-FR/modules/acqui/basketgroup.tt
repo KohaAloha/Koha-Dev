@@ -1,0 +1,257 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Bordereau de commande pour [% booksellername |html %]</title>
+<link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript" src="[% themelang %]/js/acq.js"></script>
+[% IF ( grouping ) %] <script type="text/javascript" src="[% yuipath %]/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="[% yuipath %]/animation/animation-min.js"></script>
+<script type="text/javascript" src="[% yuipath %]/dragdrop/dragdrop-min.js"></script>
+<script type="text/javascript" src="[% yuipath %]/element/element-min.js"></script>
+<style type="text/css">
+/*margin and padding on body element
+  can introduce errors in determining
+  element position and are not recommended;
+  we turn them off as a foundation for YUI
+  CSS treatments. */
+body {
+	margin:0;
+	padding:0;
+}
+#basketgroupcolumns {
+    width: 58em;
+}
+#ungrouped {
+	overflow: auto;
+	height: 400px;
+}
+
+.draglist{
+	width: 200px;
+	height: 300px;
+	overflow: auto;
+}
+
+div.workarea_alt { padding: 5px; float:left; width: 95%;}
+div.closed { background-color: pink; padding:10px; float:left; width: 45%;}
+
+ul.draglist {
+    position: relative;
+    background: #EEE;
+    padding-bottom:10;
+    border: 1px inset gray;
+    list-style: none;
+    margin:0;
+    padding: 5px;
+}
+
+ul.draglist li {
+    margin: 1px;
+    cursor: move;
+    list-style: none;
+}
+
+ul.draglist_alt {
+    position: relative;
+    border: 1px solid gray;
+    list-style: none;
+    margin: 0;
+    background: #f7f7f7;
+    padding: 5px;
+    cursor: move;
+}
+
+ul.draglist_alt li {
+    margin: 1px;
+    list-style: none;
+}
+
+li.grouped {
+    background-color: #D1E6EC;
+    border:1px solid #7EA6B2;
+    list-style: none;
+}
+
+li.ungrouped {
+    background-color: #D8D4E2;
+    border:1px solid #6B4C86;
+}
+
+fieldset.various li {
+    list-style: none;
+    clear: none;
+}
+
+</style>
+ [% END %] <script type="text/javascript">
+//<![CDATA[
+	YAHOO.util.Event.onDOMReady(DDApp.init, DDApp, true);
+
+function submitForm(form) {
+    if (form.close.checked == true) {
+	var input = document.createElement("input");
+	input.setAttribute("type", "hidden");
+	input.setAttribute("name", "closed");
+	input.setAttribute("value", "1");
+	form.appendChild(input);
+    }
+}
+
+ $(document).ready(function() {
+    $("#basket_groups").tabs();
+
+    $("table").dataTable($.extend(true, {}, dataTablesDefaults, {
+        "aoColumnDefs": [
+            { "aTargets": [ -1 ], "bSortable": false, "bSearchable": false },
+        ],
+        "bAutoWidth": false,
+        "bPaginate": false,
+        "bInfo": false,
+        "bFilter": false,
+    } ));
+
+ });
+
+
+//]]>
+</script>
+</head>
+<body id="acq_basketgroup" class="acq">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'acquisitions-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; [% IF ( grouping ) %] <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% booksellername |html %]</a> &rsaquo; <a href="/cgi-bin/koha/acqui/basketgroup.pl?booksellerid=[% booksellerid %]">Basket grouping</a> &rsaquo; Add basket group for [% booksellername |html %]</div>
+[% ELSE %] <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% booksellername |html %]</a> &rsaquo; Bordereau de commande</div>
+[% END %] <div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( grouping ) %] <h1>Add basket group for <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% booksellername |html %]</a></h1>
+ <div id="basketgroupcolumns" class="yui-g">
+ <div class="yui-u">
+
+ <form action="[% scriptname %]" method="post" name="basketgroups" id="basketgroups">
+ <div id="groups">
+ <fieldset class="brief">
+ <div class="workarea_alt" >
+ <h3>Paniers sans bordereau</h3>
+ <ul id="ungrouped" class="draglist_alt">
+ [% IF ( baskets ) %] [% FOREACH basket IN baskets %] <li class="ungrouped" id="b-[% basket.basketno %]" >
+ <a href="basket.pl?basketno=[% basket.basketno %]">
+ [% IF ( basket.basketname ) %] [% basket.basketname %] [% ELSE %] Pas de nom, panier n° : [% basket.basketno %] [% END %] </a>, <br />
+ Total : [% basket.total %]<input type="hidden" class="basket" name="basket" value="[% basket.basketno %]" />
+ </li>
+ [% END %] [% END %] </ul>
+ </div>
+ </fieldset>
+ </div>
+ </form>
+
+ </div> 
+ 
+ <div class="yui-u first"> 
+ <form action="" method="post" id="groupingform" onsubmit="return submitForm(this)">
+ <fieldset id="various" class="brief">
+ <ol>
+ <li><label for="basketgroupname">Nom du bordereau de commande :</label>
+ <input type="text" name="basketgroupname" id="basketgroupname" value="[% name %]" /></li>
+ <li><label for="billingplace">Adresse de facturation :</label>
+ <select name="billingplace" id="billingplace" style="width:13em;">
+ <option value="">--</option>
+ [% FOREACH billingplaceloo IN billingplaceloop %] [% IF ( billingplaceloo.selected ) %]<option value="[% billingplaceloo.value %]" selected="selected">[% billingplaceloo.branchname %]</option>
+ [% ELSE %]<option value="[% billingplaceloo.value %]">[% billingplaceloo.branchname %]</option>[% END%] [% END %] </select></li>
+ <li><label for="deliveryplace">Adresse de livraison:</label>
+ <select name="deliveryplace" id="deliveryplace" style="width:13em;">
+ <option value="">--</option>
+ [% FOREACH deliveryplaceloo IN deliveryplaceloop %] [% IF ( deliveryplaceloo.selected ) %]<option value="[% deliveryplaceloo.value %]" selected="selected">[% deliveryplaceloo.branchname %]</option>
+ [% ELSE %]<option value="[% deliveryplaceloo.value %]">[% deliveryplaceloo.branchname %]</option>[% END %] [% END %] </select></li>
+ <li><p>ou</p></li>
+ <li><label for="freedeliveryplace">Adresse de livraison:</label>
+ <textarea cols="26" rows="3" name="freedeliveryplace" id="freedeliveryplace">[% freedeliveryplace %]</textarea></li>
+ <li><label for="deliverycomment">Commentaire</label>
+ <textarea cols="26" rows="3" name="deliverycomment" id="deliverycomment">[% deliverycomment %]</textarea>
+ </li>
+ <li><span class="label">Paniers dans ce bordereau :</span>
+ <ul class="draglist" id="bg">
+ [% FOREACH selectedbasket IN selectedbaskets %] <li class="grouped" id="b-[% selectedbasket.basketno %]" >
+ <a href="basket.pl?basketno=[% selectedbasket.basketno %]">
+ [% IF ( selectedbasket.basketname ) %] [% selectedbasket.basketname %] [% ELSE %] Pas de nom, panier n° : [% selectedbasket.basketno %] [% END %] </a>, <br />
+ Total : [% selectedbasket.total %]<input type="hidden" class="basket" name="basket" value="[% selectedbasket.basketno %]" />
+ </li>
+ [% END %] </ul>
+ </li>
+ <li><label><input type="checkbox" id="close" name="close" /> Fermer le bordereau</label></li>
+ </ol>
+ </fieldset>
+
+ <fieldset class="action"><input type="hidden" name="booksellerid" value="[% booksellerid %]" />
+ [% IF ( basketgroupid ) %] <input type="hidden" name="basketgroupid" value="[% basketgroupid %]" />
+ [% END %] <input type="hidden" name="op" value="attachbasket" />
+ <input value="Enregistrer" type="submit" /> <a href="/cgi-bin/koha/acqui/basketgroup.pl?booksellerid=[% booksellerid %]" class="cancel">Annuler</a>
+ </fieldset>
+ </form>
+ </div> 
+ </div> 
+[% ELSE %] <div id="toolbar" class="btn-toolbar">
+ <div class="btn-group"><a href="/cgi-bin/koha/acqui/basketgroup.pl?op=add&amp;booksellerid=[% booksellerid %]" class="btn btn-small" id="newbasketgroup"><i class="icon-plus"></i> Nouveau bordereau</a></div>
+ </div>
+ <h1>Bordereau de commande pour <a href="/cgi-bin/koha/acqui/supplier.pl?booksellerid=[% booksellerid %]">[% booksellername |html %]</a></h1>
+
+ <div id="basket_groups" class="toptabs">
+ <ul class="ui-tabs-nav">
+ [% UNLESS ( closed ) %]<li class="ui-tabs-selected"><a href="#opened">Ouverte</a></li>
+ [% ELSE%]<li><a href="#opened">Ouverte</a></li>[% END %] [% IF ( closed ) %]<li class="ui-tabs-selected"><a href="#closed">Fermé</a></li>
+ [% ELSE %]<li><a href="#closed">Fermé</a></li>[% END %] </ul>
+ <div id="opened">
+ <table id="basket_group_opened">
+ <thead>
+ <tr>
+ <th>Bordereau</th><th>Action</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH basketgroup IN basketgroups %] [% UNLESS ( basketgroup.closed ) %] <tr>
+ <td>[% IF ( basketgroup.name ) %]
+ [% basketgroup.name %]
+ [% ELSE %]
+ Basket group no. [% basketgroup.id %]
+ [% END %]
+ </td>
+ <td>
+ <input type="button" onclick="closeandprint([% basketgroup.id %])" value="Close and print" />
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="get"><input type="hidden" name="op" value="add" /><input type="hidden" name="booksellerid" value="[% basketgroup.booksellerid %]" /><input type="hidden" name="basketgroupid" value="[% basketgroup.id %]" /><input value="Modifier" type="submit" /></form>
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="get"><input type="hidden" name="op" value="delete" /><input type="hidden" name="booksellerid" value="[% basketgroup.booksellerid %]" /><input type="hidden" name="basketgroupid" value="[% basketgroup.id %]" /><input value="Supprimer" type="submit" /></form>
+ </td>
+ </tr>
+ [% END %] [% END %] </tbody>
+ </table>
+ </div>
+ <div id="closed">
+ <table id="basket_group_closed">
+ <thead>
+ <tr>
+ <th>Bordereau</th><th>Action</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH basketgroup IN basketgroups %] [% IF ( basketgroup.closed ) %] <tr>
+ <td>
+ [% IF ( basketgroup.name ) %]
+ [% basketgroup.name %]
+ [% ELSE %]
+ Basket group no. [% basketgroup.id %]
+ [% END %]
+ </td>
+ <td>
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="get"><input type="hidden" name="op" value="reopen" /><input type="hidden" name="booksellerid" value="[% basketgroup.booksellerid %]" /><input type="hidden" name="basketgroupid" value="[% basketgroup.id %]" /><input value="Réouvrir" type="submit" /></form>
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="get"><input type="hidden" name="op" value="print" /><input type="hidden" name="basketgroupid" value="[% basketgroup.id %]" /><input value="Imprimer" type="submit" /></form>
+ <form action="/cgi-bin/koha/acqui/basketgroup.pl" method="get"><input type="hidden" name="op" value="export" /><input type="hidden" name="basketgroupid" value="[% basketgroup.id %]" /><input type="submit" value="Export as CSV" /></form>
+ </td>
+ </tr>
+ [% END %] [% END %] </tbody>
+ </table>
+ </div>
+ </div>
+[% END %] </div>
+</div>
+<div class="yui-b">
+[% IF ( booksellerid ) %] [% INCLUDE 'vendor-menu.inc' %] [% END %] [% INCLUDE 'acquisitions-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

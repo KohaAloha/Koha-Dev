@@ -1,0 +1,88 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Outils</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="tools_tools-home" class="tools">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; Outils</div>
+
+<div id="doc3">
+<div id="bd">
+ <div class="yui-gb">
+
+<div class="yui-u first">
+<h3>Adhérents et circulation</h3>
+<dl>
+ [% IF ( CAN_user_tools_moderate_comments ) %] <dt><a href="/cgi-bin/koha/reviews/reviewswaiting.pl">Commentaires</a> [% IF ( pendingcomments ) %]<span class="holdcount"><a href="/cgi-bin/koha/reviews/reviewswaiting.pl">[% pendingcomments %]</a></span>[% END %]</dt>
+ <dd>Modérer les commentaires des adhérents. </dd>
+ [% END %] [% IF ( CAN_user_tools_import_patrons ) %] <dt><a href="/cgi-bin/koha/tools/import_borrowers.pl">Import patrons</a></dt>
+ <dd>Import patron data</dd>
+ [% END %] [% IF ( CAN_user_tools_edit_notices ) %] <dt><a href="/cgi-bin/koha/tools/letter.pl">Notices &amp; Tickets</a></dt>
+ <dd>Define notices (print and email notification messages for overdues, etc.)</dd>
+ [% END %] [% IF ( CAN_user_tools_edit_notice_status_triggers ) %] <dt><a href="/cgi-bin/koha/tools/overduerules.pl">Déclencheur de notification</a></dt>
+ <dd>Définir les règles de suspension et notifications sur retard</dd>
+ [% END %] [% IF ( CAN_user_tools_label_creator ) %] <dt><a href="/cgi-bin/koha/patroncards/home.pl">Créateur de cartes adhérent</a></dt>
+ <dd>Créer des cartes adhérent imprimables</dd>
+ [% END %] [% IF ( CAN_user_tools_delete_anonymize_patrons ) %] <dt><a href="/cgi-bin/koha/tools/cleanborrowers.pl">Batch patron deletion/anonymization</a></dt>
+ <dd>Batch delete patrons and delete patron circulation history</dd>
+ [% END %] [% IF ( CAN_user_tools_edit_patrons ) %] <dt><a href="/cgi-bin/koha/tools/modborrowers.pl">Batch patron modification</a></dt>
+ <dd>Modify patrons in batch</dd>
+ [% END %] [% IF ( CAN_user_tools_moderate_tags ) %] <dt><a href="/cgi-bin/koha/tags/review.pl">Tags</a> [% IF ( pendingtags ) %]<span class="holdcount"><a href="/cgi-bin/koha/tags/review.pl">[% pendingtags %]</a></span>[% END %]</dt>
+ <dd>Modérer les tags des adhérents</dd>
+ [% END %] [% IF ( CAN_user_tools_batch_upload_patron_images ) %] <dt><a href="/cgi-bin/koha/tools/picture-upload.pl">Chargement photos d'adhérents</a></dt>
+ <dd>Télécharger les photos des adhérents en lot ou une à une  </dd>
+ [% END %] </dl>
+</div>
+<div class="yui-u">
+<h3>Outils supplémentaires</h3>
+<dl>
+ [% IF ( CAN_user_tools_edit_calendar ) %] <dt><a href="/cgi-bin/koha/tools/holidays.pl">Calendrier</a></dt>
+ <dd>Define days when the library is closed</dd>
+ [% END %] [% IF ( CAN_user_tools_manage_csv_profiles ) %] <dt><a href="/cgi-bin/koha/tools/csv-profiles.pl">Profils CSV</a></dt>
+ <dd>Gérer les profils d'export CSV</dd>
+ [% END %] [% IF ( CAN_user_tools_view_system_logs ) %] <dt><a href="/cgi-bin/koha/tools/viewlog.pl">Visualiseur des logs</a></dt>
+ <dd>Consulter les logs du système</dd>
+ [% END %] [% IF ( CAN_user_tools_edit_news ) %] <dt><a href="/cgi-bin/koha/tools/koha-news.pl">Nouvelles</a></dt>
+ <dd>Rédiger des nouvelles  pour les interfaces OPAC et bibliothécaire</dd>
+ [% END %] [% IF ( CAN_user_tools_schedule_tasks ) %] <dt><a href="/cgi-bin/koha/tools/scheduler.pl">Planificateur de tâches</a></dt>
+ <dd>Planifier les tâches à exécuter</dd>
+ [% END %] [% IF ( CAN_user_tools_edit_quotes ) %] <dt><a href="/cgi-bin/koha/tools/quotes.pl">Edit quotes for QOTD feature</a></dt>
+ <dd>Quote editor for Quote-of-the-day feature in OPAC</dd>
+ [% END %] [% IF ( UseKohaPlugins && CAN_user_plugins_tool ) %] <dt><a href="/cgi-bin/koha/plugins/plugins-home.pl?method=tool">Tool Plugins</a></dt>
+ <dd>Use tool plugins</dd>
+ [% END %] </dl>
+</div>
+<div class="yui-u">
+<h3>Catalogue</h3>
+<dl>
+ [% IF ( CAN_user_tools_items_batchdel ) %] <dt><a href="/cgi-bin/koha/tools/batchMod.pl?del=1">Suppression d'exemplaires par lot</a></dt>
+ <dd>Supprimer un lot d'exemplaires</dd>
+ [% END %] [% IF ( CAN_user_tools_items_batchmod ) %] <dt><a href="/cgi-bin/koha/tools/batchMod.pl">Modification d'exemplaires par lots</a></dt>
+ <dd>Modifier les exemplaires par lots</dd>
+ [% END %] [% IF ( CAN_user_tools_export_catalog ) %] <dt><a href="/cgi-bin/koha/tools/export.pl">Export data</a></dt>
+ <dd>Export bibliographic, holdings, and authority records</dd>
+ [% END %] [% IF ( CAN_user_tools_inventory ) %] <dt><a href="/cgi-bin/koha/tools/inventory.pl">Inventaire/récolement</a></dt>
+ <dd>Réaliser l'inventaire (récolement) de votre catalogue</dd>
+ [% END %] [% IF ( CAN_user_tools_label_creator ) %] <dt><a href="/cgi-bin/koha/labels/label-home.pl">Créateur d'étiquettes</a></dt>
+ <dd>Créer des étiquettes et des code à barres imprimables à partir des données du catalogue</dd>
+ [% END %] [% IF ( CAN_user_tools_label_creator ) %] <dt><a href="/cgi-bin/koha/labels/spinelabel-home.pl">Création d'étiquettes - rapide</a></dt>
+ <dd>Entrez un code à barres pour générer une étiquette. A utiliser avec des imprimantes à étiquettes dédiées</dd>
+ [% END %]
+
+<!--
+ [% IF ( CAN_user_tools_rotating_collections ) %]
+ <dt><a href="/cgi-bin/koha/rotating_collections/rotatingCollections.pl">Rotating collections</a></dt>
+ <dd>Manage Rotating Collections</dd>
+ [% END %]
+-->
+
+ [% IF ( CAN_user_tools_stage_marc_import ) %]
+ <dt><a href="/cgi-bin/koha/tools/stage-marc-import.pl">Stage MARC records for import</a></dt>
+ <dd>Stage MARC records into the reservoir.</dd>
+ [% END %] [% IF ( CAN_user_tools_manage_staged_marc ) %] <dt><a href="/cgi-bin/koha/tools/manage-marc-import.pl">Staged MARC record management</a></dt>
+ <dd>Gérer les notices MARC préparées, y compris compléter et reverser les imports.</dd>
+ [% END %] [% IF ( CAN_user_tools_upload_local_cover_images ) %] <dt><a href="/cgi-bin/koha/tools/upload-cover-image.pl">Télécharger des images de couverture locales</a></dt>
+ <dd>Utilitaire pour charger des images de couvertures à afficher à l'OPAC</dd>
+ [% END %] </dl>
+</div>
+
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

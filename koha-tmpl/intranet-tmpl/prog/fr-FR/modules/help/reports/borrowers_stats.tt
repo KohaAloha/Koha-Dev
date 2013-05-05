@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron statistics</h1>
+
+<p>En utilisant le formulaire fourni, choisissez quels champs vous voulez voir afficher dans la colonne et quels champs afficher dans la rangée.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>En fonction de vos choix, vous pourrez voir quelques informations sur la resquête générée s'afficher au-dessus du résultat. Vous pouvez également exporter le résultat vers un fichier que vous pourrez manipuler à loisir.</p>
+
+<p><strong>Voir la documentation complète sur les Statistiques sur les adhérents dans le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#patstats">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

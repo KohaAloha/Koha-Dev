@@ -1,0 +1,54 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo;  Circulation &rsaquo; Statistiques de prêt pour [% title |html %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+$(document).ready(function(){
+    $(".striped tr:even").addClass("highlight");
+    $("tr.mybranch td").css("background-color", "#CFE7FF");
+});
+</script>
+</head>
+<body id="circ_bookcount" class="circ">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'circ-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/circ/circulation-home.pl">Circulation</a> &rsaquo; Statistiques de circulation de [% title |html %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h2>
+[% title |html %] [% IF ( author ) %] par [% author |html %][% END %]</h2>
+<h3>Code à barres [% barcode %]</h3>
+<table>
+ <tr><th>Site propriétaire</th><th>Site actuel</th><th>Date de réception<br />at current library </th><th>Nombre de prêts<br />depuis le dernier transfert</th></tr>
+ 
+ <tr><td>[% homebranch %]</td>
+ <td>[% holdingbranch %]</td>
+ <td>[% IF ( lastdate ) %][% lastdate %][% ELSE %]Item has no transfer record[% END %]</td>
+ <td>[% count %]</td>
+ </tr>
+</table>
+<table class="striped">
+ <tr>
+ <th>Library</th>
+ <th>Nombre de prêts</th>
+ <th>Last seen</th>
+ </tr>
+ [% FOREACH branchloo IN branchloop %] [% IF ( branchloo.selected ) %] <tr class="mybranch">
+ [% ELSE %] <tr>
+ [% END %] <td>[% branchloo.branchname %]</td>
+ <td>[% branchloo.issues %]</td>
+ <td>[% IF ( branchloo.seen ) %] <span style="display:none;">[% branchloo.seen %][% branchloo.seentime %]</span>
+ <!-- invisible span for eventual use by tablesorter -->
+ [% branchloo.seen %] [% branchloo.seentime %]
+ [% ELSE %]
+ <span>Never</span>
+ [% END %] </td>
+ </tr>
+ [% END %] </table>
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'biblio-view-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

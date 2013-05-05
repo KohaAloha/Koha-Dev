@@ -1,0 +1,22 @@
+[% INCLUDE 'help-top.inc' %] <h1>Circulation</h1>
+
+<p>Circulation functions can be accessed in several different ways. On the main page of the staff client there are some quick links in the center of the page to check items out, in or transfer them. For a complete listing of Circulation functions you can visit the Circulation page which is linked from the top left of every page or from the center of the main page.</p>
+
+<p>Before circulating your collection you will want to set your Global System Preferences, Basic Parameters and Patrons &amp; Circulation Rules.</p>
+
+<p>Quand vous êtes en Circulation, vous pouvez rapidement basculer d'un onglet à l'autre de la barre supérieure de recherche en utilisant les raccourcis claviers suivants :</p>
+
+<ul>
+ <li>activer l'onglet de recherche dans le catalogue avec Alt+Q</li>
+ <li>activer l'onglet de retour avec Alt+U <ul>
+ <li>ça ne fonctionnera pas pour les utilisateurs de Mac</li>
+ </ul>
+ </li>
+ <li>activer l'onglet de prêt avec Alt+R</li>
+</ul>
+
+<p style="background-color: #ffe599">À savoir : Les utilisateurs de Mac utilisent la touche CMD à la place de Alt</p>
+
+<p><strong>See the full documentation for Circulation in the <a href="http://manual.koha-community.org/3.12/en/circulation.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

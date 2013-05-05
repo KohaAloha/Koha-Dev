@@ -1,0 +1,58 @@
+--- 
+Log: 
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: LetterLog
+    - "les r\xC3\xA9clamations automatiques."
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: BorrowersLog
+    - "les modifications des adh\xC3\xA9rents."
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: CataloguingLog
+    - "les modification des notices bibliographiques et des exemplaires. Tout pr\xC3\xAAt et tout retour d'un exemplaire est ainsi journalis\xC3\xA9, ce qui cr\xC3\xA9e un grand nombre d'entr\xC3\xA9es dans le journal de Koha. Aussi est-il d\xC3\xA9conseill\xC3\xA9 d'activer ce suivi."
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: AuthoritiesLog
+    - "les changements apport\xC3\xA9s aux autorit\xC3\xA9s."
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: FinesLog
+    - when fines are charged, paid, or forgiven.
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: IssueLog
+    - "les pr\xC3\xAAts."
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: ReturnLog
+    - les retours d'exemplaires.
+  - 
+    - 
+      choices: 
+        "": Ne pas journaliser
+        1: Journaliser
+      pref: SubscriptionLog
+    - "les ajouts, modifications et suppressions de p\xC3\xA9riodiques."

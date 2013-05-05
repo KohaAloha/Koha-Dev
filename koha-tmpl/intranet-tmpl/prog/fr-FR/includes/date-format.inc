@@ -1,0 +1,1 @@
+[% IF ( dateformat_us ) %](MM/JJ/AAAA)[% ELSIF ( dateformat_metric ) %](JJ/MM/AAAA)[% ELSE %](AAAA/MM/JJ)[% END %]

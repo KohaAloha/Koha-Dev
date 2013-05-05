@@ -1,0 +1,241 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; Sites et groupes [% IF ( editcategory ) %] &rsaquo;[% IF ( categorycode ) %]Modifier groupe [% categorycode %][% ELSE %]Ajouter groupe[% END %] [% ELSIF ( delete_category ) %] &rsaquo; Confirmer la suppression du groupe [% categorycode %] [% ELSIF ( add ) %] &rsaquo;[% IF ( heading_branches_add_branch_p ) %]Ajouter site[% ELSE %]Modifier site [% branchcode %][% END %] [% ELSIF ( delete_confirm ) %] &rsaquo; Confirmer la suppression du site [% branchcode %] [% END %] </title>
+[% INCLUDE 'doc-head-close.inc' %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/datatables.css" />
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.dataTables.min.js"></script>
+[% INCLUDE 'datatables-strings.inc' %] <script type="text/javascript" src="[% themelang %]/js/datatables.js"></script>
+<script type="text/javascript" src="[% interface %]/lib/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+    $(document).ready(function() {
+        $("#branchest").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "aoColumnDefs": [
+                { "aTargets": [ -1, -2 ], "bSortable": false, "bSearchable": false },
+            ],
+            "iDisplayLength": 10,
+            "aLengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
+            "sPaginationType": "four_button"
+        }));
+    });
+tinyMCE.init({
+    mode : "textareas",
+    theme : "advanced",
+    content_css : "[% themelang %]/css/tinymce.css",
+    plugins : "table,save,advhr,advlink,contextmenu",
+    theme_advanced_buttons1 : "save,|,bold,italic,|,cut,copy,paste,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,|,link,unlink,anchor,cleanup,help,code,advhr,",
+    theme_advanced_buttons2 : "tablecontrols,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,removeformat,|,visualaid,|,sub,sup,|,charmap",
+    // theme_advanced_buttons3 : "",
+    theme_advanced_toolbar_location : "top",
+    theme_advanced_toolbar_align : "left",
+    theme_advanced_path_location : "bottom",
+    theme_advanced_resizing : true,
+    apply_source_formatting : true
+});
+//]]>
+</script>
+</head>
+<body id="admin_branches" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a>
+&rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a>
+&rsaquo; <a href="/cgi-bin/koha/admin/branches.pl">Libraries and groups</a>
+[% IF ( editcategory ) %] &rsaquo; [% IF ( categorycode ) %]Modifier un groupe [% categorycode %][% ELSE %]Nouveau Groupe[% END %] [% ELSIF ( delete_category ) %] &rsaquo; Confirmer la suppression du groupe [% categorycode %] [% ELSIF ( add ) %] &rsaquo; [% IF ( heading_branches_add_branch_p ) %]Nouveau site[% ELSE %]Modifier un site [% branchcode %][% END %] [% ELSIF ( delete_confirm ) %] &rsaquo; Confirmer la suppression du site '[% branchcode %]' [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ [% IF ( else ) %] <div id="toolbar" class="btn-toolbar">
+ <a class="btn btn-small" id="newbranch" href="/cgi-bin/koha/admin/branches.pl?op=add"><i class="icon-plus"></i> Ajouter site</a>
+ <a class="btn btn-small" id="newcategory" href="/cgi-bin/koha/admin/branches.pl?op=editcategory"><i class="icon-plus"></i> Ajouter groupe </a>
+ </div>
+[% END %] [% IF ( add ) %] [% IF ( ERROR1 ) %]<div class="dialog message">Library with that code already exists &mdash; Please enter a unique code</div>[% END %] <h3>[% IF ( heading_branches_add_branch_p ) %]Nouveau site[% ELSE %]Modifier site[% END %]</h3>
+ <form action="[% action %]" id="Aform" name="Aform" class="validated" method="post">
+ <fieldset class="rows">
+ <input type="hidden" name="op" value="add_validate" />
+ [% IF ( heading_branches_add_branch_p ) %] <input type="hidden" name="add" value="1" />
+ [% ELSE %] <input type="hidden" name="add" value="0" />
+ [% END %] <ol><li>
+ [% IF ( heading_branches_add_branch_p ) %] <label for="branchcode" class="required">Library code: </label>
+ <input type="text" name="branchcode" id="branchcode" size="10" maxlength="10" value="[% branchcode |html %]" class="required" required="required" /> <span class="required">Obligatoire</span>
+ [% ELSE %] <label for="branchcode" class="required">Library code: </label>
+ <input type="hidden" name="branchcode" value="[% branchcode |html %]" />
+ [% branchcode %] [% END %] </li>
+ <li>
+ <label for="branchname" class="required">Name: </label>
+ <input type="text" name="branchname" id="branchname" size="80" value="[% branch_name |html %]" class="required" required="required" /> <span class="required">Obligatoire</span>
+ </li>
+ </ol>
+ </fieldset>
+ [% IF ( categoryloop ) %]<fieldset class="rows"><legend>Groupe(s)&nbsp;:</legend>
+ <ol>
+ [% FOREACH categoryloo IN categoryloop %] <li><label for="[% categoryloo.categorycode %]">[% categoryloo.categoryname %]: </label>
+ [% IF ( categoryloo.checked ) %] <input type="checkbox" id="[% categoryloo.categorycode %]" name="[% categoryloo.categorycode %]" checked="checked" />
+ [% ELSE %] <input type="checkbox" id="[% categoryloo.categorycode %]" name="[% categoryloo.categorycode %]" />
+ [% END %] <span class="hint">[% categoryloo.codedescription %]</span>
+ </li>
+ [% END %] </ol>
+</fieldset>[% END %] <fieldset class="rows">
+ <ol>
+ <li><label for="branchaddress1">Address line 1: </label><input type="text" name="branchaddress1" id="branchaddress1" value="[% branchaddress1 |html %]" /></li>
+ <li><label for="branchaddress2">Address line 2: </label><input type="text" name="branchaddress2" id="branchaddress2" value="[% branchaddress2 |html %]" /></li>
+ <li><label for="branchaddress3">Address line 3: </label><input type="text" name="branchaddress3" id="branchaddress3" value="[% branchaddress3 |html %]" /></li>
+ <li><label for="branchcity">Ville&nbsp;: </label><input type="text" name="branchcity" id="branchcity" value="[% branchcity |html %]" /></li>
+ <li><label for="branchstate">Etat&nbsp;: </label><input type="text" name="branchstate" id="branchstate" value="[% branchstate |html %]" /></li>
+ <li><label for="branchzip">Code postal&nbsp;: </label><input type="text" name="branchzip" id="branchzip" value="[% branchzip |html %]" /></li>
+ <li><label for="branchcountry">Pays : </label><input type="text" name="branchcountry" id="branchcountry" value="[% branchcountry |html %]" /></li>
+ <li><label for="branchphone">Téléphone&nbsp;: </label><input type="text" name="branchphone" id="branchphone" value="[% branchphone |html %]" /></li>
+ <li><label for="branchfax">Fax&nbsp;: </label><input type="text" name="branchfax" id="branchfax" value="[% branchfax |html %]" /></li>
+ <li><label for="branchemail">Courriel&nbsp;: </label><input type="text" name="branchemail" id="branchemail" class="email" value="[% branchemail |html %]" /></li>
+ <li><label for="branchurl">URL : </label><input type="text" name="branchurl" id="branchurl" value="[% branchurl |html %]" class="url" /></li>
+ <li><label for="opac_info">OPAC info: </label><textarea name="opac_info" id="opac_info">[% opac_info |html %]</textarea></li>
+ <li><label for="branchip">IP: </label><input type="text" name="branchip" id="branchip" value="[% branchip |html %]" /> <span class="hint">Peut être saisi comme une adresse IP simple, un sous réseau tel que 192.168.1.*</span></li>
+ <!--
+ <li><label for="branchprinter">Library Printer: </label>
+ <select id="branchprinter" name="branchprinter">
+ <option value="">None</option>
+ [% FOREACH printerloo IN printerloop %]
+ [% IF ( printerloo.selected ) %]
+ <option value="[% printerloo.value %]" selected="selected">[% printerloo.branchprinter %]</option>
+ [% ELSE %]
+ <option value="[% printerloo.value %]">[% printerloo.branchprinter %]</option>
+ [% END %]
+ [% END %]
+ </select></li>
+ -->
+ <li><label for="branchnotes">Notes&nbsp;: </label><input type="text" name="branchnotes" id="branchnotes" value="[% branchnotes |html %]" /></li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input value="Valider" type="submit" /> <a class="cancel" href="/cgi-bin/koha/admin/branches.pl">Annuler</a></fieldset>
+ </form>
+[% END %] [% IF ( delete_confirm ) %] <form action="[% action %]" method="post">
+<fieldset><legend>Confirmer la suppression de [% branchname %] ([% branchcode %]) ?</legend><input type="hidden" name="op" value="delete_confirmed" />
+ <input type="hidden" name="branchcode" value="[% branchcode |html %]" />
+ <input type="hidden" name="branchname" value="[% branchname |html %]">
+ <fieldset class="action"><input value="Supprimer le site" type="submit" /> <a class="cancel" href="/cgi-bin/koha/admin/branches.pl">Annuler</a></fieldset>
+</fieldset></form>
+[% END %] [% IF ( else ) %] <h3>Libraries</h3>
+ [% IF ( message ) %]<div class="dialog message">
+ [% message %]</div>[% END %] [% IF ( MESSAGE1 ) %]<div class="dialog message">Library not saved &mdash; code and/or name missing</div>[% END %] [% IF ( MESSAGE2 ) %]<div class="dialog message">Library saved</div>[% END %] [% IF ( MESSAGE3 ) %]<div class="dialog message">Library deleted</div>[% END %] [% IF ( MESSAGE4 ) %]<div class="dialog message">Library category added</div>[% END %] [% IF ( MESSAGE5 ) %]<div class="dialog message">Library category modified</div>[% END %] [% IF ( MESSAGE6 ) %]<div class="dialog message">Library category deleted</div>[% END %] [% IF ( MESSAGE7 ) %]<div class="dialog message">Library cannot be deleted because there are patrons and items using that library</div>[% END %] [% IF ( MESSAGE8 ) %]<div class="dialog message">La catégorie ne peut être supprimée parce qu'il y a des sites qui l'utilisent</div>[% END %] [% IF ( MESSAGE9 ) %]<div class="dialog message">La catégorie ne peut pas être ajoutée, le code de catégorie existe déjà</div>[% END %] [% IF ( MESSAGE10 ) %]<div class="dialog message">Library cannot be deleted because there are items held by that library</div>[% END %] [% IF ( MESSAGE11 ) %]<div class="dialog message">Library cannot be deleted because there are patrons registered at that library</div>[% END %] [% IF ( branches ) %] <table id="branchest">
+<thead><tr>
+ <th>Name</th>
+ <th>Code</th>
+ <th>Adresse</th>
+ <th>Propriétés</th>
+ <th>IP</th>
+ <!-- <th>Printer</th> -->
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </tr></thead><tbody>
+ [% FOREACH branche IN branches %] [% IF ( loop.odd ) %] <tr>
+ [% ELSE %] <tr class="highlight">
+ [% END %] <td>[% branche.branch_name |html %]</td>
+ <td>[% branche.branch_code |html %]</td>
+ <td>
+ [% IF ( branche.address_empty_p ) %] (rien d'enregistré) [% ELSE %] [% IF ( branche.branchaddress1 ) %] [% branche.branchaddress1 |html %][% END %] [% IF ( branche.branchaddress2 ) %] <br />[% branche.branchaddress2 |html %][% END %] [% IF ( branche.branchaddress3 ) %] <br />[% branche.branchaddress3 |html %][% END %] [% IF ( branche.branchcity ) %] <br />[% branche.branchcity |html %][% END %][% IF ( branche.branchstate ) %], [% branche.branchstate |html %][% END %] [% IF ( branche.branchzip ) %] [% branche.branchzip |html %][% END %] [% IF ( branche.branchcountry ) %] <br />[% branche.branchcountry |html %][% END %] [% IF ( branche.branchphone ) %] <br />Tél.: [% branche.branchphone |html %][% END %] [% IF ( branche.branchfax ) %] <br />Fax&nbsp;: [% branche.branchfax |html %][% END %] [% IF ( branche.branchemail ) %] <br /><a href="mailto:[% branche.branchemail %]">[% branche.branchemail |html %]</a>[% END %] [% IF ( branche.branchurl ) %] <br /><a href="[% branche.branchurl %]">[% branche.branchurl |html %]</a>[% END %] [% IF ( branche.opac_info ) %] <br />Note OPAC&nbsp;:<div>[% branche.opac_info %]</div>[% END %] [% IF ( branche.branchnotes ) %] <br />Notes&nbsp;: [% branche.branchnotes |html %][% END %] [% END %] </td>
+ <td>
+ [% UNLESS ( branche.no_categories_p ) %] [% FOREACH category_lis IN branche.category_list %] [% category_lis.categoryname %]<br />
+ [% END %] [% END %] </td>
+ <td>
+ [% branche.branchip %] </td>
+ <!-- <td>
+ [% branche.branchprinter %]
+ </td> -->
+ <td>
+ <a href="[% branche.action %]?op=edit&amp;branchcode=[% branche.value |url %]">Modifier</a>
+ </td>
+ <td>
+ <a href="[% branche.action %]?branchcode=[% branche.value |url %]&amp;branchname=[% branche.branch_name |url %]&amp;op=delete">Supprimer</a>
+ </td>
+ </tr>
+ [% END %]</tbody>
+ </table>
+ [% ELSE %] <div class="dialog message">Il n'y a pas de site défini. <a href="/cgi-bin/koha/admin/branches.pl?op=add">Débuter la saisie des sites</a>.</div>
+ [% END %] [% IF ( branchcategories ) %] [% FOREACH branchcategorie IN branchcategories %] <h3>Groupe(s): [% IF ( branchcategorie.properties ) %]Propriétés[% ELSE %][% IF ( branchcategorie.searchdomain ) %]Domaines de recherche[% END %][% END %]</h3>
+ [% IF ( branchcategorie.catloop ) %] <table>
+ <thead>
+ <tr>
+ <th>Name</th>
+ <th>Code</th>
+ <th>Description</th>
+ <th>&nbsp;</th>
+ <th>&nbsp;</th>
+ </tr>
+ </thead>
+ <tbody>
+ [% FOREACH catloo IN branchcategorie.catloop %] <tr>
+ <td>[% catloo.categoryname %]</td>
+ <td>[% catloo.categorycode %]</td>
+ <td>[% catloo.codedescription %]</td>
+ <td>
+ <a href="[% catloo.action %]?op=editcategory&amp;categorycode=[% catloo.categorycode |url %]">Modifier</a>
+ </td>
+ <td>
+ <a href="[% catloo.action %]?op=delete_category&amp;categorycode=[% catloo.categorycode |url %]">Supprimer</a>
+ </td>
+ </tr>
+ [% END %] </tbody>
+ </table>
+ [% ELSE %]
+ No [% IF ( branchcategorie.properties ) %]properties[% ELSIF ( branchcategorie.searchdomain ) %]search domain[% END %] defined. <a href="/cgi-bin/koha/admin/branches.pl?op=editcategory">Add a new group</a>.
+ [% END %]
+ [% END %]
+ [% ELSE %]
+ <p>Pas de groupe défini.</p>
+ [% END %] <!-- NAME="branchcategories" -->
+[% END %]
+
+[% IF ( editcategory ) %]
+ <h3>[% IF ( categorycode ) %]Modifier le groupe [% categorycode %][% ELSE %]Ajouter un groupe[% END %]</h3>
+ <form action="[% action %]" name="Aform" method="post">
+ <input type="hidden" name="op" value="addcategory_validate" />
+ [% IF ( categorycode ) %] <input type="hidden" name="add" value="0">
+ [% ELSE %] <input type="hidden" name="add" value="1">
+ [% END %] <fieldset class="rows">
+ 
+ <ol><li>
+ [% IF ( categorycode ) %] <span class="label">Code catégorie&nbsp;:</span>
+ <input type="hidden" name="categorycode" id="categorycode" value="[% categorycode |html %]" />
+ [% categorycode %] [% ELSE %] <label for="categorycode">Code catégorie&nbsp;:</label>
+ <input type="text" name="categorycode" id="categorycode" size="10" maxlength="10" value="[% categorycode |html %]" />
+ [% END %] </li>
+ <li>
+ <label for="categoryname">Name: </label>
+ <input type="text" name="categoryname" id="categoryname" size="32" maxlength="32" value="[% categoryname |html %]" />
+ </li>
+ <li>
+ <label for="codedescription">Description: </label>
+ <input type="text" name="codedescription" id="codedescription" size="70" value="[% codedescription |html %]" />
+ </li>
+ <li>
+ <label for="categorytype">Type de catégorie&nbsp;: </label>
+ <select id="categorytype" name="categorytype">
+ [% FOREACH categorytyp IN categorytype %] [% IF ( categorytyp.selected ) %] <option value="[% categorytyp.type %]" selected="selected">
+ [% ELSE %] <option value="[% categorytyp.type %]">
+ [% END %] [% categorytyp.type %]</option>
+ [% END %] </select>
+ </li>
+ <li>
+ <label for="show_in_pulldown">Show in search pulldown: </label>
+ [% IF ( show_in_pulldown ) %] <input type="checkbox" name="show_in_pulldown" id="show_in_pulldown" checked="checked"/>
+ [% ELSE %] <input type="checkbox" name="show_in_pulldown" id="show_in_pulldown" />
+ [% END %] </li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input value="Mis à jour" type="submit" /></fieldset>
+ </form>
+[% END %] [% IF ( delete_category ) %] [% UNLESS ( MESSAGE8 ) %] <div class="dialog message"> 
+ Confirmer la suppression&nbsp;: <form action="[% action %]" method="post">
+ <input type="hidden" name="op" value="categorydelete_confirmed" />
+ <input type="hidden" name="categorycode" value="[% categorycode |html %]" />
+ <input value="OUI" type="submit" />
+ </form>
+ <form action="[% action %]" method="post"><input type="hidden" name="op" value="">
+ <input type="submit" value="NO" />
+ </form>
+ </div>
+ [% END %] [% END %] </div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

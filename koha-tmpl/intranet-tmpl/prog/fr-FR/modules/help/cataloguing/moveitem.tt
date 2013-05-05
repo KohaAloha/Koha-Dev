@@ -1,0 +1,13 @@
+[% INCLUDE 'help-top.inc' %] <h1>Moving items</h1>
+
+<p>Les exemplaires peuvent être déplacés d'une notice bibliographique vers une autre en utilisant l'option XXXX</p>
+
+<p>Allez sur la notice à laquelle vous voulez attacher l'exemplaiire et choisissez l'option Attacher un exemplaire dans le menu Modifier.</p>
+
+<p>Simply enter the barcode for the item you want to move and click 'Select'</p>
+
+<p>Si vous voulez déplacer tous les exemplaires vers une nouvelle notice en ne créant qu'une notice, vous pouvez utiliser à la place l'outils Fusion de notices.</p>
+
+<p><strong>See the full documentation for Moving Items in the <a href="http://manual.koha-community.org/3.12/en/catitems.html#moveitemrec">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Adhérents empruntant le plus</h1>
+
+<p>Ce rapport liste les adhérents qui ont le plus empruntés.</p>
+
+<p>Si vous choisissez une sortie dans la navigateur, votre résultat sera imprimé à l'écran.</p>
+
+<p>Vous pouvez également choisir d'exporter dans un fichier que vous pourrez modifier à loisir.</p>
+
+<p><strong>Voir la documentation complète dans le <a href="http://manual.koha-community.org/3.12/en/statsreports.html#mostcheckouts">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

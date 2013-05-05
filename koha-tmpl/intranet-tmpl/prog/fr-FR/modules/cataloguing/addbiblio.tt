@@ -1,0 +1,512 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Catalogage &rsaquo; [% IF ( biblionumber ) %]Modifier [% title |html %] (Notice N°[% biblionumber %])[% ELSE %]Ajouter notice bibliographique[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.fixFloat.js"></script>
+<script type="text/javascript" src="[% themelang %]/js/cataloging.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+    $(window).load(function(){
+        $("#loading").hide();
+    });
+	 $(document).ready(function() {
+        $('#addbibliotabs').tabs().bind('show.ui-tabs', function(e, ui) {
+			$("#"+ui.panel.id+" input:eq(0)").focus();
+		});
+
+		/* check cookie to hide/show marcdocs*/
+		if($.cookie("marcdocs_[% borrowernumber %]") == 'false'){
+			hideMARCdocLinks();
+            $("#marcDocsSelect").removeAttr('checked');
+		} else {
+			/* reset cookie expire date */
+			$.cookie("marcdocs_[% borrowernumber %]",'true',
+						{ path: "/", expires: 365 });
+		}
+        $('#toolbar').fixFloat();
+        $("#marcDocsSelect").click(function(){
+            if($(this).attr("checked")){
+                showMARCdocLinks();
+            } else {
+                hideMARCdocLinks();
+            }
+        });
+        $("#z3950search").click(function(){
+            if (confirm(_("Please note that this Z39.50 search could replace the current record."))){
+                PopupZ3950();
+            }
+        });
+
+        $("#saverecord").click(function(){
+            $(".btn-group").removeClass("open");
+            onOption();
+            return false;
+        })
+
+        $("#saveandview").click(function(){
+            $(".btn-group").removeClass("open");
+            redirect("view");
+            return false;
+        });
+
+        $("#saveanditems").click(function(){
+            $(".btn-group").removeClass("open");
+            redirect("items");
+            return false;
+        });
+	});
+
+function redirect(dest){
+    $("#redirect").attr("value",dest);
+    return Check();
+}
+
+[% IF ( CAN_user_editcatalogue_edit_items ) %]
+    var onOption = function () {
+        return Check();
+    }
+[% END %]
+
+function confirmnotdup(redirect){
+	$("#confirm_not_duplicate").attr("value","1");
+    $("#redirect").attr("value",redirect);
+	Check();
+}
+
+function Dopop(link,i) {
+    defaultvalue = document.getElementById(i).value;
+    window.open(link+"&result="+defaultvalue,"valuebuilder",'width=700,height=550,toolbar=false,scrollbars=yes');
+}
+
+/**
+ * this function open a popup to search on z3950 server.
+ */
+function PopupZ3950() {
+    var strQuery = GetZ3950Terms();
+	if(strQuery){
+        window.open("/cgi-bin/koha/cataloguing/z3950_search.pl?biblionumber=[% biblionumber %]"+strQuery,"z3950search",'width=740,height=450,location=yes,toolbar=no,scrollbars=yes,resize=yes');
+    } 
+}
+
+function PopupMARCFieldDoc(field, blocknumber) {
+    [% IF ( marcflavour == 'MARC21' ) %]
+        _MARC21FieldDoc(field);
+    [% ELSIF ( marcflavour == 'UNIMARC' ) %]
+        _UNIMARCFieldDoc(field, blocknumber);
+    [% END %]
+}
+
+function _MARC21FieldDoc(field) {
+    if(field == 0) {
+        window.open("http://www.loc.gov/marc/bibliographic/bdleader.html");
+    } else if (field < 900) {
+        window.open("http://www.loc.gov/marc/bibliographic/bd" + ("000"+field).slice(-3) + ".html");
+    } else {
+        window.open("http://www.loc.gov/marc/bibliographic/bd9xx.html");
+    }
+}
+
+function _UNIMARCFieldDoc(field, blocknumber) {
+    /* http://archive.ifla.org/VI/3/p1996-1/ is an outdated version of UNIMARC, but
+       seems to be the only version available that can be linked to per tag.  More recent
+       versions of the UNIMARC standard are available on the IFLA website only as
+       PDFs!
+    */
+    if(field == 0) {
+        window.open("http://archive.ifla.org/VI/3/p1996-1/uni.htm");
+    } else if (field < 100) {
+        window.open("http://archive.ifla.org/VI/3/p1996-1/uni"+blocknumber+".htm#b" + ("000"+field).slice(-3));
+    } else if (field < 900) {
+        window.open("http://archive.ifla.org/VI/3/p1996-1/uni"+blocknumber+".htm#" + ("000"+field).slice(-3));
+    } else {
+        window.open("http://archive.ifla.org/VI/3/p1996-1/uni9.htm");
+    }
+}
+
+/*
+ * Functions to hide/show marc docs links
+ */
+function hideMARCdocLinks() {
+	$(".marcdocs").hide();
+	$.cookie("marcdocs_[% borrowernumber %]",'false', { path: "/", expires: 365 });
+}
+
+function showMARCdocLinks() {
+	$(".marcdocs").show();
+	$.cookie("marcdocs_[% borrowernumber %]",'true', { path: "/", expires: 365 });
+}
+
+/**
+ * check if mandatory subfields are written
+ */
+function AreMandatoriesNotOk(){
+    var mandatories = new Array();
+    var mandatoriesfields = new Array();
+    var tab = new Array();
+    var label = new Array();
+    var flag=0;
+    var tabflag= new Array();  
+    [% FOREACH BIG_LOO IN BIG_LOOP %]
+    	[% FOREACH innerloo IN BIG_LOO.innerloop %]
+	        [% IF ( innerloo.mandatory ) %]
+    	    	mandatoriesfields.push(new Array("[% innerloo.tag %]","[% innerloo.index %][% innerloo.random %]","[% innerloo.index %]"));
+        	[% END %]
+    		[% FOREACH subfield_loo IN innerloo.subfield_loop %]
+    			[% IF ( subfield_loo.mandatory ) %]mandatories.push("[% subfield_loo.id %]");
+                   	tab.push("[% BIG_LOO.number %]");
+                   	label.push("[% subfield_loo.marc_lib %]");
+                [% END %]
+            [% END %]
+        [% END %]
+    [% END %]
+    var StrAlert = _("Impossible d'enregistrer la notice, les champs suivants sont vides :");
+    StrAlert += "\n\n";
+    for(var i=0,len=mandatories.length; i<len ; i++){
+        var tag=mandatories[i].substr(4,3);
+        var subfield=mandatories[i].substr(17,1);
+        var tagnumber=mandatories[i].substr(19,mandatories[i].lastIndexOf("_")-19);
+        if (tabflag[tag+subfield+tagnumber] ==  null) { 
+	    tabflag[tag+subfield+tagnumber]=new Array();
+            tabflag[tag+subfield+tagnumber][0]=0; 
+	}
+        if( tabflag[tag+subfield+tagnumber][0] != 1 && (document.getElementById(mandatories[i]) != null && ! document.getElementById(mandatories[i]).value || document.getElementById(mandatories[i]) == null)){
+            tabflag[tag+subfield+tagnumber][0] = 0 + tabflag[tag+subfield+tagnumber] ;
+            document.getElementById(mandatories[i]).setAttribute('class','subfield_not_filled');
+            $('#' + mandatories[i]).focus();
+            tabflag[tag+subfield+tagnumber][1]=label[i];
+            tabflag[tag+subfield+tagnumber][2]=tab[i];
+        } else {
+            tabflag[tag+subfield+tagnumber][0] = 1;
+        }    
+    }
+    for (var tagsubfieldid in tabflag){
+      if (tabflag[tagsubfieldid][0]==0){
+        var tag=tagsubfieldid.substr(0,3);
+        var subfield=tagsubfieldid.substr(3,1);    
+        StrAlert += "\t* "+_("Champ")+tag+_(" sous-champs ")+subfield+" "+tabflag[tagsubfieldid][1]+_(" dans l'onglet ")+tabflag[tagsubfieldid][2]+"\n";
+        //StrAlert += "\t* "+label[i]+_(" in tab ")+tab[i]+"\n"; 
+        flag=1;    
+      }   
+    }   
+    
+    /* Check for mandatories field(not subfields) */
+    for(var i=0,len=mandatoriesfields.length; i<len; i++){
+	    isempty  = true;
+		arr      = mandatoriesfields[i];
+    	divid    = "tag_" + arr[0] + "_" + arr[1];
+    	varegexp = new RegExp("^tag_" + arr[0] + "_code_");
+    	
+		if(parseInt(arr[0]) >= 10){
+	    	elem = document.getElementById(divid);
+	    	eleminputs = elem.getElementsByTagName('input');
+	    	
+	    	for(var j=0,len2=eleminputs.length; j<len2; j++){
+	
+	    		if(eleminputs[j].name.match(varegexp) && eleminputs[j].value){
+					inputregexp = new RegExp("^tag_" + arr[0] + "_subfield_" + eleminputs[j].value + "_" + arr[2]);
+					
+					for( var k=0; k<len2; k++){
+						if(eleminputs[k].id.match(inputregexp) && eleminputs[k].value){
+							isempty = false
+						}
+					}
+					
+					elemselect = elem.getElementsByTagName('select');
+					for( var k=0; k<elemselect.length; k++){
+						if(elemselect[k].id.match(inputregexp) && elemselect[k].value){
+							isempty = false
+						}
+					}
+	    		}
+	    	}
+
+	    	elemtextareas = elem.getElementsByTagName('textarea');
+	    	for(var j=0,len2=elemtextareas.length; j<len2; j++){
+                // this bit assumes that the only textareas in this context would be for subfields
+                if (elemtextareas[j].value) {
+                    isempty = false;
+                }
+            }
+    	}else{
+    		isempty = false;
+    	}
+    	
+    	if(isempty){
+    		flag = 1;
+    		StrAlert += _("\\t* Champ ") + arr[0] + _(" est obligatoire, au moins un sous-champs doit être rempli.") + "\n";
+    	}
+    	
+    }
+    
+    if(flag){
+	    return StrAlert;
+	} else {
+		return flag;
+	}
+}
+
+/**
+ *
+ *
+ */
+function Check(){
+    var StrAlert = AreMandatoriesNotOk();
+    if( ! StrAlert ){
+        document.f.submit();
+        return true;
+    } else {
+        alert(StrAlert);
+        return false;
+    }
+}
+
+/** 
+ * check if z3950 mandatories are set or not
+ */
+function GetZ3950Terms(){
+ var strQuery="&frameworkcode="+document.forms['f'].Frameworks.value;
+    var mandatories = new Array();
+    var mandatories_label = new Array();
+    [% FOREACH BIG_LOO IN BIG_LOOP %][% FOREACH innerloo IN BIG_LOO.innerloop %][% FOREACH subfield_loo IN innerloo.subfield_loop %][% IF ( subfield_loo.z3950_mandatory ) %]mandatories.push("[% subfield_loo.id %]");
+        mandatories_label.push("[% subfield_loo.z3950_mandatory %]");[% END %][% END %][% END %][% END %]
+    
+    for(var i=0,len=mandatories.length; i<len ; i++){
+        var field_value = document.getElementById(mandatories[i]).value;
+        if( field_value ){
+            strQuery += "&"+mandatories_label[i]+"="+field_value;
+        }
+    }
+    return strQuery;
+}
+
+function Changefwk(FwkList) {
+    var f = document.f;
+    f.op.value = "";
+    f.submit();
+}
+
+//]]>
+</script>
+<link type="text/css" rel="stylesheet" href="[% themelang %]/css/addbiblio.css" />
+[% IF ( bidi ) %] <link rel="stylesheet" type="text/css" href="[% themelang %]/css/right-to-left.css" />
+[% END %] </head>
+<body id="cat_addbiblio" class="cat">
+
+ <div id="loading">
+ <div>Loading, please wait...</div>
+ </div>
+
+[% INCLUDE 'header.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/cataloguing/addbooks.pl">Catalogage</a> &rsaquo; [% IF ( biblionumber ) %]Modification <em>[% title |html %]</em> (N° de notice [% biblionumber %])[% ELSE %]Ajouter notice[% END %]</div>
+
+<div id="doc" class="yui-t7">
+
+<div id="bd">
+ <div id="yui-main">
+ <div class="yui-g">
+
+<h1>
+[% IF ( biblionumber ) %]Modification <em>[% title |html %]</em> (Record number [% biblionumber %])
+[% ELSE %]Add MARC record [% IF (circborrowernumber) %]<em>(fast cataloging)</em>[% END %] [% END %] </h1>
+
+[% IF marcflavour != 'NORMARC' %] <div><input type="checkbox" name="marcDocsSelect" id="marcDocsSelect" checked="true" /> Montrer les liens vers la doc MARC<br/></div>
+[% END %]
+
+[% UNLESS ( number ) %]
+ <!-- show duplicate warning on tab 0 only -->
+ [% IF ( duplicatebiblionumber ) %]
+ <div class="dialog alert">
+ <h4>Doublon possible de notice</h4>
+ <p>Est-ce un doublon de <a href="/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=[% duplicatebiblionumber %]" onclick="openWindow('/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=[% duplicatebiblionumber %]&amp;popup=1', 'Duplicate biblio','800','600'); return false;">[% duplicatetitle %]</a>?</p>
+ [% IF ( CAN_user_editcatalogue_edit_items ) %]<form action="/cgi-bin/koha/cataloguing/additem.pl" method="get">
+ <input type="hidden" name="biblionumber" value="[% duplicatebiblionumber %]" />
+ <input value="Oui, éditer exemplaire(s)" type="submit" class="edit" />
+ </form>[% ELSE %]<form action="/cgi-bin/koha/catalogue/detail.pl" method="get">
+ <input type="hidden" name="biblionumber" value="[% duplicatebiblionumber %]" />
+ <input value="Oui, voir les exemplaires" type="submit" />
+ </form>[% END %] <form action="/cgi-bin/koha/cataloguing/addbiblio.pl" method="get">
+ [% IF ( CAN_user_editcatalogue_edit_items ) %]<input value="Non&nbsp;: Enregistrer comme une nouvelle notice" type="button" class="save" onclick="confirmnotdup('items'); return false;" />[% ELSE %]<input value="Non&nbsp;: Enregistrer comme une nouvelle notice" type="button" class="save" onclick="confirmnotdup('view'); return false;" />[% END %] </form>
+ </div>
+ [% END %] [% END %] [% IF ( done ) %] <script type="text/javascript">
+        opener.document.forms['f'].biblionumber.value=[% biblionumber %];
+        opener.document.forms['f'].title.value='[% title |html %]';
+        window.close();
+    </script>
+[% ELSE %] <form method="post" name="f" id="f" action="/cgi-bin/koha/cataloguing/addbiblio.pl" onsubmit="return Check();">
+ <input type="hidden" value="[% IF ( biblionumber ) %]view[% ELSE %]items[% END %]" id="redirect" name="redirect" />
+ <input type="hidden" value="0" id="confirm_not_duplicate" name="confirm_not_duplicate" />
+[% END %] <div id="toolbar" class="btn-toolbar">
+ [% IF ( CAN_user_editcatalogue_edit_items ) %]
+ [% IF (circborrowernumber) %][%# fast cataloging must lead to items %]
+ <!-- Action is under fast cataloging - Save button redirecting to items -->
+ <div class="btn-group"><a href="#" id="saveanditems" class="btn btn-small"><i class="icon-hdd"></i> Enregistrer</a></div>
+ [% ELSE %]
+ <!-- Not using fast cataloging - Display split menu -->
+ <div class="btn-group">
+ <button class="btn btn-small" id="saverecord"><i class="icon-hdd"></i> Enregistrer</button>
+ <button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+ <span class="caret"></span>
+ </button>
+ <ul class="dropdown-menu">
+ <li><a id="saveandview" href="#">Enregistrer et voir la notice</a></li>
+ <li><a id="saveanditems" href="#">Enregistrer et ajouter des exemplaires</a></li>
+ </ul>
+ </div>
+ [% END %]
+ [% ELSE %]
+ <!-- User cannot edit items - single button redirecting to view -->
+ <div class="btn-group"><a href="#" id="saveandview" class="btn btn-small"><i class="icon-hdd"></i> Enregistrer</a></div>
+ [% END %] [% UNLESS (circborrowernumber) %][%# Hide in fast cataloging %] <div class="btn-group"><a class="btn btn-small" href="#" id="z3950search"><i class="icon-search"></i> Recherche Z39.50</a></div>
+ [% IF (biblionumber) %] [% IF ( BiblioDefaultViewmarc ) %] <div class="btn-group">
+ <a class="btn btn-small" id="cancel" href="/cgi-bin/koha/catalogue/MARCdetail.pl?biblionumber=[% biblionumber |url %]">Annuler</a>
+ </div>
+ [% ELSIF ( BiblioDefaultViewlabeled_marc ) %] <div class="btn-group">
+ <a class="btn btn-small" id="cancel" href="/cgi-bin/koha/catalogue/labeledMARCdetail.pl?biblionumber=[% biblionumber |url %]">Annuler</a>
+ </div>
+ [% ELSIF ( BiblioDefaultViewisbd ) %] <div class="btn-group">
+ <a class="btn btn-small" id="cancel" href="/cgi-bin/koha/catalogue/ISBDdetail.pl?biblionumber=[% biblionumber |url %]">Annuler</a>
+ </div>
+ [% ELSE %] <div class="btn-group">
+ <a class="btn btn-small" id="cancel" href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% biblionumber |url %]">Annuler</a>
+ </div>
+ [% END %] [% ELSE %] <a class="btn btn-small" id="cancel" href="/cgi-bin/koha/cataloguing/addbooks.pl">Annuler</a>
+ [% END %] [% END %] <div class="btn-group">
+ <label for="Frameworks">Changer la grille&nbsp;: </label>
+ <select name="frameworkcode" id="Frameworks" onchange="Changefwk(this);">
+ <option value="Default">Default</option>
+ [% FOREACH frameworkcodeloo IN frameworkcodeloop %] [% IF ( frameworkcodeloo.selected ) %] <option value="[% frameworkcodeloo.value %]" selected="selected">
+ [% ELSE %] <option value="[% frameworkcodeloo.value %]">
+ [% END %] [% frameworkcodeloo.frameworktext %] </option>
+ [% END %] </select>
+</div>
+</div>
+
+[% IF ( popup ) %] <input type="hidden" name="mode" value="popup" />
+[% END %] <input type="hidden" name="op" value="addbiblio" />
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+ <input type="hidden" name="biblionumber" value="[% biblionumber %]" />
+ <input type="hidden" name="breedingid" value="[% breedingid %]" />
+
+<div id="addbibliotabs" class="toptabs numbered">
+ <ul>
+ [% FOREACH BIG_LOO IN BIG_LOOP %] <li><a href="#tab[% BIG_LOO.number %]XX">[% BIG_LOO.number %]</a></li>
+ [% END %] </ul>
+
+[% FOREACH BIG_LOO IN BIG_LOOP %] <div id="tab[% BIG_LOO.number %]XX">
+ 
+ [% FOREACH innerloo IN BIG_LOO.innerloop %] [% IF ( innerloo.tag ) %] <div class="tag" id="tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]">
+ <div class="tag_title" id="div_indicator_tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]">
+ [% UNLESS hide_marc %] [% IF advancedMARCEditor %] <a tabindex="1" href="#" class="tagnum" title="[% innerloo.tag_lib %] - Cliquer pour déplier ce champ" onclick="ExpandField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;">[% innerloo.tag %]</a>
+ [% ELSE %] <span class="tagnum" title="[% innerloo.tag_lib %]">[% innerloo.tag %] [% IF marcflavour != 'NORMARC' %]<a href="#" class="marcdocs" onclick="PopupMARCFieldDoc('[% innerloo.tag %]', [% BIG_LOO.number %]); return false;">&nbsp;?</a>[% END %] </span>
+ [% END %] [% IF ( innerloo.fixedfield ) %] <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        style="display:none;"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        style="display:none;"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator2 %]" />
+ [% ELSE %] <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="text"
+                        tabindex="1"
+                        class="indicator flat"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        size="1"
+                        maxlength="1"
+                        value="[% innerloo.indicator2 %]" />
+ [% END %] - [% ELSE %] [% IF ( innerloo.fixedfield ) %] <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator2 %]" />
+ [% ELSE %] <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator1_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator1 %]" />
+ <input type="hidden"
+                        tabindex="1"
+                        name="tag_[% innerloo.tag %]_indicator2_[% innerloo.index %][% innerloo.random %]"
+                        value="[% innerloo.indicator2 %]" />
+ [% END %] [% END %] [% UNLESS advancedMARCEditor %] <a tabindex="1" href="#" class="expandfield" onclick="ExpandField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;" title="Cliquer pour déplier ce champ">[% innerloo.tag_lib %]</a>
+ [% END %] <span class="field_controls">
+ [% IF ( innerloo.repeatable ) %] <a tabindex="1" href="#" class="buttonPlus" onclick="CloneField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]','[% hide_marc %]','[% advancedMARCEditor %]'); return false;" title="Répéter ce tag">
+ <img alt="Répéter ce tag" src="/intranet-tmpl/prog/img/repeat-tag.png" />
+ </a>
+ [% END %] <a tabindex="1" href="#" class="buttonMinus" onclick="UnCloneField('tag_[% innerloo.tag %]_[% innerloo.index %][% innerloo.random %]'); return false;" title="Supprimer ce tag">
+ <img alt="Supprimer ce tag" src="/intranet-tmpl/prog/img/delete-tag.png" />
+ </a>
+ </span>
+
+ </div>
+
+ [% FOREACH subfield_loo IN innerloo.subfield_loop %]
+ <!-- One line on the marc editor -->
+ <div class="subfield_line" style="[% subfield_loo.visibility %]" id="subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]">
+ 
+ [% UNLESS advancedMARCEditor %] [% IF ( subfield_loo.fixedfield ) %]<label for="tag_[% subfield_loo.tag %]_subfield_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]" style="display:none;" class="labelsubfield">
+ [% ELSE %]<label for="tag_[% subfield_loo.tag %]_subfield_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]" class="labelsubfield">
+ [% END %] [% END %] [% UNLESS hide_marc %] <span class="subfieldcode">
+ [% IF ( subfield_loo.fixedfield ) %] <img class="buttonUp" style="display:none;" src="/intranet-tmpl/prog/img/up.png" onclick="upSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]')" alt="Move Up" title="Move Up" />
+ [% ELSE %] <img class="buttonUp" src="/intranet-tmpl/prog/img/up.png" onclick="upSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]')" alt="Move Up" title="Move Up" />
+ [% END %] <input type="text"
+                            title="[% subfield_loo.marc_lib_plain %]"
+                            style=" [% IF ( subfield_loo.fixedfield ) %]display:none; [% END %]border:0;"
+                            name="tag_[% subfield_loo.tag %]_code_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]"
+                            value="[% subfield_loo.subfield %]"
+                            size="1"
+                            maxlength="1"
+                            class="flat"
+                            tabindex="0" />
+ </span>
+ [% ELSE %] <input type="hidden"
+                        name="tag_[% subfield_loo.tag %]_code_[% subfield_loo.subfield %]_[% subfield_loo.index %]_[% subfield_loo.index_subfield %]"
+                        value="[% subfield_loo.subfield %]" />
+ [% END %] [% UNLESS advancedMARCEditor %] [% IF ( subfield_loo.mandatory ) %]<span class="subfield subfield_mandatory">[% ELSE %]<span class="subfield">[% END %] [% subfield_loo.marc_lib_plain %] [% IF ( subfield_loo.mandatory ) %]<span class="mandatory_marker" title="Ce champ est obligatoire">*</span>[% END %] </span>
+ </label>
+ [% END %] [% subfield_loo.marc_value %] <span class="subfield_controls">
+ [% IF ( subfield_loo.repeatable ) %] <a href="#" class="buttonPlus" tabindex="1" onclick="CloneSubfield('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]','[% advancedMARCEditor %]'); return false;">
+ <img alt="Cloner" src="/intranet-tmpl/prog/img/clone-subfield.png" title="Cloner ce sous-champ" />
+ </a>
+ <a href="#" class="buttonMinus" tabindex="1" onclick="UnCloneField('subfield[% subfield_loo.tag %][% subfield_loo.subfield %][% subfield_loo.random %]'); return false;">
+ <img alt="Supprimer" src="/intranet-tmpl/prog/img/delete-subfield.png" title="Supprimer ce sous-champ" />
+ </a>
+ [% END %] </span>
+ 
+ </div>
+ <!-- End of the line -->
+ [% END %]
+
+ </div>
+ [% END %]<!-- if innerloo.tag -->
+ [% END %]<!-- BIG_LOO.innerloop -->
+ </div>
+[% END %]<!-- BIG_LOOP -->
+
+</div><!-- tabs -->
+
+[%# Fields for fast cataloging %]
+<input type="hidden" name="barcode" value="[% barcode %]" />
+<input type="hidden" name="branch" value="[% branch %]" />
+<input type="hidden" name="circborrowernumber" value="[% circborrowernumber %]" />
+<input type="hidden" name="stickyduedate" value="[% stickyduedate %]" />
+<input type="hidden" name="duedatespec" value="[% duedatespec %]" />
+[%# End of fields for fast cataloging %] </form>
+
+</div>
+</div>
+</div>
+
+[% INCLUDE 'intranet-bottom.inc' %] 

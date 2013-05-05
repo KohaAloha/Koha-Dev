@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %] <h1>Liste de circulation</h1>
+
+<p>Une Liste de circulation est une liste des personnes à qui faire parvenir le périodique avant de le placer sur une étagère. </p>
+
+<p>Sur la page de l'abonnement, vous avez un lien sur la gauche qui permet de créer une liste de circulation.</p>
+
+<p>En cliquant sur ce lien, vous obtenez le menu pour ajouter une nouvelle liste de circulation.</p>
+
+<p>A partir de là, vous cliquez sur Ajouter des destinataires afin d'ajouter des personnes à la liste de circulation. Dans le menu qui s'affiche, vous pouvez filtrer les adhérents sur une partie de leur nom, leur site de rattachement et leur catégorie.</p>
+
+<p>En cliquant sur Ajouter sur la droite de chaque nom, vous les ajoutez à la liste de circulation. Quand vous avez choisi toutes les personnes que vous voulez, cliquez sur le lien Fermer. Vous serez ramené sur la liste de circulation.</p>
+
+<p>Si la liste vous convient, cliquez sur Enregistrer. Vous êtes amené sur une page d'aperçu de la liste de circulation. Pour imprimez la liste, cliquez Enregistrer et aperçu de la liste. Vous êtes amené à une version imprimable de la liste.</p>
+
+<p>Si la préférence système RoutingListAddReserves est activée, les adhérents de la liste de circulation seront ajoutés automatiquement à la liste des réservations du fascicule.</p>
+
+<p>To see a list of all of the routing lists a specific patron is on visit the Routing Lists tab on their patron record.</p>
+
+<p><strong>Voir la documentation complète sur les Listes de circulation dans le <a href="http://manual.koha-community.org/3.12/en/routinglist.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %]

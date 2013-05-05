@@ -1,0 +1,250 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Administration &rsaquo; Grilles de catalogage[% IF ( add_form ) %] &rsaquo; [% IF ( frameworkcode ) %]Modifier intitulé grille[% ELSE %]Ajouter grille[% END %] [% ELSIF ( delete_confirm ) %] &rsaquo; Supprimer grille  [% frameworktext %] ([% frameworkcode %])? [% END %] </title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+
+function isNotNull(f,noalert) {
+    if (f.value.length ==0) {
+        return false;
+    }
+    return true;
+}
+function toUC(f) {
+    f.value = f.value.toUpperCase();
+    return true;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function Check(f) {
+    var ok=1;
+    var _alertString="";
+    var alertString2;
+    if (f.frameworkcode.value.length==0) {
+        _alertString += "\n- " + _("Code-grille manquant");
+    }
+    if (!(isNotNull(window.document.Aform.frameworktext))) {
+        _alertString += "\n- " + _("Description missing");
+    }
+    if (_alertString.length==0) {
+        document.Aform.submit();
+    } else {
+        alertString2  = _("Formulaire non soumis à cause du (des) problème(s) suivant(s)");
+        alertString2 += "\n------------------------------------------------------------------------------------\n";
+        alertString2 += _alertString;
+        alert(alertString2);
+        return false;
+    }
+    return true;
+}
+
+//]]>
+</script>
+<script type="text/javascript">
+/* Import/Export from/to spreadsheet */
+
+    var importing = false;
+
+    $(document).ready(function() {
+        $("body").css("cursor", "auto");
+        $('.import_export_options').hide();
+        $('a.import_export_fw').click(function() {
+            if (!importing) {
+                $('.import_export_options').hide();
+                $(this).next().show('slide');
+            }
+            return false;
+        });
+        $('.import_export_close').click(function() {
+            if (!importing) {
+                $('.import_export_options').fadeOut('fast');
+                $("body").css("cursor", "auto");
+                return false;
+            }
+        });
+        $('.input_import').val("");
+
+        var matches = new RegExp("\\?error_import_export=(.+)$").exec(window.location.search);
+        if (matches && matches.length > 1) {
+            alert(_("Erreur lors de l'import de la grille ") + decodeURIComponent(matches[1]));
+        }
+
+        $('input.input_import').change( function() {
+            var filename = $(this).val();
+            if ( ! /(?:\.csv|\.sql|\.ods|\.xml)$/.test(filename)) {
+                $(this).css("background-color","yellow");
+                alert(_("Merci de sélectionner un ods ou un xml"));
+                $(this).val("");
+                $(this).css("background-color","white");
+            }
+        });
+        $('form.form_export').submit(function() {
+            $('.import_export_options').hide();
+            return true;
+        });
+        $('form.form_import').submit(function() {
+            var id = $(this).attr('id');
+            var obj = $('#' + id + ' input:file');
+            if (/(?:\.csv|\.sql|\.ods|\.xml)$/.test(obj.val())) {
+                if (confirm(_("Do you really want to import the framework fields and subfields? This will overwrite the current configuration. For safety reasons please use the export option to make a backup"))) {
+                    var frameworkcode = $('#' + id + ' input:hidden[name=frameworkcode]').val();
+                    $('#importing_' + frameworkcode).find("span").html(_("Importing to framework:")+"<strong>" + frameworkcode + "</strong><br />" +_("Importing from file:")+"<i>" + obj.val().replace(new RegExp("^.+[/\\\\]"),"") + "</i>");
+                    if (navigator.userAgent.toLowerCase().indexOf('msie') != -1) {
+                        var timestamp = new Date().getTime();
+                        $('#importing_' + frameworkcode).find("img").attr('src', '/intranet-tmpl/prog/img/loading-small.gif' + '?' +timestamp);
+                    }
+                    $('#importing_' + frameworkcode).css('display', 'block');
+                    if (navigator.userAgent.toLowerCase().indexOf('firefox') == -1) $("body").css("cursor", "progress");
+                    importing = true;
+                    return true;
+                } else
+                    return false;
+            }
+            obj.css("background-color","yellow");
+            alert(_("Merci de sélectionner une feuille de calcul (csv, ods ou xml) ou un fichier SQL"));
+            obj.val("");
+            obj.css("background-color","white");
+            return false;
+        });
+    });
+
+</script>
+
+</head>
+<body id="admin_biblio_framework" class="admin">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'cat-search.inc' %] <div id="breadcrumbs">
+ <a href="/cgi-bin/koha/mainpage.pl">Accueil</a>
+&rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a>
+&rsaquo; <a href="/cgi-bin/koha/admin/biblio_framework.pl">Grilles de catalogage MARC</a>
+[% IF ( add_form ) %] &rsaquo; [% IF ( frameworkcode ) %]Modifier le libellé de la grille[% ELSE %]Ajouter une grille[% END %] [% ELSIF ( delete_confirm ) %] &rsaquo; Supprimer la grille pour [% frameworktext %] ([% frameworkcode %])? [% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( else ) %] <div id="toolbar" class="btn-toolbar">
+ <a class="btn btn-small" id="newframework" href="/cgi-bin/koha/admin/biblio_framework.pl?op=add_form"><i class="icon-plus"></i> Ajouter une grille de catalogage</a>
+</div>
+[% END %] [% IF ( add_form ) %] <h1>[% IF ( frameworkcode ) %]Modifier le texte de la grille[% ELSE %]Ajouter une  grille[% END %]</h1>
+ <form action="[% script_name %]" name="Aform" method="post" onsubmit="return Check(this);">
+ <input type="hidden" name="op" value="add_validate" />
+ <fieldset class="rows">
+ <ol>
+ [% IF ( frameworkcode ) %] <li><span class="label">Framework code: </span><input type="hidden" id="frameworkcode" name="frameworkcode" value="[% frameworkcode %]" />[% frameworkcode %] <input type="hidden" name="modif" value="1" />
+ </li>
+ [% ELSE %] <li><label for="frameworkcode">Framework code: </label><input type="text" id="frameworkcode" name="frameworkcode" size="4" maxlength="4" onblur="toUC(this)" /></li>
+ [% END %] <li><label for="description">Description: </label>
+ <input type="text" name="frameworktext" id="description" size="40" maxlength="80" value="[% frameworktext |html %]" /></li></ol></fieldset>
+ <fieldset class="action"> <input value="Valider" type="submit" class="submit" /></fieldset>
+ </form>
+[% END %] [% IF ( delete_confirm ) %] <div class="dialog alert">
+ <h3>Supprimer la grille pour [% frameworktext %] ([% frameworkcode %])?</h3>
+ [% IF ( total ) %] <p><strong>Cette grille est utilisée [% total %] fois</strong>.</p>
+ [% END %] <form class="inline" action="[% script_name %]" method="post"><input type="hidden" name="op" value="delete_confirmed" /><input type="hidden" name="frameworkcode" value="[% frameworkcode %]" /><input value="Oui, supprimer cette grille !" type="submit" class="approve" />
+ </form>
+ <form class="inline" action="[% script_name %]" method="get"><input value="Non, ne pas supprimer !" type="submit" class="deny" /></form>
+</div>
+[% END %] [% IF ( else ) %] <h1>Grilles de catalogage MARC</h1>
+<p>Nom de grille, puis aller à la structure MARC  pour déterminer les paramètres de l'éditeur MARC</p>
+<table>
+ <tr>
+ <th>Code</th>
+ <th>Description</th>
+ <th>&nbsp;</th>
+ <th>Modifier</th>
+ <th>Supprimer</th>
+ <th title="Exporter la grille (champ, sous-champ) dans une feuille de calcul (.csv, .xml, .ods) ou dans un fichier SQL">Exportation</th>
+ <th title="Import framework structure (fields, subfields) from a spreadsheet file (.csv, .xml, .ods) or SQL file">Import</th>
+ </tr>
+ <tr>
+ <td>&nbsp;</td>
+ <td>Default framework</td>
+ <td><a href="marctagstructure.pl?frameworkcode=[% frameworkcode %]">Structure MARC</a></td>
+ <td>&nbsp;</td>
+ <td>&nbsp;</td>
+ <td><div class="import_export"><a href="#" class="import_export_fw" title="Exporter [% frameworkcode %] la grille (champs-sous champs) dans une feuille de calcul (.csv, .xml, .ods) ou SQL">Exportation</a>
+ <div class="import_export_options">
+ <form action="import_export_framework.pl" name="form_[% frameworkcode %]" method="get" target="_blank"  class="form_export">
+ <fieldset class="rows">
+ <legend>Export framework</legend>
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+ <ol>
+ <li><label for="csv_type_export_[% frameworkcode %]">Exporter dans un fichier CSV</label><input type="radio" name="type_export_[% frameworkcode %]" value="csv" id="csv_type_export_[% frameworkcode %]" checked="checked" /></li>
+ <li><label for="xml_type_export_[% frameworkcode %]">Export to Excel with XML format, compatible with OpenOffice/LibreOffice as well</label><input type="radio" name="type_export_[% frameworkcode %]" value="excel" id="xml_type_export_[% frameworkcode %]" /></li>
+ <li><label for="ods_type_export_[% frameworkcode %]">Exporter au format OpenDocument (OpenOffice/LibreOffice)</label><input type="radio" name="type_export_[% frameworkcode %]" value="ods" id="ods_type_export_[% frameworkcode %]" /></li>
+ <li><label for="sql_type_export_[% frameworkcode %]">Exporter au format SQL</label><input type="radio" name="type_export_[% frameworkcode %]" value="sql" id="sql_type_export_[% frameworkcode %]" /></li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input href="#" value="Exportation" type="submit" title="Exporter vers une feuille de calcul" /> <a href="#" class="import_export_close cancel">Annuler</a> </fieldset>
+ </form>
+ </div>
+ </div>
+ </td>
+ <td><div class="import_export"><a href="#" class="import_export_fw" title="Import [% frameworkcode %] framework structure (fields, subfields) from a spreadsheet file (.csv, .xml, .ods) or SQL file">Import</a>
+ <div class="import_export_options">
+ <form action="/cgi-bin/koha/admin/import_export_framework.pl" name="form_i_[% frameworkcode %]" id="form_i_[% frameworkcode %]" method="post" enctype="multipart/form-data" class="form_import">
+ <fieldset class="rows">
+ <legend>Import [% frameworkcode %] framework structure (fields and subfields) from a spreadsheet file (.csv, .xml, .ods) or SQL file</legend>
+ <input type="hidden" name="frameworkcode" value="[% frameworkcode %]" />
+ <input type="hidden" name="action" value="import" />
+ <ol>
+ <li><label for="d_file_import_[% frameworkcode %]">Upload file:</label><input type="file" name="file_import_[% frameworkcode %]" id="d_file_import_[% frameworkcode %]" class="input_import" value="" autocomplete="off" /></li>
+ <li><div id="importing_[% frameworkcode %]" style="display:none" class="importing"><img src="/intranet-tmpl/prog/img/loading-small.gif" /><span class="importing_msg"></span></div></li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input type="submit" value="Import" /> <a href="#" class="import_export_close cancel">Annuler</a> </fieldset>
+ </form>
+ </div>
+ </div>
+ </td>
+ </tr>
+ <!-- note highlight assignment appears backwards because we already have a normal row for Default -->
+ [% FOREACH loo IN loop %]
+ [% IF ( loop.odd ) %]<tr class="highlight">
+ [% ELSE %]<tr>
+ [% END %] <td>[% loo.frameworkcode %]</td>
+ <td>[% loo.frameworktext %]</td>
+ <td><a href="marctagstructure.pl?frameworkcode=[% loo.frameworkcode %]" >Structure MARC</a></td>
+ <td><a href="[% loo.script_name %]?op=add_form&amp;frameworkcode=[% loo.frameworkcode |html %]">Modifier</a></td>
+ <td><a href="[% loo.script_name %]?op=delete_confirm&amp;frameworkcode=[% loo.frameworkcode |html %]">Supprimer</a></td>
+ <td>
+ <div class="import_export"><a class="import_export_fw" href="#" title="Export [% loo.frameworkcode %] framework structure (fields and subfields) to a spreadsheet file (.csv, .xml, .ods) or SQL file">Exportation</a>
+ <div class="import_export_options">
+ <form action="import_export_framework.pl" name="form_[% loo.frameworkcode %]" method="get" target="_blank" class="form_export">
+ <fieldset class="rows">
+ <legend>Export framework</legend>
+ <input type="hidden" name="frameworkcode" value="[% loo.frameworkcode %]" />
+ <ol>
+ <li><label for="csv_type_export_[% loo.frameworkcode %][% loop.count %]">Exporter dans un fichier CSV</label><input type="radio" name="type_export_[% loo.frameworkcode %]" value="csv" id="csv_type_export_[% loo.frameworkcode %][% loop.count %]" checked="checked" /></li>
+ <li><label for="xml_type_export_[% loo.frameworkcode %][% loop.count %]">Exporter vers Excel, au format XML, compatible avec OpenOffice/LibreOffice</label><input type="radio" name="type_export_[% loo.frameworkcode %]" value="excel" id="xml_type_export_[% loo.frameworkcode %][% loop.count %]" /></li>
+ <li><label for="ods_type_export_[% loo.frameworkcode %][% loop.count %]">Exporter au format OpenDocument (OpenOffice/LibreOffice)</label><input type="radio" name="type_export_[% loo.frameworkcode %]" value="ods" id="ods_type_export_[% loo.frameworkcode %][% loop.count %]" /></li>
+ <li><label for="sql_type_export_[% loo.frameworkcode %][% loop.count %]">Exporter au format SQL</label><input type="radio" name="type_export_[% loo.frameworkcode %]" value="sql" id="sql_type_export_[% loo.frameworkcode %][% loop.count %]" /></li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input href="#" value="Exportation" type="submit" title="Exporter vers une feuille de calcul" /> <a href="#" class="cancel import_export_close">Annuler</a> </fieldset>
+ </form>
+ </div>
+ </div>
+ </td>
+ <td><div class="import_export"><a class="import_export_fw" href="#" title="Import [% loo.frameworkcode %] framework structure (fields and subfields) from a spreadsheet file (.csv, .xml, .ods) or SQL file">Import</a>
+ <div class="import_export_options">
+ <form action="/cgi-bin/koha/admin/import_export_framework.pl" name="form_i_[% loo.frameworkcode %]" id="form_i_[% loo.frameworkcode %]" method="post" enctype="multipart/form-data" class="form_import">
+ <fieldset class="rows">
+ <legend>Import [% frameworkcode %] framework structure (fields and subfields) from a spreadsheet file (.csv, .xml, .ods) or SQL file</legend>
+ <input type="hidden" name="frameworkcode" value="[% loo.frameworkcode %]" />
+ <input type="hidden" name="action" value="import" />
+ <ol>
+ <li><label for="file_import_[% loo.frameworkcode %]">Upload file:</label><input type="file" name="file_import_[% loo.frameworkcode %]" id="file_import_[% loo.frameworkcode %]" class="input_import" value="" autocomplete="off" /></li>
+ </ol>
+ </fieldset>
+ <fieldset class="action"><input type="submit" value="Import" /><div id="importing_[% loo.frameworkcode %]" style="display:none" class="importing"><img src="/intranet-tmpl/prog/img/loading-small.gif" /><span class="importing_msg"></span></div> <a href="#" class="cancel import_export_close">Annuler</a> </fieldset>
+ </form>
+ </div>
+ </div>
+ </td>
+ </tr>
+ [% END %] </table>
+ [% IF ( previous ) %]<a href="[% previous %]">&lt;&lt; Précédent</a>[% END %] [% IF ( next ) %]<a href="[% next %]">Suivant >></a>[% END %] [% END %] </div>
+ </div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

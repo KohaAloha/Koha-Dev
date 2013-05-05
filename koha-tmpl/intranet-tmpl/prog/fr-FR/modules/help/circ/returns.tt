@@ -1,0 +1,74 @@
+[% INCLUDE 'help-top.inc' %] <h1>Checking in (Returning)</h1>
+
+<p>Le prêt d'un exemplaire peut être réalisé à partir de plusieurs endroits dans le logiciel.</p>
+
+<ul>
+ <li>The check in box on the top of the main staff client</li>
+ <li>L'option de prêt dans la barre de recherche rapide de la page de Circulation</li>
+ <li>Le lien Prêt sur le résumé des prêts des adhérents</li>
+ <li>The Check in page under the Circulation menu</li>
+</ul>
+
+<h3>Checking Items In</h3>
+
+<p>Pour rendre un document, scannez son code à barres dans la boîte prévu à cet effet. Un résumé de tous les exemplaires rendus apparaît en dessous de cette boîte.</p>
+
+<p>Si vous rendez les exemplaires qui ont été placés dans la boîte de retour alors que la bibliothèque été fermée, avant de scanner les codes à barres, cochez l'option Mode boîte de retour. Ainsi la date de retour effective sera celle du dernier jour d'ouverture de la bibliothèque.</p>
+
+<ul>
+ <li>This requires that you have your closings added to the Holidays & Calendar Tool</li>
+</ul>
+
+<p>Vous pouvez également choisir ici de ne pas appliquer les amenders aux documents dont vous effectuez le retour en cliquant sur l'option Effacer les amendes.</p>
+
+<h3>Check In Messages</h3>
+
+<p>Plusieurs alertes peuvent s'afficher quand vous rendez des documents :</p>
+
+<ul>
+ <li>If you are checking an item in at a library other than the home branch, a message will appear asking you to transfer the book to the home library
+<ul>
+ <li>Après le retour, le statut de l'exemplaire sera changé dans le catalogue en 'en transit'</li>
+ <li>To mark an item as back at the home branch, check the item in at the home branch
+<ul>
+ <li>A message will appear tell you that the item is not checked out, but the status will now say available in the catalog. This step is necessary to mark items as received by the home branch.</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>If you are checking in an item that should have multiple parts or pieces a message will appear warning you about the number of pieces you should have in your hand</li>
+ <li>Si vous rendez un document sur lesquels il y a des réservation, on vous demandera de confirmer la réservation <ul>
+ <li>Clicking the Confirm hold button will mark the item as waiting for pickup from the library</li>
+ <li>Clicking the Print Slip and Confirm button will mark the item as waiting for pickup at the library and present the library with a receipt to print and place on the book with the patron's information</li>
+ <li>Si vous ignorez la réservation, le document restera réservé mais son statut passera à Disponible. La réservation ne sera pas annulé</li>
+</ul>
+</li>
+ <li>If you're checking in an item that has a hold on it at another branch you will be prompted to confirm and transfer the item
+<ul>
+ <li>Clicking the Confirm hold and Transfer button will mark the item as in transit to the library where the hold was placed</li>
+ <li>Clicking the Print Slip, Transfer and Confirm button will mark the item as in transit to the library where the hold was placed and present the library with a receipt to print and place on the book with the patron's information</li>
+ <li>Si vous ignorez la réservation, le document restera réservé mais son statut passera à Disponible. La réservation ne sera pas annulé</li>
+</ul>
+</li>
+ <li>If you have the system showing you fines at the time of checkin (FineNotifyAtCheckin) you will see a message telling you about the fine and providing you a link to the payment page for that patron</li>
+</ul>
+
+<h2>Receiving Holds</h2>
+
+<p>Quand les exemplaires réservés sont prêtés ou rendus, le système alerte le bibliothécaire de la réservation et propose différentes options de gestion des réservations.</p>
+
+<p>Si vous rendez un document qui est réservé depuis une autre bibliothèque que la vôtre, on vous demandera de confirmer le transfert du document </p>
+
+<p>Clicking the Confirm button will mark the item as on hold for the patron. If the item needs to be transferred the item will also be marked as in transit to the proper library. Clicking 'Ignore' will retain the hold, but allow you to check the item out to another patron. Choosing to confirm and print will present you with a printable page that you can slip inside the book with the necessary hold and/or transfer information.</p>
+
+<p>Une fois confirmer la réservation, celle-ci apparaît sur la fiche de l'adhérent ainsi que sur les écrans de prêt dans l'onglet Réservation.</p>
+
+<p>The item record will also show that the item is on hold.</p>
+
+<p>Dans certains cas, un adhérent peut venir retirer une réservation pour son conjoint ou un enfant. Il faut alors supprimer la réservation. Quand vous essayez de prêter un exemplaire qui est déjà en attente de retrait par quelqu'un, une alerte est affichée.</p>
+
+<p>De là, vous pouvez prêter l'exemplaire à l'adhérent qui se présente et annuler la réservation.</p>
+
+<p><strong>See the full documentation for Checking In in the <a href="http://manual.koha-community.org/3.12/en/checkingin.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

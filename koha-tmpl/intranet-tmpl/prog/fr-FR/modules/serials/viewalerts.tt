@@ -1,0 +1,32 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Périodiques &rsaquo; Abonnées à l'alerte pour [% bibliotitle %]</title>
+[% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="ser_viewalerts" class="ser">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'serials-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/serials/serials-home.pl">Périodiques</a> &rsaquo; Alerter les abonnées pour <i>[% bibliotitle %]</i></div>
+
+<div id="doc3" class="yui-t2">
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+<h1>Inscrits à l'alerte pour <i>[% bibliotitle %]</i></h1>
+
+<p>
+ <span class="label">Abonnement :</span> <a href="subscription-detail.pl?subscriptionid=[% subscriptionid %]">[% bibliotitle %] #[% subscriptionid %]</a>
+</p>
+
+[% IF ( alertloop ) %] <table>
+ <tr>
+ <th>Nom d'adhérent</th>
+ </tr>
+ [% FOREACH alertloo IN alertloop %] <tr>
+ <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% alertloo.borrowernumber %]">[% alertloo.name %]</a></td>
+ </tr>
+ [% END %] </table>
+[% ELSE %] <p>There are no patrons subscribed to this subscription serial alert.</p>
+[% END %] </div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'serials-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

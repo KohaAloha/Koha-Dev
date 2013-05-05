@@ -1,0 +1,57 @@
+[% INCLUDE 'doc-head-open.inc' %] <title>Koha &rsaquo; Adhérent &rsaquo; créer un crédit manuel</title>
+[% INCLUDE 'doc-head-close.inc' %] <script type="text/javascript">
+//<![CDATA[
+$(document).ready(function(){
+	$("fieldset.rows input").keydown(function(e){ return checkEnter(e); });
+        $('#mancredit').preventDoubleFormSubmit();
+});
+//]]>
+</script>
+</head>
+<body id="pat_mancredit" class="pat">
+[% INCLUDE 'header.inc' %] [% INCLUDE 'patron-search.inc' %] <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a> &rsaquo; Crédit manuel</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% INCLUDE 'members-toolbar.inc' %]
+
+<!-- The manual invoice and credit buttons -->
+<div class="statictabs">
+<ul>
+ <li><a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrowernumber %]">Compte</a></li>
+ <li><a href="/cgi-bin/koha/members/pay.pl?borrowernumber=[% borrowernumber %]" >Payer amendes</a></li>
+ <li><a href="/cgi-bin/koha/members/maninvoice.pl?borrowernumber=[% borrowernumber %]" >Créer facture manuelle</a></li>
+ <li class="active"><a href="/cgi-bin/koha/members/mancredit.pl?borrowernumber=[% borrowernumber %]" >Créer crédit manuel</a></li>
+</ul>
+<div class="tabs-container">
+
+<form action="/cgi-bin/koha/members/mancredit.pl" method="post" id="mancredit">
+<input type="hidden" name="borrowernumber" id="borrowernumber" value="[% borrowernumber %]" />
+
+<fieldset class="rows">
+<legend>Crédit manuel</legend><ol>
+ <li><label for="type">Type de crédit&nbsp;:</label><select name="type" id="type">
+<option value="C">Crédit</option>
+<option value="FOR">Dette remise</option>
+</select></li>
+ <li><label for="barcode">Code à barres&nbsp;: </label><input type="text" name="barcode" id="barcode" /></li>
+ <li><label for="desc">Description: </label><input type="text" name="desc" size="50" id="desc" /></li>
+ <li><label for="note">Note&nbsp;:</label><input type="text" name="note" size="50" id="note" /></li>
+ <li><label for="amount">Montant&nbsp;:</label><input type="text" name="amount" id="amount" /> Exemple: 5.00</li>
+</ol></fieldset>
+
+<fieldset class="action"><input value="Ajout crédit" name="add" type="submit" /> <a class="cancel" href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrowernumber %]">Annuler</a></fieldset>
+</form>
+
+</div></div>
+
+</div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %] </div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %] 

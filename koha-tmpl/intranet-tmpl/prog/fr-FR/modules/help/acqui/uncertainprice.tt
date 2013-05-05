@@ -1,0 +1,7 @@
+[% INCLUDE 'help-top.inc' %] <h1>Prix indéterminés</h1>
+
+<p>The Uncertain Prices page is independent of the basket. It is linked to the vendor so you will see all items on order with uncertain prices for that vendor.</p>
+
+<p><strong>See the full documentation for Uncertain prices in the <a href="http://manual.koha-community.org/3.12/en/placingacqorder.html#createacqbasket">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

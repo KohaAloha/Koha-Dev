@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %] <h1>Réclamations de périodiques</h1>
+
+<p>Koha peut enoyer des courriels à vos fournisseurs de périodiques quand vous avez des fascicules en retard. Il y a à cet effet sur la gauche de la page principale du module Périodiques un lien Réclamations.</p>
+
+<p>The links to claims also appears to the left of the subscription detail page</p>
+
+<p>Un message d'avertissement s'affiche si vous n'avez pas encore défini de notification de réclamation.</p>
+
+<p>En cliquant sur Réclamation, vous serez amené sur un rapport vous demandant de choisir un fournisseur pour qui générer des réclamations.</p>
+
+<p>Dans la liste des fascicules en retard, vous sélectionnez en utilisant les boîtes à cocher les fascicules pour lesquels vous voulez émettre un courriel de réclamation. Vous choisissez le modèle de notification à utiliser. Puis vous cliquez sur le bouton Envoyer une notification.</p>
+
+<p><strong>Voir la documentation complète sur les Réclamations de périodique dans le <a href="http://manual.koha-community.org/3.12/en/serialclaims.html">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 

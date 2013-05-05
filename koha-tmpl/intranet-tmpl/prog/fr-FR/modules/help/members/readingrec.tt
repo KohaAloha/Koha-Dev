@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] <h1>Patron circulation history</h1>
+
+<p>L'onglet d'historique des prêts est affiché si vous avez activé la préférence système intranetreadinghistory. Si vous avez activé la préférence système OPACPrivacy, et si l'adhérent a décidé que la bibliothèque ne peut pas garder l'historique de ses prêts, cet onglet n'affichera que les exemplaires qui sont actuellement empruntés.</p>
+
+<p>If you would like to export a list of barcodes for the items checked in today you can find that option under the More menu on the top right of the page.</p>
+
+<p>This will generate a text file with one barcode per line.</p>
+
+<p><strong>Pour plus d'information, voir le <a href="http://manual.koha-community.org/3.12/en/patroninformation.html#circhistory">manuel</a> (en-ligne)</strong></p>
+
+[% INCLUDE 'help-bottom.inc' %] 
