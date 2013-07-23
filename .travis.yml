@@ -29,6 +29,7 @@ install:
     - export DESTDIR=/tmp
     - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
     - export RUN_DATABASE_TESTS=no
+    - export TEST_QA=1
     - perl Makefile.PL
     - make
 
