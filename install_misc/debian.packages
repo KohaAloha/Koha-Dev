@@ -50,7 +50,6 @@ libdbd-sqlite2-perl
 libdbi-perl
 libdigest-sha-perl
 libemail-date-perl
-libfile-path-perl
 libfile-slurp-perl
 libgd-barcode-perl
 libgd-gd2-noxpm-perl

@@ -1,0 +1,36 @@
+language: perl
+perl:
+#  - "5.10"
+#  - "5.12"
+#  - "5.14"
+#  - "5.16"
+#  - "5.18"
+#  - "5.19.2"
+
+before_install:
+#    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
+    - cat /etc/apt/sources.list
+    - ls -l  /etc/apt/sources.list
+    - sudo chmod 777 /etc/apt/sources.list
+    - ls -l  /etc/apt/sources.list
+    - cat /etc/apt/sources.list
+    - pwd
+#   - cd /tmp ; wget 
+    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >>  /etc/apt/sources.list
+    - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
+    - sudo apt-get update
+    - sudo apt-get install  $( < install_misc/debian.packages)
+
+
+install:
+#    - mv Makefile Makefile.old > /dev/null 2>&1
+#    - make clean
+    - source install_misc/environment_Makefile.PL
+    - export DESTDIR=/tmp
+    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
+    - export RUN_DATABASE_TESTS=no
+    - perl Makefile.PL
+    - make
+
+script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
+
