@@ -20,6 +20,7 @@ before_install:
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
     - sudo apt-get update
     - sudo apt-get install  $( < install_misc/debian.packages)
+    - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
     - sudo cpanm Devel::Cover
     - sudo cpanm Devel::Cover::Report::Clover
 
