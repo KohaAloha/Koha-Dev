@@ -26,8 +26,9 @@ before_install:
     - sudo apt-get install  $( < install_misc/debian.packages)
 
 
-    - mysql -e 'create database koha';
-    - mysql -e "GRANT ALL PRIVILEGES ON koha.* TO 'kohaadmin'@'localhost' IDENTIFIED BY 'katikoan' "
+    - sudo mysql -e 'create database koha'
+    - sudo mysql -e "GRANT ALL PRIVILEGES ON koha.* TO 'kohaadmin'@'localhost' IDENTIFIED BY 'katikoan' "
+    - sudo mysql -e 'flush privileges'
     - exit
 
 
