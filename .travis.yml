@@ -21,9 +21,13 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install  $( < install_misc/debian.packages)
     - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
+
     - sudo cpanm Devel::Cover
     - sudo cpanm Devel::Cover::Report::Clover
 
+    - mysql -e 'create database k1';
+    - mysql -e "GRANT ALL PRIVILEGES ON k1.* TO 'kohaadmin'@'localhost'"
+    - exit
 
 install:
 #    - mv Makefile Makefile.old > /dev/null 2>&1
