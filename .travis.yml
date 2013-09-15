@@ -10,6 +10,18 @@ perl:
 
 before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
+
+
+    - export DESTDIR=/tmp
+    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
+    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev:/usr/lib/perl5"
+    - export RUN_DATABASE_TESTS=no
+    - export TEST_QA=1
+
+    - export
+    - cpanm --version
+
+
     - cat /etc/apt/sources.list
     - ls -l  /etc/apt/sources.list
     - sudo chmod 777 /etc/apt/sources.list
@@ -42,17 +54,9 @@ install:
 #    - mv Makefile Makefile.old > /dev/null 2>&1
 #    - make clean
     - source install_misc/environment_Makefile.PL
-    - export DESTDIR=/tmp
-    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
-    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev:/usr/lib/perl5"
-    - export RUN_DATABASE_TESTS=no
-    - export TEST_QA=1
-
     - sudo useradd koha 
 #    - sudo adduser koha1 --disabled-password
 
-    - export
-    - cpanm --version
     - perl Makefile.PL
     - make
     - sudo make install
