@@ -36,7 +36,7 @@ before_install:
 
 #    - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 
-    - cpanm --notest Devel::Cover Devel::Cover::Report::Clover
+#    - cpanm --notest Devel::Cover Devel::Cover::Report::Clover
 
 install:
 #    - mv Makefile Makefile.old > /dev/null 2>&1
@@ -44,7 +44,7 @@ install:
     - source install_misc/environment_Makefile.PL
     - export DESTDIR=/tmp
     - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
-    - export PERL5LIB=/home/travis/build/KohaAloha/Koha-Dev
+    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev;/usr/lib/perl5"
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
