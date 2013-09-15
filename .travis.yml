@@ -47,6 +47,7 @@ install:
     - export PERL5LIB=/home/travis/build/KohaAloha/Koha-Dev
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
+    - uaeradd koha
     - perl Makefile.PL
     - make
     - sudo make install
