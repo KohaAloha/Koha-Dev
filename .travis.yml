@@ -51,6 +51,8 @@ install:
     - sudo useradd koha 
 #    - sudo adduser koha1 --disabled-password
 
+    - export
+
     - perl Makefile.PL
     - make
     - sudo make install
