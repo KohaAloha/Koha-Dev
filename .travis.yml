@@ -49,6 +49,7 @@ install:
     - export TEST_QA=1
     - perl Makefile.PL
     - make
+    - make install
 
 script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
