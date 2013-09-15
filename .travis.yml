@@ -34,7 +34,7 @@ before_install:
 
     - sudo mysql koha -e 'show processlist'
 
-    - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
+#    - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 
     - cpanm --notest Devel::Cover Devel::Cover::Report::Clover
 
