@@ -48,7 +48,7 @@ install:
     - export TEST_QA=1
 
     - sudo useradd koha 
-    - sudo adduser koha1 --disabled-password
+#    - sudo adduser koha1 --disabled-password
 
     - perl Makefile.PL
     - make
