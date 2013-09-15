@@ -1,11 +1,12 @@
 language: perl
 perl:
-#  - "5.10"
-#  - "5.12"
-#  - "5.14"
-#  - "5.16"
-#  - "5.18"
-#  - "5.19.2"
+  - "5.8"
+  - "5.10"
+  - "5.12"
+  - "5.14"
+  - "5.16"
+  - "5.18"
+  - "5.19.2"
 
 before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
