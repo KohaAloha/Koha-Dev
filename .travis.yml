@@ -47,8 +47,8 @@ install:
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
-    - useradd koha 
-    - adduser koha1 --disabled-password
+    - sudo useradd koha 
+    - sudo adduser koha1 --disabled-password
 
     - perl Makefile.PL
     - make
