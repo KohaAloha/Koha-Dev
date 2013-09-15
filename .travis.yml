@@ -36,7 +36,7 @@ before_install:
 
     - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
 
-    - sudo cpanm --notest Devel::Cover Devel::Cover::Report::Clover
+    - cpanm --notest Devel::Cover Devel::Cover::Report::Clover
 
 install:
 #    - mv Makefile Makefile.old > /dev/null 2>&1
