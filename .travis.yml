@@ -52,7 +52,7 @@ install:
 #    - sudo adduser koha1 --disabled-password
 
     - export
-
+    - cpanm --version
     - perl Makefile.PL
     - make
     - sudo make install
