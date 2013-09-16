@@ -35,10 +35,11 @@ before_install:
 
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
-#    - sudo apt-get update
-    - sudo apt-get update ; sudo apt-get upgrade
-    - sudo apt-get install  $( < install_misc/debian.packages)
 
+
+    - sudo apt-get update ; sudo apt-get upgrade
+#    - sudo apt-get install  $( < install_misc/debian.packages)
+    - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
 
     - sudo mysql -e 'create database koha'
     - sudo mysql -e "GRANT ALL PRIVILEGES ON koha.* TO 'kohaadmin'@'localhost' IDENTIFIED BY 'katikoan' "
