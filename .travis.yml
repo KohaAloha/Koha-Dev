@@ -36,7 +36,7 @@ before_install:
 
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >>  /etc/apt/sources.list
     - sudo apt-get update
-    - sudo apt-get upgrade
+    - sudo apt-get upgrade > /dev/null
     - sudo apt-get clean
 #    - sudo apt-get install  $( < install_misc/debian.packages)
 
