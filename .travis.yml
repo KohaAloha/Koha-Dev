@@ -86,5 +86,7 @@ install:
     - sudo make install
 
 #script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
-script: prove t/ xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
+
+script:
+    - make test
 
