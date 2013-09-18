@@ -44,7 +44,7 @@ before_install:
 
     - sudo apt-get install perl-base
 #    - sudo apt-get install perlapi
-    - sudo apt-get install perlapi-5.10.1
+#    - sudo apt-get install perlapi-5.10.1
     - sudo apt-get install libdigest-jhash-perl
     - sudo apt-get install libchi-perl
 
