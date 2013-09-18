@@ -78,11 +78,6 @@ before_install:
 
     - mysql -u root -p nerfnerf -e 'show processlist'
 
-
-#    - sudo ln -s /usr/share/koha/bin/koha-zebra-ctl.sh /etc/init.d/koha-zebra-daemon
-#    - sudo update-rc.d koha-zebra-daemon defaults
-#    - sudo /etc/init.d/koha-zebra-daemon start
-
     - sudo apt-get install lynx wget
 #    - lynx http://127.0.1.1:8080/
 #    - lynx http://127.0.1.1:8080/
