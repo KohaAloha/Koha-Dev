@@ -17,6 +17,9 @@ before_install:
     - cpanm --version
     - perlbrew switch-off
     - cpanm --version
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+    - phantomjs -v 
 
 #    - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
 #    - cat /etc/koha/koha-sites.conf
@@ -34,82 +37,53 @@ before_install:
 #
     - export DEBIAN_FRONTEND=noninteractive
     - sudo apt-get -q -y install mysql-server
-    - mysqladmin -u root password mysecretpasswordgoeshere
+    - mysqladmin -u root password nerfnerf
 
     - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
 
     - sudo apt-get update
-    - sudo apt-get install koha-common
+    - sudo apt-get install koha-common > /dev/null
 
+    - sudo a2dissite 000-default
     - sudo a2enmod rewrite
-    - sudo service apache2 restart
-    - sudo koha-create --create-db library
+    - sudo a2enmod deflate
 
-
-
-#    - sudo apt-get install perl-base
-#    - sudo apt-get install perlapi
-#    - sudo apt-get install perlapi-5.10.1
-#    - sudo apt-get install sudo ssh
-
-#    - sudo apt-get install libdigest-jhash-perl
-#    - sudo apt-get install libchi-perl
-
-    - ./koha_perl_deps.pl -m -u
-    - ./misc/sax_parser_print.pl
-
-    - dpkg -l|grep callnum
-
-    - sudo mysql -e 'create database koha'
-    - sudo mysql -e "GRANT ALL PRIVILEGES ON koha.* TO 'kohaadmin'@'localhost' IDENTIFIED BY 'katikoan' "
-    - sudo mysql -e 'flush privileges'
-#    - exit
-
-    - sudo mysql koha -e 'show processlist'
-
-#    - curl -L http://cpanmin.us | perl - --sudo App::cpanminus
-
-#    - cpanm --notest Devel::Cover Devel::Cover::Report::Clover
-
-install:
-#    - mv Makefile Makefile.old > /dev/null 2>&1
-#    - make clean
-    - source install_misc/environment_Makefile.PL
-    - sudo useradd koha 
-#    - sudo adduser koha1 --disabled-password
-
-    - perl Makefile.PL
-    - make > /dev/null
-    - sudo make install > /dev/null
-
-
-#    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
-#    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev:/usr/lib/perl5"
-    - export KOHA_CONF=/etc/koha/koha-conf.xml
-    - export PERL5LIB=/usr/share/koha/lib
-    - export
-
-    - cat /etc/apache2/sites-available/koha
-    - sudo ln -s /etc/koha/koha-httpd.conf /etc/apache2/sites-available/koha
-
-    - echo \nListen 8080' > /etc/apache2/ports.conf
+    - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
+    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
+    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
     - cat /etc/apache2/ports.conf
 
-    - sudo a2enmod rewrite deflate
-    - sudo a2ensite koha
+    - sudo service apache2 restart
+
+    - sudo koha-create --create-db library
+    - sudo a2ensite library
     - sudo apache2ctl restart
 
-    - sudo ln -s /usr/share/koha/bin/koha-zebra-ctl.sh /etc/init.d/koha-zebra-daemon
-    - sudo update-rc.d koha-zebra-daemon defaults
-    - sudo /etc/init.d/koha-zebra-daemon start
 
-    - sudo apt-get install lynx
-    - lynx http://127.0.1.1:8080/
+#    - ./koha_perl_deps.pl -m -u
+#    - ./misc/sax_parser_print.pl
+
+    - mysql u root -p nerfnerf -e 'show processlist'
+
+
+#    - sudo ln -s /usr/share/koha/bin/koha-zebra-ctl.sh /etc/init.d/koha-zebra-daemon
+#    - sudo update-rc.d koha-zebra-daemon defaults
+#    - sudo /etc/init.d/koha-zebra-daemon start
+
+    - sudo apt-get install lynx wget
+#    - lynx http://127.0.1.1:8080/
+#    - lynx http://127.0.1.1:8080/
+
+    - wget  http://127.0.1.1:80 -O opac
+    - wget  http://127.0.1.1:8080 -O staff
+
+    - cat opac
+    - cat staff
 
 
 #script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
 script:
-    - make test
+    - phantomjs testrunner.js
