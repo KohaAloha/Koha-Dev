@@ -1,5 +1,3 @@
-language: perl
-perl:
 #  - "5.8"
 #  - "5.10"
 #  - "5.12"
@@ -37,8 +35,14 @@ before_install:
 #    - sudo apt-get install perl-base
 #    - sudo apt-get install perlapi
 #    - sudo apt-get install perlapi-5.10.1
+    - sudo apt-get install sudo ssh
+
     - sudo apt-get install libdigest-jhash-perl
     - sudo apt-get install libchi-perl
+
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get -q -y install mysql-server
+    - mysqladmin -u root password mysecretpasswordgoeshere
 
 
 
