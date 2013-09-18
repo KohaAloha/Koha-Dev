@@ -21,8 +21,8 @@ before_install:
     - "sh -e /etc/init.d/xvfb start"
     - phantomjs -v 
 
-#    - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
-#    - cat /etc/koha/koha-sites.conf
+    - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
+    - cat /etc/koha/koha-sites.conf
 
 #    - dsdsdsa
 
