@@ -65,16 +65,16 @@ before_install:
 
     - sudo apt-get install curl
 
-    - pwd
-    - ls -l
-    - ls -l  debian/templates/koha-sites.conf
-    - cd /etc/koha
-    - sudo cp -v debian/templates/koha-sites.conf .
-    - ls -l /etc/koha
-    - ls -l /etc/koha/koha-sites.conf
+#    - pwd
+#    - ls -l
+#    - ls -l  debian/templates/koha-sites.conf
+#    - sudo cp -v debian/templates/koha-sites.conf .
+#    - ls -l /etc/koha
+#    - ls -l /etc/koha/koha-sites.conf
 #    - cat /etc/koha/koha-sites.conf
 #    - ls -l /etc/koha/koha-sites.conf
 
+    - cd /etc/koha
     - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
 
 
