@@ -76,7 +76,7 @@ before_install:
 #    - ./koha_perl_deps.pl -m -u
 #    - ./misc/sax_parser_print.pl
 
-    - mysql -u root -p nerfnerf -e 'show processlist'
+    - mysql -u root -pnerfnerf -e 'show processlist'
 
     - sudo apt-get install lynx wget
 #    - lynx http://127.0.1.1:8080/
