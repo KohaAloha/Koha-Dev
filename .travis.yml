@@ -19,8 +19,10 @@ before_install:
     - cpanm --version
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
-    - phantomjs -v 
+    - phantomjs -v
 
+    - pwd
+    - ls -l
     - ls -l  debian/templates/koha-sites.conf
     - sudo cp -v debian/templates/koha-sites.conf  /etc/koha
     - cat /etc/koha/koha-sites.conf
