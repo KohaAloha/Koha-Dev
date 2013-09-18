@@ -35,7 +35,9 @@ before_install:
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
 
-    - sudo apt-get update ; sudo apt-get upgrade
+    - sudo apt-get update
+    - sudo apt-get upgrade
+    - sudo apt-get clean
 #    - sudo apt-get install  $( < install_misc/debian.packages)
 
 
