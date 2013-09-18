@@ -61,7 +61,6 @@ libcgi-session-driver-memcached-perl			install
 libcgi-session-perl			install
 libcgi-session-serialize-yaml-perl	install
 libchi-driver-memcached-perl		install
-libchi-perl				install
 libclass-accessor-perl			install
 libclass-factory-util-perl		install
 libdata-ical-perl			install
