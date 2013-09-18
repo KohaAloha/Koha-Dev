@@ -35,6 +35,14 @@ before_install:
     - sudo apt-get upgrade
     - sudo apt-get clean
 #
+
+    - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
+    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
+    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
+    - cat /etc/apache2/ports.conf
+
+
+
     - export DEBIAN_FRONTEND=noninteractive
     - sudo apt-get -q -y install mysql-server
     - mysqladmin -u root password nerfnerf
@@ -49,12 +57,6 @@ before_install:
     - sudo a2dissite 000-default
     - sudo a2enmod rewrite
     - sudo a2enmod deflate
-
-    - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
-    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
-    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
-    - cat /etc/apache2/ports.conf
-
     - sudo service apache2 restart
 
     - sudo koha-create --create-db library
