@@ -79,11 +79,10 @@ before_install:
     - wget  http://127.0.1.1:80 -O opac
     - wget  http://127.0.1.1:8080 -O staff
 
+    - phantomjs http://127.0.1.1:8080
+
     - cat opac
     - cat staff
-
-
-#script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
 script:
     - phantomjs testrunner.js
