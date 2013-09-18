@@ -81,11 +81,11 @@ before_install:
     - sudo a2enmod deflate
     - sudo service apache2 restart
 
-    - sudo koha-create --create-db library
+    - sudo koha-create --create-db a1
     - sudo a2ensite library
     - sudo apache2ctl restart
 
-
+    
 #    - ./koha_perl_deps.pl -m -u
 #    - ./misc/sax_parser_print.pl
 
@@ -100,8 +100,7 @@ before_install:
 
 #    - phantomjs http://127.0.1.1:8080
 
+script:
     - cat opac.html
     - cat staff.html
-
-script:
- - echo 0
+    - echo 0
