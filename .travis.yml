@@ -30,34 +30,29 @@ before_install:
     - sudo apt-get clean
 #    - sudo apt-get install  $( < install_misc/debian.packages)
 
-
-
-#    - sudo apt-get install perl-base
-#    - sudo apt-get install perlapi
-#    - sudo apt-get install perlapi-5.10.1
-    - sudo apt-get install sudo ssh
-
-    - sudo apt-get install libdigest-jhash-perl
-    - sudo apt-get install libchi-perl
-
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get -q -y install mysql-server
     - mysqladmin -u root password mysecretpasswordgoeshere
 
-
+    - sudo apt-get update
+    - sudo apt-get upgrade > /dev/null
+    - sudo apt-get clean
+#
 
     - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
 
 
-    - sudo apt-get update
-    - sudo apt-get upgrade
-    - sudo apt-get clean
-#
+    - sudo apt-get install koha-common
 
+#    - sudo apt-get install perl-base
+#    - sudo apt-get install perlapi
+#    - sudo apt-get install perlapi-5.10.1
+#    - sudo apt-get install sudo ssh
 
-    - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
+#    - sudo apt-get install libdigest-jhash-perl
+#    - sudo apt-get install libchi-perl
 
 
     - ./koha_perl_deps.pl -m -u
