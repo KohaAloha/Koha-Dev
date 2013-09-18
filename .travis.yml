@@ -25,34 +25,26 @@ before_install:
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get -q -y install mysql-server
-    - mysqladmin -u root password mysecretpasswordgoeshere
-
-
-    - sudo a2enmod rewrite
-    - sudo service apache2 restart
-    - sudo koha-create --create-db library
-
-    #   - cd /tmp ; wget 
-
-#    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >>  /etc/apt/sources.list
-    - sudo apt-get update
-    - sudo apt-get upgrade > /dev/null
-    - sudo apt-get clean
-#    - sudo apt-get install  $( < install_misc/debian.packages)
-
     - sudo apt-get update
     - sudo apt-get upgrade > /dev/null
     - sudo apt-get clean
 #
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get -q -y install mysql-server
+    - mysqladmin -u root password mysecretpasswordgoeshere
 
     - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
 
-
+    - sudo apt-get update
     - sudo apt-get install koha-common
+
+    - sudo a2enmod rewrite
+    - sudo service apache2 restart
+    - sudo koha-create --create-db library
+
+
 
 #    - sudo apt-get install perl-base
 #    - sudo apt-get install perlapi
