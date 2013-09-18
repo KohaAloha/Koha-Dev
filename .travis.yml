@@ -29,7 +29,7 @@ before_install:
 
     - sudo apt-get update
 #    - sudo apt-get upgrade > /dev/null
-    - sudo apt-get 
+    - sudo apt-get upgrade
     - sudo apt-get clean
 #
     - export DEBIAN_FRONTEND=noninteractive
