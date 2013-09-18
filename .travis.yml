@@ -1,5 +1,5 @@
 language: perl
-#perl:
+perl:
 #  - "5.8"
 #  - "5.10":
 #  - "5.8"
@@ -15,6 +15,7 @@ before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
 
     - cpanm --version
+    - perlbrew switch-off
 
 #    - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
 #    - cat /etc/koha/koha-sites.conf
