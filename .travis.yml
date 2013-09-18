@@ -17,9 +17,11 @@ before_install:
     - cpanm --version
     - perlbrew switch-off
     - cpanm --version
-    - "export DISPLAY=:99.0"
-    - "sh -e /etc/init.d/xvfb start"
+#    - "export DISPLAY=:99.0"
+#    - "sh -e /etc/init.d/xvfb start"
     - phantomjs -v
+
+    - sudo apt-get install curl
 
     - pwd
     - ls -l
@@ -28,10 +30,17 @@ before_install:
     - cat /etc/koha/koha-sites.conf
     - ls -l /etc/koha/koha-sites.conf
 
+    - cd /etc/koha
+    - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
+
+
 
     - export DESTDIR=/tmp
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
+
+
+
 
 
     - sudo apt-get update
