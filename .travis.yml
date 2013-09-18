@@ -57,6 +57,7 @@ before_install:
 
 
     - ./koha_perl_deps.pl -m -u
+    - ./misc/sax_parser_print.pl
 
     - dpkg -l|grep callnum
 
