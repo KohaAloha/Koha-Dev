@@ -35,7 +35,8 @@ before_install:
     - sudo apt-get install apache2
     - cat /etc/apache2/ports.conf
     - ls -l /etc/apache2/ports.conf
-#    - sudo echo "NameVirtualHost *:80" > /etc/apache2/ports.conf
+
+    - "sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf"
     - "sudo echo 'Listen 80' >> /etc/apache2/ports.conf"
     - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
     - cat /etc/apache2/ports.conf
