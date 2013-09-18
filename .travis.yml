@@ -90,6 +90,19 @@ install:
     - export PERL5LIB=/usr/share/koha/lib
     - export
 
+    - sudo ln -s /etc/koha/koha-httpd.conf /etc/apache2/sites-available/koha
+
+    - echo \nListen 8080' > /etc/apache2/ports.conf
+    - cat /etc/apache2/ports.conf
+
+    - sudo a2enmod rewrite deflate
+    - sudo a2ensite koha
+    - sudo apache2ctl restart
+
+    - sudo ln -s /usr/share/koha/bin/koha-zebra-ctl.sh /etc/init.d/koha-zebra-daemon
+    - sudo update-rc.d koha-zebra-daemon defaults
+    - sudo /etc/init.d/koha-zebra-daemon start
+
 #script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
 script:
