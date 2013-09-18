@@ -27,8 +27,10 @@ before_install:
     - ls -l
     - ls -l  debian/templates/koha-sites.conf
     - sudo cp -v debian/templates/koha-sites.conf  /etc/koha
-    - cat /etc/koha/koha-sites.conf
+    - ls -l /etc/koha
     - ls -l /etc/koha/koha-sites.conf
+#    - cat /etc/koha/koha-sites.conf
+#    - ls -l /etc/koha/koha-sites.conf
 
     - cd /etc/koha
     - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
