@@ -32,17 +32,15 @@ before_install:
     - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >>  /etc/apt/sources.list
 
 
-
-
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
-
 
     - sudo apt-get update ; sudo apt-get upgrade
 #    - sudo apt-get install  $( < install_misc/debian.packages)
 
 
 
-    - sudo apt-get install   libchi-perl
+    - sudo apt-get install libdigest-jhash-perl
+    - sudo apt-get install libchi-perl
 
 
     - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
