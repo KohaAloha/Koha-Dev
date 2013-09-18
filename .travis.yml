@@ -11,26 +11,20 @@
 
 before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
-    - |
+
+    - cpanm --version
 
     - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
     - cat /etc/koha/koha-sites.conf
 
-    - dsdsdsa
+#    - dsdsdsa
 
     - export DESTDIR=/tmp
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
-    - cpanm --version
 
-    - cat /etc/apt/sources.list
-    - ls -l  /etc/apt/sources.list
-    - sudo chmod 777 /etc/apt/sources.list
-    - ls -l  /etc/apt/sources.list
-    - cat /etc/apt/sources.list
-    - pwd
-#   - cd /tmp ; wget 
+    #   - cd /tmp ; wget 
 
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >>  /etc/apt/sources.list
     - sudo apt-get update
