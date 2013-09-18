@@ -82,8 +82,8 @@ install:
 #    - sudo adduser koha1 --disabled-password
 
     - perl Makefile.PL
-    - make
-    - sudo make install
+    - make > /dev/null
+    - sudo make install > /dev/null
 
 #script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
