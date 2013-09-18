@@ -104,4 +104,4 @@ before_install:
     - cat staff.html
 
 script:
-#    - phantomjs testrunner.js
+ - echo 0
