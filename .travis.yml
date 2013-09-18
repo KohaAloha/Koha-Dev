@@ -31,6 +31,7 @@ before_install:
     - export TEST_QA=1
 
 
+    - sudo apt-get update
     - sudo apt-get install apache2
     - ls -l /etc/apache2/ports.conf
     - sudo echo "NameVirtualHost *:80" > /etc/apache2/ports.conf
