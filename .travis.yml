@@ -25,6 +25,14 @@ before_install:
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get -q -y install mysql-server
+    - mysqladmin -u root password mysecretpasswordgoeshere
+
+
+    - sudo a2enmod rewrite
+    - sudo service apache2 restart
+    - sudo koha-create --create-db library
 
     #   - cd /tmp ; wget 
 
@@ -33,10 +41,6 @@ before_install:
     - sudo apt-get upgrade > /dev/null
     - sudo apt-get clean
 #    - sudo apt-get install  $( < install_misc/debian.packages)
-
-    - export DEBIAN_FRONTEND=noninteractive
-    - apt-get -q -y install mysql-server
-    - mysqladmin -u root password mysecretpasswordgoeshere
 
     - sudo apt-get update
     - sudo apt-get upgrade > /dev/null
