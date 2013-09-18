@@ -22,11 +22,9 @@ before_install:
     - phantomjs -v
 
 
-    - export DESTDIR=/tmp
-    - export RUN_DATABASE_TESTS=no
-    - export TEST_QA=1
-
-
+#    - export DESTDIR=/tmp
+#    - export RUN_DATABASE_TESTS=no
+#    - export TEST_QA=1
 
 
 
@@ -45,7 +43,7 @@ before_install:
 
     - sudo apt-get update
 #    - sudo apt-get upgrade > /dev/null
-    - sudo apt-get upgrade
+#    - sudo apt-get upgrade
     - sudo apt-get clean
 #
 
@@ -76,11 +74,6 @@ before_install:
 
     - cd /etc/koha
     - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
-
-
-
-
-
 
 
     - sudo a2dissite 000-default
