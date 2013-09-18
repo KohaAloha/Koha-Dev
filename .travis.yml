@@ -18,14 +18,6 @@ before_install:
 
     - cpanm --version
 
-#    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
-#    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev:/usr/lib/perl5"
-
-    - export KOHA_CONF=/etc/koha/koha-conf.xml
-    - export PERL5LIB=/usr/share/koha/lib
-
-    - export
-
     - cat /etc/apt/sources.list
     - ls -l  /etc/apt/sources.list
     - sudo chmod 777 /etc/apt/sources.list
@@ -64,6 +56,8 @@ before_install:
     - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
 
 
+    - ./koha_perl_deps.pl -m -u
+
     - dpkg -l|grep callnum
 
     - sudo mysql -e 'create database koha'
@@ -87,6 +81,13 @@ install:
     - perl Makefile.PL
     - make > /dev/null
     - sudo make install > /dev/null
+
+
+#    - export KOHA_CONF=/home/travis/build/KohaAloha/Koha-Dev/blib/KOHA_CONF_DIR/koha-conf.xml
+#    - export PERL5LIB="/home/travis/build/KohaAloha/Koha-Dev:/usr/lib/perl5"
+    - export KOHA_CONF=/etc/koha/koha-conf.xml
+    - export PERL5LIB=/usr/share/koha/lib
+    - export
 
 #script: prove t/ t/db_dependent/Labels xt/author/icondirectories.t xt/author/podcorrectness.t xt/author/translatable-templates.t xt/author/valid-templates.t xt/permissions.t xt/yaml_valid.t
 
