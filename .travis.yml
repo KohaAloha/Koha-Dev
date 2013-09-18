@@ -79,10 +79,10 @@ before_install:
     - wget  http://127.0.1.1:80 -O opac
     - wget  http://127.0.1.1:8080 -O staff
 
-    - phantomjs http://127.0.1.1:8080
+#    - phantomjs http://127.0.1.1:8080
 
     - cat opac
     - cat staff
 
 script:
-    - phantomjs testrunner.js
+#    - phantomjs testrunner.js
