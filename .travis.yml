@@ -16,6 +16,7 @@ before_install:
 
     - cpanm --version
     - perlbrew switch-off
+    - cpanm --version
 
 #    - cp debian/templates/koha-sites.conf  /etc/koha/koha-sites.conf
 #    - cat /etc/koha/koha-sites.conf
@@ -27,7 +28,8 @@ before_install:
     - export TEST_QA=1
 
     - sudo apt-get update
-    - sudo apt-get upgrade > /dev/null
+#    - sudo apt-get upgrade > /dev/null
+    - sudo apt-get 
     - sudo apt-get clean
 #
     - export DEBIAN_FRONTEND=noninteractive
