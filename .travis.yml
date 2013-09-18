@@ -33,7 +33,7 @@ before_install:
     - sudo apt-get clean
 #
     - export DEBIAN_FRONTEND=noninteractive
-    - apt-get -q -y install mysql-server
+    - sudo apt-get -q -y install mysql-server
     - mysqladmin -u root password mysecretpasswordgoeshere
 
     - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
