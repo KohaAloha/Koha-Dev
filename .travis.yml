@@ -21,21 +21,6 @@ before_install:
 #    - "sh -e /etc/init.d/xvfb start"
     - phantomjs -v
 
-    - sudo apt-get install curl
-
-    - pwd
-    - ls -l
-    - ls -l  debian/templates/koha-sites.conf
-    - cd /etc/koha
-    - sudo cp -v debian/templates/koha-sites.conf .
-    - ls -l /etc/koha
-    - ls -l /etc/koha/koha-sites.conf
-#    - cat /etc/koha/koha-sites.conf
-#    - ls -l /etc/koha/koha-sites.conf
-
-    - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
-
-
 
     - export DESTDIR=/tmp
     - export RUN_DATABASE_TESTS=no
@@ -76,6 +61,27 @@ before_install:
 
     - sudo apt-get update
     - sudo apt-get install koha-common > /dev/null
+
+
+    - sudo apt-get install curl
+
+    - pwd
+    - ls -l
+    - ls -l  debian/templates/koha-sites.conf
+    - cd /etc/koha
+    - sudo cp -v debian/templates/koha-sites.conf .
+    - ls -l /etc/koha
+    - ls -l /etc/koha/koha-sites.conf
+#    - cat /etc/koha/koha-sites.conf
+#    - ls -l /etc/koha/koha-sites.conf
+
+    - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
+
+
+
+
+
+
 
     - sudo a2dissite 000-default
     - sudo a2enmod rewrite
