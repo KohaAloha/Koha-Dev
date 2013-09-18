@@ -76,7 +76,7 @@ before_install:
 #    - ./koha_perl_deps.pl -m -u
 #    - ./misc/sax_parser_print.pl
 
-    - mysql u root -p nerfnerf -e 'show processlist'
+    - mysql -u root -p nerfnerf -e 'show processlist'
 
 
 #    - sudo ln -s /usr/share/koha/bin/koha-zebra-ctl.sh /etc/init.d/koha-zebra-daemon
