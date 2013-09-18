@@ -8,7 +8,12 @@
 
 before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
+    - |
+       echo 'This
+       is a multi line
+       file' > /etc/koha/koha-sites.conf
 
+    - dsdsdsa
 
     - export DESTDIR=/tmp
     - export RUN_DATABASE_TESTS=no
@@ -53,7 +58,6 @@ before_install:
 
 #    - sudo apt-get install libdigest-jhash-perl
 #    - sudo apt-get install libchi-perl
-
 
     - ./koha_perl_deps.pl -m -u
     - ./misc/sax_parser_print.pl
