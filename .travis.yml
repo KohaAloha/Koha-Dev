@@ -26,8 +26,8 @@ before_install:
     - ls -l  debian/templates/koha-sites.conf
     - sudo cp -v debian/templates/koha-sites.conf  /etc/koha
     - cat /etc/koha/koha-sites.conf
+    - ls -l /etc/koha/koha-sites.conf
 
-#    - dsdsdsa
 
     - export DESTDIR=/tmp
     - export RUN_DATABASE_TESTS=no
