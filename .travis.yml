@@ -63,6 +63,9 @@ before_install:
 
     - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
 
+
+    - dpkg -l|grep callnum
+
     - sudo mysql -e 'create database koha'
     - sudo mysql -e "GRANT ALL PRIVILEGES ON koha.* TO 'kohaadmin'@'localhost' IDENTIFIED BY 'katikoan' "
     - sudo mysql -e 'flush privileges'
