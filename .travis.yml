@@ -30,17 +30,22 @@ before_install:
     - export RUN_DATABASE_TESTS=no
     - export TEST_QA=1
 
+
+    - sudo apt-get install apache2
+    - ls -l /etc/apache2/ports.conf
+    - sudo echo "NameVirtualHost *:80" > /etc/apache2/ports.conf
+    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
+    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
+    - cat /etc/apache2/ports.conf
+
+    - echo 1
+    - dsd
+
     - sudo apt-get update
 #    - sudo apt-get upgrade > /dev/null
     - sudo apt-get upgrade
     - sudo apt-get clean
 #
-
-    - sudo apt-get install apache2
-    - sudo echo "NameVirtualHost *:80" > /etc/apache2/ports.conf
-    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
-    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
-    - cat /etc/apache2/ports.conf
 
 
 
