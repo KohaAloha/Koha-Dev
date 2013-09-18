@@ -95,13 +95,13 @@ before_install:
 #    - lynx http://127.0.1.1:8080/
 #    - lynx http://127.0.1.1:8080/
 
-    - wget  http://127.0.1.1:80 -O opac
-    - wget  http://127.0.1.1:8080 -O staff
+    - wget  http://127.0.1.1:80 -O opac.html
+    - wget  http://127.0.1.1:8080 -O staff.html
 
 #    - phantomjs http://127.0.1.1:8080
 
-    - cat opac
-    - cat staff
+    - cat opac.html
+    - cat staff.html
 
 script:
 #    - phantomjs testrunner.js
