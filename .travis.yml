@@ -39,6 +39,12 @@ before_install:
 
     - sudo apt-get update ; sudo apt-get upgrade
 #    - sudo apt-get install  $( < install_misc/debian.packages)
+
+
+
+    - sudo apt-get install   libchi-perl
+
+
     - sudo apt-get install `cat install_misc/ubuntu.12.04.packages | cut -f1 | grep -v '#' | grep -v -e '^$'`
 
     - sudo mysql -e 'create database koha'
