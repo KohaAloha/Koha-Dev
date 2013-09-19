@@ -18,19 +18,19 @@ before_install:
     - sudo apt-get install koha-common > /dev/null
 
     - cat /etc/apache2/ports.conf
-    - ls -l /etc/apache2/ports.conf
+#    - ls -l /etc/apache2/ports.conf
 
-#    - sudo chmod 777  /etc/apache2/ports.conf
+    - sudo chmod 777  /etc/apache2/ports.conf
     - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
     - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
-    - ls -l /etc/apache2/ports.conf
-
     - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
-    - cat /etc/apache2/ports.conf
+
+#    - ls -l /etc/apache2/ports.conf
+#    - cat /etc/apache2/ports.conf
 
     - sudo cp -v debian/templates/koha-sites.conf /etc/koha
-    - ls -l /etc/koha
-    - ls -l /etc/koha/koha-sites.conf
+#    - ls -l /etc/koha
+#    - ls -l /etc/koha/koha-sites.conf
 
 
 #    - sudo apt-get install curl
