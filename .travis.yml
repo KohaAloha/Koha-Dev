@@ -17,20 +17,15 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install koha-common > /dev/null
 
-    - cat /etc/apache2/ports.conf
-#    - ls -l /etc/apache2/ports.conf
-
-#    - sudo chmod 777  /etc/apache2/ports.conf
     - echo 'NameVirtualHost *:80' | sudo /etc/apache2/ports.conf
     - echo 'Listen 80' | sudo -a /etc/apache2/ports.conf
     - echo 'Listen 8080' | sudo tee -a /etc/apache2/ports.conf
 
-#    - ls -l /etc/apache2/ports.conf
-#    - cat /etc/apache2/ports.conf
 
     - sudo cp -v debian/templates/koha-sites.conf /etc/koha
-#    - ls -l /etc/koha
-#    - ls -l /etc/koha/koha-sites.conf
+
+    - cat /etc/apache2/ports.conf
+    - cat /etc/koha/koha-sites.conf
 
 
 #    - sudo apt-get install curl
@@ -41,11 +36,11 @@ before_install:
     - sudo a2dissite 000-default
     - sudo a2enmod rewrite
     - sudo a2enmod deflate
-    - sudo service apache2 restart
+    - sudo apache2ctl restart
 
     - sudo koha-create --create-db lib1
     - sudo a2ensite lib1
-    - sudo apache2ctl restart
+#    - sudo apache2ctl restart
 
 
     - sudo apt-get install lynx wget
