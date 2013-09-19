@@ -14,40 +14,25 @@ perl:
 before_install:
 #    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
 
-    - cpanm --version
-    - perlbrew switch-off
-    - cpanm --version
+#    - cpanm --version
+#    - perlbrew switch-off
+#    - cpanm --version
 #    - "export DISPLAY=:99.0"
 #    - "sh -e /etc/init.d/xvfb start"
-    - phantomjs -v
+#    - phantomjs -v
 
 
 #    - export DESTDIR=/tmp
 #    - export RUN_DATABASE_TESTS=no
 #    - export TEST_QA=1
 
-
-
     - sudo apt-get update
-    - sudo apt-get install apache2
-    - cat /etc/apache2/ports.conf
-    - ls -l /etc/apache2/ports.conf
-
-    - sudo chmod 777  /etc/apache2/ports.conf
-    - "sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf"
-    - "sudo echo 'Listen 80' >> /etc/apache2/ports.conf"
-    - ls -l /etc/apache2/ports.conf
-
-    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
-    - cat /etc/apache2/ports.conf
-
-    - sudo apt-get update
+#    - sudo apt-get install apache2
+#    - sudo apt-get update
 #    - sudo apt-get upgrade > /dev/null
 #    - sudo apt-get upgrade
     - sudo apt-get clean
 #
-
-
 
     - export DEBIAN_FRONTEND=noninteractive
     - sudo apt-get -q -y install mysql-server
@@ -60,8 +45,19 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install koha-common > /dev/null
 
+    - cat /etc/apache2/ports.conf
+    - ls -l /etc/apache2/ports.conf
 
-    - sudo apt-get install curl
+    - sudo chmod 777  /etc/apache2/ports.conf
+    - "sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf"
+    - "sudo echo 'Listen 80' >> /etc/apache2/ports.conf"
+    - ls -l /etc/apache2/ports.conf
+
+    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
+    - cat /etc/apache2/ports.conf
+
+
+#    - sudo apt-get install curl
 
 #    - pwd
 #    - ls -l
