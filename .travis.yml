@@ -17,9 +17,9 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install koha-common > /dev/null
 
-    - echo 'NameVirtualHost *:80' | sudo /etc/apache2/ports.conf
-    - echo 'Listen 80' | sudo -a /etc/apache2/ports.conf
-    - echo 'Listen 8080' | sudo tee -a /etc/apache2/ports.conf
+    - echo 'NameVirtualHost *:80'   | sudo tee /etc/apache2/ports.conf
+    - echo 'Listen 80'              | sudo tee -a /etc/apache2/ports.conf
+    - echo 'Listen 8080'            | sudo tee -a /etc/apache2/ports.conf
 
 
     - sudo cp -v debian/templates/koha-sites.conf /etc/koha
