@@ -81,8 +81,8 @@ before_install:
     - sudo a2enmod deflate
     - sudo service apache2 restart
 
-    - sudo koha-create --create-db a1
-    - sudo a2ensite library
+    - sudo koha-create --create-db lib1
+    - sudo a2ensite lib1
     - sudo apache2ctl restart
 
     
