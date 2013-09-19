@@ -47,9 +47,9 @@ before_install:
 
     - wget  http://127.0.1.1:80 -O opac.html
     - wget  http://127.0.1.1:8080 -O staff.html
+    - cat opac.html
+    - cat staff.html
 
 
 script:
-    - cat opac.html
-    - cat staff.html
     - echo 0
