@@ -12,27 +12,10 @@ perl:
 #  - "5.19.2"
 
 before_install:
-#    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' >  /etc/apt/sources.list.d/koha
 
-#    - cpanm --version
-#    - perlbrew switch-off
-#    - cpanm --version
-#    - "export DISPLAY=:99.0"
-#    - "sh -e /etc/init.d/xvfb start"
-#    - phantomjs -v
-
-
-#    - export DESTDIR=/tmp
-#    - export RUN_DATABASE_TESTS=no
-#    - export TEST_QA=1
 
     - sudo apt-get update
-#    - sudo apt-get install apache2
-#    - sudo apt-get update
-#    - sudo apt-get upgrade > /dev/null
-#    - sudo apt-get upgrade
     - sudo apt-get clean
-#
 
     - export DEBIAN_FRONTEND=noninteractive
     - sudo apt-get -q -y install mysql-server
@@ -48,26 +31,20 @@ before_install:
     - cat /etc/apache2/ports.conf
     - ls -l /etc/apache2/ports.conf
 
-    - sudo chmod 777  /etc/apache2/ports.conf
-    - "sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf"
-    - "sudo echo 'Listen 80' >> /etc/apache2/ports.conf"
+#    - sudo chmod 777  /etc/apache2/ports.conf
+    - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
+    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
     - ls -l /etc/apache2/ports.conf
 
     - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
     - cat /etc/apache2/ports.conf
 
-
-#    - sudo apt-get install curl
-
-#    - pwd
-#    - ls -l
-#    - ls -l  debian/templates/koha-sites.conf
     - sudo cp -v debian/templates/koha-sites.conf /etc/koha
     - ls -l /etc/koha
     - ls -l /etc/koha/koha-sites.conf
-#    - cat /etc/koha/koha-sites.conf
-#    - ls -l /etc/koha/koha-sites.conf
 
+
+#    - sudo apt-get install curl
 #    - cd /etc/koha
 #    - curl -O  https://raw.github.com/KohaAloha/Koha-Dev/trav-packages/debian/templates/koha-sites.conf
 
@@ -81,20 +58,12 @@ before_install:
     - sudo a2ensite lib1
     - sudo apache2ctl restart
 
-    
-#    - ./koha_perl_deps.pl -m -u
-#    - ./misc/sax_parser_print.pl
-
-    - mysql -u root -pnerfnerf -e 'show processlist'
 
     - sudo apt-get install lynx wget
-#    - lynx http://127.0.1.1:8080/
-#    - lynx http://127.0.1.1:8080/
 
     - wget  http://127.0.1.1:80 -O opac.html
     - wget  http://127.0.1.1:8080 -O staff.html
 
-#    - phantomjs http://127.0.1.1:8080
 
 script:
     - cat opac.html
