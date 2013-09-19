@@ -10,7 +10,7 @@ before_install:
     - sudo apt-get -q -y install mysql-server
     - mysqladmin -u root password nerfnerf
 
-    - sudo echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
+    - echo 'deb http://debian.koha-community.org/koha squeeze main' | sudo tee /etc/apt/sources.list.d/koha.list
 
     - wget -O - http://debian.koha-community.org/koha/gpg.asc | sudo apt-key add -
 
@@ -20,10 +20,10 @@ before_install:
     - cat /etc/apache2/ports.conf
 #    - ls -l /etc/apache2/ports.conf
 
-    - sudo chmod 777  /etc/apache2/ports.conf
-    - sudo echo 'NameVirtualHost *:80' > /etc/apache2/ports.conf
-    - sudo echo 'Listen 80' >> /etc/apache2/ports.conf
-    - sudo echo 'Listen 8080' >> /etc/apache2/ports.conf
+#    - sudo chmod 777  /etc/apache2/ports.conf
+    - echo 'NameVirtualHost *:80' | sudo /etc/apache2/ports.conf
+    - echo 'Listen 80' | sudo -a /etc/apache2/ports.conf
+    - echo 'Listen 8080' | sudo tee -a /etc/apache2/ports.conf
 
 #    - ls -l /etc/apache2/ports.conf
 #    - cat /etc/apache2/ports.conf
