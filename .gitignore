@@ -21,3 +21,5 @@ koha-tmpl/intranet-tmpl/prog/css/staff-global.css
 
 koha-tmpl/intranet-tmpl/prog/js/vue/dist/
 
+
+megalinter-reports/
